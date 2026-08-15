@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <title>商品條碼列印｜B3S V6</title>
+  <title>商品條碼列印｜B3S V7</title>
 
   <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
   <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
@@ -11,7 +11,9 @@
   <style>
     *{box-sizing:border-box}
     body{
-      margin:0;background:#f4f6f8;color:#18202a;
+      margin:0;
+      background:#f4f6f8;
+      color:#18202a;
       font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif
     }
     .wrap{max-width:900px;margin:auto;padding:18px}
@@ -21,50 +23,123 @@
     .sub{margin-bottom:18px}
     .help{font-size:13px;line-height:1.55}
     .card{
-      background:#fff;border:1px solid #d8dee8;border-radius:16px;
-      padding:16px;margin-bottom:16px
+      background:#fff;
+      border:1px solid #d8dee8;
+      border-radius:16px;
+      padding:16px;
+      margin-bottom:16px
     }
-    label{display:block;font-size:14px;margin:8px 0 6px}
+    label{
+      display:block;
+      font-size:14px;
+      margin:8px 0 6px
+    }
     input,textarea,select{
-      width:100%;min-height:46px;padding:10px 12px;border:1px solid #cfd6e1;
-      border-radius:10px;background:#fff;font-size:16px
+      width:100%;
+      min-height:46px;
+      padding:10px 12px;
+      border:1px solid #cfd6e1;
+      border-radius:10px;
+      background:#fff;
+      font-size:16px
     }
-    textarea{min-height:220px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}
-    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    textarea{
+      min-height:220px;
+      font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+      font-size:13px
+    }
+    .row{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px
+    }
+    .actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:12px
+    }
     button{
-      border:0;border-radius:10px;min-height:46px;padding:10px 14px;
-      font-size:16px;font-weight:700;background:#eef2f6;color:#18202a
+      border:0;
+      border-radius:10px;
+      min-height:46px;
+      padding:10px 14px;
+      font-size:16px;
+      font-weight:700;
+      background:#eef2f6;
+      color:#18202a
     }
     button:disabled{opacity:.45}
     .primary{background:#1265f3;color:#fff}
     .ok{background:#e7f8ef;color:#087443}
     .danger{background:#fff0ef;color:#d92d20}
-    .status{padding:11px 12px;border-radius:10px;background:#f2f4f7;margin:10px 0}
+    .status{
+      padding:11px 12px;
+      border-radius:10px;
+      background:#f2f4f7;
+      margin:10px 0
+    }
     .status.ok{background:#ecfdf3;color:#067647}
     .status.err{background:#fff1f0;color:#d92d20}
     .status.warn{background:#fff8e6;color:#8a5a00}
-    .item{border:1px solid #d8dee8;border-radius:12px;padding:10px;margin-top:8px}
-    .preview{background:#e8eaed;border-radius:12px;padding:12px;overflow:auto}
-    #previewCanvas{display:block;margin:auto;max-width:100%;height:auto;background:#fff}
-    .modal{
-      display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.75);
-      padding:16px;overflow:auto
+    .item{
+      border:1px solid #d8dee8;
+      border-radius:12px;
+      padding:10px;
+      margin-top:8px
     }
-    .modalBox{max-width:520px;margin:5vh auto;background:#fff;border-radius:16px;padding:16px}
+    .preview{
+      background:#e8eaed;
+      border-radius:12px;
+      padding:12px;
+      overflow:auto
+    }
+    #previewCanvas{
+      display:block;
+      margin:auto;
+      max-width:100%;
+      height:auto;
+      background:#fff
+    }
+    .modal{
+      display:none;
+      position:fixed;
+      inset:0;
+      z-index:9999;
+      background:rgba(0,0,0,.75);
+      padding:16px;
+      overflow:auto
+    }
+    .modalBox{
+      max-width:520px;
+      margin:5vh auto;
+      background:#fff;
+      border-radius:16px;
+      padding:16px
+    }
     .device-grid{
-      display:grid;grid-template-columns:150px 1fr;gap:8px 12px;
-      font-size:14px;margin-top:12px
+      display:grid;
+      grid-template-columns:150px 1fr;
+      gap:8px 12px;
+      font-size:14px;
+      margin-top:12px
     }
     .device-grid b{color:#475467}
+
     @media(max-width:700px){
       .row{grid-template-columns:1fr}
       .device-grid{grid-template-columns:1fr}
     }
+
     @media print{
       body *{visibility:hidden!important}
       #previewCanvas{
-        visibility:visible!important;position:absolute;left:0;top:0;width:58mm;max-width:none
+        visibility:visible!important;
+        position:absolute;
+        left:0;
+        top:0;
+        width:58mm;
+        max-width:none
       }
     }
   </style>
@@ -75,9 +150,10 @@
 <div class="wrap">
 
   <h1>商品條碼列印</h1>
-  <div class="sub">B3S 協定辨識 V6</div>
+  <div class="sub">B3S B24 查詢測試 V7</div>
 
   <div class="card">
+
     <h2>新增商品</h2>
 
     <label>商品名稱</label>
@@ -112,10 +188,12 @@
     </div>
 
     <div id="bulkStatus" class="help" style="margin-top:8px"></div>
+
   </div>
 
 
   <div class="card">
+
     <h2>待列印商品</h2>
 
     <div id="items"></div>
@@ -123,15 +201,18 @@
     <div class="actions">
       <button id="clearAllBtn" class="danger">全部清除</button>
     </div>
+
   </div>
 
 
   <div class="card">
+
     <h2>版面設定</h2>
 
     <div class="row">
 
       <div>
+
         <label>紙寬</label>
 
         <select id="paperWidth">
@@ -144,9 +225,11 @@
           <option value="30">30 mm</option>
           <option value="20">20 mm</option>
         </select>
+
       </div>
 
       <div>
+
         <label>條碼高度</label>
 
         <select id="barcodeHeight">
@@ -155,6 +238,7 @@
           <option value="14">14 mm</option>
           <option value="16">16 mm</option>
         </select>
+
       </div>
 
     </div>
@@ -171,11 +255,13 @@
 
 
   <div class="card">
+
     <h2>列印預覽</h2>
 
     <div class="preview">
       <canvas id="previewCanvas"></canvas>
     </div>
+
   </div>
 
 
@@ -183,24 +269,56 @@
 
     <h2>B3S 藍牙連線</h2>
 
-    <div id="bleStatus" class="status">尚未連線</div>
+    <div id="bleStatus" class="status">
+      尚未連線
+    </div>
 
     <div class="actions">
-      <button id="connectBtn" class="ok">🔵 直接連接 B3S</button>
-      <button id="disconnectBtn" disabled>中斷連線</button>
-      <button id="scanGattBtn" disabled>🔎 掃描 GATT</button>
-      <button id="deviceInfoBtn" disabled>📟 讀取裝置資訊</button>
+
+      <button id="connectBtn" class="ok">
+        🔵 直接連接 B3S
+      </button>
+
+      <button id="disconnectBtn" disabled>
+        中斷連線
+      </button>
+
+      <button id="scanGattBtn" disabled>
+        🔎 掃描 GATT
+      </button>
+
+      <button id="deviceInfoBtn" disabled>
+        📟 讀取裝置資訊
+      </button>
+
     </div>
 
     <div class="device-grid">
-      <b>裝置名稱</b><span id="bleName">—</span>
-      <b>裝置 ID</b><span id="bleId">—</span>
-      <b>型號 Model</b><span id="infoModel">—</span>
-      <b>序號 Serial</b><span id="infoSerial">—</span>
-      <b>Firmware</b><span id="infoFirmware">—</span>
-      <b>Hardware</b><span id="infoHardware">—</span>
-      <b>Software</b><span id="infoSoftware">—</span>
-      <b>Manufacturer</b><span id="infoManufacturer">—</span>
+
+      <b>裝置名稱</b>
+      <span id="bleName">—</span>
+
+      <b>裝置 ID</b>
+      <span id="bleId">—</span>
+
+      <b>型號 Model</b>
+      <span id="infoModel">—</span>
+
+      <b>序號 Serial</b>
+      <span id="infoSerial">—</span>
+
+      <b>Firmware</b>
+      <span id="infoFirmware">—</span>
+
+      <b>Hardware</b>
+      <span id="infoHardware">—</span>
+
+      <b>Software</b>
+      <span id="infoSoftware">—</span>
+
+      <b>Manufacturer</b>
+      <span id="infoManufacturer">—</span>
+
     </div>
 
   </div>
@@ -208,20 +326,31 @@
 
   <div class="card">
 
-    <h2>B3S 協定辨識</h2>
+    <h2>B3S 協定監聽</h2>
 
     <p class="help">
       這一區只監聽與讀取，不會自動送未知列印指令。
-      會檢查是否收到 NIIMBOT 常見的 55 55 ... AA AA 封包格式。
     </p>
 
     <div class="actions">
-      <button id="listenBtn" class="ok" disabled>👂 監聽 30 秒</button>
-      <button id="readSafeBtn" disabled>🔍 安全讀取可讀通道</button>
-      <button id="clearProtoBtn">清除辨識結果</button>
+
+      <button id="listenBtn" class="ok" disabled>
+        👂 監聽 30 秒
+      </button>
+
+      <button id="readSafeBtn" disabled>
+        🔍 安全讀取可讀通道
+      </button>
+
+      <button id="clearProtoBtn">
+        清除辨識結果
+      </button>
+
     </div>
 
-    <div id="protoStatus" class="status">尚未開始辨識</div>
+    <div id="protoStatus" class="status">
+      尚未開始辨識
+    </div>
 
     <textarea
       id="protoOutput"
@@ -233,10 +362,51 @@
 
   <div class="card">
 
+    <h2>B24 / B3S 查詢測試 V7</h2>
+
+    <p class="help">
+      只送已確認的 NIIMBOT「型號 ID 查詢」與「狀態資料查詢」，
+      不送圖片、不啟動列印。會自動依序測試目前找到的 3 組寫入通道。
+    </p>
+
+    <div class="actions">
+
+      <button id="probeModelBtn" class="primary" disabled>
+        🔎 測試型號 ID
+      </button>
+
+      <button id="probeStatusBtn" disabled>
+        📟 測試狀態資料
+      </button>
+
+      <button id="probeAllBtn" class="ok" disabled>
+        🧪 自動測試三通道
+      </button>
+
+      <button id="clearProbeBtn">
+        清除測試
+      </button>
+
+    </div>
+
+    <div id="probeStatus" class="status">
+      尚未測試
+    </div>
+
+    <textarea
+      id="probeOutput"
+      readonly
+      placeholder="V7 查詢測試結果會顯示在這裡"></textarea>
+
+  </div>
+
+
+  <div class="card">
+
     <h2>原始通訊測試</h2>
 
     <p class="help">
-      目前保留診斷用途，請不要自行輸入不明 HEX 指令。
+      保留診斷用途，請不要自行輸入不明 HEX 指令。
     </p>
 
     <label>寫入通道</label>
@@ -246,29 +416,46 @@
     </select>
 
     <label>HEX 資料</label>
-    <input id="hexInput" placeholder="例如：55 55 01 01 ...">
+    <input id="hexInput" placeholder="HEX">
 
     <div class="actions">
-      <button id="sendHexBtn" disabled>📤 送出 HEX</button>
-      <button id="clearLogBtn">清除通訊紀錄</button>
-      <button id="copyLogBtn">複製通訊紀錄</button>
+
+      <button id="sendHexBtn" disabled>
+        📤 送出 HEX
+      </button>
+
+      <button id="clearLogBtn">
+        清除通訊紀錄
+      </button>
+
+      <button id="copyLogBtn">
+        複製通訊紀錄
+      </button>
+
     </div>
 
     <textarea
       id="commLog"
       readonly
-      placeholder="連線、通知與回傳 HEX 會顯示在這裡"></textarea>
+      placeholder="藍牙通訊紀錄會顯示在這裡"></textarea>
 
   </div>
 
 
   <div class="card">
 
-    <h2>B3S 藍牙診斷 V6</h2>
+    <h2>B3S 藍牙診斷 V7</h2>
 
     <div class="actions">
-      <button id="diagBtn" disabled>📋 產生完整診斷</button>
-      <button id="copyDiagBtn">複製診斷結果</button>
+
+      <button id="diagBtn" disabled>
+        📋 產生完整診斷
+      </button>
+
+      <button id="copyDiagBtn">
+        複製診斷結果
+      </button>
+
     </div>
 
     <textarea
@@ -285,11 +472,17 @@
 
   <div class="modalBox">
 
-    <div class="actions" style="justify-content:space-between;align-items:center">
+    <div
+      class="actions"
+      style="justify-content:space-between;align-items:center">
 
-      <h2 style="margin:0">掃描商品條碼</h2>
+      <h2 style="margin:0">
+        掃描商品條碼
+      </h2>
 
-      <button id="closeScannerBtn" class="danger">關閉</button>
+      <button id="closeScannerBtn" class="danger">
+        關閉
+      </button>
 
     </div>
 
@@ -306,8 +499,9 @@
 
 <script>
 
-const $ = id =>
-  document.getElementById(id);
+const $ =
+id =>
+document.getElementById(id);
 
 
 const state = {
@@ -346,24 +540,16 @@ const OPTIONAL_SERVICES = [
 ];
 
 
-function nowText(){
-
-  return new Date()
-    .toLocaleTimeString();
-
-}
-
-
 function appendLog(text){
 
   const box =
-    $("commLog");
+  $("commLog");
 
   box.value +=
-    `[${nowText()}] ${text}\n`;
+  `[${new Date().toLocaleTimeString()}] ${text}\n`;
 
   box.scrollTop =
-    box.scrollHeight;
+  box.scrollHeight;
 
 }
 
@@ -371,36 +557,39 @@ function appendLog(text){
 function bytesToHex(value){
 
   if(!value)
-    return "";
+  return "";
+
 
   const bytes =
-    value instanceof DataView
+  value instanceof DataView
 
-    ?
+  ?
 
-    new Uint8Array(
-      value.buffer,
-      value.byteOffset,
-      value.byteLength
-    )
+  new Uint8Array(
+    value.buffer,
+    value.byteOffset,
+    value.byteLength
+  )
 
-    :
+  :
 
-    new Uint8Array(
-      value.buffer ?? value
-    );
+  new Uint8Array(
+    value.buffer ?? value
+  );
+
 
   return Array
-    .from(bytes)
+  .from(bytes)
 
-    .map(
-      b =>
-      b.toString(16)
-      .padStart(2,"0")
-      .toUpperCase()
-    )
+  .map(
+    b =>
+    b
+    .toString(16)
+    .padStart(2,"0")
+    .toUpperCase()
+  )
 
-    .join(" ");
+  .join(" ");
 
 }
 
@@ -408,11 +597,11 @@ function bytesToHex(value){
 function hexToBytes(text){
 
   const cleaned =
-    String(text || "")
+  String(text || "")
 
-    .replace(/0x/gi,"")
+  .replace(/0x/gi,"")
 
-    .replace(/[^0-9a-fA-F]/g,"");
+  .replace(/[^0-9a-fA-F]/g,"");
 
 
   if(
@@ -428,9 +617,9 @@ function hexToBytes(text){
 
 
   const bytes =
-    new Uint8Array(
-      cleaned.length / 2
-    );
+  new Uint8Array(
+    cleaned.length / 2
+  );
 
 
   for(
@@ -440,10 +629,10 @@ function hexToBytes(text){
   ){
 
     bytes[i/2] =
-      parseInt(
-        cleaned.slice(i,i+2),
-        16
-      );
+    parseInt(
+      cleaned.slice(i,i+2),
+      16
+    );
 
   }
 
@@ -458,18 +647,23 @@ function decodeText(value){
   try{
 
     const bytes =
-      new Uint8Array(
-        value.buffer,
-        value.byteOffset,
-        value.byteLength
-      );
+    new Uint8Array(
+      value.buffer,
+      value.byteOffset,
+      value.byteLength
+    );
+
 
     return new TextDecoder(
       "utf-8"
     )
+
     .decode(bytes)
+
     .replace(/\0+$/g,"")
+
     .trim();
+
 
   }catch{
 
@@ -485,13 +679,13 @@ function decodeText(value){
 function detectFormat(code){
 
   if(/^\d{13}$/.test(code))
-    return "EAN13";
+  return "EAN13";
 
   if(/^\d{8}$/.test(code))
-    return "EAN8";
+  return "EAN8";
 
   if(/^\d{12}$/.test(code))
-    return "UPC";
+  return "UPC";
 
   return "CODE128";
 
@@ -501,14 +695,22 @@ function detectFormat(code){
 function escapeHtml(text){
 
   return String(text ?? "")
+
   .replace(
     /[&<>"']/g,
+
     c => ({
+
       "&":"&amp;",
+
       "<":"&lt;",
+
       ">":"&gt;",
+
       '"':"&quot;",
+
       "'":"&#039;"
+
     }[c])
   );
 
@@ -518,13 +720,15 @@ function escapeHtml(text){
 function renderItems(){
 
   const box =
-    $("items");
+  $("items");
 
 
-  if(!state.items.length){
+  if(
+    !state.items.length
+  ){
 
     box.innerHTML =
-      '<div class="help">目前沒有商品</div>';
+    '<div class="help">目前沒有商品</div>';
 
     return;
 
@@ -532,42 +736,44 @@ function renderItems(){
 
 
   box.innerHTML =
-    state.items
+  state.items
 
-    .map(
-      (item,index) => `
+  .map(
+    (item,index) => `
 
-      <div class="item">
+    <div class="item">
 
-        <b>
-          ${escapeHtml(
-            item.name ||
-            "未命名商品"
-          )}
-        </b>
+      <b>
+        ${escapeHtml(
+          item.name ||
+          "未命名商品"
+        )}
+      </b>
 
-        <br>
+      <br>
 
-        <small>
-          ${escapeHtml(item.code)}
-        </small>
+      <small>
+        ${escapeHtml(
+          item.code
+        )}
+      </small>
 
-        <div class="actions">
+      <div class="actions">
 
-          <button
-            class="danger deleteBtn"
-            data-index="${index}">
-            刪除
-          </button>
-
-        </div>
+        <button
+          class="danger deleteBtn"
+          data-index="${index}">
+          刪除
+        </button>
 
       </div>
 
-      `
-    )
+    </div>
 
-    .join("");
+    `
+  )
+
+  .join("");
 
 }
 
@@ -575,10 +781,11 @@ function renderItems(){
 function addItem(){
 
   const name =
-    $("name").value.trim();
+  $("name").value.trim();
+
 
   const code =
-    $("code").value.trim();
+  $("code").value.trim();
 
 
   if(!code){
@@ -598,9 +805,12 @@ function addItem(){
   });
 
 
-  $("name").value = "";
+  $("name").value =
+  "";
 
-  $("code").value = "";
+
+  $("code").value =
+  "";
 
 
   renderItems();
@@ -611,30 +821,78 @@ function addItem(){
 
 
 $("addBtn").onclick =
-  addItem;
+addItem;
 
 
 $("clearInputBtn").onclick =
 () => {
 
-  $("name").value = "";
+  $("name").value =
+  "";
 
-  $("code").value = "";
+  $("code").value =
+  "";
 
 };
 
+
+$("items").onclick =
+event => {
+
+  const btn =
+  event.target.closest(
+    ".deleteBtn"
+  );
+
+
+  if(!btn)
+  return;
+
+
+  state.items.splice(
+    Number(
+      btn.dataset.index
+    ),
+    1
+  );
+
+
+  renderItems();
+
+  drawPreview();
+
+};
+
+
+$("clearAllBtn").onclick =
+() => {
+
+  state.items =
+  [];
+
+  renderItems();
+
+  drawPreview();
+
+};
+
+
+/* 批次新增 */
 
 $("bulkAddBtn").onclick =
 () => {
 
   const text =
-    $("bulkInput").value.trim();
+  $("bulkInput")
+  .value
+  .trim();
 
 
   if(!text){
 
-    $("bulkStatus").textContent =
-      "請先輸入商品名稱與條碼";
+    $("bulkStatus")
+    .textContent =
+    "請先輸入商品名稱與條碼";
 
     return;
 
@@ -642,58 +900,89 @@ $("bulkAddBtn").onclick =
 
 
   const lines =
-    text
-    .split(/\r?\n/)
-    .map(x => x.trim())
-    .filter(Boolean);
+  text
+
+  .split(/\r?\n/)
+
+  .map(
+    x => x.trim()
+  )
+
+  .filter(Boolean);
 
 
-  let added = 0;
-
-  let skipped = 0;
-
-
-  for(const line of lines){
-
-    let name = "";
-
-    let code = "";
+  let added =
+  0;
 
 
-    if(line.includes("\t")){
+  let skipped =
+  0;
+
+
+  for(
+    const line
+    of lines
+  ){
+
+    let name =
+    "";
+
+
+    let code =
+    "";
+
+
+    if(
+      line.includes("\t")
+    ){
 
       const parts =
-        line
-        .split("\t")
-        .map(x => x.trim())
-        .filter(Boolean);
+      line
+
+      .split("\t")
+
+      .map(
+        x => x.trim()
+      )
+
+      .filter(Boolean);
 
 
-      if(parts.length >= 2){
+      if(
+        parts.length >= 2
+      ){
 
         name =
-          parts[0];
+        parts[0];
 
         code =
-          parts[1];
+        parts[1];
 
       }
 
     }
 
 
-    else if(line.includes(",")){
+    else if(
+      line.includes(",")
+    ){
 
       const parts =
-        line.split(",");
+      line.split(",");
+
 
       code =
-        (parts.pop() || "")
-        .trim();
+      (
+        parts.pop() ||
+        ""
+      )
+      .trim();
+
 
       name =
-        parts.join(",")
-        .trim();
+      parts
+      .join(",")
+      .trim();
 
     }
 
@@ -701,18 +990,21 @@ $("bulkAddBtn").onclick =
     else{
 
       const result =
-        line.match(
-          /^(.*?)[\s]+(\d{6,})$/
-        );
+      line.match(
+        /^(.*?)[\s]+(\d{6,})$/
+      );
 
 
       if(result){
 
         name =
-          result[1].trim();
+        result[1]
+        .trim();
+
 
         code =
-          result[2].trim();
+        result[2]
+        .trim();
 
       }
 
@@ -744,21 +1036,28 @@ $("bulkAddBtn").onclick =
   drawPreview();
 
 
-  $("bulkStatus").textContent =
-    `已加入 ${added} 筆`
-    +
-    (
-      skipped
-      ?
-      `，略過 ${skipped} 筆`
-      :
-      ""
-    );
+  $("bulkStatus")
+  .textContent =
+
+  `已加入 ${added} 筆`
+
+  +
+
+  (
+    skipped
+    ?
+    `，略過 ${skipped} 筆`
+    :
+    ""
+  );
 
 
-  if(added > 0){
+  if(
+    added > 0
+  ){
 
-    $("bulkInput").value = "";
+    $("bulkInput").value =
+    "";
 
   }
 
@@ -768,49 +1067,11 @@ $("bulkAddBtn").onclick =
 $("bulkClearBtn").onclick =
 () => {
 
-  $("bulkInput").value = "";
+  $("bulkInput").value =
+  "";
 
-  $("bulkStatus").textContent = "";
-
-};
-
-
-$("items").onclick =
-event => {
-
-  const btn =
-    event.target.closest(
-      ".deleteBtn"
-    );
-
-
-  if(!btn)
-    return;
-
-
-  state.items.splice(
-    Number(
-      btn.dataset.index
-    ),
-    1
-  );
-
-
-  renderItems();
-
-  drawPreview();
-
-};
-
-
-$("clearAllBtn").onclick =
-() => {
-
-  state.items = [];
-
-  renderItems();
-
-  drawPreview();
+  $("bulkStatus").textContent =
+  "";
 
 };
 
@@ -833,9 +1094,9 @@ function makeBarcode(
 ){
 
   const canvas =
-    document.createElement(
-      "canvas"
-    );
+  document.createElement(
+    "canvas"
+  );
 
 
   try{
@@ -844,10 +1105,15 @@ function makeBarcode(
       canvas,
       code,
       {
-        format:detectFormat(code),
+        format:
+        detectFormat(code),
+
         displayValue:true,
-        height:height,
+
+        height,
+
         margin:0,
+
         width:2
       }
     );
@@ -859,9 +1125,13 @@ function makeBarcode(
       code,
       {
         format:"CODE128",
+
         displayValue:true,
-        height:height,
+
+        height,
+
         margin:0,
+
         width:2
       }
     );
@@ -879,31 +1149,31 @@ function makeBarcode(
 
 
   const scaled =
-    document.createElement(
-      "canvas"
-    );
+  document.createElement(
+    "canvas"
+  );
 
 
   scaled.width =
-    maxWidth;
+  maxWidth;
 
 
   scaled.height =
-    Math.round(
-      canvas.height *
-      maxWidth /
-      canvas.width
-    );
+  Math.round(
+    canvas.height *
+    maxWidth /
+    canvas.width
+  );
 
 
   const ctx =
-    scaled.getContext(
-      "2d"
-    );
+  scaled.getContext(
+    "2d"
+  );
 
 
   ctx.imageSmoothingEnabled =
-    false;
+  false;
 
 
   ctx.drawImage(
@@ -923,114 +1193,113 @@ function makeBarcode(
 function drawPreview(){
 
   const paperWidth =
-    mmToPx(
-      Number(
-        $("paperWidth").value
-      )
-    );
+  mmToPx(
+    Number(
+      $("paperWidth").value
+    )
+  );
 
 
   const barcodeHeight =
-    mmToPx(
-      Number(
-        $("barcodeHeight").value
-      )
-    );
+  mmToPx(
+    Number(
+      $("barcodeHeight").value
+    )
+  );
 
 
   const margin =
-    mmToPx(2);
+  mmToPx(2);
 
 
   const contentWidth =
-    Math.max(
-      80,
-      paperWidth -
-      margin * 2
-    );
+  paperWidth -
+  margin * 2;
 
 
   const blocks =
-    state.items.map(
-      item => {
+  state.items.map(
+    item => {
 
-        const barcode =
-          makeBarcode(
-            item.code,
-            contentWidth,
-            barcodeHeight
-          );
+      const barcode =
+      makeBarcode(
+        item.code,
+        contentWidth,
+        barcodeHeight
+      );
 
 
-        return {
-          item,
-          barcode,
-          height:
-            28 +
-            barcode.height +
-            mmToPx(2)
-        };
+      return {
 
-      }
-    );
+        item,
+
+        barcode,
+
+        height:
+        30 +
+        barcode.height +
+        20
+
+      };
+
+    }
+  );
 
 
   const footer =
-    $("footerText")
-    .value
-    .trim();
+  $("footerText")
+  .value
+  .trim();
 
 
   const totalHeight =
-    Math.max(
-      mmToPx(30),
+  Math.max(
 
-      mmToPx(2)
+    240,
 
-      +
+    20
 
-      blocks.reduce(
-        (sum,b) =>
-        sum + b.height,
-        0
-      )
+    +
 
-      +
+    blocks.reduce(
+      (sum,b) =>
+      sum + b.height,
+      0
+    )
 
-      (
-        footer
-        ?
-        45
-        :
-        0
-      )
+    +
 
-      +
+    (
+      footer
+      ?
+      50
+      :
+      0
+    )
 
-      mmToPx(3)
-    );
+  );
 
 
   const canvas =
-    $("previewCanvas");
+  $("previewCanvas");
 
 
   canvas.width =
-    paperWidth;
+  paperWidth;
 
 
   canvas.height =
-    totalHeight;
+  totalHeight;
 
 
   const ctx =
-    canvas.getContext(
-      "2d"
-    );
+  canvas.getContext(
+    "2d"
+  );
 
 
   ctx.fillStyle =
-    "#fff";
+  "#fff";
 
 
   ctx.fillRect(
@@ -1042,25 +1311,28 @@ function drawPreview(){
 
 
   ctx.fillStyle =
-    "#000";
+  "#000";
 
 
   ctx.textAlign =
-    "center";
+  "center";
 
 
   ctx.textBaseline =
-    "top";
+  "top";
 
 
   let y =
-    mmToPx(2);
+  15;
 
 
-  for(const block of blocks){
+  for(
+    const block
+    of blocks
+  ){
 
     ctx.font =
-      '600 18px "PingFang TC","Microsoft JhengHei",sans-serif';
+    '600 18px "PingFang TC","Microsoft JhengHei",sans-serif';
 
 
     ctx.fillText(
@@ -1075,7 +1347,7 @@ function drawPreview(){
 
 
     ctx.imageSmoothingEnabled =
-      false;
+    false;
 
 
     ctx.drawImage(
@@ -1089,9 +1361,9 @@ function drawPreview(){
 
 
     y +=
-      block.barcode.height
-      +
-      mmToPx(2);
+    block.barcode.height
+    +
+    20;
 
   }
 
@@ -1099,13 +1371,13 @@ function drawPreview(){
   if(footer){
 
     ctx.font =
-      '700 22px "PingFang TC","Microsoft JhengHei",sans-serif';
+    '700 20px "PingFang TC","Microsoft JhengHei",sans-serif';
 
 
     ctx.fillText(
       footer,
       paperWidth / 2,
-      y + 10,
+      y,
       contentWidth
     );
 
@@ -1115,19 +1387,19 @@ function drawPreview(){
 
 
 $("refreshBtn").onclick =
-  drawPreview;
+drawPreview;
 
 
 $("paperWidth").onchange =
-  drawPreview;
+drawPreview;
 
 
 $("barcodeHeight").onchange =
-  drawPreview;
+drawPreview;
 
 
 $("footerText").oninput =
-  drawPreview;
+drawPreview;
 
 
 $("browserPrintBtn").onclick =
@@ -1140,92 +1412,69 @@ $("browserPrintBtn").onclick =
 };
 
 
-/* 相機 */
+/* 相機掃描 */
 
 let qrScanner =
-  null;
+null;
 
 
 let scannerRunning =
-  false;
+false;
 
 
 async function startScanner(){
 
-  if(
-    !window.Html5Qrcode
-  ){
-
-    alert(
-      "條碼掃描程式載入失敗"
-    );
-
-    return;
-
-  }
-
-
   $("scannerModal")
-  .style.display =
-    "block";
+  .style
+  .display =
+  "block";
 
 
   $("scannerStatus")
   .textContent =
-    "正在啟動相機…";
+  "正在啟動相機…";
 
 
-  qrScanner =
+  try{
+
+    qrScanner =
     new Html5Qrcode(
       "qrReader"
     );
 
 
-  try{
-
     await qrScanner.start(
 
       {
         facingMode:
-          "environment"
+        "environment"
       },
 
       {
         fps:12,
 
-        qrbox:
-        (width,height) => ({
-          width:
-            Math.floor(
-              width * 0.88
-            ),
-
-          height:
-            Math.min(
-              Math.floor(
-                height * 0.35
-              ),
-              170
-            )
-        })
+        qrbox:{
+          width:280,
+          height:130
+        }
       },
 
       decodedText => {
 
         $("code").value =
-          decodedText;
+        decodedText;
 
 
         $("scannerStatus")
         .className =
-          "status ok";
+        "status ok";
 
 
         $("scannerStatus")
         .textContent =
-          "掃描成功："
-          +
-          decodedText;
+        "掃描成功："
+        +
+        decodedText;
 
 
         setTimeout(
@@ -1241,31 +1490,31 @@ async function startScanner(){
 
 
     scannerRunning =
-      true;
+    true;
 
 
     $("scannerStatus")
     .className =
-      "status ok";
+    "status ok";
 
 
     $("scannerStatus")
     .textContent =
-      "請對準商品條碼";
+    "請對準商品條碼";
 
 
   }catch(error){
 
     $("scannerStatus")
     .className =
-      "status err";
+    "status err";
 
 
     $("scannerStatus")
     .textContent =
-      "相機啟動失敗："
-      +
-      error.message;
+    "相機啟動失敗："
+    +
+    error.message;
 
   }
 
@@ -1300,26 +1549,27 @@ async function stopScanner(){
 
 
   qrScanner =
-    null;
+  null;
 
 
   scannerRunning =
-    false;
+  false;
 
 
   $("scannerModal")
-  .style.display =
-    "none";
+  .style
+  .display =
+  "none";
 
 }
 
 
 $("scanBtn").onclick =
-  startScanner;
+startScanner;
 
 
 $("closeScannerBtn").onclick =
-  stopScanner;
+stopScanner;
 
 
 /* Bluetooth */
@@ -1331,12 +1581,12 @@ function setBleStatus(
 
   $("bleStatus")
   .className =
-    "status " + type;
+  "status " + type;
 
 
   $("bleStatus")
   .textContent =
-    text;
+  text;
 
 }
 
@@ -1346,22 +1596,39 @@ function setConnectedButtons(
 ){
 
   $("disconnectBtn").disabled =
-    !connected;
+  !connected;
+
 
   $("scanGattBtn").disabled =
-    !connected;
+  !connected;
+
 
   $("deviceInfoBtn").disabled =
-    !connected;
+  !connected;
+
 
   $("diagBtn").disabled =
-    !connected;
+  !connected;
+
 
   $("listenBtn").disabled =
-    !connected;
+  !connected;
+
 
   $("readSafeBtn").disabled =
-    !connected;
+  !connected;
+
+
+  $("probeModelBtn").disabled =
+  !connected;
+
+
+  $("probeStatusBtn").disabled =
+  !connected;
+
+
+  $("probeAllBtn").disabled =
+  !connected;
 
 }
 
@@ -1370,7 +1637,9 @@ async function connectB3S(){
 
   try{
 
-    if(!navigator.bluetooth){
+    if(
+      !navigator.bluetooth
+    ){
 
       throw new Error(
         "此瀏覽器不支援 Web Bluetooth"
@@ -1385,42 +1654,40 @@ async function connectB3S(){
 
 
     const device =
-      await navigator.bluetooth
-      .requestDevice({
+    await navigator.bluetooth
+    .requestDevice({
 
-        acceptAllDevices:true,
+      acceptAllDevices:true,
 
-        optionalServices:
-          OPTIONAL_SERVICES
+      optionalServices:
+      OPTIONAL_SERVICES
 
-      });
+    });
 
 
     state.device =
-      device;
+    device;
 
 
-    $("bleName").textContent =
-      device.name ||
-      "（未提供名稱）";
+    $("bleName")
+    .textContent =
+    device.name ||
+    "（未提供名稱）";
 
 
-    $("bleId").textContent =
-      device.id ||
-      "—";
+    $("bleId")
+    .textContent =
+    device.id ||
+    "—";
 
 
     device.addEventListener(
       "gattserverdisconnected",
+
       () => {
 
         state.server =
-          null;
-
-
-        appendLog(
-          "裝置已中斷"
-        );
+        null;
 
 
         setBleStatus(
@@ -1434,8 +1701,9 @@ async function connectB3S(){
         );
 
 
-        $("sendHexBtn").disabled =
-          true;
+        appendLog(
+          "裝置已中斷"
+        );
 
       }
     );
@@ -1447,7 +1715,7 @@ async function connectB3S(){
 
 
     state.server =
-      await device.gatt.connect();
+    await device.gatt.connect();
 
 
     setBleStatus(
@@ -1489,7 +1757,7 @@ async function connectB3S(){
 
 
 $("connectBtn").onclick =
-  connectB3S;
+connectB3S;
 
 
 $("disconnectBtn").onclick =
@@ -1505,7 +1773,7 @@ $("disconnectBtn").onclick =
 
 
   state.server =
-    null;
+  null;
 
 
   setConnectedButtons(
@@ -1523,8 +1791,8 @@ $("disconnectBtn").onclick =
 function shortUuid(uuid){
 
   const value =
-    String(uuid || "")
-    .toLowerCase();
+  String(uuid || "")
+  .toLowerCase();
 
 
   if(
@@ -1564,11 +1832,11 @@ async function scanGatt(){
 
 
   state.services =
-    [];
+  [];
 
 
   state.characteristics =
-    [];
+  [];
 
 
   state.writeChars.clear();
@@ -1576,8 +1844,9 @@ async function scanGatt(){
   state.notifyChars.clear();
 
 
-  $("writeChannel").innerHTML =
-    "";
+  $("writeChannel")
+  .innerHTML =
+  "";
 
 
   appendLog(
@@ -1588,12 +1857,12 @@ async function scanGatt(){
   try{
 
     const services =
-      await state.server
-      .getPrimaryServices();
+    await state.server
+    .getPrimaryServices();
 
 
     state.services =
-      services;
+    services;
 
 
     appendLog(
@@ -1601,7 +1870,10 @@ async function scanGatt(){
     );
 
 
-    for(const service of services){
+    for(
+      const service
+      of services
+    ){
 
       appendLog(
         `SERVICE ${service.uuid}`
@@ -1609,14 +1881,15 @@ async function scanGatt(){
 
 
       let chars =
-        [];
+      [];
 
 
       try{
 
         chars =
-          await service
-          .getCharacteristics();
+        await service
+        .getCharacteristics();
+
 
       }catch(error){
 
@@ -1631,10 +1904,14 @@ async function scanGatt(){
       }
 
 
-      for(const ch of chars){
+      for(
+        const ch
+        of chars
+      ){
 
         const p =
-          ch.properties || {};
+        ch.properties ||
+        {};
 
 
         const props = [
@@ -1658,7 +1935,7 @@ async function scanGatt(){
 
 
         const key =
-          `${service.uuid}|${ch.uuid}`;
+        `${service.uuid}|${ch.uuid}`;
 
 
         state.characteristics.push({
@@ -1666,16 +1943,16 @@ async function scanGatt(){
           key,
 
           serviceUuid:
-            service.uuid,
+          service.uuid,
 
           uuid:
-            ch.uuid,
+          ch.uuid,
 
           characteristic:
-            ch,
+          ch,
 
           properties:
-            props
+          props
 
         });
 
@@ -1697,18 +1974,17 @@ async function scanGatt(){
 
 
           const option =
-            document
-            .createElement(
-              "option"
-            );
+          document.createElement(
+            "option"
+          );
 
 
           option.value =
-            key;
+          key;
 
 
           option.textContent =
-            `${shortUuid(service.uuid)} → ${shortUuid(ch.uuid)}`;
+          `${shortUuid(service.uuid)} → ${shortUuid(ch.uuid)}`;
 
 
           $("writeChannel")
@@ -1732,22 +2008,23 @@ async function scanGatt(){
 
             ch.addEventListener(
               "characteristicvaluechanged",
+
               event => {
 
-                const value =
-                  event.target.value;
-
-
                 const rxHex =
-                  bytesToHex(value);
+                bytesToHex(
+                  event.target.value
+                );
 
 
                 const rxKey =
-                  `${service.uuid}|${ch.uuid}`;
+                `${service.uuid}|${ch.uuid}`;
 
 
                 state.rxStats.set(
+
                   rxKey,
+
                   (
                     state.rxStats.get(rxKey)
                     ||
@@ -1755,23 +2032,24 @@ async function scanGatt(){
                   )
                   +
                   1
+
                 );
 
 
                 state.rxPackets.push({
 
                   time:
-                    new Date()
-                    .toLocaleTimeString(),
+                  new Date()
+                  .toLocaleTimeString(),
 
                   service:
-                    service.uuid,
+                  service.uuid,
 
                   characteristic:
-                    ch.uuid,
+                  ch.uuid,
 
                   hex:
-                    rxHex
+                  rxHex
 
                 });
 
@@ -1824,7 +2102,7 @@ async function scanGatt(){
 
 
     $("sendHexBtn").disabled =
-      state.writeChars.size === 0;
+    state.writeChars.size === 0;
 
 
     appendLog(
@@ -1846,24 +2124,48 @@ async function scanGatt(){
 
 
 $("scanGattBtn").onclick =
-  scanGatt;
+scanGatt;
 
 
 /* Device Information */
 
 const INFO_MAP = [
 
-  ["Model","2a24","infoModel"],
+  [
+    "Model",
+    "2a24",
+    "infoModel"
+  ],
 
-  ["Serial","2a25","infoSerial"],
+  [
+    "Serial",
+    "2a25",
+    "infoSerial"
+  ],
 
-  ["Firmware","2a26","infoFirmware"],
+  [
+    "Firmware",
+    "2a26",
+    "infoFirmware"
+  ],
 
-  ["Hardware","2a27","infoHardware"],
+  [
+    "Hardware",
+    "2a27",
+    "infoHardware"
+  ],
 
-  ["Software","2a28","infoSoftware"],
+  [
+    "Software",
+    "2a28",
+    "infoSoftware"
+  ],
 
-  ["Manufacturer","2a29","infoManufacturer"]
+  [
+    "Manufacturer",
+    "2a29",
+    "infoManufacturer"
+  ]
 
 ];
 
@@ -1886,10 +2188,10 @@ async function readDeviceInfo(){
   try{
 
     const service =
-      await state.server
-      .getPrimaryService(
-        "180a"
-      );
+    await state.server
+    .getPrimaryService(
+      "180a"
+    );
 
 
     for(
@@ -1904,26 +2206,26 @@ async function readDeviceInfo(){
       try{
 
         const ch =
-          await service
-          .getCharacteristic(
-            uuid
-          );
+        await service
+        .getCharacteristic(
+          uuid
+        );
 
 
         const value =
-          await ch
-          .readValue();
+        await ch
+        .readValue();
 
 
         const text =
-          decodeText(value)
-          ||
-          "（空白）";
+        decodeText(value)
+        ||
+        "（空白）";
 
 
         $(target)
         .textContent =
-          text;
+        text;
 
 
         appendLog(
@@ -1935,7 +2237,7 @@ async function readDeviceInfo(){
 
         $(target)
         .textContent =
-          "（未提供）";
+        "（未提供）";
 
       }
 
@@ -1956,16 +2258,16 @@ async function readDeviceInfo(){
 
 
 $("deviceInfoBtn").onclick =
-  readDeviceInfo;
+readDeviceInfo;
 
 
-/* HEX */
+/* 原始 HEX */
 
 $("sendHexBtn").onclick =
 async () => {
 
   const key =
-    $("writeChannel").value;
+  $("writeChannel").value;
 
 
   if(
@@ -1988,9 +2290,10 @@ async () => {
   try{
 
     bytes =
-      hexToBytes(
-        $("hexInput").value
-      );
+    hexToBytes(
+      $("hexInput").value
+    );
+
 
   }catch(error){
 
@@ -2004,7 +2307,7 @@ async () => {
 
 
   const ch =
-    state.writeChars.get(key);
+  state.writeChars.get(key);
 
 
   try{
@@ -2072,7 +2375,7 @@ $("clearLogBtn").onclick =
 () => {
 
   $("commLog").value =
-    "";
+  "";
 
 };
 
@@ -2082,39 +2385,51 @@ async () => {
 
   try{
 
-    await navigator.clipboard.writeText(
+    await navigator.clipboard
+    .writeText(
       $("commLog").value
     );
+
 
     alert(
       "已複製"
     );
 
+
   }catch{
 
-    $("commLog").select();
+    $("commLog")
+    .select();
 
   }
 
 };
 
 
-/* 協定辨識 */
+/* 協定監聽 */
 
 function looksLikeNiimbotPacket(hex){
 
   const clean =
-    String(hex || "")
-    .replace(/\s+/g,"")
-    .toUpperCase();
+  String(hex || "")
+
+  .replace(/\s+/g,"")
+
+  .toUpperCase();
 
 
   return (
+
     clean.startsWith("5555")
+
     &&
+
     clean.endsWith("AAAA")
+
     &&
+
     clean.length >= 12
+
   );
 
 }
@@ -2123,28 +2438,28 @@ function looksLikeNiimbotPacket(hex){
 function updateProtocolView(){
 
   const out =
-    $("protoOutput");
+  $("protoOutput");
 
 
   let text =
-    "=== B3S 協定辨識 V6 ===\n";
+  "=== B3S 協定監聽 V7 ===\n";
 
 
   text +=
-    `收到封包總數：${state.rxPackets.length}\n\n`;
+  `收到封包總數：${state.rxPackets.length}\n\n`;
 
 
   const grouped =
-    new Map();
+  new Map();
 
 
   for(
-    const packet
+    const p
     of state.rxPackets
   ){
 
     const key =
-      `${String(packet.service).toUpperCase()}|${String(packet.characteristic).toUpperCase()}`;
+    `${String(p.service).toUpperCase()}|${String(p.characteristic).toUpperCase()}`;
 
 
     if(
@@ -2160,17 +2475,17 @@ function updateProtocolView(){
 
 
     grouped.get(key)
-    .push(packet);
+    .push(p);
 
   }
 
 
   if(
-    grouped.size === 0
+    !grouped.size
   ){
 
     text +=
-      "目前還沒有收到有效 RX 資料。\n";
+    "目前還沒有收到有效 RX 資料。\n";
 
   }
 
@@ -2184,50 +2499,46 @@ function updateProtocolView(){
   ){
 
     text +=
-      `\n[${key}]\n`;
+    `\n[${key}]\n`;
 
 
     text +=
-      `通知／讀取筆數：${packets.length}\n`;
-
-
-    let framed =
-      0;
+    `通知／讀取筆數：${packets.length}\n`;
 
 
     for(
-      const packet
+      const p
       of packets.slice(-10)
     ){
 
       const hex =
-        packet.hex ||
-        "(空資料)";
+      p.hex ||
+      "(空資料)";
 
 
       const match =
-        looksLikeNiimbotPacket(
-          packet.hex
-        );
-
-
-      if(match){
-
-        framed++;
-
-      }
+      looksLikeNiimbotPacket(
+        p.hex
+      );
 
 
       text +=
-        `${packet.time}  ${hex}${match ? "  ← NIIMBOT 格式候選" : ""}\n`;
 
-    }
+      `${p.time}  ${hex}`
 
+      +
 
-    if(framed){
+      (
+        match
+        ?
+        "  ← NIIMBOT 格式候選"
+        :
+        ""
+      )
 
-      text +=
-        `判定：發現 ${framed} 筆 55 55 ... AA AA 格式候選。\n`;
+      +
+
+      "\n";
 
     }
 
@@ -2235,7 +2546,7 @@ function updateProtocolView(){
 
 
   out.value =
-    text;
+  text;
 
 }
 
@@ -2258,39 +2569,40 @@ async () => {
 
   $("protoStatus")
   .className =
-    "status ok";
+  "status ok";
 
 
   $("protoStatus")
   .textContent =
-    "正在監聽 30 秒…";
+  "正在監聽 30 秒…";
 
 
   const btn =
-    $("listenBtn");
+  $("listenBtn");
 
 
   btn.disabled =
-    true;
+  true;
 
 
   let sec =
-    30;
+  30;
 
 
   const timer =
-    setInterval(
-      () => {
+  setInterval(
+    () => {
 
-        sec--;
+      sec--;
 
-        $("protoStatus")
-        .textContent =
-          `正在監聽…剩 ${sec} 秒`;
 
-      },
-      1000
-    );
+      $("protoStatus")
+      .textContent =
+      `正在監聽…剩 ${sec} 秒`;
+
+    },
+    1000
+  );
 
 
   await new Promise(
@@ -2309,16 +2621,16 @@ async () => {
 
   $("protoStatus")
   .className =
-    "status";
+  "status";
 
 
   $("protoStatus")
   .textContent =
-    "監聽完成";
+  "監聽完成";
 
 
   btn.disabled =
-    false;
+  false;
 
 
   updateProtocolView();
@@ -2344,11 +2656,11 @@ async () => {
 
   $("protoStatus")
   .textContent =
-    "正在安全讀取…";
+  "正在安全讀取…";
 
 
   let count =
-    0;
+  0;
 
 
   for(
@@ -2357,7 +2669,7 @@ async () => {
   ){
 
     const ch =
-      item.characteristic;
+    item.characteristic;
 
 
     if(
@@ -2372,12 +2684,12 @@ async () => {
     try{
 
       const value =
-        await ch
-        .readValue();
+      await ch
+      .readValue();
 
 
       const hex =
-        bytesToHex(value);
+      bytesToHex(value);
 
 
       appendLog(
@@ -2388,14 +2700,14 @@ async () => {
       state.rxPackets.push({
 
         time:
-          new Date()
-          .toLocaleTimeString(),
+        new Date()
+        .toLocaleTimeString(),
 
         service:
-          item.serviceUuid,
+        item.serviceUuid,
 
         characteristic:
-          item.uuid,
+        item.uuid,
 
         hex
 
@@ -2430,12 +2742,12 @@ async () => {
 
   $("protoStatus")
   .className =
-    "status ok";
+  "status ok";
 
 
   $("protoStatus")
   .textContent =
-    `安全讀取完成，共讀取 ${count} 個可讀通道`;
+  `安全讀取完成，共讀取 ${count} 個可讀通道`;
 
 
   updateProtocolView();
@@ -2448,22 +2760,872 @@ $("clearProtoBtn").onclick =
 
   state.rxStats.clear();
 
+
   state.rxPackets =
-    [];
+  [];
 
 
   $("protoOutput").value =
-    "";
+  "";
 
 
   $("protoStatus")
   .className =
-    "status";
+  "status";
 
 
   $("protoStatus")
   .textContent =
-    "尚未開始辨識";
+  "尚未開始辨識";
+
+};
+
+
+/* B24 / B3S 查詢測試 V7 */
+
+const V7_MODEL_QUERY =
+new Uint8Array([
+  0x55,
+  0x55,
+  0x40,
+  0x01,
+  0x08,
+  0x49,
+  0xAA,
+  0xAA
+]);
+
+
+const V7_STATUS_QUERY =
+new Uint8Array([
+  0x55,
+  0x55,
+  0xA5,
+  0x01,
+  0x01,
+  0xA5,
+  0xAA,
+  0xAA
+]);
+
+
+function normalizeHex(hex){
+
+  return String(hex || "")
+
+  .replace(
+    /[^0-9A-Fa-f]/g,
+    ""
+  )
+
+  .toUpperCase();
+
+}
+
+
+function parseNiimbotFramesFromHex(hex){
+
+  const clean =
+  normalizeHex(hex);
+
+
+  const bytes =
+  [];
+
+
+  for(
+    let i=0;
+    i+1<clean.length;
+    i+=2
+  ){
+
+    bytes.push(
+      parseInt(
+        clean.slice(i,i+2),
+        16
+      )
+    );
+
+  }
+
+
+  const frames =
+  [];
+
+
+  let i =
+  0;
+
+
+  while(
+    i + 7 <= bytes.length
+  ){
+
+    if(
+      bytes[i] !== 0x55
+      ||
+      bytes[i+1] !== 0x55
+    ){
+
+      i++;
+
+      continue;
+
+    }
+
+
+    const command =
+    bytes[i+2];
+
+
+    const len =
+    bytes[i+3];
+
+
+    const total =
+    2 +
+    1 +
+    1 +
+    len +
+    1 +
+    2;
+
+
+    if(
+      i + total >
+      bytes.length
+    ){
+
+      break;
+
+    }
+
+
+    if(
+      bytes[i+total-2] !== 0xAA
+      ||
+      bytes[i+total-1] !== 0xAA
+    ){
+
+      i++;
+
+      continue;
+
+    }
+
+
+    const payload =
+    bytes.slice(
+      i+4,
+      i+4+len
+    );
+
+
+    const checksum =
+    bytes[i+4+len];
+
+
+    let expected =
+    command ^ len;
+
+
+    for(
+      const b
+      of payload
+    ){
+
+      expected ^= b;
+
+    }
+
+
+    expected &=
+    0xFF;
+
+
+    frames.push({
+
+      command,
+
+      payload,
+
+      checksum,
+
+      checksumOk:
+      checksum === expected
+
+    });
+
+
+    i +=
+    total;
+
+  }
+
+
+  return frames;
+
+}
+
+
+function v7FrameText(frame){
+
+  const cmd =
+  frame.command
+
+  .toString(16)
+
+  .padStart(2,"0")
+
+  .toUpperCase();
+
+
+  const payload =
+  frame.payload
+
+  .map(
+    b =>
+    b
+    .toString(16)
+    .padStart(2,"0")
+    .toUpperCase()
+  )
+
+  .join(" ");
+
+
+  return (
+
+    `CMD ${cmd}`
+
+    +
+
+    ` | DATA ${payload || "(空)"}`
+
+    +
+
+    ` | checksum ${frame.checksumOk ? "OK" : "錯誤"}`
+
+  );
+
+}
+
+
+async function v7WriteCharacteristic(
+  ch,
+  bytes
+){
+
+  if(
+    ch.properties.writeWithoutResponse
+    &&
+    ch.writeValueWithoutResponse
+  ){
+
+    await ch
+    .writeValueWithoutResponse(
+      bytes
+    );
+
+    return;
+
+  }
+
+
+  if(
+    ch.writeValueWithResponse
+  ){
+
+    await ch
+    .writeValueWithResponse(
+      bytes
+    );
+
+    return;
+
+  }
+
+
+  await ch
+  .writeValue(
+    bytes
+  );
+
+}
+
+
+async function probeOneChannel(
+  key,
+  bytes,
+  expectedCommand,
+  label
+){
+
+  const ch =
+  state.writeChars.get(key);
+
+
+  if(!ch){
+
+    return {
+
+      key,
+
+      ok:false,
+
+      error:
+      "找不到 characteristic",
+
+      received:[],
+
+      parsed:[]
+
+    };
+
+  }
+
+
+  const before =
+  state.rxPackets.length;
+
+
+  appendLog(
+    `V7 TX ${label} → ${key}：${bytesToHex(bytes)}`
+  );
+
+
+  try{
+
+    await v7WriteCharacteristic(
+      ch,
+      bytes
+    );
+
+
+  }catch(error){
+
+    appendLog(
+      `V7 TX 失敗：${error.message}`
+    );
+
+
+    return {
+
+      key,
+
+      ok:false,
+
+      error:
+      error.message,
+
+      received:[],
+
+      parsed:[]
+
+    };
+
+  }
+
+
+  await new Promise(
+    resolve =>
+    setTimeout(
+      resolve,
+      1200
+    )
+  );
+
+
+  const received =
+  state.rxPackets.slice(
+    before
+  );
+
+
+  const parsed =
+  [];
+
+
+  for(
+    const packet
+    of received
+  ){
+
+    const frames =
+    parseNiimbotFramesFromHex(
+      packet.hex
+    );
+
+
+    for(
+      const frame
+      of frames
+    ){
+
+      parsed.push({
+        packet,
+        frame
+      });
+
+    }
+
+  }
+
+
+  const matched =
+  parsed.find(
+    item =>
+    item.frame.command === expectedCommand
+    &&
+    item.frame.checksumOk
+  );
+
+
+  return {
+
+    key,
+
+    ok:
+    !!matched,
+
+    received,
+
+    parsed,
+
+    matched
+
+  };
+
+}
+
+
+function appendProbeResult(
+  result,
+  label
+){
+
+  let text =
+  `\n=== ${label} ===\n`;
+
+
+  text +=
+  `TX 通道：${result.key}\n`;
+
+
+  if(
+    result.error
+  ){
+
+    text +=
+    "結果：寫入失敗\n";
+
+
+    text +=
+    `錯誤：${result.error}\n`;
+
+
+    return text;
+
+  }
+
+
+  text +=
+  `收到通知：${result.received.length} 筆\n`;
+
+
+  if(
+    !result.received.length
+  ){
+
+    text +=
+    "結果：沒有收到通知\n";
+
+
+    return text;
+
+  }
+
+
+  for(
+    const p
+    of result.received
+  ){
+
+    text +=
+
+    `RX ${shortUuid(p.service)}`
+
+    +
+
+    ` / ${shortUuid(p.characteristic)}`
+
+    +
+
+    `：${p.hex || "(空資料)"}\n`;
+
+  }
+
+
+  if(
+    result.parsed.length
+  ){
+
+    text +=
+    "解析到的 NIIMBOT 格式封包：\n";
+
+
+    for(
+      const item
+      of result.parsed
+    ){
+
+      text +=
+      `  ${v7FrameText(item.frame)}\n`;
+
+    }
+
+  }
+
+  else{
+
+    text +=
+    "未解析到完整 55 55 ... AA AA 封包。\n";
+
+  }
+
+
+  text +=
+
+  result.ok
+
+  ?
+
+  "✅ 找到符合預期的回應。\n"
+
+  :
+
+  "⚠️ 有通知，但沒有符合預期的回應。\n";
+
+
+  return text;
+
+}
+
+
+async function runProbe(
+  packetBytes,
+  expectedCommand,
+  label
+){
+
+  if(
+    !state.server?.connected
+  ){
+
+    alert(
+      "請先連接 B3S"
+    );
+
+    return null;
+
+  }
+
+
+  if(
+    !state.writeChars.size
+  ){
+
+    alert(
+      "目前沒有可寫入通道"
+    );
+
+    return null;
+
+  }
+
+
+  $("probeStatus")
+  .className =
+  "status ok";
+
+
+  $("probeStatus")
+  .textContent =
+  `正在測試：${label}`;
+
+
+  let output =
+
+  `=== B3S V7 ${label} ===\n`
+
+  +
+
+  `送出封包：${bytesToHex(packetBytes)}\n`
+
+  +
+
+  `預期回應 CMD：${expectedCommand.toString(16).padStart(2,"0").toUpperCase()}\n`;
+
+
+  let found =
+  null;
+
+
+  for(
+    const key
+    of state.writeChars.keys()
+  ){
+
+    const result =
+    await probeOneChannel(
+
+      key,
+
+      packetBytes,
+
+      expectedCommand,
+
+      label
+
+    );
+
+
+    output +=
+    appendProbeResult(
+      result,
+      label
+    );
+
+
+    if(
+      result.ok &&
+      !found
+    ){
+
+      found =
+      result;
+
+    }
+
+
+    await new Promise(
+      resolve =>
+      setTimeout(
+        resolve,
+        350
+      )
+    );
+
+  }
+
+
+  if(found){
+
+    output +=
+    "\n✅ V7 判定：有通道成功回覆 NIIMBOT 格式。\n";
+
+
+    output +=
+    `候選寫入通道：${found.key}\n`;
+
+
+    if(
+      found.matched
+    ){
+
+      output +=
+      `回應：${v7FrameText(found.matched.frame)}\n`;
+
+    }
+
+
+    $("probeStatus")
+    .className =
+    "status ok";
+
+
+    $("probeStatus")
+    .textContent =
+    `成功：${label} 找到有效回應`;
+
+  }
+
+  else{
+
+    output +=
+    "\n目前三組通道都沒有出現符合預期的 NIIMBOT 回應。\n";
+
+
+    $("probeStatus")
+    .className =
+    "status warn";
+
+
+    $("probeStatus")
+    .textContent =
+    `${label}：尚未找到有效回應`;
+
+  }
+
+
+  $("probeOutput").value =
+  output;
+
+
+  return {
+    found,
+    output
+  };
+
+}
+
+
+$("probeModelBtn").onclick =
+async () => {
+
+  await runProbe(
+
+    V7_MODEL_QUERY,
+
+    0x48,
+
+    "型號 ID 查詢"
+
+  );
+
+};
+
+
+$("probeStatusBtn").onclick =
+async () => {
+
+  await runProbe(
+
+    V7_STATUS_QUERY,
+
+    0xB5,
+
+    "狀態資料查詢"
+
+  );
+
+};
+
+
+$("probeAllBtn").onclick =
+async () => {
+
+  $("probeAllBtn").disabled =
+  true;
+
+
+  const first =
+  await runProbe(
+
+    V7_MODEL_QUERY,
+
+    0x48,
+
+    "型號 ID 查詢"
+
+  );
+
+
+  await new Promise(
+    resolve =>
+    setTimeout(
+      resolve,
+      600
+    )
+  );
+
+
+  const second =
+  await runProbe(
+
+    V7_STATUS_QUERY,
+
+    0xB5,
+
+    "狀態資料查詢"
+
+  );
+
+
+  $("probeOutput").value =
+
+  "=== B3S V7 自動測試三通道 ===\n\n"
+
+  +
+
+  (
+    first?.output ||
+    ""
+  )
+
+  +
+
+  "\n\n"
+
+  +
+
+  (
+    second?.output ||
+    ""
+  );
+
+
+  if(
+    first?.found ||
+    second?.found
+  ){
+
+    $("probeStatus")
+    .className =
+    "status ok";
+
+
+    $("probeStatus")
+    .textContent =
+    "自動測試完成：找到至少一組有效 NIIMBOT 回應";
+
+  }
+
+  else{
+
+    $("probeStatus")
+    .className =
+    "status warn";
+
+
+    $("probeStatus")
+    .textContent =
+    "自動測試完成：目前沒有找到有效 NIIMBOT 回應";
+
+  }
+
+
+  $("probeAllBtn").disabled =
+  false;
+
+};
+
+
+$("clearProbeBtn").onclick =
+() => {
+
+  $("probeOutput").value =
+  "";
+
+
+  $("probeStatus")
+  .className =
+  "status";
+
+
+  $("probeStatus")
+  .textContent =
+  "尚未測試";
 
 };
 
@@ -2474,63 +3636,63 @@ $("diagBtn").onclick =
 () => {
 
   const out =
-    $("diagOutput");
+  $("diagOutput");
 
 
   out.value =
-    "=== B3S 診斷 V6 ===\n";
+  "=== B3S 診斷 V7 ===\n";
 
 
   out.value +=
-    `Web Bluetooth：${!!navigator.bluetooth}\n`;
+  `Web Bluetooth：${!!navigator.bluetooth}\n`;
 
 
   out.value +=
-    `HTTPS：${window.isSecureContext}\n`;
+  `HTTPS：${window.isSecureContext}\n`;
 
 
   out.value +=
-    `Device：${state.device?.name || ""}\n`;
+  `Device：${state.device?.name || ""}\n`;
 
 
   out.value +=
-    `Device ID：${state.device?.id || ""}\n`;
+  `Device ID：${state.device?.id || ""}\n`;
 
 
   out.value +=
-    `GATT connected：${!!state.server?.connected}\n`;
+  `GATT connected：${!!state.server?.connected}\n`;
 
 
   out.value +=
-    "\n=== Device Information ===\n";
+  "\n=== Device Information ===\n";
 
 
   out.value +=
-    `Model：${$("infoModel").textContent}\n`;
+  `Model：${$("infoModel").textContent}\n`;
 
 
   out.value +=
-    `Serial：${$("infoSerial").textContent}\n`;
+  `Serial：${$("infoSerial").textContent}\n`;
 
 
   out.value +=
-    `Firmware：${$("infoFirmware").textContent}\n`;
+  `Firmware：${$("infoFirmware").textContent}\n`;
 
 
   out.value +=
-    `Hardware：${$("infoHardware").textContent}\n`;
+  `Hardware：${$("infoHardware").textContent}\n`;
 
 
   out.value +=
-    `Software：${$("infoSoftware").textContent}\n`;
+  `Software：${$("infoSoftware").textContent}\n`;
 
 
   out.value +=
-    `Manufacturer：${$("infoManufacturer").textContent}\n`;
+  `Manufacturer：${$("infoManufacturer").textContent}\n`;
 
 
   out.value +=
-    `\nPrimary Services：${state.services.length}\n`;
+  `\nPrimary Services：${state.services.length}\n`;
 
 
   for(
@@ -2539,26 +3701,25 @@ $("diagBtn").onclick =
   ){
 
     out.value +=
-      `\nSERVICE ${service.uuid}\n`;
+    `\nSERVICE ${service.uuid}\n`;
 
 
     const chars =
-      state.characteristics
-      .filter(
-        item =>
-        item.serviceUuid
-        ===
-        service.uuid
-      );
+    state.characteristics
+
+    .filter(
+      c =>
+      c.serviceUuid === service.uuid
+    );
 
 
     for(
-      const item
+      const c
       of chars
     ){
 
       out.value +=
-        `  CHAR ${item.uuid} [${item.properties.join(",")}]\n`;
+      `  CHAR ${c.uuid} [${c.properties.join(",")}]\n`;
 
     }
 
@@ -2566,7 +3727,7 @@ $("diagBtn").onclick =
 
 
   out.value +=
-    `\n可寫入通道：${state.writeChars.size}\n`;
+  `\n可寫入通道：${state.writeChars.size}\n`;
 
 
   for(
@@ -2575,13 +3736,13 @@ $("diagBtn").onclick =
   ){
 
     out.value +=
-      `  ${key}\n`;
+    `  ${key}\n`;
 
   }
 
 
   out.value +=
-    `\n通知通道：${state.notifyChars.size}\n`;
+  `\n通知通道：${state.notifyChars.size}\n`;
 
 
   for(
@@ -2590,17 +3751,17 @@ $("diagBtn").onclick =
   ){
 
     out.value +=
-      `  ${key}\n`;
+    `  ${key}\n`;
 
   }
 
 
   out.value +=
-    "\n=== 最近通訊紀錄 ===\n";
+  "\n=== 最近通訊紀錄 ===\n";
 
 
   out.value +=
-    $("commLog").value;
+  $("commLog").value;
 
 };
 
@@ -2610,17 +3771,21 @@ async () => {
 
   try{
 
-    await navigator.clipboard.writeText(
+    await navigator.clipboard
+    .writeText(
       $("diagOutput").value
     );
+
 
     alert(
       "已複製診斷結果"
     );
 
+
   }catch{
 
-    $("diagOutput").select();
+    $("diagOutput")
+    .select();
 
   }
 
