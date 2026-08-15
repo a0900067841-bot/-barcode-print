@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 
-<title>商品條碼／QR Code 列印｜B3S V18</title>
+<title>商品條碼／QR Code 列印｜B3S V19</title>
 
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
@@ -122,6 +122,11 @@ button:disabled{
 
 .stop{
   background:#d92d20;
+  color:#fff
+}
+
+.activeBtn{
+  background:#1265f3;
   color:#fff
 }
 
@@ -304,6 +309,44 @@ button:disabled{
   font-size:14px
 }
 
+.printerGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px
+}
+
+.printerCard{
+  border:2px solid #e4e7ec;
+  border-radius:14px;
+  padding:13px;
+  background:#fafafa
+}
+
+.printerCard.active{
+  border-color:#1265f3;
+  background:#f3f7ff
+}
+
+.printerTitle{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px
+}
+
+.activeBadge{
+  display:none;
+  background:#1265f3;
+  color:#fff;
+  padding:4px 8px;
+  font-size:12px;
+  border-radius:999px
+}
+
+.printerCard.active .activeBadge{
+  display:inline-block
+}
+
 .modal{
   display:none;
   position:fixed;
@@ -356,7 +399,8 @@ button:disabled{
 
 @media(max-width:700px){
 
-  .row{
+  .row,
+  .printerGrid{
     grid-template-columns:1fr
   }
 
@@ -378,10 +422,10 @@ button:disabled{
 <h1>商品條碼／QR Code 列印</h1>
 
 <div class="sub">
-B3S 工作實用版 V18
+B3S 工作實用版 V19
 <br>
 <span class="modeBadge">
-條碼＋QR Code
+雙 B3S 印表機
 </span>
 </div>
 
@@ -450,17 +494,9 @@ margin:18px 0">
 </h2>
 
 <div class="help">
-
-格式：
-
-商品名稱,條碼,QR Code內容
-
+格式：商品名稱,條碼,QR Code內容
 <br>
-
-沒有條碼時也可以：
-
-商品名稱,,QR Code內容
-
+沒有條碼時：商品名稱,,QR Code內容
 </div>
 
 
@@ -809,52 +845,159 @@ id="autoClear">
 </div>
 
 
-<!-- Bluetooth -->
+<!-- 雙印表機 -->
 
 <div class="card">
 
-<h2>B3S 藍牙</h2>
+<h2>B3S 印表機管理</h2>
+
+<div class="help">
+可以連接兩台 B3S，再選擇目前要使用哪一台列印。
+</div>
+
+<div class="printerGrid">
+
+
+<!-- P1 -->
 
 <div
-id="bleStatus"
-class="status">
-尚未連線
+id="printerCard1"
+class="printerCard active">
+
+<div class="printerTitle">
+
+<b>印表機 1</b>
+
+<span class="activeBadge">
+目前使用
+</span>
+
 </div>
 
 
-<div class="actions">
-
-<button
-id="connectBtn"
-class="ok">
-🔵 連接 B3S
-</button>
-
-<button
-id="disconnectBtn"
-disabled>
-中斷連線
-</button>
-
+<div
+id="bleStatus1"
+class="status">
+尚未連線
 </div>
 
 
 <div class="deviceGrid">
 
 <b>裝置</b>
-<span id="deviceName">—</span>
+<span id="deviceName1">—</span>
 
 <b>連線</b>
-<span id="gattState">false</span>
+<span id="gattState1">false</span>
 
-<b>列印通道</b>
-<span id="channelState">
-未就緒
+</div>
+
+
+<div class="actions">
+
+<button
+id="connectBtn1"
+class="ok">
+🔵 連接
+</button>
+
+<button
+id="useBtn1"
+class="activeBtn">
+✓ 使用這台
+</button>
+
+<button
+id="disconnectBtn1"
+disabled>
+中斷
+</button>
+
+</div>
+
+</div>
+
+
+<!-- P2 -->
+
+<div
+id="printerCard2"
+class="printerCard">
+
+<div class="printerTitle">
+
+<b>印表機 2</b>
+
+<span class="activeBadge">
+目前使用
 </span>
+
+</div>
+
+
+<div
+id="bleStatus2"
+class="status">
+尚未連線
+</div>
+
+
+<div class="deviceGrid">
+
+<b>裝置</b>
+<span id="deviceName2">—</span>
+
+<b>連線</b>
+<span id="gattState2">false</span>
+
+</div>
+
+
+<div class="actions">
+
+<button
+id="connectBtn2"
+class="ok">
+🔵 連接
+</button>
+
+<button
+id="useBtn2">
+使用這台
+</button>
+
+<button
+id="disconnectBtn2"
+disabled>
+中斷
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div
+id="activePrinterStatus"
+class="status ok">
+
+目前列印：印表機 1
+
+</div>
+
+
+<div class="deviceGrid">
 
 <b>紙張模式</b>
 <span id="paperModeDisplay">
 連續紙
+</span>
+
+<b>目前裝置</b>
+<span id="activeDeviceName">
+尚未連線
 </span>
 
 </div>
@@ -895,7 +1038,7 @@ disabled>
 id="stopPrintBtn"
 class="stop"
 disabled>
-⏹ 停止送紙
+⏹ 停止目前印表機
 </button>
 
 </div>
@@ -1048,14 +1191,11 @@ for(
     "option"
   );
 
-
   o.value =
   cm;
 
-
   o.textContent =
   `${cm} cm`;
-
 
   if(cm === 2){
 
@@ -1063,7 +1203,6 @@ for(
     true;
 
   }
-
 
   $("barcodeHeight")
   .appendChild(o);
@@ -1082,14 +1221,11 @@ for(
     "option"
   );
 
-
   o.value =
   cm;
 
-
   o.textContent =
   `${cm} cm`;
-
 
   if(cm === 3){
 
@@ -1097,7 +1233,6 @@ for(
     true;
 
   }
-
 
   $("qrSize")
   .appendChild(o);
@@ -1116,14 +1251,11 @@ for(
     "option"
   );
 
-
   o.value =
   mm;
 
-
   o.textContent =
   `${mm} mm`;
-
 
   if(mm === 2){
 
@@ -1131,7 +1263,6 @@ for(
     true;
 
   }
-
 
   $("itemGap")
   .appendChild(o);
@@ -1157,21 +1288,42 @@ const state = {
 
   items:[],
 
-  device:null,
+  activePrinter:1,
 
-  server:null,
+  printers:{
 
-  write:null,
+    1:{
+      device:null,
+      server:null,
+      write:null,
+      notify:null,
+      rx:[]
+    },
 
-  notify:null,
+    2:{
+      device:null,
+      server:null,
+      write:null,
+      notify:null,
+      rx:[]
+    }
 
-  rx:[],
+  },
 
   printing:false,
 
   forceStop:false
 
 };
+
+
+function printer(
+  number=state.activePrinter
+){
+
+  return state.printers[number];
+
+}
 
 
 /* =========================
@@ -1217,7 +1369,8 @@ function paperDots(mm){
     Math.floor(
       mmToPx(mm) /
       8
-    ) *
+    )
+    *
     8
 
   );
@@ -1263,10 +1416,8 @@ function log(text){
   const box =
   $("log");
 
-
   box.value +=
   `[${new Date().toLocaleTimeString()}] ${text}\n`;
-
 
   box.scrollTop =
   box.scrollHeight;
@@ -1573,12 +1724,21 @@ function parsePackets(text){
    BLE WRITE
 ========================= */
 
-async function writeRaw(bytes){
+async function writeRaw(
+  bytes,
+  number=state.activePrinter
+){
 
-  if(!state.write){
+  const p =
+  printer(number);
+
+
+  if(
+    !p.write
+  ){
 
     throw new Error(
-      "B3S 尚未連線"
+      `印表機 ${number} 尚未連線`
     );
 
   }
@@ -1613,17 +1773,17 @@ async function writeRaw(bytes){
 
 
     if(
-      state.write
+      p.write
       .properties
       .writeWithoutResponse
 
       &&
 
-      state.write
+      p.write
       .writeValueWithoutResponse
     ){
 
-      await state.write
+      await p.write
       .writeValueWithoutResponse(
         part
       );
@@ -1631,11 +1791,11 @@ async function writeRaw(bytes){
     }
 
     else if(
-      state.write
+      p.write
       .writeValueWithResponse
     ){
 
-      await state.write
+      await p.write
       .writeValueWithResponse(
         part
       );
@@ -1644,7 +1804,7 @@ async function writeRaw(bytes){
 
     else{
 
-      await state.write
+      await p.write
       .writeValue(
         part
       );
@@ -1666,29 +1826,38 @@ async function writeRaw(bytes){
 }
 
 
-async function writeControl(bytes){
+async function writeControl(
+  bytes,
+  number=state.activePrinter
+){
 
-  if(!state.write){
+  const p =
+  printer(number);
+
+
+  if(
+    !p.write
+  ){
 
     throw new Error(
-      "B3S 尚未連線"
+      `印表機 ${number} 尚未連線`
     );
 
   }
 
 
   if(
-    state.write
+    p.write
     .properties
     .writeWithoutResponse
 
     &&
 
-    state.write
+    p.write
     .writeValueWithoutResponse
   ){
 
-    await state.write
+    await p.write
     .writeValueWithoutResponse(
       bytes
     );
@@ -1696,11 +1865,11 @@ async function writeControl(bytes){
   }
 
   else if(
-    state.write
+    p.write
     .writeValueWithResponse
   ){
 
-    await state.write
+    await p.write
     .writeValueWithResponse(
       bytes
     );
@@ -1709,7 +1878,7 @@ async function writeControl(bytes){
 
   else{
 
-    await state.write
+    await p.write
     .writeValue(
       bytes
     );
@@ -1726,21 +1895,27 @@ async function writeControl(bytes){
 async function sendWait(
   packet,
   expected,
-  timeout=3500
+  timeout=3500,
+  number=state.activePrinter
 ){
 
+  const p =
+  printer(number);
+
+
   const startIndex =
-  state.rx.length;
+  p.rx.length;
 
 
   log(
-    "TX：" +
+    `P${number} TX：` +
     hex(packet)
   );
 
 
   await writeControl(
-    packet
+    packet,
+    number
   );
 
 
@@ -1755,7 +1930,7 @@ async function sendWait(
   ){
 
     const incoming =
-    state.rx.slice(
+    p.rx.slice(
       startIndex
     );
 
@@ -1766,12 +1941,12 @@ async function sendWait(
     ){
 
       for(
-        const p
+        const packet
         of parsePackets(raw)
       ){
 
         if(
-          !p.checksumOk
+          !packet.checksumOk
         ){
 
           continue;
@@ -1780,7 +1955,7 @@ async function sendWait(
 
 
         if(
-          p.command ===
+          packet.command ===
           0x00
         ){
 
@@ -1796,7 +1971,7 @@ async function sendWait(
 
 
         if(
-          p.command ===
+          packet.command ===
           expected
         ){
 
@@ -1804,7 +1979,7 @@ async function sendWait(
 
             ok:true,
 
-            packet:p
+            packet
 
           };
 
@@ -1835,7 +2010,8 @@ async function ackStep(
   label,
   packet,
   expected,
-  timeout=3500
+  timeout=3500,
+  number=state.activePrinter
 ){
 
   if(
@@ -1856,14 +2032,15 @@ async function ackStep(
 
   $("printStatus")
   .textContent =
-  label;
+  `印表機 ${number}｜${label}`;
 
 
   const result =
   await sendWait(
     packet,
     expected,
-    timeout
+    timeout,
+    number
   );
 
 
@@ -2482,10 +2659,8 @@ $("clearInputBtn")
   $("name").value =
   "";
 
-
   $("code").value =
   "";
-
 
   $("qrContent").value =
   "";
@@ -4081,29 +4256,148 @@ function rowPacket(run){
 
 
 /* =========================
-   UI
+   PRINTER STATUS
 ========================= */
 
-function connected(){
+function connected(
+  number=state.activePrinter
+){
+
+  const p =
+  printer(number);
+
 
   return !!(
 
-    state.server?.connected
+    p.server?.connected
 
     &&
 
-    state.write
+    p.write
 
     &&
 
-    state.notify
+    p.notify
 
   );
 
 }
 
 
+function updatePrinterCard(
+  number
+){
+
+  const p =
+  printer(number);
+
+
+  const isConnected =
+  connected(number);
+
+
+  const status =
+  $(`bleStatus${number}`);
+
+
+  const card =
+  $(`printerCard${number}`);
+
+
+  const useBtn =
+  $(`useBtn${number}`);
+
+
+  card.classList.toggle(
+    "active",
+    state.activePrinter === number
+  );
+
+
+  status.className =
+  "status " +
+  (
+    isConnected
+    ?
+    "ok"
+    :
+    ""
+  );
+
+
+  status.textContent =
+  isConnected
+  ?
+  "✅ 已連線"
+  :
+  "尚未連線";
+
+
+  $(`deviceName${number}`)
+  .textContent =
+  p.device?.name ||
+  "—";
+
+
+  $(`gattState${number}`)
+  .textContent =
+  String(
+    !!p.server?.connected
+  );
+
+
+  $(`disconnectBtn${number}`)
+  .disabled =
+  !isConnected
+  ||
+  state.printing;
+
+
+  $(`connectBtn${number}`)
+  .disabled =
+  state.printing;
+
+
+  useBtn.disabled =
+  state.printing;
+
+
+  if(
+    state.activePrinter ===
+    number
+  ){
+
+    useBtn.classList.add(
+      "activeBtn"
+    );
+
+
+    useBtn.textContent =
+    "✓ 使用中";
+
+  }
+
+  else{
+
+    useBtn.classList.remove(
+      "activeBtn"
+    );
+
+
+    useBtn.textContent =
+    "使用這台";
+
+  }
+
+}
+
+
 function updateButtons(){
+
+  updatePrinterCard(1);
+
+  updatePrinterCard(2);
+
 
   const c =
   connected();
@@ -4119,11 +4413,6 @@ function updateButtons(){
   const mode =
   $("printMode")
   .value;
-
-
-  $("disconnectBtn")
-  .disabled =
-  !c;
 
 
   $("printSelectedBtn")
@@ -4196,23 +4485,23 @@ function updateButtons(){
   !c;
 
 
-  $("gattState")
+  $("activePrinterStatus")
   .textContent =
-  String(
-    !!state.server?.connected
-  );
+  `目前列印：印表機 ${state.activePrinter}`;
 
 
-  $("channelState")
+  $("activeDeviceName")
   .textContent =
-  c
-  ?
-  "已就緒"
-  :
-  "未就緒";
+  printer().device?.name
+  ||
+  "尚未連線";
 
 }
 
+
+/* =========================
+   PAPER MODE
+========================= */
 
 function paperModeName(value){
 
@@ -4252,23 +4541,27 @@ $("paperMode")
 
 
 /* =========================
-   CONNECT
+   CONNECT PRINTER
 ========================= */
 
-$("connectBtn")
-.onclick =
-async () => {
+async function connectPrinter(
+  number
+){
+
+  const p =
+  printer(number);
+
 
   try{
 
-    $("bleStatus")
+    $(`bleStatus${number}`)
     .className =
     "status warn";
 
 
-    $("bleStatus")
+    $(`bleStatus${number}`)
     .textContent =
-    "正在連接 B3S…";
+    "正在連接…";
 
 
     const device =
@@ -4284,47 +4577,88 @@ async () => {
     });
 
 
-    state.device =
+    const otherNumber =
+    number === 1
+    ?
+    2
+    :
+    1;
+
+
+    const other =
+    printer(
+      otherNumber
+    );
+
+
+    if(
+      other.device
+      &&
+      other.device.id ===
+      device.id
+      &&
+      connected(
+        otherNumber
+      )
+    ){
+
+      throw new Error(
+        `這台 B3S 已經連在印表機 ${otherNumber}`
+      );
+
+    }
+
+
+    if(
+      p.device?.gatt?.connected
+    ){
+
+      try{
+
+        p.device.gatt
+        .disconnect();
+
+      }
+      catch{}
+
+    }
+
+
+    p.device =
     device;
 
 
-    $("deviceName")
-    .textContent =
-    device.name ||
-    "—";
-
-
-    state.server =
+    p.server =
     await device.gatt
     .connect();
 
 
     const service =
-    await state.server
+    await p.server
     .getPrimaryService(
       SERVICE
     );
 
 
-    state.write =
+    p.write =
     await service
     .getCharacteristic(
       WRITE_UUID
     );
 
 
-    state.notify =
+    p.notify =
     await service
     .getCharacteristic(
       NOTIFY_UUID
     );
 
 
-    state.rx =
+    p.rx =
     [];
 
 
-    state.notify
+    p.notify
     .addEventListener(
 
       "characteristicvaluechanged",
@@ -4351,23 +4685,23 @@ async () => {
         hex(bytes);
 
 
-        state.rx.push(
+        p.rx.push(
           data
         );
 
 
         if(
-          state.rx.length >
+          p.rx.length >
           1000
         ){
 
-          state.rx.shift();
+          p.rx.shift();
 
         }
 
 
         log(
-          "RX：" +
+          `P${number} RX：` +
           data
         );
 
@@ -4376,7 +4710,7 @@ async () => {
     );
 
 
-    await state.notify
+    await p.notify
     .startNotifications();
 
 
@@ -4387,30 +4721,21 @@ async () => {
 
       () => {
 
-        state.server =
+        p.server =
         null;
 
 
-        state.write =
+        p.write =
         null;
 
 
-        state.notify =
+        p.notify =
         null;
 
 
-        state.printing =
-        false;
-
-
-        $("bleStatus")
-        .className =
-        "status warn";
-
-
-        $("bleStatus")
-        .textContent =
-        "已中斷";
+        log(
+          `P${number} disconnected`
+        );
 
 
         updateButtons();
@@ -4420,14 +4745,21 @@ async () => {
     );
 
 
-    $("bleStatus")
-    .className =
-    "status ok";
+    log(
+      `P${number} CONNECTED：${device.name || "B3S"}`
+    );
 
 
-    $("bleStatus")
-    .textContent =
-    "✅ B3S 已連線";
+    if(
+      !connected(
+        state.activePrinter
+      )
+    ){
+
+      state.activePrinter =
+      number;
+
+    }
 
 
     updateButtons();
@@ -4436,35 +4768,125 @@ async () => {
 
   catch(error){
 
-    $("bleStatus")
+    $(`bleStatus${number}`)
     .className =
     "status err";
 
 
-    $("bleStatus")
+    $(`bleStatus${number}`)
     .textContent =
     "連線失敗：" +
     error.message;
 
+
+    log(
+      `P${number} CONNECT ERROR：${error.message}`
+    );
+
+
+    updateButtons();
+
   }
 
-};
+}
 
 
-$("disconnectBtn")
+$("connectBtn1")
 .onclick =
-() => {
+() =>
+connectPrinter(1);
+
+
+$("connectBtn2")
+.onclick =
+() =>
+connectPrinter(2);
+
+
+/* =========================
+   DISCONNECT
+========================= */
+
+function disconnectPrinter(
+  number
+){
 
   try{
 
-    state.device
+    printer(number)
+    .device
     ?.gatt
     ?.disconnect();
 
   }
+
   catch{}
 
-};
+}
+
+
+$("disconnectBtn1")
+.onclick =
+() =>
+disconnectPrinter(1);
+
+
+$("disconnectBtn2")
+.onclick =
+() =>
+disconnectPrinter(2);
+
+
+/* =========================
+   ACTIVE PRINTER
+========================= */
+
+function selectPrinter(
+  number
+){
+
+  if(
+    state.printing
+  ){
+
+    return;
+
+  }
+
+
+  state.activePrinter =
+  number;
+
+
+  $("printStatus")
+  .className =
+  "status";
+
+
+  $("printStatus")
+  .textContent =
+  connected(number)
+  ?
+  `等待列印｜目前使用印表機 ${number}`
+  :
+  `印表機 ${number} 尚未連線`;
+
+
+  updateButtons();
+
+}
+
+
+$("useBtn1")
+.onclick =
+() =>
+selectPrinter(1);
+
+
+$("useBtn2")
+.onclick =
+() =>
+selectPrinter(2);
 
 
 /* =========================
@@ -4510,8 +4932,12 @@ $("stopPrintBtn")
 .onclick =
 async () => {
 
+  const number =
+  state.activePrinter;
+
+
   if(
-    !connected()
+    !connected(number)
   ){
 
     return;
@@ -4526,7 +4952,12 @@ async () => {
 
   $("printStatus")
   .textContent =
-  "⏹ 正在停止…";
+  `⏹ 正在停止印表機 ${number}…`;
+
+
+  log(
+    `P${number} USER FORCE STOP`
+  );
 
 
   state.forceStop =
@@ -4536,7 +4967,8 @@ async () => {
   try{
 
     await writeControl(
-      CONTROL.pageEnd()
+      CONTROL.pageEnd(),
+      number
     );
 
   }
@@ -4549,7 +4981,8 @@ async () => {
   try{
 
     await writeControl(
-      CONTROL.printEnd()
+      CONTROL.printEnd(),
+      number
     );
 
   }
@@ -4561,7 +4994,8 @@ async () => {
 
   try{
 
-    state.device
+    printer(number)
+    .device
     ?.gatt
     ?.disconnect();
 
@@ -4573,9 +5007,18 @@ async () => {
   false;
 
 
+  state.forceStop =
+  false;
+
+
+  $("printStatus")
+  .className =
+  "status warn";
+
+
   $("printStatus")
   .textContent =
-  "⏹ 已停止並中斷 B3S";
+  `⏹ 印表機 ${number} 已停止並中斷`;
 
 
   updateButtons();
@@ -4597,6 +5040,10 @@ async function printItems(
   .value;
 
 
+  const number =
+  state.activePrinter;
+
+
   if(
     mode !== "custom"
     &&
@@ -4613,11 +5060,28 @@ async function printItems(
 
 
   if(
-    !connected()
+    mode === "custom"
+    &&
+    !$("customText")
+    .value
+    .trim()
   ){
 
     alert(
-      "請先連接 B3S"
+      "請輸入自訂文字"
+    );
+
+    return;
+
+  }
+
+
+  if(
+    !connected(number)
+  ){
+
+    alert(
+      `請先連接印表機 ${number}`
     );
 
     return;
@@ -4634,6 +5098,12 @@ async function printItems(
 
 
   updateButtons();
+
+
+  progress(
+    0,
+    `使用印表機 ${number} 建立資料…`
+  );
 
 
   try{
@@ -4656,11 +5126,21 @@ async function printItems(
     );
 
 
+    $("printMeta")
+    .textContent =
+    `印表機 ${number}｜${canvas.width} × ${canvas.height} dots｜${paperModeName($("paperMode").value)}`;
+
+
     await ackStep(
       "CONNECT",
       CONTROL.connect(),
-      0xC2
+      0xC2,
+      3500,
+      number
     );
+
+
+    progress(5);
 
 
     await ackStep(
@@ -4673,9 +5153,16 @@ async function printItems(
         )
       ),
 
-      0x31
+      0x31,
+
+      3500,
+
+      number
 
     );
+
+
+    progress(10);
 
 
     await ackStep(
@@ -4688,23 +5175,40 @@ async function printItems(
         )
       ),
 
-      0x33
+      0x33,
+
+      3500,
+
+      number
 
     );
+
+
+    progress(15);
 
 
     await ackStep(
       "PRINT START",
       CONTROL.printStart(),
-      0x02
+      0x02,
+      3500,
+      number
     );
+
+
+    progress(20);
 
 
     await ackStep(
       "PAGE START",
       CONTROL.pageStart(),
-      0x04
+      0x04,
+      3500,
+      number
     );
+
+
+    progress(25);
 
 
     await ackStep(
@@ -4721,8 +5225,16 @@ async function printItems(
 
       0x14,
 
-      5000
+      5000,
 
+      number
+
+    );
+
+
+    progress(
+      30,
+      `印表機 ${number}｜傳送點陣 0/${runs.length}`
     );
 
 
@@ -4732,15 +5244,30 @@ async function printItems(
       i++
     ){
 
+      if(
+        state.forceStop
+      ){
+
+        throw new Error(
+          "FORCE_STOP"
+        );
+
+      }
+
+
       await writeRaw(
         rowPacket(
           runs[i]
-        )
+        ),
+        number
       );
 
 
       if(
         i % 4 === 0
+        ||
+        i ===
+        runs.length - 1
       ){
 
         progress(
@@ -4749,14 +5276,15 @@ async function printItems(
           +
           Math.round(
             (
-              i /
-              runs.length
+              i + 1
             )
+            /
+            runs.length
             *
             55
           ),
 
-          `傳送點陣 ${i+1}/${runs.length}`
+          `印表機 ${number}｜傳送點陣 ${i+1}/${runs.length}`
 
         );
 
@@ -4768,6 +5296,12 @@ async function printItems(
     }
 
 
+    progress(
+      88,
+      `印表機 ${number}｜正在結束列印…`
+    );
+
+
     const page =
     await sendWait(
 
@@ -4775,7 +5309,9 @@ async function printItems(
 
       0xE4,
 
-      7000
+      7000,
+
+      number
 
     );
 
@@ -4791,6 +5327,9 @@ async function printItems(
     }
 
 
+    progress(94);
+
+
     await delay(40);
 
 
@@ -4801,7 +5340,9 @@ async function printItems(
 
       0xF4,
 
-      7000
+      7000,
+
+      number
 
     );
 
@@ -4819,7 +5360,7 @@ async function printItems(
 
     progress(
       100,
-      "列印完成"
+      `印表機 ${number}｜列印完成`
     );
 
 
@@ -4830,7 +5371,7 @@ async function printItems(
 
     $("printStatus")
     .textContent =
-    "✅ B3S 列印完成";
+    `✅ 印表機 ${number} 列印完成`;
 
 
     if(
@@ -4860,15 +5401,39 @@ async function printItems(
 
   catch(error){
 
-    $("printStatus")
-    .className =
-    "status err";
+    if(
+      error.message ===
+      "FORCE_STOP"
+    ){
+
+      $("printStatus")
+      .className =
+      "status warn";
 
 
-    $("printStatus")
-    .textContent =
-    "❌ " +
-    error.message;
+      $("printStatus")
+      .textContent =
+      `⏹ 印表機 ${number} 列印已停止`;
+
+    }
+
+    else{
+
+      $("printStatus")
+      .className =
+      "status err";
+
+
+      $("printStatus")
+      .textContent =
+      `❌ 印表機 ${number}｜${error.message}`;
+
+
+      log(
+        `P${number} PRINT ERROR：${error.message}`
+      );
+
+    }
 
   }
 
@@ -5072,6 +5637,14 @@ async function openScanner(mode){
   0;
 
 
+  lastCode =
+  "";
+
+
+  lastTime =
+  0;
+
+
   $("scannerModal")
   .style
   .display =
@@ -5093,6 +5666,11 @@ async function openScanner(mode){
     .display =
     "block";
 
+
+    $("bulkScanCounter")
+    .textContent =
+    "已掃描 0 筆";
+
   }
 
   else{
@@ -5107,7 +5685,22 @@ async function openScanner(mode){
     .display =
     "none";
 
+
+    $("bulkScanCounter")
+    .textContent =
+    "";
+
   }
+
+
+  $("scannerStatus")
+  .className =
+  "status";
+
+
+  $("scannerStatus")
+  .textContent =
+  "正在啟動相機…";
 
 
   try{
@@ -5173,6 +5766,17 @@ async function openScanner(mode){
           decoded;
 
 
+          $("scannerStatus")
+          .className =
+          "status ok";
+
+
+          $("scannerStatus")
+          .textContent =
+          "掃描成功：" +
+          decoded;
+
+
           setTimeout(
             closeScanner,
             300
@@ -5230,6 +5834,16 @@ async function openScanner(mode){
         `已掃描 ${bulkScanCount} 筆`;
 
 
+        $("scannerStatus")
+        .className =
+        "status ok";
+
+
+        $("scannerStatus")
+        .textContent =
+        `已加入：${decoded}`;
+
+
         $("bulkScanName")
         .value =
         "";
@@ -5239,13 +5853,29 @@ async function openScanner(mode){
         .value =
         "";
 
-      }
+      },
+
+      () => {}
 
     );
 
 
     scanning =
     true;
+
+
+    $("scannerStatus")
+    .className =
+    "status ok";
+
+
+    $("scannerStatus")
+    .textContent =
+    mode === "bulk"
+    ?
+    "請連續掃描商品條碼"
+    :
+    "請對準商品條碼";
 
   }
 
@@ -5394,8 +6024,18 @@ async () => {
       $("log").value
     );
 
+
+    alert(
+      "已複製"
+    );
+
   }
-  catch{}
+
+  catch{
+
+    $("log").select();
+
+  }
 
 };
 
@@ -5413,6 +6053,7 @@ drawPreview();
 updateButtons();
 
 progress(0);
+
 
 $("paperModeDisplay")
 .textContent =
