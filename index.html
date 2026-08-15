@@ -10,1980 +10,857 @@
   <script src="https://unpkg.com/@mmote/niimbluelib@0.0.1-alpha.42/dist/umd/niimbluelib.min.js"></script>
 
   <style>
-    * {
-      box-sizing: border-box;
+    *{box-sizing:border-box}
+    body{
+      margin:0;background:#f4f6f8;color:#18202a;
+      font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif
     }
-
-    body {
-      margin: 0;
-      background: #f4f6f8;
-      color: #18202a;
-      font-family: -apple-system, BlinkMacSystemFont,
-        "PingFang TC", "Microsoft JhengHei", sans-serif;
+    .wrap{max-width:900px;margin:auto;padding:18px}
+    h1{margin:0 0 5px;font-size:28px}
+    h2{margin-top:0}
+    .sub,.help,label{color:#667085}
+    .sub{margin-bottom:18px}
+    .help{font-size:13px;line-height:1.55}
+    .card{
+      background:#fff;border:1px solid #d8dee8;border-radius:16px;
+      padding:16px;margin-bottom:16px
     }
-
-    .wrap {
-      max-width: 900px;
-      margin: auto;
-      padding: 18px;
+    label{display:block;font-size:14px;margin:8px 0 6px}
+    input,textarea,select{
+      width:100%;min-height:46px;padding:10px 12px;border:1px solid #cfd6e1;
+      border-radius:10px;background:#fff;font-size:16px
     }
-
-    h1 {
-      margin: 0 0 5px;
-      font-size: 28px;
+    textarea{min-height:240px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    button{
+      border:0;border-radius:10px;min-height:46px;padding:10px 14px;
+      font-size:16px;font-weight:700;background:#eef2f6;color:#18202a
     }
-
-    .sub {
-      color: #667085;
-      margin-bottom: 18px;
+    .primary{background:#1265f3;color:#fff}
+    .ok{background:#e7f8ef;color:#087443}
+    .danger{background:#fff0ef;color:#d92d20}
+    .status{padding:11px 12px;border-radius:10px;background:#f2f4f7;margin:10px 0}
+    .status.ok{background:#ecfdf3;color:#067647}
+    .status.err{background:#fff1f0;color:#d92d20}
+    .item{border:1px solid #d8dee8;border-radius:12px;padding:10px;margin-top:8px}
+    .preview{background:#e8eaed;border-radius:12px;padding:12px;overflow:auto}
+    #previewCanvas{display:block;margin:auto;max-width:100%;height:auto;background:#fff}
+    .modal{
+      display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.75);
+      padding:16px;overflow:auto
     }
-
-    .card {
-      background: white;
-      border: 1px solid #d8dee8;
-      border-radius: 16px;
-      padding: 16px;
-      margin-bottom: 16px;
+    .modalBox{max-width:520px;margin:5vh auto;background:#fff;border-radius:16px;padding:16px}
+    .device-grid{
+      display:grid;grid-template-columns:150px 1fr;gap:8px 12px;
+      font-size:14px;margin-top:12px
     }
-
-    h2 {
-      margin-top: 0;
+    .device-grid b{color:#475467}
+    @media(max-width:700px){
+      .row{grid-template-columns:1fr}
+      .device-grid{grid-template-columns:1fr}
     }
-
-    label {
-      display: block;
-      color: #667085;
-      font-size: 14px;
-      margin: 8px 0 6px;
-    }
-
-    input,
-    textarea,
-    select {
-      width: 100%;
-      min-height: 46px;
-      padding: 10px 12px;
-      border: 1px solid #cfd6e1;
-      border-radius: 10px;
-      background: white;
-      font-size: 16px;
-    }
-
-    textarea {
-      min-height: 220px;
-      font-family: monospace;
-      font-size: 13px;
-    }
-
-    .row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 12px;
-    }
-
-    button {
-      border: 0;
-      border-radius: 10px;
-      min-height: 46px;
-      padding: 10px 14px;
-      font-size: 16px;
-      font-weight: 700;
-      background: #eef2f6;
-      color: #18202a;
-    }
-
-    .primary {
-      background: #1265f3;
-      color: white;
-    }
-
-    .ok {
-      background: #e7f8ef;
-      color: #087443;
-    }
-
-    .danger {
-      background: #fff0ef;
-      color: #d92d20;
-    }
-
-    .status {
-      padding: 11px 12px;
-      border-radius: 10px;
-      background: #f2f4f7;
-      margin: 10px 0;
-    }
-
-    .status.ok {
-      background: #ecfdf3;
-      color: #067647;
-    }
-
-    .status.err {
-      background: #fff1f0;
-      color: #d92d20;
-    }
-
-    .item {
-      border: 1px solid #d8dee8;
-      border-radius: 12px;
-      padding: 10px;
-      margin-top: 8px;
-    }
-
-    .preview {
-      background: #e8eaed;
-      border-radius: 12px;
-      padding: 12px;
-      overflow: auto;
-    }
-
-    #previewCanvas {
-      display: block;
-      margin: auto;
-      max-width: 100%;
-      height: auto;
-      background: white;
-    }
-
-    .help {
-      color: #667085;
-      font-size: 13px;
-      line-height: 1.55;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      background: rgba(0,0,0,.75);
-      padding: 16px;
-      overflow: auto;
-    }
-
-    .modalBox {
-      max-width: 520px;
-      margin: 5vh auto;
-      background: white;
-      border-radius: 16px;
-      padding: 16px;
-    }
-
-    @media(max-width:700px) {
-      .row {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media print {
-      body * {
-        visibility: hidden !important;
-      }
-
-      #previewCanvas {
-        visibility: visible !important;
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 58mm;
-        max-width: none;
+    @media print{
+      body *{visibility:hidden!important}
+      #previewCanvas{
+        visibility:visible!important;position:absolute;left:0;top:0;width:58mm;max-width:none
       }
     }
   </style>
 </head>
 
 <body>
-
 <div class="wrap">
 
   <h1>商品條碼列印</h1>
-
-  <div class="sub">
-    連續小票紙｜商品名稱＋條碼＋條碼號碼
-  </div>
-
+  <div class="sub">連續小票紙｜商品名稱＋條碼＋條碼號碼</div>
 
   <div class="card">
-
     <h2>新增商品</h2>
 
     <label>商品名稱</label>
-
-    <input
-      id="name"
-      placeholder="例如：可口可樂 ZERO"
-    >
-
+    <input id="name" placeholder="例如：可口可樂 ZERO">
 
     <label>商品條碼</label>
-
-    <input
-      id="code"
-      inputmode="numeric"
-      placeholder="掃描或輸入條碼"
-    >
-
+    <input id="code" inputmode="numeric" placeholder="掃描或輸入條碼">
 
     <div class="actions">
-
-      <button
-        id="scanBtn"
-        class="ok"
-      >
-        📷 相機掃描條碼
-      </button>
-
-      <button
-        id="addBtn"
-        class="primary"
-      >
-        ＋ 新增
-      </button>
-
-      <button id="clearInputBtn">
-        清除輸入
-      </button>
-
+      <button id="scanBtn" class="ok">📷 相機掃描條碼</button>
+      <button id="addBtn" class="primary">＋ 新增</button>
+      <button id="clearInputBtn">清除輸入</button>
     </div>
-
   </div>
 
-
   <div class="card">
-
     <h2>待列印商品</h2>
-
     <div id="items"></div>
-
     <div class="actions">
-
-      <button
-        id="clearAllBtn"
-        class="danger"
-      >
-        全部清除
-      </button>
-
+      <button id="clearAllBtn" class="danger">全部清除</button>
     </div>
-
   </div>
 
-
   <div class="card">
-
     <h2>版面設定</h2>
 
     <div class="row">
-
       <div>
-
         <label>紙寬</label>
-
         <select id="paperWidth">
-
-          <option value="80">
-            80 mm
-          </option>
-
-          <option value="70">
-            70 mm
-          </option>
-
-          <option value="60">
-            60 mm
-          </option>
-
-          <option
-            value="58"
-            selected
-          >
-            58 mm
-          </option>
-
-          <option value="50">
-            50 mm
-          </option>
-
-          <option value="40">
-            40 mm
-          </option>
-
+          <option value="80">80 mm</option>
+          <option value="77">77 mm</option>
+          <option value="70">70 mm</option>
+          <option value="60">60 mm</option>
+          <option value="58" selected>58 mm</option>
+          <option value="50">50 mm</option>
+          <option value="40">40 mm</option>
+          <option value="30">30 mm</option>
+          <option value="20">20 mm</option>
         </select>
-
       </div>
-
 
       <div>
-
         <label>條碼高度</label>
-
         <select id="barcodeHeight">
-
-          <option value="10">
-            10 mm
-          </option>
-
-          <option
-            value="12"
-            selected
-          >
-            12 mm
-          </option>
-
-          <option value="14">
-            14 mm
-          </option>
-
-          <option value="16">
-            16 mm
-          </option>
-
+          <option value="10">10 mm</option>
+          <option value="12" selected>12 mm</option>
+          <option value="14">14 mm</option>
+          <option value="16">16 mm</option>
         </select>
-
       </div>
-
     </div>
 
-
-    <label>
-      最下方自訂文字
-    </label>
-
-    <input
-      id="footerText"
-      placeholder="例如：115/08/15-08/18"
-    >
-
+    <label>最下方自訂文字</label>
+    <input id="footerText" placeholder="例如：115/08/15-08/18">
 
     <div class="actions">
-
-      <button id="refreshBtn">
-        重新產生預覽
-      </button>
-
-      <button id="browserPrintBtn">
-        瀏覽器列印
-      </button>
-
+      <button id="refreshBtn">重新產生預覽</button>
+      <button id="browserPrintBtn">瀏覽器列印</button>
     </div>
-
   </div>
 
-
   <div class="card">
-
     <h2>列印預覽</h2>
-
     <div class="preview">
-
       <canvas id="previewCanvas"></canvas>
-
     </div>
-
   </div>
 
-
   <div class="card">
-
     <h2>B3S 藍牙列印</h2>
-
-    <div
-      id="bleStatus"
-      class="status"
-    >
-      尚未連線
-    </div>
-
+    <div id="bleStatus" class="status">尚未連線</div>
 
     <div class="row">
-
       <div>
-
-        <label>
-          列印協定
-        </label>
-
+        <label>列印協定</label>
         <select id="taskType">
-
-          <option value="auto">
-            自動偵測
-          </option>
-
-          <option value="B1">
-            B1 相容模式
-          </option>
-
+          <option value="auto">自動偵測</option>
+          <option value="B1">B1 相容模式</option>
         </select>
-
       </div>
-
 
       <div>
-
-        <label>
-          列印方向
-        </label>
-
+        <label>列印方向</label>
         <select id="direction">
-
-          <option value="left">
-            Left
-          </option>
-
-          <option value="top">
-            Top
-          </option>
-
+          <option value="left">Left</option>
+          <option value="top">Top</option>
         </select>
-
       </div>
-
     </div>
-
 
     <div class="actions">
-
-      <button
-        id="connectBtn"
-        class="ok"
-      >
-        🔵 連接 B3S
-      </button>
-
-      <button id="disconnectBtn">
-        中斷連線
-      </button>
-
-      <button
-        id="blePrintBtn"
-        class="primary"
-      >
-        🖨 直接列印
-      </button>
-
+      <button id="connectBtn" class="ok">🔵 連接 B3S</button>
+      <button id="disconnectBtn">中斷連線</button>
+      <button id="blePrintBtn" class="primary">🖨 直接列印</button>
     </div>
-
   </div>
-
 
   <div class="card">
-
-    <h2>B3S 藍牙診斷 V2</h2>
-
-    <p class="help">
-      先連接 B3S，再按「讀取藍牙資訊」。
-    </p>
-
+    <h2>B3S 裝置資訊</h2>
+    <p class="help">先連接 B3S，再按「讀取裝置資訊」。會讀取 Bluetooth Device Information Service（180A）裡可取得的型號、序號、軟體／硬體版本與製造商。</p>
 
     <div class="actions">
-
-      <button id="diagBtn">
-        🔎 讀取藍牙資訊
-      </button>
-
-      <button id="copyDiagBtn">
-        複製診斷結果
-      </button>
-
+      <button id="deviceInfoBtn">📟 讀取裝置資訊</button>
     </div>
 
+    <div id="deviceInfoStatus" class="status">尚未讀取</div>
 
-    <textarea
-      id="diagOutput"
-      readonly
-      placeholder="診斷結果會顯示在這裡"
-    ></textarea>
+    <div class="device-grid">
+      <b>型號 Model</b><span id="infoModel">—</span>
+      <b>序號 Serial</b><span id="infoSerial">—</span>
+      <b>韌體 Firmware</b><span id="infoFirmware">—</span>
+      <b>硬體 Hardware</b><span id="infoHardware">—</span>
+      <b>軟體 Software</b><span id="infoSoftware">—</span>
+      <b>製造商 Manufacturer</b><span id="infoManufacturer">—</span>
+    </div>
+  </div>
 
+  <div class="card">
+    <h2>B3S 藍牙診斷 V3</h2>
+    <p class="help">先連接 B3S，再按「讀取藍牙資訊」。這版會同時顯示 Service、Characteristic、目前使用中的通道與 180A 裝置資訊。</p>
+
+    <div class="actions">
+      <button id="diagBtn">🔎 讀取藍牙資訊</button>
+      <button id="copyDiagBtn">複製診斷結果</button>
+    </div>
+
+    <textarea id="diagOutput" readonly placeholder="診斷結果會顯示在這裡"></textarea>
   </div>
 
 </div>
 
-
-
-<div
-  id="scannerModal"
-  class="modal"
->
-
+<div id="scannerModal" class="modal">
   <div class="modalBox">
-
-    <div
-      class="actions"
-      style="
-        justify-content:space-between;
-        align-items:center
-      "
-    >
-
-      <h2 style="margin:0">
-        掃描商品條碼
-      </h2>
-
-      <button
-        id="closeScannerBtn"
-        class="danger"
-      >
-        關閉
-      </button>
-
+    <div class="actions" style="justify-content:space-between;align-items:center">
+      <h2 style="margin:0">掃描商品條碼</h2>
+      <button id="closeScannerBtn" class="danger">關閉</button>
     </div>
 
-
-    <div
-      id="scannerStatus"
-      class="status"
-    >
-      準備啟動相機…
-    </div>
-
-
+    <div id="scannerStatus" class="status">準備啟動相機…</div>
     <div id="qrReader"></div>
 
-
-    <p class="help">
-
-      把商品條碼放到畫面中央。
-
-      掃描成功後會自動填入商品條碼。
-
-    </p>
-
+    <p class="help">把商品條碼放到畫面中央，掃描成功後會自動填入商品條碼。</p>
   </div>
-
 </div>
 
-
-
 <script>
-
-const $ = id =>
-  document.getElementById(id);
-
+const $ = id => document.getElementById(id);
 
 const state = {
-
   items: [],
-
   client: null
-
 };
 
-
+/* =========================
+   商品與條碼
+========================= */
 
 function detectFormat(code) {
-
-  if (/^\d{13}$/.test(code))
-    return "EAN13";
-
-  if (/^\d{8}$/.test(code))
-    return "EAN8";
-
-  if (/^\d{12}$/.test(code))
-    return "UPC";
-
+  if (/^\d{13}$/.test(code)) return "EAN13";
+  if (/^\d{8}$/.test(code)) return "EAN8";
+  if (/^\d{12}$/.test(code)) return "UPC";
   return "CODE128";
-
 }
 
-
+function escapeHtml(text) {
+  return String(text ?? "").replace(/[&<>"']/g, ch => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
+  }[ch]));
+}
 
 function renderItems() {
-
-  const box =
-    $("items");
-
+  const box = $("items");
 
   if (!state.items.length) {
-
-    box.innerHTML =
-      '<div class="help">目前沒有商品</div>';
-
+    box.innerHTML = '<div class="help">目前沒有商品</div>';
     return;
-
   }
 
-
-  box.innerHTML =
-    state.items.map(
-
-      (item, i) => `
-
-      <div class="item">
-
-        <b>
-          ${item.name || "未命名商品"}
-        </b>
-
-        <br>
-
-        <small>
-          ${item.code}
-        </small>
-
-
-        <div class="actions">
-
-          <button
-            class="danger deleteBtn"
-            data-index="${i}"
-          >
-            刪除
-          </button>
-
-        </div>
-
+  box.innerHTML = state.items.map((item, i) => `
+    <div class="item">
+      <b>${escapeHtml(item.name || "未命名商品")}</b><br>
+      <small>${escapeHtml(item.code)}</small>
+      <div class="actions">
+        <button class="danger deleteBtn" data-index="${i}">刪除</button>
       </div>
-
-    `
-
-    ).join("");
-
+    </div>
+  `).join("");
 }
-
-
 
 function addItem() {
-
-  const name =
-    $("name").value.trim();
-
-  const code =
-    $("code").value.trim();
-
+  const name = $("name").value.trim();
+  const code = $("code").value.trim();
 
   if (!code) {
-
-    alert(
-      "請輸入或掃描商品條碼"
-    );
-
+    alert("請輸入或掃描商品條碼");
     return;
-
   }
 
-
-  state.items.push({
-
-    name,
-
-    code
-
-  });
-
+  state.items.push({ name, code });
 
   $("name").value = "";
-
   $("code").value = "";
 
+  renderItems();
+  drawPreview();
+}
+
+$("addBtn").onclick = addItem;
+
+$("clearInputBtn").onclick = () => {
+  $("name").value = "";
+  $("code").value = "";
+};
+
+$("items").onclick = e => {
+  const btn = e.target.closest(".deleteBtn");
+  if (!btn) return;
+
+  const index = Number(btn.dataset.index);
+  state.items.splice(index, 1);
 
   renderItems();
-
   drawPreview();
+};
 
-}
+$("clearAllBtn").onclick = () => {
+  state.items = [];
+  renderItems();
+  drawPreview();
+};
 
-
-
-$("addBtn").onclick =
-  addItem;
-
-
-
-$("clearInputBtn").onclick =
-  () => {
-
-    $("name").value = "";
-
-    $("code").value = "";
-
-  };
-
-
-
-$("items").onclick =
-  e => {
-
-    const btn =
-      e.target.closest(
-        ".deleteBtn"
-      );
-
-
-    if (!btn)
-      return;
-
-
-    const index =
-      Number(
-        btn.dataset.index
-      );
-
-
-    state.items.splice(
-      index,
-      1
-    );
-
-
-    renderItems();
-
-    drawPreview();
-
-  };
-
-
-
-$("clearAllBtn").onclick =
-  () => {
-
-    state.items = [];
-
-    renderItems();
-
-    drawPreview();
-
-  };
-
-
+/* =========================
+   預覽
+========================= */
 
 function mmToPx(mm) {
-
-  return Math.round(
-    mm * 203 / 25.4
-  );
-
+  return Math.round(mm * 203 / 25.4);
 }
 
-
-
-function makeBarcode(
-  code,
-  width,
-  height
-) {
-
-  const canvas =
-    document.createElement(
-      "canvas"
-    );
-
+function makeBarcode(code, width, height) {
+  const canvas = document.createElement("canvas");
 
   try {
-
-    JsBarcode(
-      canvas,
-      code,
-      {
-
-        format:
-          detectFormat(code),
-
-        displayValue:
-          true,
-
-        height,
-
-        margin:
-          0,
-
-        width:
-          2
-
-      }
-    );
-
-
+    JsBarcode(canvas, code, {
+      format: detectFormat(code),
+      displayValue: true,
+      height,
+      margin: 0,
+      width: 2
+    });
   } catch {
-
-
-    JsBarcode(
-      canvas,
-      code,
-      {
-
-        format:
-          "CODE128",
-
-        displayValue:
-          true,
-
-        height,
-
-        margin:
-          0,
-
-        width:
-          2
-
-      }
-    );
-
+    JsBarcode(canvas, code, {
+      format: "CODE128",
+      displayValue: true,
+      height,
+      margin: 0,
+      width: 2
+    });
   }
 
+  if (canvas.width <= width) return canvas;
 
-  if (
-    canvas.width <= width
-  ) {
+  const scaled = document.createElement("canvas");
+  scaled.width = width;
+  scaled.height = Math.round(canvas.height * width / canvas.width);
 
-    return canvas;
-
-  }
-
-
-  const scaled =
-    document.createElement(
-      "canvas"
-    );
-
-
-  scaled.width =
-    width;
-
-
-  scaled.height =
-    Math.round(
-
-      canvas.height
-      *
-      width
-      /
-      canvas.width
-
-    );
-
-
-  const ctx =
-    scaled.getContext(
-      "2d"
-    );
-
-
-  ctx.imageSmoothingEnabled =
-    false;
-
-
-  ctx.drawImage(
-
-    canvas,
-
-    0,
-
-    0,
-
-    scaled.width,
-
-    scaled.height
-
-  );
-
+  const ctx = scaled.getContext("2d");
+  ctx.imageSmoothingEnabled = false;
+  ctx.drawImage(canvas, 0, 0, scaled.width, scaled.height);
 
   return scaled;
-
 }
 
-
-
 function drawPreview() {
+  const paperWidth = mmToPx(Number($("paperWidth").value));
+  const barcodeHeight = mmToPx(Number($("barcodeHeight").value));
+  const margin = mmToPx(2);
+  const contentWidth = Math.max(80, paperWidth - margin * 2);
 
-  const paperWidth =
-    mmToPx(
-      Number(
-        $("paperWidth").value
-      )
-    );
+  const blocks = state.items.map(item => {
+    const barcode = makeBarcode(item.code, contentWidth, barcodeHeight);
 
+    return {
+      item,
+      barcode,
+      height: 28 + barcode.height + mmToPx(2)
+    };
+  });
 
-  const barcodeHeight =
-    mmToPx(
-      Number(
-        $("barcodeHeight").value
-      )
-    );
+  const footer = $("footerText").value.trim();
+  const footerHeight = footer ? 45 : 0;
 
-
-  const margin =
-    mmToPx(2);
-
-
-  const contentWidth =
-    paperWidth -
-    margin * 2;
-
-
-  const blocks =
-    state.items.map(
-
-      item => {
-
-        const barcode =
-          makeBarcode(
-
-            item.code,
-
-            contentWidth,
-
-            barcodeHeight
-
-          );
-
-
-        return {
-
-          item,
-
-          barcode,
-
-          height:
-            28
-            +
-            barcode.height
-            +
-            mmToPx(2)
-
-        };
-
-      }
-
-    );
-
-
-  const footer =
-    $("footerText")
-      .value
-      .trim();
-
-
-  const footerHeight =
-    footer
-    ? 45
-    : 0;
-
-
-  const totalHeight =
-    Math.max(
-
-      mmToPx(30),
-
-      mmToPx(2)
-
-      +
-
-      blocks.reduce(
-
-        (sum, b) =>
-          sum + b.height,
-
-        0
-
-      )
-
-      +
-
-      footerHeight
-
-      +
-
-      mmToPx(3)
-
-    );
-
-
-  const canvas =
-    $("previewCanvas");
-
-
-  canvas.width =
-    paperWidth;
-
-
-  canvas.height =
-    totalHeight;
-
-
-  const ctx =
-    canvas.getContext(
-      "2d"
-    );
-
-
-  ctx.fillStyle =
-    "white";
-
-
-  ctx.fillRect(
-
-    0,
-
-    0,
-
-    canvas.width,
-
-    canvas.height
-
+  const totalHeight = Math.max(
+    mmToPx(30),
+    mmToPx(2)
+    + blocks.reduce((sum, block) => sum + block.height, 0)
+    + footerHeight
+    + mmToPx(3)
   );
 
+  const canvas = $("previewCanvas");
+  canvas.width = paperWidth;
+  canvas.height = totalHeight;
 
-  ctx.fillStyle =
-    "black";
+  const ctx = canvas.getContext("2d");
 
+  ctx.fillStyle = "white";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  ctx.textAlign =
-    "center";
+  ctx.fillStyle = "black";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "top";
 
+  let y = mmToPx(2);
 
-  ctx.textBaseline =
-    "top";
-
-
-  let y =
-    mmToPx(2);
-
-
-
-  for (
-    const block
-    of blocks
-  ) {
-
-    ctx.font =
-      '600 18px "PingFang TC","Microsoft JhengHei",sans-serif';
-
+  for (const block of blocks) {
+    ctx.font = '600 18px "PingFang TC","Microsoft JhengHei",sans-serif';
 
     ctx.fillText(
-
       block.item.name || "",
-
       paperWidth / 2,
-
       y,
-
       contentWidth
-
     );
-
 
     y += 28;
 
-
-    ctx.imageSmoothingEnabled =
-      false;
-
+    ctx.imageSmoothingEnabled = false;
 
     ctx.drawImage(
-
       block.barcode,
-
-      (
-        paperWidth
-        -
-        block.barcode.width
-      )
-      /
-      2,
-
+      (paperWidth - block.barcode.width) / 2,
       y
-
     );
 
-
-    y +=
-      block.barcode.height
-      +
-      mmToPx(2);
-
+    y += block.barcode.height + mmToPx(2);
   }
-
-
 
   if (footer) {
-
-    ctx.font =
-      '700 22px "PingFang TC","Microsoft JhengHei",sans-serif';
-
+    ctx.font = '700 22px "PingFang TC","Microsoft JhengHei",sans-serif';
 
     ctx.fillText(
-
       footer,
-
       paperWidth / 2,
-
       y + 10,
-
       contentWidth
-
     );
-
   }
-
 }
 
+$("refreshBtn").onclick = drawPreview;
+$("footerText").oninput = drawPreview;
+$("paperWidth").onchange = drawPreview;
+$("barcodeHeight").onchange = drawPreview;
 
+$("browserPrintBtn").onclick = () => {
+  drawPreview();
+  window.print();
+};
 
-$("refreshBtn").onclick =
-  drawPreview;
-
-
-
-$("footerText").oninput =
-  drawPreview;
-
-
-
-$("paperWidth").onchange =
-  drawPreview;
-
-
-
-$("barcodeHeight").onchange =
-  drawPreview;
-
-
-
-$("browserPrintBtn").onclick =
-  () => {
-
-    drawPreview();
-
-    window.print();
-
-  };
-
-
+/* =========================
+   相機掃描
+========================= */
 
 let qrScanner = null;
-
 let scannerRunning = false;
 
-
-
 async function startScanner() {
-
-  if (
-    !window.Html5Qrcode
-  ) {
-
-    alert(
-      "條碼掃描程式載入失敗"
-    );
-
+  if (!window.Html5Qrcode) {
+    alert("條碼掃描程式載入失敗");
     return;
-
   }
 
+  $("scannerModal").style.display = "block";
+  $("scannerStatus").className = "status";
+  $("scannerStatus").textContent = "正在啟動後鏡頭…";
 
-  $("scannerModal")
-    .style
-    .display =
-    "block";
-
-
-  $("scannerStatus")
-    .className =
-    "status";
-
-
-  $("scannerStatus")
-    .textContent =
-    "正在啟動後鏡頭…";
-
-
-  qrScanner =
-    new Html5Qrcode(
-      "qrReader"
-    );
-
+  qrScanner = new Html5Qrcode("qrReader");
 
   try {
-
     await qrScanner.start(
-
+      { facingMode: "environment" },
       {
-
-        facingMode:
-          "environment"
-
+        fps: 12,
+        qrbox: (width, height) => ({
+          width: Math.floor(width * 0.88),
+          height: Math.min(Math.floor(height * 0.35), 170)
+        })
       },
-
-      {
-
-        fps:
-          12,
-
-        qrbox:
-          (width, height) => ({
-
-            width:
-              Math.floor(
-                width * 0.88
-              ),
-
-            height:
-              Math.min(
-
-                Math.floor(
-                  height * 0.35
-                ),
-
-                170
-
-              )
-
-          })
-
-      },
-
       async decodedText => {
+        $("code").value = decodedText;
 
+        $("scannerStatus").className = "status ok";
+        $("scannerStatus").textContent = "掃描成功：" + decodedText;
 
-        $("code").value =
-          decodedText;
-
-
-        $("scannerStatus")
-          .className =
-          "status ok";
-
-
-        $("scannerStatus")
-          .textContent =
-          "掃描成功："
-          +
-          decodedText;
-
-
-        setTimeout(
-
-          stopScanner,
-
-          400
-
-        );
-
+        setTimeout(stopScanner, 400);
       },
-
       () => {}
-
     );
 
+    scannerRunning = true;
 
-    scannerRunning =
-      true;
-
-
-    $("scannerStatus")
-      .className =
-      "status ok";
-
-
-    $("scannerStatus")
-      .textContent =
-      "相機已啟動，請對準商品條碼";
-
+    $("scannerStatus").className = "status ok";
+    $("scannerStatus").textContent = "相機已啟動，請對準商品條碼";
 
   } catch (error) {
-
-
-    $("scannerStatus")
-      .className =
-      "status err";
-
-
-    $("scannerStatus")
-      .textContent =
-      "相機啟動失敗："
-      +
-      error.message;
-
+    $("scannerStatus").className = "status err";
+    $("scannerStatus").textContent = "相機啟動失敗：" + error.message;
   }
-
 }
-
-
 
 async function stopScanner() {
-
   try {
-
-    if (
-      qrScanner
-      &&
-      scannerRunning
-    ) {
-
+    if (qrScanner && scannerRunning) {
       await qrScanner.stop();
-
     }
-
   } catch {}
 
-
   try {
-
     if (qrScanner) {
-
       await qrScanner.clear();
-
     }
-
   } catch {}
 
-
-  qrScanner =
-    null;
-
-
-  scannerRunning =
-    false;
-
-
-  $("scannerModal")
-    .style
-    .display =
-    "none";
-
+  qrScanner = null;
+  scannerRunning = false;
+  $("scannerModal").style.display = "none";
 }
 
+$("scanBtn").onclick = startScanner;
+$("closeScannerBtn").onclick = stopScanner;
 
+/* =========================
+   Bluetooth
+========================= */
 
-$("scanBtn").onclick =
-  startScanner;
-
-
-
-$("closeScannerBtn").onclick =
-  stopScanner;
-
-
-
-function setBluetoothStatus(
-  text,
-  type = ""
-) {
-
-  const el =
-    $("bleStatus");
-
-
-  el.className =
-    "status "
-    +
-    type;
-
-
-  el.textContent =
-    text;
-
+function setBluetoothStatus(text, type = "") {
+  const el = $("bleStatus");
+  el.className = "status " + type;
+  el.textContent = text;
 }
 
-
-
-$("connectBtn").onclick =
-async () => {
-
+$("connectBtn").onclick = async () => {
   try {
-
-    if (
-      !navigator.bluetooth
-    ) {
-
-      throw new Error(
-
-        "此瀏覽器不支援 Web Bluetooth"
-
-      );
-
+    if (!navigator.bluetooth) {
+      throw new Error("此瀏覽器不支援 Web Bluetooth");
     }
 
+    const client = new niimbluelib.NiimbotBluetoothClient();
+    state.client = client;
 
-    const client =
-      new niimbluelib
-        .NiimbotBluetoothClient();
+    client.on("connect", () => {
+      setBluetoothStatus("已連線", "ok");
+    });
 
-
-    state.client =
-      client;
-
-
-    client.on(
-
-      "connect",
-
-      () => {
-
-        setBluetoothStatus(
-
-          "已連線",
-
-          "ok"
-
-        );
-
-      }
-
-    );
-
-
-    client.on(
-
-      "disconnect",
-
-      () => {
-
-        setBluetoothStatus(
-
-          "已中斷"
-
-        );
-
-      }
-
-    );
-
+    client.on("disconnect", () => {
+      setBluetoothStatus("已中斷");
+    });
 
     await client.connect();
 
-
-    setBluetoothStatus(
-
-      "已連線",
-
-      "ok"
-
-    );
-
+    setBluetoothStatus("已連線", "ok");
 
   } catch (error) {
-
-
-    setBluetoothStatus(
-
-      "連線失敗："
-      +
-      error.message,
-
-      "err"
-
-    );
-
+    setBluetoothStatus("連線失敗：" + error.message, "err");
   }
-
 };
 
-
-
-$("disconnectBtn").onclick =
-async () => {
-
+$("disconnectBtn").onclick = async () => {
   try {
-
-    await state.client
-      ?.disconnect();
-
+    await state.client?.disconnect();
   } catch {}
 
-
-  state.client =
-    null;
-
-
-  setBluetoothStatus(
-    "尚未連線"
-  );
-
+  state.client = null;
+  setBluetoothStatus("尚未連線");
 };
 
-
-
-$("blePrintBtn").onclick =
-async () => {
-
+$("blePrintBtn").onclick = async () => {
   if (!state.client) {
-
-    alert(
-      "請先連接 B3S"
-    );
-
+    alert("請先連接 B3S");
     return;
-
   }
 
-
   try {
-
     drawPreview();
 
+    const encoded = niimbluelib.ImageEncoder.encodeCanvas(
+      $("previewCanvas"),
+      $("direction").value
+    );
 
-    const encoded =
-      niimbluelib
-        .ImageEncoder
-        .encodeCanvas(
+    let type = $("taskType").value;
 
-          $("previewCanvas"),
-
-          $("direction").value
-
-        );
-
-
-    let type =
-      $("taskType").value;
-
-
-    if (
-      type === "auto"
-    ) {
-
+    if (type === "auto") {
       try {
-
-        type =
-          state.client
-            .getPrintTaskType()
-          ||
-          "B1";
-
+        type = state.client.getPrintTaskType() || "B1";
       } catch {
-
-        type =
-          "B1";
-
+        type = "B1";
       }
-
     }
 
-
-    const task =
-      state.client
-        .abstraction
-        .newPrintTask(
-
-          type,
-
-          {
-            totalPages:
-              1
-          }
-
-        );
-
+    const task = state.client.abstraction.newPrintTask(
+      type,
+      { totalPages: 1 }
+    );
 
     await task.printInit();
+    await task.printPage(encoded, 1);
+    await task.waitForPageFinished();
+    await task.waitForFinished();
+    await task.printEnd();
 
-
-    await task.printPage(
-
-      encoded,
-
-      1
-
-    );
-
-
-    await task
-      .waitForPageFinished();
-
-
-    await task
-      .waitForFinished();
-
-
-    await task
-      .printEnd();
-
-
-    setBluetoothStatus(
-
-      "列印完成",
-
-      "ok"
-
-    );
-
+    setBluetoothStatus("列印完成", "ok");
 
   } catch (error) {
+    setBluetoothStatus("列印失敗：" + error.message, "err");
 
-
-    setBluetoothStatus(
-
-      "列印失敗："
-      +
-      error.message,
-
-      "err"
-
-    );
-
-
-    alert(
-
-      "B3S 列印失敗，請使用下方診斷功能。"
-
-    );
-
+    alert("B3S 列印失敗，請使用下方診斷功能。");
   }
-
 };
 
+/* =========================
+   Device Information 180A
+========================= */
 
+const INFO_UUIDS = {
+  model: "00002a24-0000-1000-8000-00805f9b34fb",
+  serial: "00002a25-0000-1000-8000-00805f9b34fb",
+  firmware: "00002a26-0000-1000-8000-00805f9b34fb",
+  hardware: "00002a27-0000-1000-8000-00805f9b34fb",
+  software: "00002a28-0000-1000-8000-00805f9b34fb",
+  manufacturer: "00002a29-0000-1000-8000-00805f9b34fb"
+};
 
-$("diagBtn").onclick =
-async () => {
+function decodeGattString(dataView) {
+  if (!dataView) return "";
 
-  const output =
-    $("diagOutput");
+  try {
+    const bytes = new Uint8Array(
+      dataView.buffer,
+      dataView.byteOffset,
+      dataView.byteLength
+    );
 
+    return new TextDecoder("utf-8")
+      .decode(bytes)
+      .replace(/\0+$/g, "")
+      .trim();
 
-  output.value =
-    "=== B3S 診斷 V2 ===\n";
+  } catch {
+    return "";
+  }
+}
 
+async function readCharacteristicText(service, uuid) {
+  try {
+    const ch = await service.getCharacteristic(uuid);
+    const value = await ch.readValue();
+
+    return decodeGattString(value) || "（空白）";
+  } catch {
+    return "（此機型未提供）";
+  }
+}
+
+async function readDeviceInfo(writeToDiagnostic = false) {
+  const status = $("deviceInfoStatus");
+
+  if (!state.client?.gattServer) {
+    status.className = "status err";
+    status.textContent = "請先連接 B3S";
+
+    return null;
+  }
+
+  status.className = "status";
+  status.textContent = "正在讀取…";
+
+  try {
+    const server = state.client.gattServer;
+
+    const service = await server.getPrimaryService("180a");
+
+    const result = {
+      model: await readCharacteristicText(service, INFO_UUIDS.model),
+      serial: await readCharacteristicText(service, INFO_UUIDS.serial),
+      firmware: await readCharacteristicText(service, INFO_UUIDS.firmware),
+      hardware: await readCharacteristicText(service, INFO_UUIDS.hardware),
+      software: await readCharacteristicText(service, INFO_UUIDS.software),
+      manufacturer: await readCharacteristicText(service, INFO_UUIDS.manufacturer)
+    };
+
+    $("infoModel").textContent = result.model;
+    $("infoSerial").textContent = result.serial;
+    $("infoFirmware").textContent = result.firmware;
+    $("infoHardware").textContent = result.hardware;
+    $("infoSoftware").textContent = result.software;
+    $("infoManufacturer").textContent = result.manufacturer;
+
+    status.className = "status ok";
+    status.textContent = "讀取完成";
+
+    return result;
+
+  } catch (error) {
+    status.className = "status err";
+    status.textContent = "讀取失敗：" + error.message;
+
+    if (writeToDiagnostic) {
+      return {
+        error: error.message
+      };
+    }
+
+    return null;
+  }
+}
+
+$("deviceInfoBtn").onclick = () => readDeviceInfo(false);
+
+/* =========================
+   診斷 V3
+========================= */
+
+function safeJson(value) {
+  try {
+    return JSON.stringify(value, null, 2);
+  } catch {
+    return String(value);
+  }
+}
+
+$("diagBtn").onclick = async () => {
+  const output = $("diagOutput");
+
+  output.value = "=== B3S 診斷 V3 ===\n";
 
   output.value +=
-
-    "Web Bluetooth："
-    +
-    !!navigator.bluetooth
-    +
-    "\n";
-
+    "Web Bluetooth：" + !!navigator.bluetooth + "\n";
 
   output.value +=
-
-    "HTTPS："
-    +
-    window.isSecureContext
-    +
-    "\n";
-
+    "HTTPS：" + window.isSecureContext + "\n";
 
   output.value +=
-
-    "Client："
-    +
-    !!state.client
-    +
-    "\n";
-
+    "Client：" + !!state.client + "\n";
 
   if (!state.client) {
-
-    output.value +=
-
-      "\n請先連接 B3S。";
-
+    output.value += "\n請先連接 B3S。";
     return;
-
   }
 
-
-
   try {
-
     output.value +=
-
       "PrintTaskType："
-      +
-      (
-        state.client
-          .getPrintTaskType?.()
-        ||
-        "無法偵測"
-      )
-      +
-      "\n";
-
-  } catch {}
-
-
-
-  output.value +=
-    "\nserviceUuidFilter：\n";
-
-
-  try {
-
-    output.value +=
-
-      JSON.stringify(
-
-        state.client
-          .serviceUuidFilter,
-
-        null,
-
-        2
-
-      )
-      +
-      "\n";
-
-  } catch (error) {
-
-    output.value +=
-
-      "讀取失敗："
-      +
-      error.message
-      +
-      "\n";
-
+      + (state.client.getPrintTaskType?.() || "無法偵測")
+      + "\n";
+  } catch {
+    output.value += "PrintTaskType：無法偵測\n";
   }
 
+  output.value += "\nserviceUuidFilter：\n";
+  output.value += safeJson(state.client.serviceUuidFilter) + "\n";
 
-
-  output.value +=
-    "\nchannel：\n";
-
+  output.value += "\nchannel：\n";
 
   try {
-
-    output.value +=
-
-      JSON.stringify(
-
-        {
-
-          uuid:
-            state.client
-              .channel
-              ?.uuid,
-
-          service:
-            state.client
-              .channel
-              ?.service
-              ?.uuid,
-
-          properties:
-            state.client
-              .channel
-              ?.properties
-
-        },
-
-        null,
-
-        2
-
-      )
-      +
-      "\n";
-
+    output.value += safeJson({
+      uuid: state.client.channel?.uuid,
+      service: state.client.channel?.service?.uuid,
+      properties: state.client.channel?.properties
+    }) + "\n";
   } catch (error) {
-
     output.value +=
-
-      "無法讀取 channel："
-      +
-      error.message
-      +
-      "\n";
-
+      "無法讀取 channel：" + error.message + "\n";
   }
 
-
-
-  const server =
-    state.client
-      .gattServer;
-
+  const server = state.client.gattServer;
 
   if (!server) {
-
-    output.value +=
-
-      "\n找不到 gattServer";
-
+    output.value += "\n找不到 gattServer";
     return;
-
   }
 
-
-
   output.value +=
+    "\ngattServer.connected：" + server.connected + "\n";
 
-    "\ngattServer.connected："
-    +
-    server.connected
-    +
-    "\n";
+  output.value += "\n=== Device Information 180A ===\n";
 
+  const info = await readDeviceInfo(true);
 
-
-  try {
-
-
-    const services =
-      await server
-        .getPrimaryServices();
-
+  if (info) {
+    output.value +=
+      "Model：" + (info.model ?? "") + "\n";
 
     output.value +=
+      "Serial：" + (info.serial ?? "") + "\n";
 
-      "\nPrimary Services："
-      +
-      services.length
-      +
-      "\n";
+    output.value +=
+      "Firmware：" + (info.firmware ?? "") + "\n";
 
+    output.value +=
+      "Hardware：" + (info.hardware ?? "") + "\n";
 
-    for (
-      const service
-      of services
-    ) {
+    output.value +=
+      "Software：" + (info.software ?? "") + "\n";
 
+    output.value +=
+      "Manufacturer：" + (info.manufacturer ?? "") + "\n";
+  }
 
+  try {
+    const services = await server.getPrimaryServices();
+
+    output.value +=
+      "\nPrimary Services：" + services.length + "\n";
+
+    for (const service of services) {
       output.value +=
-
-        "\nSERVICE "
-        +
-        service.uuid
-        +
-        "\n";
-
+        "\nSERVICE " + service.uuid + "\n";
 
       try {
+        const chars = await service.getCharacteristics();
 
-
-        const chars =
-          await service
-            .getCharacteristics();
-
-
-        for (
-          const ch
-          of chars
-        ) {
-
-
-          const p =
-            ch.properties;
-
+        for (const ch of chars) {
+          const p = ch.properties;
 
           const props = [
-
-            p.read
-            &&
-            "read",
-
-            p.write
-            &&
-            "write",
-
-            p.writeWithoutResponse
-            &&
-            "writeWithoutResponse",
-
-            p.notify
-            &&
-            "notify",
-
-            p.indicate
-            &&
-            "indicate"
-
+            p.read && "read",
+            p.write && "write",
+            p.writeWithoutResponse && "writeWithoutResponse",
+            p.notify && "notify",
+            p.indicate && "indicate"
           ]
           .filter(Boolean)
           .join(",");
 
-
           output.value +=
-
             "  CHAR "
-            +
-            ch.uuid
-            +
-            " ["
-            +
-            props
-            +
-            "]\n";
-
+            + ch.uuid
+            + " ["
+            + props
+            + "]\n";
         }
 
-
       } catch (error) {
-
-
         output.value +=
-
           "  characteristics 錯誤："
-          +
-          error.message
-          +
-          "\n";
-
+          + error.message
+          + "\n";
       }
-
     }
 
-
   } catch (error) {
-
-
     output.value +=
-
       "\n讀取 Services 失敗："
-      +
-      error.message;
-
+      + error.message;
   }
-
 };
 
-
-
-$("copyDiagBtn").onclick =
-async () => {
-
+$("copyDiagBtn").onclick = async () => {
   try {
-
-    await navigator
-      .clipboard
-      .writeText(
-
-        $("diagOutput")
-          .value
-
-      );
-
-
-    alert(
-      "已複製診斷結果"
+    await navigator.clipboard.writeText(
+      $("diagOutput").value
     );
 
+    alert("已複製診斷結果");
 
   } catch {
+    $("diagOutput").focus();
+    $("diagOutput").select();
 
-
-    $("diagOutput")
-      .focus();
-
-
-    $("diagOutput")
-      .select();
-
-
-    alert(
-
-      "已選取診斷結果，請手動複製"
-
-    );
-
+    alert("已選取診斷結果，請手動複製");
   }
-
 };
 
-
+/* =========================
+   初始化
+========================= */
 
 renderItems();
-
 drawPreview();
 
 </script>
