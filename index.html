@@ -3,15 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>商品條碼列印｜B3S V13</title>
+<title>商品條碼列印｜B3S V14</title>
 
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 
 <style>
-*{
-  box-sizing:border-box
-}
+*{box-sizing:border-box}
 
 body{
   margin:0;
@@ -36,9 +34,7 @@ h2{
   font-size:20px
 }
 
-.sub,
-.help,
-label{
+.sub,.help,label{
   color:#667085
 }
 
@@ -65,9 +61,7 @@ label{
   margin:8px 0 6px
 }
 
-input,
-textarea,
-select{
+input,textarea,select{
   width:100%;
   min-height:46px;
   padding:10px 12px;
@@ -109,6 +103,11 @@ button:disabled{
 .danger{
   background:#fff0ef;
   color:#d92d20
+}
+
+.stop{
+  background:#d92d20;
+  color:#fff
 }
 
 .actions{
@@ -295,10 +294,21 @@ button:disabled{
 
 .modalBox{
   max-width:520px;
-  margin:5vh auto;
+  margin:3vh auto;
   background:#fff;
   border-radius:16px;
   padding:16px
+}
+
+#qrReader{
+  margin-top:12px
+}
+
+.bulkScanCounter{
+  font-size:15px;
+  font-weight:700;
+  color:#067647;
+  margin-top:10px
 }
 
 @media(max-width:700px){
@@ -318,7 +328,7 @@ button:disabled{
 <div class="wrap">
 
 <h1>商品條碼列印</h1>
-<div class="sub">B3S 工作實用版 V13</div>
+<div class="sub">B3S 工作實用版 V14</div>
 
 
 <div class="card">
@@ -326,27 +336,18 @@ button:disabled{
 <h2>新增商品</h2>
 
 <label>商品名稱</label>
-<input
-id="name"
-placeholder="例如：鮮乳">
+<input id="name" placeholder="例如：鮮乳">
 
 <label>商品條碼</label>
-<input
-id="code"
-inputmode="numeric"
-placeholder="掃描或輸入條碼">
+<input id="code" inputmode="numeric" placeholder="掃描或輸入條碼">
 
 <div class="actions">
 
-<button
-id="scanBtn"
-class="ok">
+<button id="scanBtn" class="ok">
 📷 掃描條碼
 </button>
 
-<button
-id="addBtn"
-class="primary">
+<button id="addBtn" class="primary">
 ＋ 新增商品
 </button>
 
@@ -365,7 +366,7 @@ class="primary">
 </h2>
 
 <div class="help">
-每行一筆，可輸入「商品名稱,條碼」，也可直接貼 Excel 兩欄。
+每行一筆，可輸入「商品名稱,條碼」，也可以直接貼 Excel 兩欄。
 </div>
 
 <textarea
@@ -376,10 +377,12 @@ placeholder="鮮乳,4710000000001
 
 <div class="actions">
 
-<button
-id="bulkAddBtn"
-class="primary">
+<button id="bulkAddBtn" class="primary">
 ＋ 加入全部
+</button>
+
+<button id="bulkScanBtn" class="ok">
+📷 批次連續掃描
 </button>
 
 <button id="bulkClearBtn">
@@ -388,11 +391,7 @@ class="primary">
 
 </div>
 
-<div
-id="bulkStatus"
-class="help"
-style="margin-top:8px">
-</div>
+<div id="bulkStatus" class="help" style="margin-top:8px"></div>
 
 </div>
 
@@ -411,18 +410,13 @@ style="margin-top:8px">
 取消全選
 </button>
 
-<button
-id="clearAllBtn"
-class="danger">
+<button id="clearAllBtn" class="danger">
 全部清除
 </button>
 
 </div>
 
-<div
-id="itemCount"
-class="help"
-style="margin-top:10px">
+<div id="itemCount" class="help" style="margin-top:10px">
 0 筆商品
 </div>
 
@@ -502,11 +496,28 @@ style="margin-top:10px">
 </div>
 
 
-<label>最下方自訂文字</label>
+<div class="row">
 
-<input
-id="footerText"
-placeholder="可不填">
+<div>
+
+<label>列印結尾留白</label>
+
+<select id="endGap">
+<option value="0" selected>0 mm｜立即停止</option>
+<option value="0.5">0.5 mm</option>
+<option value="1">1 mm</option>
+<option value="2">2 mm</option>
+</select>
+
+</div>
+
+<div></div>
+
+</div>
+
+
+<label>最下方自訂文字</label>
+<input id="footerText" placeholder="可不填">
 
 
 <div class="switchRow">
@@ -523,9 +534,7 @@ placeholder="可不填">
 
 <label class="switch">
 
-<input
-type="checkbox"
-id="autoClear">
+<input type="checkbox" id="autoClear">
 
 <span class="slider"></span>
 
@@ -550,9 +559,7 @@ id="autoClear">
 <h2>預覽</h2>
 
 <div class="preview">
-
 <canvas id="previewCanvas"></canvas>
-
 </div>
 
 </div>
@@ -562,23 +569,17 @@ id="autoClear">
 
 <h2>B3S 藍牙</h2>
 
-<div
-id="bleStatus"
-class="status">
+<div id="bleStatus" class="status">
 尚未連線
 </div>
 
 <div class="actions">
 
-<button
-id="connectBtn"
-class="ok">
+<button id="connectBtn" class="ok">
 🔵 連接 B3S
 </button>
 
-<button
-id="disconnectBtn"
-disabled>
+<button id="disconnectBtn" disabled>
 中斷連線
 </button>
 
@@ -606,25 +607,21 @@ disabled>
 
 <div class="actions">
 
-<button
-id="printSelectedBtn"
-class="primary"
-disabled>
+<button id="printSelectedBtn" class="primary" disabled>
 🖨 列印勾選商品
 </button>
 
-<button
-id="printAllBtn"
-class="ok"
-disabled>
+<button id="printAllBtn" class="ok" disabled>
 🖨 列印全部
+</button>
+
+<button id="stopPrintBtn" class="stop" disabled>
+⏹ 停止列印
 </button>
 
 </div>
 
-<div
-id="printStatus"
-class="status">
+<div id="printStatus" class="status">
 等待列印
 </div>
 
@@ -632,11 +629,7 @@ class="status">
 <div id="progressBar"></div>
 </div>
 
-<div
-id="printMeta"
-class="help"
-style="margin-top:8px">
-</div>
+<div id="printMeta" class="help" style="margin-top:8px"></div>
 
 </div>
 
@@ -657,38 +650,48 @@ style="margin-top:8px">
 
 </div>
 
-<textarea
-id="log"
-readonly>
-</textarea>
+<textarea id="log" readonly></textarea>
 
 </div>
 
 </div>
 
 
-<div
-id="scannerModal"
-class="modal">
+<!-- 相機 -->
+<div id="scannerModal" class="modal">
 
 <div class="modalBox">
 
-<h2>掃描商品條碼</h2>
+<h2 id="scannerTitle">
+掃描商品條碼
+</h2>
 
-<div
-id="scannerStatus"
-class="status">
+<div id="bulkScanNameArea" style="display:none">
+
+<label>這一筆商品名稱</label>
+
+<input
+id="bulkScanName"
+placeholder="可先輸入名稱再掃描；也可以留空">
+
+<div class="help">
+掃描成功後會自動加入「一次新增多筆」，並清空名稱欄讓你輸入下一個商品名稱。
+</div>
+
+</div>
+
+<div id="scannerStatus" class="status">
 準備啟動相機…
 </div>
+
+<div id="bulkScanCounter" class="bulkScanCounter"></div>
 
 <div id="qrReader"></div>
 
 <div class="actions">
 
-<button
-id="closeScannerBtn"
-class="danger">
-關閉
+<button id="closeScannerBtn" class="danger">
+完成／關閉
 </button>
 
 </div>
@@ -700,9 +703,7 @@ class="danger">
 
 <script>
 
-const $ =
-id =>
-document.getElementById(id);
+const $ = id => document.getElementById(id);
 
 
 /* =========================
@@ -735,7 +736,9 @@ const state = {
 
   printing:false,
 
-  needsReconnect:false
+  needsReconnect:false,
+
+  stopRequested:false
 
 };
 
@@ -748,10 +751,7 @@ function delay(ms){
 
   return new Promise(
     resolve =>
-    setTimeout(
-      resolve,
-      ms
-    )
+    setTimeout(resolve,ms)
   );
 
 }
@@ -760,9 +760,7 @@ function delay(ms){
 function mmToPx(mm){
 
   return Math.round(
-    mm *
-    203 /
-    25.4
+    mm * 203 / 25.4
   );
 
 }
@@ -784,7 +782,6 @@ function hex(bytes){
 
   return Array
   .from(bytes)
-
   .map(
     value =>
     value
@@ -792,18 +789,7 @@ function hex(bytes){
     .padStart(2,"0")
     .toUpperCase()
   )
-
   .join(" ");
-
-}
-
-
-function hx(value){
-
-  return Number(value)
-  .toString(16)
-  .padStart(2,"0")
-  .toUpperCase();
 
 }
 
@@ -820,13 +806,10 @@ function u16(value){
 
 function log(text){
 
-  const box =
-  $("log");
-
+  const box = $("log");
 
   box.value +=
   `[${new Date().toLocaleTimeString()}] ${text}\n`;
-
 
   box.scrollTop =
   box.scrollHeight;
@@ -836,9 +819,7 @@ function log(text){
 
 function escapeHtml(text){
 
-  return String(
-    text ?? ""
-  )
+  return String(text ?? "")
   .replace(
     /[&<>"']/g,
     char => ({
@@ -872,10 +853,7 @@ function frame(
   payload.length;
 
 
-  for(
-    const value
-    of payload
-  ){
+  for(const value of payload){
 
     checksum ^=
     value;
@@ -902,9 +880,7 @@ function frame(
   ];
 
 
-  if(
-    connectPrefix
-  ){
+  if(connectPrefix){
 
     packet.unshift(
       0x03
@@ -1001,25 +977,16 @@ function parsePackets(text){
   .filter(Boolean)
   .map(
     value =>
-    parseInt(
-      value,
-      16
-    )
+    parseInt(value,16)
   );
 
 
-  const output =
-  [];
+  const output = [];
+
+  let position = 0;
 
 
-  let position =
-  0;
-
-
-  while(
-    position <
-    bytes.length
-  ){
+  while(position < bytes.length){
 
     if(
       bytes[position] !== 0x55
@@ -1054,8 +1021,7 @@ function parsePackets(text){
 
 
     if(
-      tail + 1 >=
-      bytes.length
+      tail + 1 >= bytes.length
     ){
 
       break;
@@ -1064,13 +1030,9 @@ function parsePackets(text){
 
 
     if(
-      bytes[tail] !==
-      0xAA
-
+      bytes[tail] !== 0xAA
       ||
-
-      bytes[tail+1] !==
-      0xAA
+      bytes[tail+1] !== 0xAA
     ){
 
       position++;
@@ -1092,10 +1054,7 @@ function parsePackets(text){
     length;
 
 
-    for(
-      const value
-      of payload
-    ){
+    for(const value of payload){
 
       checksum ^=
       value;
@@ -1134,9 +1093,7 @@ function parsePackets(text){
 
 async function writeRaw(bytes){
 
-  if(
-    !state.write
-  ){
+  if(!state.write){
 
     throw new Error(
       "B3S 尚未連線"
@@ -1145,8 +1102,7 @@ async function writeRaw(bytes){
   }
 
 
-  const chunkSize =
-  20;
+  const chunkSize = 20;
 
 
   for(
@@ -1154,6 +1110,15 @@ async function writeRaw(bytes){
     index<bytes.length;
     index+=chunkSize
   ){
+
+    if(state.stopRequested){
+
+      throw new Error(
+        "STOP_REQUESTED"
+      );
+
+    }
+
 
     const part =
     bytes.slice(
@@ -1163,14 +1128,9 @@ async function writeRaw(bytes){
 
 
     if(
-      state.write
-      .properties
-      .writeWithoutResponse
-
+      state.write.properties.writeWithoutResponse
       &&
-
-      state.write
-      .writeValueWithoutResponse
+      state.write.writeValueWithoutResponse
     ){
 
       await state.write
@@ -1180,10 +1140,8 @@ async function writeRaw(bytes){
 
     }
 
-
     else if(
-      state.write
-      .writeValueWithResponse
+      state.write.writeValueWithResponse
     ){
 
       await state.write
@@ -1192,7 +1150,6 @@ async function writeRaw(bytes){
       );
 
     }
-
 
     else{
 
@@ -1204,14 +1161,51 @@ async function writeRaw(bytes){
     }
 
 
-    if(
-      bytes.length >
-      chunkSize
-    ){
+    if(bytes.length > chunkSize){
 
-      await delay(6);
+      await delay(5);
 
     }
+
+  }
+
+}
+
+
+async function writeControlRaw(bytes){
+
+  if(!state.write){
+
+    throw new Error(
+      "B3S 尚未連線"
+    );
+
+  }
+
+
+  if(
+    state.write.properties.writeWithoutResponse
+    &&
+    state.write.writeValueWithoutResponse
+  ){
+
+    await state.write
+    .writeValueWithoutResponse(bytes);
+
+  }
+
+  else if(
+    state.write.writeValueWithResponse
+  ){
+
+    await state.write
+    .writeValueWithResponse(bytes);
+
+  }
+
+  else{
+
+    await state.write.writeValue(bytes);
 
   }
 
@@ -1234,7 +1228,7 @@ async function sendWait(
   );
 
 
-  await writeRaw(
+  await writeControlRaw(
     packet
   );
 
@@ -1244,8 +1238,7 @@ async function sendWait(
 
 
   while(
-    Date.now() -
-    start <
+    Date.now() - start <
     timeout
   ){
 
@@ -1255,29 +1248,21 @@ async function sendWait(
     );
 
 
-    for(
-      const rx
-      of newRx
-    ){
+    for(const rx of newRx){
 
       for(
         const parsed
         of parsePackets(rx.hex)
       ){
 
-        if(
-          !parsed.checksumOk
-        ){
+        if(!parsed.checksumOk){
 
           continue;
 
         }
 
 
-        if(
-          parsed.command ===
-          0x00
-        ){
+        if(parsed.command === 0x00){
 
           return {
             ok:false,
@@ -1288,10 +1273,7 @@ async function sendWait(
         }
 
 
-        if(
-          parsed.command ===
-          expected
-        ){
+        if(parsed.command === expected){
 
           return {
             ok:true,
@@ -1305,7 +1287,7 @@ async function sendWait(
     }
 
 
-    await delay(40);
+    await delay(35);
 
   }
 
@@ -1327,14 +1309,11 @@ function detectFormat(code){
   if(/^\d{13}$/.test(code))
   return "EAN13";
 
-
   if(/^\d{8}$/.test(code))
   return "EAN8";
 
-
   if(/^\d{12}$/.test(code))
   return "UPC";
-
 
   return "CODE128";
 
@@ -1470,12 +1449,9 @@ function renderItems(){
   `${state.items.length} 筆商品`;
 
 
-  if(
-    !state.items.length
-  ){
+  if(!state.items.length){
 
-    $("items")
-    .innerHTML =
+    $("items").innerHTML =
     '<div class="help" style="margin-top:10px">目前沒有商品</div>';
 
 
@@ -1486,8 +1462,7 @@ function renderItems(){
   }
 
 
-  $("items")
-  .innerHTML =
+  $("items").innerHTML =
   state.items
 
   .map(
@@ -1566,9 +1541,7 @@ $("items")
 
     if(
       event.target.classList
-      .contains(
-        "itemCheck"
-      )
+      .contains("itemCheck")
     ){
 
       state.items[index]
@@ -1580,9 +1553,7 @@ $("items")
 
     if(
       event.target.classList
-      .contains(
-        "qtyInput"
-      )
+      .contains("qtyInput")
     ){
 
       let qty =
@@ -1701,12 +1672,9 @@ function addItem(){
   });
 
 
-  $("name").value =
-  "";
+  $("name").value = "";
 
-
-  $("code").value =
-  "";
+  $("code").value = "";
 
 
   renderItems();
@@ -1723,22 +1691,18 @@ addItem;
 $("clearInputBtn").onclick =
 () => {
 
-  $("name").value =
-  "";
+  $("name").value = "";
 
-
-  $("code").value =
-  "";
+  $("code").value = "";
 
 };
 
 
 /* =========================
-   批次
+   批次新增
 ========================= */
 
-$("bulkAddBtn").onclick =
-() => {
+function parseBulk(){
 
   const text =
   $("bulkInput")
@@ -1748,11 +1712,10 @@ $("bulkAddBtn").onclick =
 
   if(!text){
 
-    $("bulkStatus")
-    .textContent =
-    "請先輸入資料";
-
-    return;
+    return {
+      added:0,
+      skipped:0
+    };
 
   }
 
@@ -1790,15 +1753,13 @@ $("bulkAddBtn").onclick =
 
       name =
       (
-        parts[0] ||
-        ""
+        parts[0] || ""
       ).trim();
 
 
       code =
       (
-        parts[1] ||
-        ""
+        parts[1] || ""
       ).trim();
 
     }
@@ -1814,8 +1775,7 @@ $("bulkAddBtn").onclick =
 
       code =
       (
-        parts.pop() ||
-        ""
+        parts.pop() || ""
       ).trim();
 
 
@@ -1878,20 +1838,35 @@ $("bulkAddBtn").onclick =
   }
 
 
+  return {
+    added,
+    skipped
+  };
+
+}
+
+
+$("bulkAddBtn").onclick =
+() => {
+
+  const result =
+  parseBulk();
+
+
   $("bulkStatus")
   .textContent =
-  `已加入 ${added} 筆`
+  `已加入 ${result.added} 筆`
   +
   (
-    skipped
+    result.skipped
     ?
-    `，略過 ${skipped} 筆`
+    `，略過 ${result.skipped} 筆`
     :
     ""
   );
 
 
-  if(added){
+  if(result.added){
 
     $("bulkInput").value =
     "";
@@ -1909,12 +1884,9 @@ $("bulkAddBtn").onclick =
 $("bulkClearBtn").onclick =
 () => {
 
-  $("bulkInput").value =
-  "";
+  $("bulkInput").value = "";
 
-
-  $("bulkStatus").textContent =
-  "";
+  $("bulkStatus").textContent = "";
 
 };
 
@@ -1958,8 +1930,7 @@ $("unselectAllBtn").onclick =
 $("clearAllBtn").onclick =
 () => {
 
-  state.items =
-  [];
+  state.items = [];
 
 
   renderItems();
@@ -1970,7 +1941,7 @@ $("clearAllBtn").onclick =
 
 
 /* =========================
-   建立列印清單
+   列印清單
 ========================= */
 
 function expandedItems(
@@ -1993,20 +1964,15 @@ function expandedItems(
   );
 
 
-  const output =
-  [];
+  const output = [];
 
 
-  for(
-    const item
-    of source
-  ){
+  for(const item of source){
 
     const qty =
     Math.max(
       1,
-      Number(item.qty) ||
-      1
+      Number(item.qty) || 1
     );
 
 
@@ -2029,7 +1995,7 @@ function expandedItems(
 
 
 /* =========================
-   Preview
+   Canvas
 ========================= */
 
 function buildCanvas(
@@ -2082,12 +2048,16 @@ function buildCanvas(
 
 
       return {
+
         item,
+
         barcode,
+
         height:
         32 +
         barcode.height +
         gap
+
       };
 
     }
@@ -2101,7 +2071,7 @@ function buildCanvas(
 
 
   let height =
-  mmToPx(2);
+  mmToPx(1);
 
 
   for(
@@ -2118,25 +2088,13 @@ function buildCanvas(
   if(footer){
 
     height +=
-    34;
+    30;
 
   }
 
 
   height +=
-  mmToPx(2);
-
-
-  if(
-    height >
-    65000
-  ){
-
-    throw new Error(
-      "列印內容太長，請分批列印"
-    );
-
-  }
+  mmToPx(1);
 
 
   const canvas =
@@ -2151,7 +2109,7 @@ function buildCanvas(
 
   canvas.height =
   Math.max(
-    24,
+    16,
     height
   );
 
@@ -2187,7 +2145,7 @@ function buildCanvas(
 
 
   let y =
-  mmToPx(2);
+  mmToPx(1);
 
 
   for(
@@ -2200,16 +2158,14 @@ function buildCanvas(
 
 
     ctx.fillText(
-      block.item.name ||
-      "",
+      block.item.name || "",
       width / 2,
       y,
       contentWidth
     );
 
 
-    y +=
-    32;
+    y += 32;
 
 
     ctx.imageSmoothingEnabled =
@@ -2227,8 +2183,7 @@ function buildCanvas(
 
 
     y +=
-    block.barcode.height
-    +
+    block.barcode.height +
     gap;
 
   }
@@ -2254,6 +2209,200 @@ function buildCanvas(
 
 }
 
+
+/* =========================
+   列印前裁掉底部白紙
+========================= */
+
+function cropCanvasForPrint(
+  source
+){
+
+  const ctx =
+  source.getContext(
+    "2d"
+  );
+
+
+  const image =
+  ctx.getImageData(
+    0,
+    0,
+    source.width,
+    source.height
+  );
+
+
+  const pixels =
+  image.data;
+
+
+  let lastContentRow =
+  -1;
+
+
+  for(
+    let y=
+    source.height - 1;
+    y>=0;
+    y--
+  ){
+
+    let found =
+    false;
+
+
+    for(
+      let x=0;
+      x<source.width;
+      x++
+    ){
+
+      const index =
+      (
+        y *
+        source.width +
+        x
+      ) *
+      4;
+
+
+      const gray =
+
+      (
+        pixels[index] * 299
+
+        +
+
+        pixels[index+1] * 587
+
+        +
+
+        pixels[index+2] * 114
+      )
+
+      /
+
+      1000;
+
+
+      if(gray < 220){
+
+        found =
+        true;
+
+        break;
+
+      }
+
+    }
+
+
+    if(found){
+
+      lastContentRow =
+      y;
+
+      break;
+
+    }
+
+  }
+
+
+  if(lastContentRow < 0){
+
+    lastContentRow =
+    7;
+
+  }
+
+
+  const extra =
+  mmToPx(
+    Number(
+      $("endGap").value
+    )
+  );
+
+
+  let newHeight =
+  lastContentRow +
+  1 +
+  extra;
+
+
+  /*
+  最少 8 dots
+  */
+
+  newHeight =
+  Math.max(
+    8,
+    newHeight
+  );
+
+
+  /*
+  高度限制
+  */
+
+  if(newHeight > 65535){
+
+    throw new Error(
+      "內容太長，請分批列印"
+    );
+
+  }
+
+
+  const output =
+  document.createElement(
+    "canvas"
+  );
+
+
+  output.width =
+  source.width;
+
+
+  output.height =
+  newHeight;
+
+
+  const outputCtx =
+  output.getContext(
+    "2d"
+  );
+
+
+  outputCtx.fillStyle =
+  "#fff";
+
+
+  outputCtx.fillRect(
+    0,
+    0,
+    output.width,
+    output.height
+  );
+
+
+  outputCtx.drawImage(
+    source,
+    0,
+    0
+  );
+
+
+  return output;
+
+}
+
+
+/* =========================
+   Preview
+========================= */
 
 function drawPreview(){
 
@@ -2313,15 +2462,12 @@ function drawPreview(){
 
 
 /* =========================
-   Canvas → BW1
+   Canvas → 黑白點陣
 ========================= */
 
 function sameRow(a,b){
 
-  if(
-    a.length !==
-    b.length
-  ){
+  if(a.length !== b.length){
 
     return false;
 
@@ -2334,10 +2480,7 @@ function sameRow(a,b){
     i++
   ){
 
-    if(
-      a[i] !==
-      b[i]
-    ){
+    if(a[i] !== b[i]){
 
       return false;
 
@@ -2380,8 +2523,7 @@ function canvasToRuns(canvas){
   width / 8;
 
 
-  const rows =
-  [];
+  const rows = [];
 
 
   for(
@@ -2396,8 +2538,7 @@ function canvasToRuns(canvas){
     );
 
 
-    let black =
-    0;
+    let black = 0;
 
 
     for(
@@ -2411,10 +2552,12 @@ function canvasToRuns(canvas){
         y *
         width +
         x
-      ) * 4;
+      ) *
+      4;
 
 
       const gray =
+
       (
         pixels[index] * 299
         +
@@ -2426,10 +2569,7 @@ function canvasToRuns(canvas){
       1000;
 
 
-      if(
-        gray <
-        170
-      ){
+      if(gray < 170){
 
         row[x >> 3] |=
         0x80 >>
@@ -2451,18 +2591,12 @@ function canvasToRuns(canvas){
   }
 
 
-  const runs =
-  [];
+  const runs = [];
+
+  let y = 0;
 
 
-  let y =
-  0;
-
-
-  while(
-    y <
-    rows.length
-  ){
+  while(y < rows.length){
 
     const first =
     rows[y];
@@ -2503,8 +2637,7 @@ function canvasToRuns(canvas){
     });
 
 
-    y +=
-    repeat;
+    y += repeat;
 
   }
 
@@ -2601,6 +2734,10 @@ function updateButtons(){
   );
 
 
+  $("stopPrintBtn").disabled =
+  !state.printing;
+
+
   $("gattState")
   .textContent =
   String(
@@ -2657,8 +2794,7 @@ async () => {
 
     $("deviceName")
     .textContent =
-    device.name ||
-    "—";
+    device.name || "—";
 
 
     state.server =
@@ -2687,12 +2823,11 @@ async () => {
     );
 
 
-    state.rx =
-    [];
+    state.rx = [];
 
+    state.needsReconnect = false;
 
-    state.needsReconnect =
-    false;
+    state.stopRequested = false;
 
 
     state.notify
@@ -2721,10 +2856,7 @@ async () => {
         });
 
 
-        if(
-          state.rx.length >
-          1000
-        ){
+        if(state.rx.length > 1000){
 
           state.rx.shift();
 
@@ -2748,24 +2880,17 @@ async () => {
       "gattserverdisconnected",
       () => {
 
-        state.server =
-        null;
+        state.server = null;
 
+        state.write = null;
 
-        state.write =
-        null;
+        state.notify = null;
 
+        state.printing = false;
 
-        state.notify =
-        null;
+        state.needsReconnect = false;
 
-
-        state.printing =
-        false;
-
-
-        state.needsReconnect =
-        false;
+        state.stopRequested = false;
 
 
         $("bleStatus")
@@ -2795,7 +2920,7 @@ async () => {
 
 
     log(
-      "V13 B3S ready"
+      "V14 B3S ready"
     );
 
 
@@ -2878,6 +3003,15 @@ async function ackStep(
   timeout=3500
 ){
 
+  if(state.stopRequested){
+
+    throw new Error(
+      "STOP_REQUESTED"
+    );
+
+  }
+
+
   $("printStatus")
   .className =
   "status warn";
@@ -2896,18 +3030,14 @@ async function ackStep(
   );
 
 
-  if(
-    result.ok
-  ){
+  if(result.ok){
 
     return result;
 
   }
 
 
-  if(
-    result.unsupported
-  ){
+  if(result.unsupported){
 
     throw new Error(
       `${label}：CMD 00 NOT_SUPPORTED`
@@ -2924,6 +3054,78 @@ async function ackStep(
 
 
 /* =========================
+   緊急／人工停止
+========================= */
+
+async function safeFinishPrint(){
+
+  let pageOk =
+  false;
+
+
+  try{
+
+    const page =
+    await sendWait(
+      CONTROL.pageEnd(),
+      0xE4,
+      3000
+    );
+
+
+    pageOk =
+    !!page.ok;
+
+  }catch{}
+
+
+  try{
+
+    await delay(80);
+
+
+    await sendWait(
+      CONTROL.printEnd(),
+      0xF4,
+      3000
+    );
+
+  }catch{}
+
+
+  return pageOk;
+
+}
+
+
+$("stopPrintBtn").onclick =
+() => {
+
+  if(!state.printing)
+  return;
+
+
+  state.stopRequested =
+  true;
+
+
+  $("printStatus")
+  .className =
+  "status warn";
+
+
+  $("printStatus")
+  .textContent =
+  "⏹ 正在停止列印…";
+
+
+  $("stopPrintBtn").disabled =
+  true;
+
+};
+
+
+/* =========================
    列印核心
 ========================= */
 
@@ -2932,9 +3134,7 @@ async function printItems(
   sourceItems
 ){
 
-  if(
-    !printList.length
-  ){
+  if(!printList.length){
 
     alert(
       "沒有可列印商品"
@@ -2945,8 +3145,9 @@ async function printItems(
   }
 
 
-  state.printing =
-  true;
+  state.printing = true;
+
+  state.stopRequested = false;
 
 
   updateButtons();
@@ -2960,9 +3161,20 @@ async function printItems(
 
   try{
 
-    const canvas =
+    /*
+    先建立內容，
+    再把最後空白自動裁掉。
+    */
+
+    const originalCanvas =
     buildCanvas(
       printList
+    );
+
+
+    const canvas =
+    cropCanvasForPrint(
+      originalCanvas
     );
 
 
@@ -2974,7 +3186,7 @@ async function printItems(
 
     $("printMeta")
     .textContent =
-    `${printList.length} 份｜${canvas.width} × ${canvas.height} dots`;
+    `${printList.length} 份｜${canvas.width} × ${canvas.height} dots｜已裁掉尾端白紙`;
 
 
     await ackStep(
@@ -3054,6 +3266,15 @@ async function printItems(
       index++
     ){
 
+      if(state.stopRequested){
+
+        throw new Error(
+          "STOP_REQUESTED"
+        );
+
+      }
+
+
       await writeRaw(
         rowPacket(
           runs[index]
@@ -3063,6 +3284,9 @@ async function printItems(
 
       if(
         index % 4 === 0
+        ||
+        index ===
+        runs.length - 1
       ){
 
         progress(
@@ -3082,16 +3306,21 @@ async function printItems(
         );
 
 
-        await delay(8);
+        await delay(5);
 
       }
 
     }
 
 
+    /*
+    最後一列傳完，
+    立即 PAGE END。
+    */
+
     progress(
       88,
-      "正在結束頁面…"
+      "最後一筆完成，立即停止走紙…"
     );
 
 
@@ -3103,10 +3332,15 @@ async function printItems(
     );
 
 
-    progress(94);
+    progress(95);
 
 
-    await delay(500);
+    /*
+    不再等 500ms。
+    ACK 收到後馬上 PRINT END。
+    */
+
+    await delay(60);
 
 
     const end =
@@ -3117,9 +3351,7 @@ async function printItems(
     );
 
 
-    if(
-      !end.ok
-    ){
+    if(!end.ok){
 
       throw new Error(
         "PRINT END 沒有收到 F4"
@@ -3130,7 +3362,7 @@ async function printItems(
 
     progress(
       100,
-      "列印完成"
+      "列印完成，已停止走紙"
     );
 
 
@@ -3141,7 +3373,7 @@ async function printItems(
 
     $("printStatus")
     .textContent =
-    "✅ B3S 列印完成";
+    "✅ B3S 列印完成並已停止";
 
 
     state.needsReconnect =
@@ -3169,36 +3401,107 @@ async function printItems(
 
   catch(error){
 
-    $("printStatus")
-    .className =
-    "status err";
+    if(
+      error.message ===
+      "STOP_REQUESTED"
+    ){
+
+      log(
+        "使用者要求停止列印"
+      );
 
 
-    $("printStatus")
-    .textContent =
-    "❌ " +
-    error.message;
+      try{
+
+        /*
+        重置 stopRequested，
+        才能發送結束封包。
+        */
+
+        state.stopRequested =
+        false;
 
 
-    $("printMeta")
-    .textContent =
-    "請中斷 B3S 再重新連線後重試。";
+        await safeFinishPrint();
 
 
-    log(
-      "PRINT ERROR：" +
-      error.message
-    );
+        $("printStatus")
+        .className =
+        "status warn";
 
 
-    state.needsReconnect =
-    true;
+        $("printStatus")
+        .textContent =
+        "⏹ 列印已停止";
+
+
+        $("printMeta")
+        .textContent =
+        "已停止後續內容傳送。";
+
+
+        state.needsReconnect =
+        false;
+
+      }
+
+      catch{
+
+        $("printStatus")
+        .className =
+        "status err";
+
+
+        $("printStatus")
+        .textContent =
+        "停止失敗，請中斷 B3S";
+
+
+        state.needsReconnect =
+        true;
+
+      }
+
+    }
+
+    else{
+
+      $("printStatus")
+      .className =
+      "status err";
+
+
+      $("printStatus")
+      .textContent =
+      "❌ " +
+      error.message;
+
+
+      $("printMeta")
+      .textContent =
+      "請中斷 B3S，再重新連線後重試。";
+
+
+      log(
+        "PRINT ERROR：" +
+        error.message
+      );
+
+
+      state.needsReconnect =
+      true;
+
+    }
 
   }
 
   finally{
 
     state.printing =
+    false;
+
+
+    state.stopRequested =
     false;
 
 
@@ -3223,14 +3526,10 @@ async () => {
   );
 
 
-  const expanded =
-  [];
+  const expanded = [];
 
 
-  for(
-    const item
-    of source
-  ){
+  for(const item of source){
 
     for(
       let i=0;
@@ -3260,14 +3559,10 @@ async () => {
   [...state.items];
 
 
-  const expanded =
-  [];
+  const expanded = [];
 
 
-  for(
-    const item
-    of source
-  ){
+  for(const item of source){
 
     for(
       let i=0;
@@ -3310,12 +3605,16 @@ $("itemGap").onchange =
 drawPreview;
 
 
+$("endGap").onchange =
+drawPreview;
+
+
 $("footerText").oninput =
 drawPreview;
 
 
 /* =========================
-   相機
+   相機掃描
 ========================= */
 
 let scanner =
@@ -3326,12 +3625,96 @@ let scanning =
 false;
 
 
-$("scanBtn").onclick =
-async () => {
+let scannerMode =
+"single";
+
+
+let bulkScanCount =
+0;
+
+
+let lastScanCode =
+"";
+
+
+let lastScanTime =
+0;
+
+
+async function openScanner(
+  mode
+){
+
+  scannerMode =
+  mode;
+
+
+  bulkScanCount =
+  0;
+
+
+  lastScanCode =
+  "";
+
+
+  lastScanTime =
+  0;
+
 
   $("scannerModal")
   .style.display =
   "block";
+
+
+  if(mode === "bulk"){
+
+    $("scannerTitle")
+    .textContent =
+    "批次連續掃描";
+
+
+    $("bulkScanNameArea")
+    .style.display =
+    "block";
+
+
+    $("bulkScanCounter")
+    .textContent =
+    "已掃描 0 筆";
+
+
+    $("bulkScanName").value =
+    "";
+
+  }
+
+  else{
+
+    $("scannerTitle")
+    .textContent =
+    "掃描商品條碼";
+
+
+    $("bulkScanNameArea")
+    .style.display =
+    "none";
+
+
+    $("bulkScanCounter")
+    .textContent =
+    "";
+
+  }
+
+
+  $("scannerStatus")
+  .className =
+  "status";
+
+
+  $("scannerStatus")
+  .textContent =
+  "正在啟動相機…";
 
 
   try{
@@ -3351,32 +3734,30 @@ async () => {
 
       {
         fps:12,
-        qrbox:{
-          width:280,
-          height:130
-        }
+
+        qrbox:
+        (width,height) => ({
+
+          width:
+          Math.floor(
+            width * 0.88
+          ),
+
+          height:
+          Math.min(
+            150,
+            Math.floor(
+              height * 0.3
+            )
+          )
+
+        })
       },
 
       decoded => {
 
-        $("code").value =
-        decoded;
-
-
-        $("scannerStatus")
-        .className =
-        "status ok";
-
-
-        $("scannerStatus")
-        .textContent =
-        "掃描成功：" +
-        decoded;
-
-
-        setTimeout(
-          closeScanner,
-          400
+        handleScan(
+          decoded
         );
 
       },
@@ -3397,7 +3778,11 @@ async () => {
 
     $("scannerStatus")
     .textContent =
-    "請對準條碼";
+    mode === "bulk"
+    ?
+    "請連續掃描商品條碼"
+    :
+    "請對準商品條碼";
 
   }
 
@@ -3415,7 +3800,142 @@ async () => {
 
   }
 
-};
+}
+
+
+function handleScan(
+  decoded
+){
+
+  const now =
+  Date.now();
+
+
+  /*
+  防止同一條碼一秒內被連續讀好幾次。
+  */
+
+  if(
+    decoded ===
+    lastScanCode
+    &&
+    now -
+    lastScanTime <
+    1500
+  ){
+
+    return;
+
+  }
+
+
+  lastScanCode =
+  decoded;
+
+
+  lastScanTime =
+  now;
+
+
+  if(
+    scannerMode ===
+    "single"
+  ){
+
+    $("code").value =
+    decoded;
+
+
+    $("scannerStatus")
+    .className =
+    "status ok";
+
+
+    $("scannerStatus")
+    .textContent =
+    "掃描成功：" +
+    decoded;
+
+
+    setTimeout(
+      closeScanner,
+      350
+    );
+
+
+    return;
+
+  }
+
+
+  /*
+  批次模式：
+  商品名稱,條碼
+  */
+
+  const name =
+  $("bulkScanName")
+  .value
+  .trim();
+
+
+  const line =
+  `${name},${decoded}`;
+
+
+  const current =
+  $("bulkInput")
+  .value
+  .trim();
+
+
+  $("bulkInput")
+  .value =
+  current
+  ?
+  current +
+  "\n" +
+  line
+  :
+  line;
+
+
+  bulkScanCount++;
+
+
+  $("bulkScanCounter")
+  .textContent =
+  `已掃描 ${bulkScanCount} 筆`;
+
+
+  $("scannerStatus")
+  .className =
+  "status ok";
+
+
+  $("scannerStatus")
+  .textContent =
+  `已加入：${decoded}`;
+
+
+  /*
+  掃完一筆把名稱清空，
+  可以直接輸入下一個商品名稱。
+  */
+
+  $("bulkScanName").value =
+  "";
+
+
+  $("bulkScanName")
+  .focus();
+
+
+  $("bulkStatus")
+  .textContent =
+  `批次相機已掃描 ${bulkScanCount} 筆，關閉相機後按「加入全部」即可。`;
+
+}
 
 
 async function closeScanner(){
@@ -3458,6 +3978,26 @@ async function closeScanner(){
   "none";
 
 }
+
+
+$("scanBtn").onclick =
+() => {
+
+  openScanner(
+    "single"
+  );
+
+};
+
+
+$("bulkScanBtn").onclick =
+() => {
+
+  openScanner(
+    "bulk"
+  );
+
+};
 
 
 $("closeScannerBtn").onclick =
