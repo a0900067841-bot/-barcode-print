@@ -1,23 +1,14 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
-
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 
-<meta
-name="viewport"
-content="width=device-width,initial-scale=1,viewport-fit=cover">
-
-<title>
-商品條碼／QR Code 列印｜B3S V20
-</title>
+<title>商品條碼／QR Code 列印｜B3S V18</title>
 
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
-
 <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
 
 <style>
 
@@ -29,7 +20,6 @@ body{
   margin:0;
   background:#f4f6f8;
   color:#18202a;
-
   font-family:
   -apple-system,
   BlinkMacSystemFont,
@@ -71,42 +61,27 @@ label{
 
 .card{
   background:#fff;
-
-  border:
-  1px solid #d8dee8;
-
+  border:1px solid #d8dee8;
   border-radius:16px;
-
   padding:15px;
   margin-bottom:14px
 }
 
 label{
   display:block;
-
   font-size:14px;
-
-  margin:
-  8px 0 6px
+  margin:8px 0 6px
 }
 
 input,
 textarea,
 select{
   width:100%;
-
   min-height:46px;
-
-  padding:
-  10px 12px;
-
-  border:
-  1px solid #cfd6e1;
-
+  padding:10px 12px;
+  border:1px solid #cfd6e1;
   border-radius:10px;
-
   background:#fff;
-
   font-size:16px
 }
 
@@ -117,17 +92,11 @@ textarea{
 
 button{
   border:0;
-
   border-radius:10px;
-
   min-height:45px;
-
-  padding:
-  9px 14px;
-
+  padding:9px 14px;
   font-size:15px;
   font-weight:700;
-
   background:#eef2f6;
   color:#18202a
 }
@@ -156,11 +125,6 @@ button:disabled{
   color:#fff
 }
 
-.activeBtn{
-  background:#1265f3;
-  color:#fff
-}
-
 .actions{
   display:flex;
   flex-wrap:wrap;
@@ -175,15 +139,10 @@ button:disabled{
 }
 
 .status{
-  padding:
-  11px 12px;
-
+  padding:11px 12px;
   border-radius:10px;
-
   background:#f2f4f7;
-
-  margin:
-  10px 0
+  margin:10px 0
 }
 
 .status.ok{
@@ -202,20 +161,12 @@ button:disabled{
 }
 
 .item{
-  border:
-  1px solid #d8dee8;
-
+  border:1px solid #d8dee8;
   border-radius:13px;
-
   padding:11px;
-
   margin-top:9px;
-
   display:grid;
-
-  grid-template-columns:
-  auto 1fr;
-
+  grid-template-columns:auto 1fr;
   gap:10px
 }
 
@@ -247,9 +198,7 @@ button:disabled{
   display:flex;
   align-items:center;
   flex-wrap:wrap;
-
   gap:8px;
-
   margin-top:9px
 }
 
@@ -273,46 +222,31 @@ button:disabled{
 
 .preview{
   background:#e8eaed;
-
   border-radius:12px;
-
   padding:10px;
-
   overflow:auto
 }
 
 #previewCanvas{
   display:block;
-
   margin:auto;
-
   max-width:100%;
-
   height:auto;
-
   background:#fff
 }
 
 .switchRow{
   display:flex;
-
   align-items:center;
-
-  justify-content:
-  space-between;
-
+  justify-content:space-between;
   gap:15px;
-
-  padding:
-  10px 0
+  padding:10px 0
 }
 
 .switch{
   position:relative;
-
   width:54px;
   height:31px;
-
   flex:none
 }
 
@@ -322,31 +256,21 @@ button:disabled{
 
 .slider{
   position:absolute;
-
   inset:0;
-
   background:#d0d5dd;
-
   border-radius:999px;
-
   transition:.2s
 }
 
 .slider:before{
   content:"";
-
   position:absolute;
-
   width:25px;
   height:25px;
-
   left:3px;
   top:3px;
-
   background:#fff;
-
   border-radius:50%;
-
   transition:.2s
 }
 
@@ -355,137 +279,46 @@ button:disabled{
 }
 
 .switch input:checked + .slider:before{
-  transform:
-  translateX(23px)
+  transform:translateX(23px)
 }
 
 .progress{
   height:10px;
-
   background:#eaecf0;
-
   border-radius:999px;
-
   overflow:hidden;
-
   margin-top:10px
 }
 
 .progress>div{
   width:0;
   height:100%;
-
   background:#1265f3;
-
-  transition:
-  width .15s
+  transition:width .15s
 }
 
 .deviceGrid{
   display:grid;
-
-  grid-template-columns:
-  110px 1fr;
-
-  gap:
-  8px 12px;
-
+  grid-template-columns:110px 1fr;
+  gap:8px 12px;
   font-size:14px
-}
-
-.printerGrid{
-  display:grid;
-
-  grid-template-columns:
-  1fr 1fr;
-
-  gap:12px
-}
-
-.printerCard{
-  border:
-  2px solid #e4e7ec;
-
-  border-radius:14px;
-
-  padding:13px;
-
-  background:#fafafa
-}
-
-.printerCard.active{
-  border-color:#1265f3;
-  background:#f3f7ff
-}
-
-.printerTitle{
-  display:flex;
-
-  align-items:center;
-
-  justify-content:
-  space-between;
-
-  gap:8px
-}
-
-.activeBadge{
-  display:none;
-
-  background:#1265f3;
-  color:#fff;
-
-  padding:
-  4px 8px;
-
-  font-size:12px;
-
-  border-radius:999px
-}
-
-.printerCard.active
-.activeBadge{
-  display:inline-block
-}
-
-.slotName{
-  font-weight:700;
-  margin-bottom:4px
-}
-
-.slotDevice{
-  font-size:13px;
-  color:#667085;
-  overflow-wrap:anywhere
 }
 
 .modal{
   display:none;
-
   position:fixed;
-
   inset:0;
-
   z-index:9999;
-
-  background:
-  rgba(0,0,0,.75);
-
+  background:rgba(0,0,0,.75);
   padding:16px;
-
   overflow:auto
 }
 
 .modalBox{
   max-width:520px;
-
-  margin:
-  3vh auto;
-
+  margin:3vh auto;
   background:#fff;
-
   border-radius:16px;
-
   padding:16px
 }
 
@@ -495,30 +328,19 @@ button:disabled{
 
 .bulkScanCounter{
   font-size:15px;
-
   font-weight:700;
-
   color:#067647;
-
   margin-top:10px
 }
 
 .modeBadge{
   display:inline-block;
-
-  padding:
-  5px 9px;
-
+  padding:5px 9px;
   border-radius:999px;
-
   background:#ecfdf3;
-
   color:#067647;
-
   font-size:13px;
-
   font-weight:700;
-
   margin-top:8px
 }
 
@@ -532,11 +354,9 @@ button:disabled{
   top:-9999px
 }
 
-
 @media(max-width:700px){
 
-  .row,
-  .printerGrid{
+  .row{
     grid-template-columns:1fr
   }
 
@@ -547,63 +367,37 @@ button:disabled{
 }
 
 </style>
-
 </head>
-
 
 <body>
 
-
 <div id="qrGenerator"></div>
-
 
 <div class="wrap">
 
-
-<h1>
-商品條碼／QR Code 列印
-</h1>
-
+<h1>商品條碼／QR Code 列印</h1>
 
 <div class="sub">
-
-B3S 工作實用版 V20
-
+B3S 工作實用版 V18
 <br>
-
 <span class="modeBadge">
-雙機記憶／快速切換
+條碼＋QR Code
 </span>
-
 </div>
-
-
-
-<!-- 新增商品 -->
 
 
 <div class="card">
 
+<h2>新增商品</h2>
 
-<h2>
-新增商品
-</h2>
-
-
-<label>
-商品名稱
-</label>
-
+<label>商品名稱</label>
 
 <input
 id="name"
 placeholder="例如：可口可樂 ZERO">
 
 
-<label>
-商品條碼
-</label>
-
+<label>商品條碼</label>
 
 <input
 id="code"
@@ -611,10 +405,7 @@ inputmode="numeric"
 placeholder="沒有條碼也可以留空">
 
 
-<label>
-QR Code 內容
-</label>
-
+<label>QR Code 內容</label>
 
 <textarea
 id="qrContent"
@@ -627,31 +418,21 @@ https://example.com
 
 <div class="actions">
 
-
 <button
 id="scanBtn"
 class="ok">
-
 📷 掃描商品條碼
-
 </button>
-
 
 <button
 id="addBtn"
 class="primary">
-
 ＋ 新增商品
-
 </button>
-
 
 <button id="clearInputBtn">
-
 清除
-
 </button>
-
 
 </div>
 
@@ -663,11 +444,8 @@ margin:18px 0">
 
 
 <h2 style="font-size:18px">
-
 一次新增多筆
-
 </h2>
-
 
 <div class="help">
 
@@ -677,7 +455,7 @@ margin:18px 0">
 
 <br>
 
-沒有條碼：
+沒有條碼時也可以：
 
 商品名稱,,QR Code內容
 
@@ -693,31 +471,21 @@ placeholder="可口可樂,4710000000001,https://example.com/coke
 
 <div class="actions">
 
-
 <button
 id="bulkAddBtn"
 class="primary">
-
 ＋ 加入全部
-
 </button>
-
 
 <button
 id="bulkScanBtn"
 class="ok">
-
 📷 批次連續掃描
-
 </button>
-
 
 <button id="bulkClearBtn">
-
 清除
-
 </button>
-
 
 </div>
 
@@ -728,47 +496,28 @@ class="help"
 style="margin-top:8px">
 </div>
 
-
 </div>
-
-
-
-<!-- 商品 -->
 
 
 <div class="card">
 
-
-<h2>
-待列印商品
-</h2>
-
+<h2>待列印商品</h2>
 
 <div class="actions">
 
-
 <button id="selectAllBtn">
-
 ☑️ 全選
-
 </button>
-
 
 <button id="unselectAllBtn">
-
 取消全選
-
 </button>
-
 
 <button
 id="clearAllBtn"
 class="danger">
-
 全部清除
-
 </button>
-
 
 </div>
 
@@ -777,394 +526,221 @@ class="danger">
 id="itemCount"
 class="help"
 style="margin-top:10px">
-
 0 筆商品
-
 </div>
 
 
 <div id="items"></div>
 
-
 </div>
-
-
-
-<!-- 列印設定 -->
 
 
 <div class="card">
 
-
-<h2>
-列印設定
-</h2>
+<h2>列印設定</h2>
 
 
-<label>
-列印模式
-</label>
-
+<label>列印模式</label>
 
 <select id="printMode">
-
 
 <option
 value="name_barcode_number"
 selected>
-
 商品名稱＋條碼＋條碼號碼
-
 </option>
-
 
 <option value="name_barcode">
-
 商品名稱＋條碼
-
 </option>
-
 
 <option value="barcode_number">
-
 條碼＋條碼號碼
-
 </option>
-
 
 <option value="barcode">
-
 只有條碼
-
 </option>
-
 
 <option value="name">
-
 只有商品名稱
-
 </option>
-
 
 <option value="name_qr">
-
 商品名稱＋QR Code
-
 </option>
-
 
 <option value="qr">
-
 只有 QR Code
-
 </option>
-
 
 <option value="qr_text">
-
 QR Code＋內容文字
-
 </option>
-
 
 <option value="name_qr_text">
-
 商品名稱＋QR Code＋內容文字
-
 </option>
-
 
 <option value="name_barcode_qr">
-
 商品名稱＋條碼＋QR Code
-
 </option>
-
 
 <option value="name_barcode_number_qr">
-
 商品名稱＋條碼＋條碼號碼＋QR Code
-
 </option>
-
 
 <option value="name_custom">
-
 商品名稱＋自訂文字
-
 </option>
-
 
 <option value="custom">
-
 純自訂文字
-
 </option>
 
-
 </select>
-
 
 
 <div
 id="customTextArea"
 class="hidden">
 
-
-<label>
-自訂列印文字
-</label>
-
+<label>自訂列印文字</label>
 
 <textarea
 id="customText"
 placeholder="可以輸入多行文字">
 </textarea>
 
-
 </div>
-
 
 
 <div class="row">
 
-
 <div>
 
-
-<label>
-紙張模式
-</label>
-
+<label>紙張模式</label>
 
 <select id="paperMode">
 
-
 <option value="1">
-
 間隙紙
-
 </option>
-
 
 <option value="2">
-
 黑標紙
-
 </option>
-
 
 <option
 value="3"
 selected>
-
 連續紙
-
 </option>
-
 
 <option value="4">
-
 打孔紙
-
 </option>
-
 
 <option value="5">
-
 透明紙
-
 </option>
 
-
 </select>
-
 
 </div>
 
 
-
 <div>
 
-
-<label>
-紙寬
-</label>
-
+<label>紙寬</label>
 
 <select id="paperWidth">
 
-
-<option value="77">
-77 mm
-</option>
-
-
-<option value="70">
-70 mm
-</option>
-
-
-<option value="60">
-60 mm
-</option>
-
+<option value="77">77 mm</option>
+<option value="70">70 mm</option>
+<option value="60">60 mm</option>
 
 <option
 value="58"
 selected>
-
 58 mm
-
 </option>
 
-
-<option value="50">
-50 mm
-</option>
-
-
-<option value="40">
-40 mm
-</option>
-
-
-<option value="30">
-30 mm
-</option>
-
-
-<option value="20">
-20 mm
-</option>
-
+<option value="50">50 mm</option>
+<option value="40">40 mm</option>
+<option value="30">30 mm</option>
+<option value="20">20 mm</option>
 
 </select>
 
-
 </div>
 
-
 </div>
-
 
 
 <div class="row">
 
-
 <div>
 
-
-<label>
-條碼高度
-</label>
-
+<label>條碼高度</label>
 
 <select id="barcodeHeight"></select>
 
-
 </div>
-
 
 
 <div>
 
-
-<label>
-QR Code 尺寸
-</label>
-
+<label>QR Code 尺寸</label>
 
 <select id="qrSize"></select>
 
-
 </div>
 
-
 </div>
-
 
 
 <div class="row">
 
-
 <div>
 
-
-<label>
-列印濃度
-</label>
-
+<label>列印濃度</label>
 
 <select id="density">
 
-
-<option value="1">
-1
-</option>
-
+<option value="1">1</option>
 
 <option
 value="2"
 selected>
-
 2
-
 </option>
 
-
-<option value="3">
-3
-</option>
-
-
-<option value="4">
-4
-</option>
-
-
-<option value="5">
-5
-</option>
-
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
 
 </select>
 
-
 </div>
-
 
 
 <div>
 
-
-<label>
-商品間距
-</label>
-
+<label>商品間距</label>
 
 <select id="itemGap"></select>
 
+</div>
 
 </div>
 
 
-</div>
-
-
-
-<label>
-最下方文字／備註
-</label>
-
+<label>最下方文字／備註</label>
 
 <div class="help">
-
-可輸入多行，
-會照換行分段列印。
-
+可輸入多行，會照換行分段列印。
 </div>
-
 
 <textarea
 id="footerText"
@@ -1175,500 +751,156 @@ placeholder="例如：
 </textarea>
 
 
-
 <div class="switchRow">
-
 
 <div>
 
-
-<b>
-列印完成後自動清除
-</b>
-
+<b>列印完成後自動清除</b>
 
 <div class="help">
-
-成功列印後，
-自動移除這次商品。
-
+成功列印後自動移除這次商品。
 </div>
 
-
 </div>
-
 
 
 <label class="switch">
-
 
 <input
 type="checkbox"
 id="autoClear">
 
-
 <span class="slider"></span>
-
 
 </label>
 
-
 </div>
-
 
 
 <div class="actions">
 
-
 <button id="refreshBtn">
-
 重新預覽
-
 </button>
 
-
 </div>
 
-
 </div>
-
-
-
-<!-- 預覽 -->
 
 
 <div class="card">
 
-
-<h2>
-預覽
-</h2>
-
+<h2>預覽</h2>
 
 <div class="preview">
 
-
 <canvas id="previewCanvas"></canvas>
 
-
 </div>
 
-
 </div>
-
-
-
-<!-- B3S 管理 -->
 
 
 <div class="card">
 
-
-<h2>
-B3S 印表機
-</h2>
-
-
-<div class="help">
-
-兩個位置可以各記住一台 B3S。
-
-<br>
-
-平常只連目前身邊的那一台，
-不需要兩台同時開機。
-
-</div>
-
-
-
-<div class="printerGrid">
-
-
-<!-- SLOT 1 -->
-
-
-<div
-id="printerCard1"
-class="printerCard active">
-
-
-<div class="printerTitle">
-
-
-<b>
-印表機 1
-</b>
-
-
-<span class="activeBadge">
-
-目前槽位
-
-</span>
-
-
-</div>
-
-
-<label>
-自訂名稱
-</label>
-
-
-<input
-id="slotName1"
-placeholder="例如：家裡 B3S">
-
-
-<div
-id="slotStatus1"
-class="status">
-
-尚未設定
-
-</div>
-
-
-<div class="slotDevice">
-
-已記住裝置：
-
-<span id="rememberedDevice1">
-
-無
-
-</span>
-
-
-</div>
-
-
-<div class="actions">
-
-
-<button
-id="connectSlot1"
-class="ok">
-
-🔵 連接／切換
-
-</button>
-
-
-<button
-id="saveName1">
-
-儲存名稱
-
-</button>
-
-
-<button
-id="clearSlot1"
-class="danger">
-
-清除記憶
-
-</button>
-
-
-</div>
-
-
-</div>
-
-
-
-<!-- SLOT 2 -->
-
-
-<div
-id="printerCard2"
-class="printerCard">
-
-
-<div class="printerTitle">
-
-
-<b>
-印表機 2
-</b>
-
-
-<span class="activeBadge">
-
-目前槽位
-
-</span>
-
-
-</div>
-
-
-<label>
-自訂名稱
-</label>
-
-
-<input
-id="slotName2"
-placeholder="例如：店裡 B3S">
-
-
-<div
-id="slotStatus2"
-class="status">
-
-尚未設定
-
-</div>
-
-
-<div class="slotDevice">
-
-已記住裝置：
-
-<span id="rememberedDevice2">
-
-無
-
-</span>
-
-
-</div>
-
-
-<div class="actions">
-
-
-<button
-id="connectSlot2"
-class="ok">
-
-🔵 連接／切換
-
-</button>
-
-
-<button
-id="saveName2">
-
-儲存名稱
-
-</button>
-
-
-<button
-id="clearSlot2"
-class="danger">
-
-清除記憶
-
-</button>
-
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
+<h2>B3S 藍牙</h2>
 
 <div
 id="bleStatus"
 class="status">
-
 尚未連線
-
 </div>
-
-
-
-<div class="deviceGrid">
-
-
-<b>
-目前槽位
-</b>
-
-<span id="activeSlotDisplay">
-
-印表機 1
-
-</span>
-
-
-<b>
-名稱
-</b>
-
-<span id="activeSlotName">
-
-印表機 1
-
-</span>
-
-
-<b>
-實際裝置
-</b>
-
-<span id="deviceName">
-
-—
-
-</span>
-
-
-<b>
-Device ID
-</b>
-
-<span
-id="deviceId"
-style="overflow-wrap:anywhere">
-
-—
-
-</span>
-
-
-<b>
-GATT
-</b>
-
-<span id="gattState">
-
-false
-
-</span>
-
-
-<b>
-列印通道
-</b>
-
-<span id="channelState">
-
-未就緒
-
-</span>
-
-
-<b>
-紙張模式
-</b>
-
-<span id="paperModeDisplay">
-
-連續紙
-
-</span>
-
-
-</div>
-
 
 
 <div class="actions">
 
+<button
+id="connectBtn"
+class="ok">
+🔵 連接 B3S
+</button>
 
 <button
 id="disconnectBtn"
 disabled>
-
-中斷目前連線
-
+中斷連線
 </button>
 
-
 </div>
 
 
+<div class="deviceGrid">
+
+<b>裝置</b>
+<span id="deviceName">—</span>
+
+<b>連線</b>
+<span id="gattState">false</span>
+
+<b>列印通道</b>
+<span id="channelState">
+未就緒
+</span>
+
+<b>紙張模式</b>
+<span id="paperModeDisplay">
+連續紙
+</span>
+
 </div>
 
-
-
-<!-- Print -->
+</div>
 
 
 <div class="card">
 
-
-<h2>
-列印
-</h2>
-
+<h2>列印</h2>
 
 <div class="actions">
-
 
 <button
 id="printSelectedBtn"
 class="primary"
 disabled>
-
 🖨 列印勾選商品
-
 </button>
-
 
 <button
 id="printAllBtn"
 class="ok"
 disabled>
-
 🖨 列印全部
-
 </button>
-
 
 <button
 id="printCustomBtn"
 class="primary"
 disabled>
-
 📝 列印純文字
-
 </button>
-
 
 <button
 id="stopPrintBtn"
 class="stop"
 disabled>
-
 ⏹ 停止送紙
-
 </button>
 
-
 </div>
-
 
 
 <div
 id="printStatus"
 class="status">
-
 等待列印
-
 </div>
-
 
 
 <div class="progress">
 
-
 <div id="progressBar"></div>
 
-
 </div>
-
 
 
 <div
@@ -1677,38 +909,22 @@ class="help"
 style="margin-top:8px">
 </div>
 
-
 </div>
-
-
-
-<!-- LOG -->
 
 
 <div class="card">
 
-
-<h2>
-通訊紀錄
-</h2>
-
+<h2>通訊紀錄</h2>
 
 <div class="actions">
 
-
 <button id="copyLogBtn">
-
 複製
-
 </button>
-
 
 <button id="clearLogBtn">
-
 清除
-
 </button>
-
 
 </div>
 
@@ -1718,42 +934,29 @@ id="log"
 readonly>
 </textarea>
 
-
 </div>
 
-
 </div>
-
-
-
-<!-- Scanner -->
 
 
 <div
 id="scannerModal"
 class="modal">
 
-
 <div class="modalBox">
 
-
 <h2 id="scannerTitle">
-
 掃描商品條碼
-
 </h2>
-
 
 
 <div
 id="bulkScanNameArea"
 style="display:none">
 
-
 <label>
 商品名稱
 </label>
-
 
 <input
 id="bulkScanName"
@@ -1764,32 +967,23 @@ placeholder="先輸入商品名稱">
 QR Code 內容
 </label>
 
-
 <textarea
 id="bulkScanQr"
 placeholder="可選填">
 </textarea>
 
-
 <div class="help">
-
-掃描條碼後會自動加入批次欄。
-
+掃描條碼成功後會自動加入批次欄。
 </div>
 
-
 </div>
-
 
 
 <div
 id="scannerStatus"
 class="status">
-
 準備啟動相機…
-
 </div>
-
 
 
 <div
@@ -1798,46 +992,34 @@ class="bulkScanCounter">
 </div>
 
 
-
 <div id="qrReader"></div>
-
 
 
 <div class="actions">
 
-
 <button
 id="closeScannerBtn"
 class="danger">
-
 完成／關閉
-
 </button>
 
+</div>
 
 </div>
 
-
 </div>
-
-
-</div>
-
 
 
 <script>
-
 
 const $ =
 id =>
 document.getElementById(id);
 
 
-
 /* =========================
-   SELECT OPTIONS
+   選單
 ========================= */
-
 
 for(
   let cm=1;
@@ -1845,37 +1027,32 @@ for(
   cm++
 ){
 
-  const option =
+  const o =
   document.createElement(
     "option"
   );
 
 
-  option.value =
+  o.value =
   cm;
 
 
-  option.textContent =
+  o.textContent =
   `${cm} cm`;
 
 
-  if(
-    cm === 2
-  ){
+  if(cm === 2){
 
-    option.selected =
+    o.selected =
     true;
 
   }
 
 
   $("barcodeHeight")
-  .appendChild(
-    option
-  );
+  .appendChild(o);
 
 }
-
 
 
 for(
@@ -1884,37 +1061,32 @@ for(
   cm++
 ){
 
-  const option =
+  const o =
   document.createElement(
     "option"
   );
 
 
-  option.value =
+  o.value =
   cm;
 
 
-  option.textContent =
+  o.textContent =
   `${cm} cm`;
 
 
-  if(
-    cm === 3
-  ){
+  if(cm === 3){
 
-    option.selected =
+    o.selected =
     true;
 
   }
 
 
   $("qrSize")
-  .appendChild(
-    option
-  );
+  .appendChild(o);
 
 }
-
 
 
 for(
@@ -1923,165 +1095,51 @@ for(
   mm++
 ){
 
-  const option =
+  const o =
   document.createElement(
     "option"
   );
 
 
-  option.value =
+  o.value =
   mm;
 
 
-  option.textContent =
+  o.textContent =
   `${mm} mm`;
 
 
-  if(
-    mm === 2
-  ){
+  if(mm === 2){
 
-    option.selected =
+    o.selected =
     true;
 
   }
 
 
   $("itemGap")
-  .appendChild(
-    option
-  );
+  .appendChild(o);
 
 }
 
 
-
 /* =========================
-   BLE UUID
+   BLE
 ========================= */
-
 
 const SERVICE =
 "49535343-fe7d-4ae5-8fa9-9fafd205e455";
 
-
 const WRITE_UUID =
 "49535343-8841-43f4-a8d4-ecbe34729bb3";
-
 
 const NOTIFY_UUID =
 "49535343-1e4d-4bd9-ba61-23c647249616";
 
 
-
-/* =========================
-   SLOT STORAGE
-========================= */
-
-
-const SLOT_KEY =
-"B3S_V20_SLOTS";
-
-
-function defaultSlots(){
-
-  return {
-
-    1:{
-      name:"印表機 1",
-      deviceId:"",
-      deviceName:""
-    },
-
-    2:{
-      name:"印表機 2",
-      deviceId:"",
-      deviceName:""
-    }
-
-  };
-
-}
-
-
-function loadSlots(){
-
-  try{
-
-    const raw =
-    localStorage.getItem(
-      SLOT_KEY
-    );
-
-
-    if(
-      !raw
-    ){
-
-      return defaultSlots();
-
-    }
-
-
-    const parsed =
-    JSON.parse(raw);
-
-
-    return {
-
-      1:{
-        ...defaultSlots()[1],
-        ...(parsed[1] || {})
-      },
-
-      2:{
-        ...defaultSlots()[2],
-        ...(parsed[2] || {})
-      }
-
-    };
-
-  }
-
-  catch{
-
-    return defaultSlots();
-
-  }
-
-}
-
-
-function saveSlots(){
-
-  localStorage.setItem(
-
-    SLOT_KEY,
-
-    JSON.stringify(
-      state.slots
-    )
-
-  );
-
-}
-
-
-
-/* =========================
-   STATE
-========================= */
-
-
 const state = {
 
   items:[],
-
-  slots:
-  loadSlots(),
-
-  activeSlot:
-  1,
 
   device:null,
 
@@ -2095,27 +1153,20 @@ const state = {
 
   printing:false,
 
-  cancelRequested:false,
-
-  connecting:false
+  forceStop:false
 
 };
-
 
 
 /* =========================
    UTILS
 ========================= */
 
-
 function delay(ms){
 
   return new Promise(
     resolve =>
-    setTimeout(
-      resolve,
-      ms
-    )
+    setTimeout(resolve,ms)
   );
 
 }
@@ -2124,11 +1175,9 @@ function delay(ms){
 function mmToPx(mm){
 
   return Math.round(
-
     mm *
     203 /
     25.4
-
   );
 
 }
@@ -2152,8 +1201,7 @@ function paperDots(mm){
     Math.floor(
       mmToPx(mm) /
       8
-    )
-    *
+    ) *
     8
 
   );
@@ -2165,15 +1213,11 @@ function u16(value){
 
   return [
 
-    (
-      value >>
-      8
-    )
-    &
-    255,
+    (value >> 8)
+    & 255,
 
-    value &
-    255
+    value
+    & 255
 
   ];
 
@@ -2205,7 +1249,6 @@ function log(text){
 
 
   box.value +=
-
   `[${new Date().toLocaleTimeString()}] ${text}\n`;
 
 
@@ -2217,9 +1260,7 @@ function log(text){
 
 function escapeHtml(text){
 
-  return String(
-    text ?? ""
-  )
+  return String(text ?? "")
   .replace(
 
     /[&<>"']/g,
@@ -2243,11 +1284,9 @@ function escapeHtml(text){
 }
 
 
-
 /* =========================
-   PACKET
+   PACKETS
 ========================= */
-
 
 function frame(
   command,
@@ -2310,14 +1349,7 @@ function frame(
 }
 
 
-
-/* =========================
-   CONTROL
-========================= */
-
-
 const CONTROL = {
-
 
   connect:
   () =>
@@ -2386,81 +1418,62 @@ const CONTROL = {
     [1]
   )
 
-
 };
-
 
 
 /* =========================
    RX
 ========================= */
 
-
 function parsePackets(text){
 
   const bytes =
-  String(
-    text || ""
-  )
-
+  String(text || "")
   .trim()
-
   .split(/\s+/)
-
   .filter(Boolean)
-
   .map(
-    value =>
-    parseInt(
-      value,
-      16
-    )
+    v =>
+    parseInt(v,16)
   );
 
 
-  const output =
-  [];
+  const result = [];
 
-
-  let position =
+  let pos =
   0;
 
 
   while(
-    position <
+    pos <
     bytes.length
   ){
 
     if(
-      bytes[position] !==
-      0x55
-
+      bytes[pos] !== 0x55
       ||
-
-      bytes[position+1] !==
-      0x55
+      bytes[pos+1] !== 0x55
     ){
 
-      position++;
+      pos++;
 
       continue;
 
     }
 
 
-    const command =
-    bytes[position+2];
+    const cmd =
+    bytes[pos+2];
 
 
-    const length =
-    bytes[position+3];
+    const len =
+    bytes[pos+3];
 
 
     const checksumIndex =
-
-    position +
+    pos +
     4 +
-    length;
+    len;
 
 
     const tail =
@@ -2469,7 +1482,7 @@ function parsePackets(text){
 
 
     if(
-      tail + 1 >=
+      tail+1 >=
       bytes.length
     ){
 
@@ -2479,16 +1492,12 @@ function parsePackets(text){
 
 
     if(
-      bytes[tail] !==
-      0xAA
-
+      bytes[tail] !== 0xAA
       ||
-
-      bytes[tail+1] !==
-      0xAA
+      bytes[tail+1] !== 0xAA
     ){
 
-      position++;
+      pos++;
 
       continue;
 
@@ -2497,70 +1506,60 @@ function parsePackets(text){
 
     const payload =
     bytes.slice(
-
-      position+4,
-
-      position+4+length
-
+      pos+4,
+      pos+4+len
     );
 
 
     let checksum =
-    command ^
-    length;
+    cmd ^
+    len;
 
 
     for(
-      const value
+      const v
       of payload
     ){
 
       checksum ^=
-      value;
+      v;
 
     }
 
 
-    output.push({
+    result.push({
 
-      command,
+      command:cmd,
 
       payload,
 
       checksumOk:
-      (
-        checksum &
-        255
-      )
+      (checksum & 255)
       ===
       bytes[checksumIndex]
 
     });
 
 
-    position =
+    pos =
     tail +
     2;
 
   }
 
 
-  return output;
+  return result;
 
 }
-
 
 
 /* =========================
    BLE WRITE
 ========================= */
 
-
 async function writeRaw(bytes){
 
-  if(
-    !state.write
-  ){
+  if(!state.write){
 
     throw new Error(
       "B3S 尚未連線"
@@ -2574,13 +1573,13 @@ async function writeRaw(bytes){
 
 
   for(
-    let index=0;
-    index<bytes.length;
-    index+=chunkSize
+    let i=0;
+    i<bytes.length;
+    i+=chunkSize
   ){
 
     if(
-      state.cancelRequested
+      state.forceStop
     ){
 
       throw new Error(
@@ -2592,12 +1591,8 @@ async function writeRaw(bytes){
 
     const part =
     bytes.slice(
-
-      index,
-
-      index +
-      chunkSize
-
+      i,
+      i+chunkSize
     );
 
 
@@ -2655,12 +1650,9 @@ async function writeRaw(bytes){
 }
 
 
-
 async function writeControl(bytes){
 
-  if(
-    !state.write
-  ){
+  if(!state.write){
 
     throw new Error(
       "B3S 尚未連線"
@@ -2711,11 +1703,9 @@ async function writeControl(bytes){
 }
 
 
-
 /* =========================
    ACK
 ========================= */
-
 
 async function sendWait(
   packet,
@@ -2748,17 +1738,6 @@ async function sendWait(
     timeout
   ){
 
-    if(
-      state.cancelRequested
-    ){
-
-      throw new Error(
-        "FORCE_STOP"
-      );
-
-    }
-
-
     const incoming =
     state.rx.slice(
       startIndex
@@ -2771,12 +1750,12 @@ async function sendWait(
     ){
 
       for(
-        const parsed
+        const p
         of parsePackets(raw)
       ){
 
         if(
-          !parsed.checksumOk
+          !p.checksumOk
         ){
 
           continue;
@@ -2785,7 +1764,7 @@ async function sendWait(
 
 
         if(
-          parsed.command ===
+          p.command ===
           0x00
         ){
 
@@ -2793,9 +1772,7 @@ async function sendWait(
 
             ok:false,
 
-            unsupported:true,
-
-            packet:parsed
+            unsupported:true
 
           };
 
@@ -2803,7 +1780,7 @@ async function sendWait(
 
 
         if(
-          parsed.command ===
+          p.command ===
           expected
         ){
 
@@ -2811,7 +1788,7 @@ async function sendWait(
 
             ok:true,
 
-            packet:parsed
+            packet:p
 
           };
 
@@ -2838,7 +1815,6 @@ async function sendWait(
 }
 
 
-
 async function ackStep(
   label,
   packet,
@@ -2847,7 +1823,7 @@ async function ackStep(
 ){
 
   if(
-    state.cancelRequested
+    state.forceStop
   ){
 
     throw new Error(
@@ -2869,13 +1845,9 @@ async function ackStep(
 
   const result =
   await sendWait(
-
     packet,
-
     expected,
-
     timeout
-
   );
 
 
@@ -2883,7 +1855,7 @@ async function ackStep(
     result.ok
   ){
 
-    return result;
+    return;
 
   }
 
@@ -2906,17 +1878,14 @@ async function ackStep(
 }
 
 
-
 /* =========================
    BARCODE
 ========================= */
 
-
 function detectFormat(code){
 
   if(
-    /^\d{13}$/
-    .test(code)
+    /^\d{13}$/.test(code)
   ){
 
     return "EAN13";
@@ -2925,8 +1894,7 @@ function detectFormat(code){
 
 
   if(
-    /^\d{8}$/
-    .test(code)
+    /^\d{8}$/.test(code)
   ){
 
     return "EAN8";
@@ -2935,8 +1903,7 @@ function detectFormat(code){
 
 
   if(
-    /^\d{12}$/
-    .test(code)
+    /^\d{12}$/.test(code)
   ){
 
     return "UPC";
@@ -2947,7 +1914,6 @@ function detectFormat(code){
   return "CODE128";
 
 }
-
 
 
 function makeBarcode(
@@ -3065,11 +2031,9 @@ function makeBarcode(
 }
 
 
-
 /* =========================
-   QR
+   QR CODE
 ========================= */
-
 
 function makeQrCanvas(
   text,
@@ -3102,9 +2066,7 @@ function makeQrCanvas(
 
 
   new QRCode(
-
     holder,
-
     {
 
       text,
@@ -3121,7 +2083,6 @@ function makeQrCanvas(
       QRCode.CorrectLevel.M
 
     }
-
   );
 
 
@@ -3186,11 +2147,9 @@ function makeQrCanvas(
 }
 
 
-
 /* =========================
    ITEMS
 ========================= */
-
 
 function renderItems(){
 
@@ -3205,7 +2164,6 @@ function renderItems(){
 
     $("items")
     .innerHTML =
-
     '<div class="help" style="margin-top:10px">目前沒有商品</div>';
 
 
@@ -3218,7 +2176,6 @@ function renderItems(){
 
   $("items")
   .innerHTML =
-
   state.items
 
   .map(
@@ -3304,7 +2261,6 @@ function renderItems(){
 }
 
 
-
 $("items")
 .addEventListener(
   "change",
@@ -3328,7 +2284,8 @@ $("items")
 
       state.items[index]
       .selected =
-      event.target.checked;
+      event.target
+      .checked;
 
     }
 
@@ -3353,7 +2310,8 @@ $("items")
         qty < 1
       ){
 
-        qty = 1;
+        qty =
+        1;
 
       }
 
@@ -3382,7 +2340,6 @@ $("items")
 
   }
 );
-
 
 
 $("items")
@@ -3425,11 +2382,9 @@ $("items")
 );
 
 
-
 /* =========================
-   ADD ITEM
+   ADD
 ========================= */
-
 
 $("addBtn")
 .onclick =
@@ -3504,7 +2459,6 @@ $("addBtn")
 };
 
 
-
 $("clearInputBtn")
 .onclick =
 () => {
@@ -3512,8 +2466,10 @@ $("clearInputBtn")
   $("name").value =
   "";
 
+
   $("code").value =
   "";
+
 
   $("qrContent").value =
   "";
@@ -3521,11 +2477,9 @@ $("clearInputBtn")
 };
 
 
-
 /* =========================
    BULK
 ========================= */
-
 
 $("bulkAddBtn")
 .onclick =
@@ -3669,12 +2623,12 @@ $("bulkAddBtn")
 };
 
 
-
 $("bulkClearBtn")
 .onclick =
 () => {
 
-  $("bulkInput").value =
+  $("bulkInput")
+  .value =
   "";
 
 
@@ -3685,11 +2639,9 @@ $("bulkClearBtn")
 };
 
 
-
 /* =========================
    SELECT
 ========================= */
-
 
 $("selectAllBtn")
 .onclick =
@@ -3708,7 +2660,6 @@ $("selectAllBtn")
   drawPreview();
 
 };
-
 
 
 $("unselectAllBtn")
@@ -3730,7 +2681,6 @@ $("unselectAllBtn")
 };
 
 
-
 $("clearAllBtn")
 .onclick =
 () => {
@@ -3746,18 +2696,15 @@ $("clearAllBtn")
 };
 
 
-
 /* =========================
-   EXPAND ITEMS
+   EXPAND
 ========================= */
-
 
 function expandedItems(
   mode="selected"
 ){
 
   const source =
-
   mode === "all"
 
   ?
@@ -3766,8 +2713,7 @@ function expandedItems(
 
   :
 
-  state.items
-  .filter(
+  state.items.filter(
     item =>
     item.selected
   );
@@ -3784,22 +2730,18 @@ function expandedItems(
 
     const qty =
     Math.max(
-
       1,
-
       Number(
         item.qty
-      )
-      ||
+      ) ||
       1
-
     );
 
 
     for(
-      let index=0;
-      index<qty;
-      index++
+      let i=0;
+      i<qty;
+      i++
     ){
 
       output.push(
@@ -3816,11 +2758,9 @@ function expandedItems(
 }
 
 
-
 /* =========================
    TEXT
 ========================= */
-
 
 function drawMultilineText(
   ctx,
@@ -3834,9 +2774,9 @@ function drawMultilineText(
 
   const lines =
   String(
-    text || ""
+    text ||
+    ""
   )
-
   .split(
     /\r?\n/
   );
@@ -3891,11 +2831,9 @@ function drawMultilineText(
 }
 
 
-
 /* =========================
    CANVAS
 ========================= */
-
 
 function buildCanvas(
   printItems
@@ -3904,8 +2842,7 @@ function buildCanvas(
   const width =
   paperDots(
     Number(
-      $("paperWidth")
-      .value
+      $("paperWidth").value
     )
   );
 
@@ -3922,8 +2859,7 @@ function buildCanvas(
   const barcodeHeight =
   cmToPx(
     Number(
-      $("barcodeHeight")
-      .value
+      $("barcodeHeight").value
     )
   );
 
@@ -3931,8 +2867,7 @@ function buildCanvas(
   const qrSize =
   cmToPx(
     Number(
-      $("qrSize")
-      .value
+      $("qrSize").value
     )
   );
 
@@ -3940,8 +2875,7 @@ function buildCanvas(
   const gap =
   mmToPx(
     Number(
-      $("itemGap")
-      .value
+      $("itemGap").value
     )
   );
 
@@ -4095,15 +3029,12 @@ function buildCanvas(
     height +=
 
     Math.max(
-
       1,
-
       customText
       .split(
         /\r?\n/
       )
       .length
-
     )
 
     *
@@ -4127,11 +3058,8 @@ function buildCanvas(
         mode.startsWith(
           "name_"
         )
-
         ||
-
-        mode ===
-        "name"
+        mode === "name"
       ){
 
         height +=
@@ -4155,9 +3083,7 @@ function buildCanvas(
       ){
 
         height +=
-
-        block.qr.height
-        +
+        block.qr.height +
         mmToPx(1);
 
       }
@@ -4169,28 +3095,20 @@ function buildCanvas(
           "name_qr_text"
         ]
         .includes(mode)
-
         &&
-
         item.qr
       ){
 
         height +=
-
         Math.max(
-
           1,
-
           item.qr
           .split(
             /\r?\n/
           )
           .length
-
         )
-
         *
-
         25;
 
       }
@@ -4199,22 +3117,17 @@ function buildCanvas(
       if(
         mode ===
         "name_custom"
-
         &&
-
         customText
       ){
 
         height +=
-
         customText
         .split(
           /\r?\n/
         )
         .length
-
         *
-
         26;
 
       }
@@ -4327,7 +3240,8 @@ function buildCanvas(
 
       ctx,
 
-      customText || " ",
+      customText ||
+      " ",
 
       width/2,
 
@@ -4381,13 +3295,13 @@ function buildCanvas(
       ){
 
         ctx.font =
-
         '700 21px "PingFang TC","Microsoft JhengHei",sans-serif';
 
 
         ctx.fillText(
 
-          item.name || "",
+          item.name ||
+          "",
 
           width/2,
 
@@ -4474,9 +3388,7 @@ function buildCanvas(
           "name_qr_text"
         ]
         .includes(mode)
-
         &&
-
         item.qr
       ){
 
@@ -4509,9 +3421,7 @@ function buildCanvas(
       if(
         mode ===
         "name_custom"
-
         &&
-
         customText
       ){
 
@@ -4576,13 +3486,13 @@ function buildCanvas(
 }
 
 
-
 /* =========================
    CROP
 ========================= */
 
-
-function cropBottom(source){
+function cropBottom(
+  source
+){
 
   const ctx =
   source.getContext(
@@ -4637,17 +3547,20 @@ function cropBottom(source){
       const gray =
 
       (
-        pixels[index] *
+        pixels[index]
+        *
         299
 
         +
 
-        pixels[index+1] *
+        pixels[index+1]
+        *
         587
 
         +
 
-        pixels[index+2] *
+        pixels[index+2]
+        *
         114
       )
 
@@ -4671,7 +3584,9 @@ function cropBottom(source){
     }
 
 
-    if(found){
+    if(
+      found
+    ){
 
       lastRow =
       y;
@@ -4703,8 +3618,10 @@ function cropBottom(source){
 
       8,
 
-      lastRow +
-      1 +
+      lastRow
+      +
+      1
+      +
       mmToPx(1)
 
     )
@@ -4748,9 +3665,12 @@ function cropBottom(source){
 
 
   out.drawImage(
+
     source,
+
     0,
     0
+
   );
 
 
@@ -4759,11 +3679,9 @@ function cropBottom(source){
 }
 
 
-
 /* =========================
    PREVIEW
 ========================= */
-
 
 function drawPreview(){
 
@@ -4806,8 +3724,7 @@ function drawPreview(){
     target.width =
     paperDots(
       Number(
-        $("paperWidth")
-        .value
+        $("paperWidth").value
       )
     );
 
@@ -4865,9 +3782,12 @@ function drawPreview(){
     target
     .getContext("2d")
     .drawImage(
+
       source,
+
       0,
       0
+
     );
 
   }
@@ -4883,11 +3803,9 @@ function drawPreview(){
 }
 
 
-
 /* =========================
    BITMAP
 ========================= */
-
 
 function sameRow(a,b){
 
@@ -4902,14 +3820,14 @@ function sameRow(a,b){
 
 
   for(
-    let index=0;
-    index<a.length;
-    index++
+    let i=0;
+    i<a.length;
+    i++
   ){
 
     if(
-      a[index] !==
-      b[index]
+      a[i] !==
+      b[i]
     ){
 
       return false;
@@ -4922,7 +3840,6 @@ function sameRow(a,b){
   return true;
 
 }
-
 
 
 function canvasToRuns(canvas){
@@ -4989,17 +3906,20 @@ function canvasToRuns(canvas){
       const gray =
 
       (
-        pixels[index] *
+        pixels[index]
+        *
         299
 
         +
 
-        pixels[index+1] *
+        pixels[index+1]
+        *
         587
 
         +
 
-        pixels[index+2] *
+        pixels[index+2]
+        *
         114
       )
 
@@ -5109,7 +4029,6 @@ function canvasToRuns(canvas){
 }
 
 
-
 function rowPacket(run){
 
   return frame(
@@ -5145,11 +4064,9 @@ function rowPacket(run){
 }
 
 
-
 /* =========================
-   CONNECTION
+   UI
 ========================= */
-
 
 function connected(){
 
@@ -5170,755 +4087,6 @@ function connected(){
 }
 
 
-
-function resetConnection(){
-
-  state.device =
-  null;
-
-
-  state.server =
-  null;
-
-
-  state.write =
-  null;
-
-
-  state.notify =
-  null;
-
-
-  state.rx =
-  [];
-
-
-  state.cancelRequested =
-  false;
-
-}
-
-
-
-async function disconnectCurrent(){
-
-  if(
-    state.device
-    ?.gatt
-    ?.connected
-  ){
-
-    try{
-
-      state.device
-      .gatt
-      .disconnect();
-
-    }
-
-    catch{}
-
-  }
-
-
-  await delay(100);
-
-
-  resetConnection();
-
-
-  updateButtons();
-
-}
-
-
-
-/* =========================
-   SLOTS UI
-========================= */
-
-
-function slotLabel(number){
-
-  const slot =
-  state.slots[number];
-
-
-  return (
-    slot.name ||
-    `印表機 ${number}`
-  );
-
-}
-
-
-
-function renderSlots(){
-
-  for(
-    const number
-    of [1,2]
-  ){
-
-    const slot =
-    state.slots[number];
-
-
-    $(`slotName${number}`)
-    .value =
-    slot.name;
-
-
-    $(`rememberedDevice${number}`)
-    .textContent =
-
-    slot.deviceName
-
-    ?
-
-    `${slot.deviceName}${slot.deviceId ? "｜" + slot.deviceId : ""}`
-
-    :
-
-    "無";
-
-
-    const card =
-    $(`printerCard${number}`);
-
-
-    card
-    .classList
-    .toggle(
-
-      "active",
-
-      state.activeSlot ===
-      number
-
-    );
-
-
-    const status =
-    $(`slotStatus${number}`);
-
-
-    if(
-      connected()
-
-      &&
-
-      state.activeSlot ===
-      number
-    ){
-
-      status.className =
-      "status ok";
-
-
-      status.textContent =
-      "✅ 目前已連線";
-
-    }
-
-    else if(
-      slot.deviceId
-      ||
-      slot.deviceName
-    ){
-
-      status.className =
-      "status";
-
-
-      status.textContent =
-      "已記住，尚未連線";
-
-    }
-
-    else{
-
-      status.className =
-      "status";
-
-
-      status.textContent =
-      "尚未設定";
-
-    }
-
-  }
-
-
-  $("activeSlotDisplay")
-  .textContent =
-  `印表機 ${state.activeSlot}`;
-
-
-  $("activeSlotName")
-  .textContent =
-  slotLabel(
-    state.activeSlot
-  );
-
-}
-
-
-
-/* =========================
-   SAVE SLOT NAMES
-========================= */
-
-
-function saveSlotName(number){
-
-  const value =
-  $(`slotName${number}`)
-  .value
-  .trim();
-
-
-  state.slots[number]
-  .name =
-
-  value ||
-  `印表機 ${number}`;
-
-
-  saveSlots();
-
-  renderSlots();
-
-  updateButtons();
-
-}
-
-
-
-$("saveName1")
-.onclick =
-() =>
-saveSlotName(1);
-
-
-$("saveName2")
-.onclick =
-() =>
-saveSlotName(2);
-
-
-
-/* =========================
-   CLEAR SLOT
-========================= */
-
-
-async function clearSlot(number){
-
-  if(
-    state.activeSlot ===
-    number
-
-    &&
-
-    connected()
-  ){
-
-    await disconnectCurrent();
-
-  }
-
-
-  state.slots[number] = {
-
-    name:
-    `印表機 ${number}`,
-
-    deviceId:"",
-
-    deviceName:""
-
-  };
-
-
-  saveSlots();
-
-  renderSlots();
-
-  updateButtons();
-
-}
-
-
-
-$("clearSlot1")
-.onclick =
-() =>
-clearSlot(1);
-
-
-$("clearSlot2")
-.onclick =
-() =>
-clearSlot(2);
-
-
-
-/* =========================
-   GET REMEMBERED DEVICE
-========================= */
-
-
-async function findRememberedDevice(
-  number
-){
-
-  const slot =
-  state.slots[number];
-
-
-  if(
-    !slot.deviceId
-  ){
-
-    return null;
-
-  }
-
-
-  if(
-    !navigator.bluetooth
-    ?.getDevices
-  ){
-
-    return null;
-
-  }
-
-
-  try{
-
-    const devices =
-    await navigator.bluetooth
-    .getDevices();
-
-
-    return (
-      devices.find(
-        device =>
-        device.id ===
-        slot.deviceId
-      )
-      ||
-      null
-    );
-
-  }
-
-  catch{
-
-    return null;
-
-  }
-
-}
-
-
-
-/* =========================
-   CONNECT DEVICE
-========================= */
-
-
-async function setupDevice(
-  device,
-  slotNumber
-){
-
-  state.device =
-  device;
-
-
-  state.server =
-  await device.gatt
-  .connect();
-
-
-  const service =
-  await state.server
-  .getPrimaryService(
-    SERVICE
-  );
-
-
-  state.write =
-  await service
-  .getCharacteristic(
-    WRITE_UUID
-  );
-
-
-  state.notify =
-  await service
-  .getCharacteristic(
-    NOTIFY_UUID
-  );
-
-
-  state.rx =
-  [];
-
-
-  state.notify
-  .addEventListener(
-
-    "characteristicvaluechanged",
-
-    event => {
-
-      const value =
-      event.target.value;
-
-
-      const bytes =
-      new Uint8Array(
-
-        value.buffer,
-
-        value.byteOffset,
-
-        value.byteLength
-
-      );
-
-
-      const data =
-      hex(bytes);
-
-
-      state.rx.push(
-        data
-      );
-
-
-      if(
-        state.rx.length >
-        1000
-      ){
-
-        state.rx.shift();
-
-      }
-
-
-      log(
-        "RX：" +
-        data
-      );
-
-    }
-
-  );
-
-
-  await state.notify
-  .startNotifications();
-
-
-  device
-  .addEventListener(
-
-    "gattserverdisconnected",
-
-    () => {
-
-      state.server =
-      null;
-
-
-      state.write =
-      null;
-
-
-      state.notify =
-      null;
-
-
-      state.printing =
-      false;
-
-
-      state.cancelRequested =
-      false;
-
-
-      $("bleStatus")
-      .className =
-      "status warn";
-
-
-      $("bleStatus")
-      .textContent =
-      "已中斷";
-
-
-      updateButtons();
-
-    }
-
-  );
-
-
-  state.slots[slotNumber]
-  .deviceId =
-  device.id ||
-  "";
-
-
-  state.slots[slotNumber]
-  .deviceName =
-  device.name ||
-  "B3S";
-
-
-  saveSlots();
-
-
-  $("deviceName")
-  .textContent =
-  device.name ||
-  "B3S";
-
-
-  $("deviceId")
-  .textContent =
-  device.id ||
-  "—";
-
-
-  $("bleStatus")
-  .className =
-  "status ok";
-
-
-  $("bleStatus")
-  .textContent =
-  `✅ 已連線｜${slotLabel(slotNumber)}`;
-
-
-  log(
-    `CONNECTED SLOT ${slotNumber}｜${device.name || "B3S"}`
-  );
-
-
-  renderSlots();
-
-  updateButtons();
-
-}
-
-
-
-/* =========================
-   SWITCH SLOT
-========================= */
-
-
-async function connectSlot(number){
-
-  if(
-    state.connecting
-    ||
-    state.printing
-  ){
-
-    return;
-
-  }
-
-
-  state.connecting =
-  true;
-
-
-  state.activeSlot =
-  number;
-
-
-  renderSlots();
-
-  updateButtons();
-
-
-  try{
-
-    if(
-      connected()
-    ){
-
-      $("bleStatus")
-      .className =
-      "status warn";
-
-
-      $("bleStatus")
-      .textContent =
-      "正在切換印表機…";
-
-
-      await disconnectCurrent();
-
-    }
-
-
-    $("bleStatus")
-    .className =
-    "status warn";
-
-
-    $("bleStatus")
-    .textContent =
-    `正在連接 ${slotLabel(number)}…`;
-
-
-    let device =
-    await findRememberedDevice(
-      number
-    );
-
-
-    if(
-      device
-    ){
-
-      log(
-        `TRY REMEMBERED SLOT ${number}`
-      );
-
-
-      try{
-
-        await setupDevice(
-          device,
-          number
-        );
-
-
-        return;
-
-      }
-
-      catch(error){
-
-        log(
-          `REMEMBERED CONNECT FAILED：${error.message}`
-        );
-
-
-        resetConnection();
-
-      }
-
-    }
-
-
-    device =
-    await navigator.bluetooth
-    .requestDevice({
-
-      acceptAllDevices:true,
-
-      optionalServices:[
-        SERVICE
-      ]
-
-    });
-
-
-    await setupDevice(
-      device,
-      number
-    );
-
-  }
-
-  catch(error){
-
-    $("bleStatus")
-    .className =
-    "status err";
-
-
-    $("bleStatus")
-    .textContent =
-    "連線失敗：" +
-    error.message;
-
-
-    log(
-      "CONNECT ERROR：" +
-      error.message
-    );
-
-
-    resetConnection();
-
-  }
-
-  finally{
-
-    state.connecting =
-    false;
-
-
-    renderSlots();
-
-    updateButtons();
-
-  }
-
-}
-
-
-
-$("connectSlot1")
-.onclick =
-() =>
-connectSlot(1);
-
-
-$("connectSlot2")
-.onclick =
-() =>
-connectSlot(2);
-
-
-
-$("disconnectBtn")
-.onclick =
-async () => {
-
-  await disconnectCurrent();
-
-
-  $("bleStatus")
-  .className =
-  "status";
-
-
-  $("bleStatus")
-  .textContent =
-  "尚未連線";
-
-};
-
-
-
-/* =========================
-   BUTTON STATUS
-========================= */
-
-
 function updateButtons(){
 
   const c =
@@ -5926,8 +4094,7 @@ function updateButtons(){
 
 
   const selected =
-  state.items
-  .some(
+  state.items.some(
     item =>
     item.selected
   );
@@ -5940,9 +4107,7 @@ function updateButtons(){
 
   $("disconnectBtn")
   .disabled =
-  !c
-  ||
-  state.printing;
+  !c;
 
 
   $("printSelectedBtn")
@@ -6030,56 +4195,7 @@ function updateButtons(){
   :
   "未就緒";
 
-
-  $("deviceName")
-  .textContent =
-  state.device?.name ||
-  "—";
-
-
-  $("deviceId")
-  .textContent =
-  state.device?.id ||
-  "—";
-
-
-  for(
-    const number
-    of [1,2]
-  ){
-
-    $(`connectSlot${number}`)
-    .disabled =
-    state.printing
-    ||
-    state.connecting;
-
-
-    $(`saveName${number}`)
-    .disabled =
-    state.printing
-    ||
-    state.connecting;
-
-
-    $(`clearSlot${number}`)
-    .disabled =
-    state.printing
-    ||
-    state.connecting;
-
-  }
-
-
-  renderSlots();
-
 }
-
-
-
-/* =========================
-   PAPER MODE
-========================= */
 
 
 function paperModeName(value){
@@ -6106,7 +4222,6 @@ function paperModeName(value){
 }
 
 
-
 $("paperMode")
 .onchange =
 () => {
@@ -6114,18 +4229,231 @@ $("paperMode")
   $("paperModeDisplay")
   .textContent =
   paperModeName(
-    $("paperMode")
-    .value
+    $("paperMode").value
   );
 
 };
 
 
+/* =========================
+   CONNECT
+========================= */
+
+$("connectBtn")
+.onclick =
+async () => {
+
+  try{
+
+    $("bleStatus")
+    .className =
+    "status warn";
+
+
+    $("bleStatus")
+    .textContent =
+    "正在連接 B3S…";
+
+
+    const device =
+    await navigator.bluetooth
+    .requestDevice({
+
+      acceptAllDevices:true,
+
+      optionalServices:[
+        SERVICE
+      ]
+
+    });
+
+
+    state.device =
+    device;
+
+
+    $("deviceName")
+    .textContent =
+    device.name ||
+    "—";
+
+
+    state.server =
+    await device.gatt
+    .connect();
+
+
+    const service =
+    await state.server
+    .getPrimaryService(
+      SERVICE
+    );
+
+
+    state.write =
+    await service
+    .getCharacteristic(
+      WRITE_UUID
+    );
+
+
+    state.notify =
+    await service
+    .getCharacteristic(
+      NOTIFY_UUID
+    );
+
+
+    state.rx =
+    [];
+
+
+    state.notify
+    .addEventListener(
+
+      "characteristicvaluechanged",
+
+      event => {
+
+        const value =
+        event.target.value;
+
+
+        const bytes =
+        new Uint8Array(
+
+          value.buffer,
+
+          value.byteOffset,
+
+          value.byteLength
+
+        );
+
+
+        const data =
+        hex(bytes);
+
+
+        state.rx.push(
+          data
+        );
+
+
+        if(
+          state.rx.length >
+          1000
+        ){
+
+          state.rx.shift();
+
+        }
+
+
+        log(
+          "RX：" +
+          data
+        );
+
+      }
+
+    );
+
+
+    await state.notify
+    .startNotifications();
+
+
+    device
+    .addEventListener(
+
+      "gattserverdisconnected",
+
+      () => {
+
+        state.server =
+        null;
+
+
+        state.write =
+        null;
+
+
+        state.notify =
+        null;
+
+
+        state.printing =
+        false;
+
+
+        $("bleStatus")
+        .className =
+        "status warn";
+
+
+        $("bleStatus")
+        .textContent =
+        "已中斷";
+
+
+        updateButtons();
+
+      }
+
+    );
+
+
+    $("bleStatus")
+    .className =
+    "status ok";
+
+
+    $("bleStatus")
+    .textContent =
+    "✅ B3S 已連線";
+
+
+    updateButtons();
+
+  }
+
+  catch(error){
+
+    $("bleStatus")
+    .className =
+    "status err";
+
+
+    $("bleStatus")
+    .textContent =
+    "連線失敗：" +
+    error.message;
+
+  }
+
+};
+
+
+$("disconnectBtn")
+.onclick =
+() => {
+
+  try{
+
+    state.device
+    ?.gatt
+    ?.disconnect();
+
+  }
+  catch{}
+
+};
+
 
 /* =========================
    PROGRESS
 ========================= */
-
 
 function progress(
   percent,
@@ -6158,11 +4486,9 @@ function progress(
 }
 
 
-
 /* =========================
    STOP
 ========================= */
-
 
 $("stopPrintBtn")
 .onclick =
@@ -6177,10 +4503,6 @@ async () => {
   }
 
 
-  state.cancelRequested =
-  true;
-
-
   $("printStatus")
   .className =
   "status warn";
@@ -6188,12 +4510,11 @@ async () => {
 
   $("printStatus")
   .textContent =
-  "⏹ 正在停止送紙…";
+  "⏹ 正在停止…";
 
 
-  log(
-    "USER FORCE STOP"
-  );
+  state.forceStop =
+  false;
 
 
   try{
@@ -6203,7 +4524,6 @@ async () => {
     );
 
   }
-
   catch{}
 
 
@@ -6217,7 +4537,6 @@ async () => {
     );
 
   }
-
   catch{}
 
 
@@ -6231,21 +4550,11 @@ async () => {
     ?.disconnect();
 
   }
-
   catch{}
 
 
   state.printing =
   false;
-
-
-  state.cancelRequested =
-  false;
-
-
-  $("printStatus")
-  .className =
-  "status warn";
 
 
   $("printStatus")
@@ -6258,11 +4567,9 @@ async () => {
 };
 
 
-
 /* =========================
    PRINT
 ========================= */
-
 
 async function printItems(
   list,
@@ -6275,36 +4582,13 @@ async function printItems(
 
 
   if(
-    mode !==
-    "custom"
-
+    mode !== "custom"
     &&
-
     !list.length
   ){
 
     alert(
       "沒有可列印內容"
-    );
-
-    return;
-
-  }
-
-
-  if(
-    mode ===
-    "custom"
-
-    &&
-
-    !$("customText")
-    .value
-    .trim()
-  ){
-
-    alert(
-      "請輸入自訂文字"
     );
 
     return;
@@ -6329,17 +4613,11 @@ async function printItems(
   true;
 
 
-  state.cancelRequested =
+  state.forceStop =
   false;
 
 
   updateButtons();
-
-
-  progress(
-    0,
-    "建立列印資料…"
-  );
 
 
   try{
@@ -6362,24 +4640,11 @@ async function printItems(
     );
 
 
-    $("printMeta")
-    .textContent =
-
-    `${slotLabel(state.activeSlot)}｜${canvas.width} × ${canvas.height} dots｜${paperModeName($("paperMode").value)}`;
-
-
     await ackStep(
-
       "CONNECT",
-
       CONTROL.connect(),
-
       0xC2
-
     );
-
-
-    progress(5);
 
 
     await ackStep(
@@ -6388,8 +4653,7 @@ async function printItems(
 
       CONTROL.density(
         Number(
-          $("density")
-          .value
+          $("density").value
         )
       ),
 
@@ -6398,17 +4662,13 @@ async function printItems(
     );
 
 
-    progress(10);
-
-
     await ackStep(
 
       "SET PAPER MODE",
 
       CONTROL.labelType(
         Number(
-          $("paperMode")
-          .value
+          $("paperMode").value
         )
       ),
 
@@ -6417,35 +4677,18 @@ async function printItems(
     );
 
 
-    progress(15);
-
-
     await ackStep(
-
       "PRINT START",
-
       CONTROL.printStart(),
-
       0x02
-
     );
-
-
-    progress(20);
 
 
     await ackStep(
-
       "PAGE START",
-
       CONTROL.pageStart(),
-
       0x04
-
     );
-
-
-    progress(25);
 
 
     await ackStep(
@@ -6467,48 +4710,21 @@ async function printItems(
     );
 
 
-    progress(
-
-      30,
-
-      `傳送點陣 0/${runs.length}`
-
-    );
-
-
     for(
-      let index=0;
-      index<runs.length;
-      index++
+      let i=0;
+      i<runs.length;
+      i++
     ){
 
-      if(
-        state.cancelRequested
-      ){
-
-        throw new Error(
-          "FORCE_STOP"
-        );
-
-      }
-
-
       await writeRaw(
-
         rowPacket(
-          runs[index]
+          runs[i]
         )
-
       );
 
 
       if(
-        index % 4 === 0
-
-        ||
-
-        index ===
-        runs.length - 1
+        i % 4 === 0
       ){
 
         progress(
@@ -6516,18 +4732,15 @@ async function printItems(
           30
           +
           Math.round(
-
             (
-              index + 1
+              i /
+              runs.length
             )
-            /
-            runs.length
             *
             55
-
           ),
 
-          `傳送點陣 ${index+1}/${runs.length}`
+          `傳送點陣 ${i+1}/${runs.length}`
 
         );
 
@@ -6537,12 +4750,6 @@ async function printItems(
       }
 
     }
-
-
-    progress(
-      88,
-      "內容完成，正在結束列印…"
-    );
 
 
     const page =
@@ -6566,9 +4773,6 @@ async function printItems(
       );
 
     }
-
-
-    progress(94);
 
 
     await delay(40);
@@ -6610,27 +4814,23 @@ async function printItems(
 
     $("printStatus")
     .textContent =
-
-    `✅ ${slotLabel(state.activeSlot)} 列印完成`;
+    "✅ B3S 列印完成";
 
 
     if(
       $("autoClear")
       .checked
-
       &&
-
       mode !==
       "custom"
     ){
 
       state.items =
-
-      state.items
-      .filter(
+      state.items.filter(
         item =>
-        !sourceItems
-        .includes(item)
+        !sourceItems.includes(
+          item
+        )
       );
 
 
@@ -6644,41 +4844,15 @@ async function printItems(
 
   catch(error){
 
-    if(
-      error.message ===
-      "FORCE_STOP"
-    ){
-
-      $("printStatus")
-      .className =
-      "status warn";
+    $("printStatus")
+    .className =
+    "status err";
 
 
-      $("printStatus")
-      .textContent =
-      "⏹ 列印已停止";
-
-    }
-
-    else{
-
-      $("printStatus")
-      .className =
-      "status err";
-
-
-      $("printStatus")
-      .textContent =
-      "❌ " +
-      error.message;
-
-
-      log(
-        "PRINT ERROR：" +
-        error.message
-      );
-
-    }
+    $("printStatus")
+    .textContent =
+    "❌ " +
+    error.message;
 
   }
 
@@ -6688,14 +4862,8 @@ async function printItems(
     false;
 
 
-    if(
-      !state.cancelRequested
-    ){
-
-      state.cancelRequested =
-      false;
-
-    }
+    state.forceStop =
+    false;
 
 
     updateButtons();
@@ -6705,19 +4873,16 @@ async function printItems(
 }
 
 
-
 /* =========================
    PRINT BUTTONS
 ========================= */
-
 
 $("printSelectedBtn")
 .onclick =
 async () => {
 
   const source =
-  state.items
-  .filter(
+  state.items.filter(
     item =>
     item.selected
   );
@@ -6733,9 +4898,9 @@ async () => {
   ){
 
     for(
-      let index=0;
-      index<item.qty;
-      index++
+      let i=0;
+      i<item.qty;
+      i++
     ){
 
       expanded.push(
@@ -6748,15 +4913,11 @@ async () => {
 
 
   await printItems(
-
     expanded,
-
     source
-
   );
 
 };
-
 
 
 $("printAllBtn")
@@ -6764,9 +4925,7 @@ $("printAllBtn")
 async () => {
 
   const source =
-  [
-    ...state.items
-  ];
+  [...state.items];
 
 
   const expanded =
@@ -6779,9 +4938,9 @@ async () => {
   ){
 
     for(
-      let index=0;
-      index<item.qty;
-      index++
+      let i=0;
+      i<item.qty;
+      i++
     ){
 
       expanded.push(
@@ -6794,15 +4953,11 @@ async () => {
 
 
   await printItems(
-
     expanded,
-
     source
-
   );
 
 };
-
 
 
 $("printCustomBtn")
@@ -6817,11 +4972,9 @@ async () => {
 };
 
 
-
 /* =========================
    MODE
 ========================= */
-
 
 function updateMode(){
 
@@ -6839,9 +4992,7 @@ function updateMode(){
     !(
       mode ===
       "custom"
-
       ||
-
       mode ===
       "name_custom"
     )
@@ -6856,11 +5007,9 @@ function updateMode(){
 }
 
 
-
 $("printMode")
 .onchange =
 updateMode;
-
 
 
 $("customText")
@@ -6874,35 +5023,27 @@ $("customText")
 };
 
 
-
 /* =========================
    SCANNER
 ========================= */
 
-
 let scanner =
 null;
-
 
 let scanning =
 false;
 
-
 let scannerMode =
 "single";
-
 
 let bulkScanCount =
 0;
 
-
 let lastCode =
 "";
 
-
 let lastTime =
 0;
-
 
 
 async function openScanner(mode){
@@ -6912,14 +5053,6 @@ async function openScanner(mode){
 
 
   bulkScanCount =
-  0;
-
-
-  lastCode =
-  "";
-
-
-  lastTime =
   0;
 
 
@@ -6944,11 +5077,6 @@ async function openScanner(mode){
     .display =
     "block";
 
-
-    $("bulkScanCounter")
-    .textContent =
-    "已掃描 0 筆";
-
   }
 
   else{
@@ -6963,22 +5091,7 @@ async function openScanner(mode){
     .display =
     "none";
 
-
-    $("bulkScanCounter")
-    .textContent =
-    "";
-
   }
-
-
-  $("scannerStatus")
-  .className =
-  "status";
-
-
-  $("scannerStatus")
-  .textContent =
-  "正在啟動相機…";
 
 
   try{
@@ -7044,17 +5157,6 @@ async function openScanner(mode){
           decoded;
 
 
-          $("scannerStatus")
-          .className =
-          "status ok";
-
-
-          $("scannerStatus")
-          .textContent =
-          "掃描成功：" +
-          decoded;
-
-
           setTimeout(
             closeScanner,
             300
@@ -7112,16 +5214,6 @@ async function openScanner(mode){
         `已掃描 ${bulkScanCount} 筆`;
 
 
-        $("scannerStatus")
-        .className =
-        "status ok";
-
-
-        $("scannerStatus")
-        .textContent =
-        `已加入：${decoded}`;
-
-
         $("bulkScanName")
         .value =
         "";
@@ -7131,35 +5223,13 @@ async function openScanner(mode){
         .value =
         "";
 
-      },
-
-      () => {}
+      }
 
     );
 
 
     scanning =
     true;
-
-
-    $("scannerStatus")
-    .className =
-    "status ok";
-
-
-    $("scannerStatus")
-    .textContent =
-
-    mode ===
-    "bulk"
-
-    ?
-
-    "請連續掃描商品條碼"
-
-    :
-
-    "請對準商品條碼";
 
   }
 
@@ -7179,14 +5249,12 @@ async function openScanner(mode){
 }
 
 
-
 async function closeScanner(){
 
   try{
 
     if(
-      scanner
-      &&
+      scanner &&
       scanning
     ){
 
@@ -7195,20 +5263,20 @@ async function closeScanner(){
     }
 
   }
-
   catch{}
 
 
   try{
 
-    if(scanner){
+    if(
+      scanner
+    ){
 
       await scanner.clear();
 
     }
 
   }
-
   catch{}
 
 
@@ -7228,14 +5296,12 @@ async function closeScanner(){
 }
 
 
-
 $("scanBtn")
 .onclick =
 () =>
 openScanner(
   "single"
 );
-
 
 
 $("bulkScanBtn")
@@ -7246,17 +5312,14 @@ openScanner(
 );
 
 
-
 $("closeScannerBtn")
 .onclick =
 closeScanner;
 
 
-
 /* =========================
    SETTINGS
 ========================= */
-
 
 [
   "paperWidth",
@@ -7265,7 +5328,6 @@ closeScanner;
   "itemGap",
   "footerText"
 ]
-
 .forEach(
   id => {
 
@@ -7286,17 +5348,14 @@ closeScanner;
 );
 
 
-
 $("refreshBtn")
 .onclick =
 drawPreview;
 
 
-
 /* =========================
    LOG
 ========================= */
-
 
 $("clearLogBtn")
 .onclick =
@@ -7306,7 +5365,6 @@ $("clearLogBtn")
   "";
 
 };
-
 
 
 $("copyLogBtn")
@@ -7320,57 +5378,33 @@ async () => {
       $("log").value
     );
 
-
-    alert(
-      "已複製"
-    );
-
   }
-
-  catch{
-
-    $("log")
-    .select();
-
-  }
+  catch{}
 
 };
-
 
 
 /* =========================
    INIT
 ========================= */
 
-
 renderItems();
-
-
-renderSlots();
-
 
 updateMode();
 
-
 drawPreview();
-
 
 updateButtons();
 
-
 progress(0);
-
 
 $("paperModeDisplay")
 .textContent =
 paperModeName(
-  $("paperMode")
-  .value
+  $("paperMode").value
 );
 
-
 </script>
-
 
 </body>
 </html>
