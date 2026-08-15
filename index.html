@@ -1,14 +1,23 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 
-<title>商品條碼／QR Code 列印｜B3S V19</title>
+<meta charset="utf-8">
+
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1,viewport-fit=cover">
+
+<title>
+商品條碼／QR Code 列印｜B3S V20
+</title>
 
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+
 <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
 
 <style>
 
@@ -20,6 +29,7 @@ body{
   margin:0;
   background:#f4f6f8;
   color:#18202a;
+
   font-family:
   -apple-system,
   BlinkMacSystemFont,
@@ -61,27 +71,42 @@ label{
 
 .card{
   background:#fff;
-  border:1px solid #d8dee8;
+
+  border:
+  1px solid #d8dee8;
+
   border-radius:16px;
+
   padding:15px;
   margin-bottom:14px
 }
 
 label{
   display:block;
+
   font-size:14px;
-  margin:8px 0 6px
+
+  margin:
+  8px 0 6px
 }
 
 input,
 textarea,
 select{
   width:100%;
+
   min-height:46px;
-  padding:10px 12px;
-  border:1px solid #cfd6e1;
+
+  padding:
+  10px 12px;
+
+  border:
+  1px solid #cfd6e1;
+
   border-radius:10px;
+
   background:#fff;
+
   font-size:16px
 }
 
@@ -92,11 +117,17 @@ textarea{
 
 button{
   border:0;
+
   border-radius:10px;
+
   min-height:45px;
-  padding:9px 14px;
+
+  padding:
+  9px 14px;
+
   font-size:15px;
   font-weight:700;
+
   background:#eef2f6;
   color:#18202a
 }
@@ -144,10 +175,15 @@ button:disabled{
 }
 
 .status{
-  padding:11px 12px;
+  padding:
+  11px 12px;
+
   border-radius:10px;
+
   background:#f2f4f7;
-  margin:10px 0
+
+  margin:
+  10px 0
 }
 
 .status.ok{
@@ -166,12 +202,20 @@ button:disabled{
 }
 
 .item{
-  border:1px solid #d8dee8;
+  border:
+  1px solid #d8dee8;
+
   border-radius:13px;
+
   padding:11px;
+
   margin-top:9px;
+
   display:grid;
-  grid-template-columns:auto 1fr;
+
+  grid-template-columns:
+  auto 1fr;
+
   gap:10px
 }
 
@@ -203,7 +247,9 @@ button:disabled{
   display:flex;
   align-items:center;
   flex-wrap:wrap;
+
   gap:8px;
+
   margin-top:9px
 }
 
@@ -227,31 +273,46 @@ button:disabled{
 
 .preview{
   background:#e8eaed;
+
   border-radius:12px;
+
   padding:10px;
+
   overflow:auto
 }
 
 #previewCanvas{
   display:block;
+
   margin:auto;
+
   max-width:100%;
+
   height:auto;
+
   background:#fff
 }
 
 .switchRow{
   display:flex;
+
   align-items:center;
-  justify-content:space-between;
+
+  justify-content:
+  space-between;
+
   gap:15px;
-  padding:10px 0
+
+  padding:
+  10px 0
 }
 
 .switch{
   position:relative;
+
   width:54px;
   height:31px;
+
   flex:none
 }
 
@@ -261,21 +322,31 @@ button:disabled{
 
 .slider{
   position:absolute;
+
   inset:0;
+
   background:#d0d5dd;
+
   border-radius:999px;
+
   transition:.2s
 }
 
 .slider:before{
   content:"";
+
   position:absolute;
+
   width:25px;
   height:25px;
+
   left:3px;
   top:3px;
+
   background:#fff;
+
   border-radius:50%;
+
   transition:.2s
 }
 
@@ -284,41 +355,61 @@ button:disabled{
 }
 
 .switch input:checked + .slider:before{
-  transform:translateX(23px)
+  transform:
+  translateX(23px)
 }
 
 .progress{
   height:10px;
+
   background:#eaecf0;
+
   border-radius:999px;
+
   overflow:hidden;
+
   margin-top:10px
 }
 
 .progress>div{
   width:0;
   height:100%;
+
   background:#1265f3;
-  transition:width .15s
+
+  transition:
+  width .15s
 }
 
 .deviceGrid{
   display:grid;
-  grid-template-columns:110px 1fr;
-  gap:8px 12px;
+
+  grid-template-columns:
+  110px 1fr;
+
+  gap:
+  8px 12px;
+
   font-size:14px
 }
 
 .printerGrid{
   display:grid;
-  grid-template-columns:1fr 1fr;
+
+  grid-template-columns:
+  1fr 1fr;
+
   gap:12px
 }
 
 .printerCard{
-  border:2px solid #e4e7ec;
+  border:
+  2px solid #e4e7ec;
+
   border-radius:14px;
+
   padding:13px;
+
   background:#fafafa
 }
 
@@ -329,39 +420,72 @@ button:disabled{
 
 .printerTitle{
   display:flex;
+
   align-items:center;
-  justify-content:space-between;
+
+  justify-content:
+  space-between;
+
   gap:8px
 }
 
 .activeBadge{
   display:none;
+
   background:#1265f3;
   color:#fff;
-  padding:4px 8px;
+
+  padding:
+  4px 8px;
+
   font-size:12px;
+
   border-radius:999px
 }
 
-.printerCard.active .activeBadge{
+.printerCard.active
+.activeBadge{
   display:inline-block
+}
+
+.slotName{
+  font-weight:700;
+  margin-bottom:4px
+}
+
+.slotDevice{
+  font-size:13px;
+  color:#667085;
+  overflow-wrap:anywhere
 }
 
 .modal{
   display:none;
+
   position:fixed;
+
   inset:0;
+
   z-index:9999;
-  background:rgba(0,0,0,.75);
+
+  background:
+  rgba(0,0,0,.75);
+
   padding:16px;
+
   overflow:auto
 }
 
 .modalBox{
   max-width:520px;
-  margin:3vh auto;
+
+  margin:
+  3vh auto;
+
   background:#fff;
+
   border-radius:16px;
+
   padding:16px
 }
 
@@ -371,19 +495,30 @@ button:disabled{
 
 .bulkScanCounter{
   font-size:15px;
+
   font-weight:700;
+
   color:#067647;
+
   margin-top:10px
 }
 
 .modeBadge{
   display:inline-block;
-  padding:5px 9px;
+
+  padding:
+  5px 9px;
+
   border-radius:999px;
+
   background:#ecfdf3;
+
   color:#067647;
+
   font-size:13px;
+
   font-weight:700;
+
   margin-top:8px
 }
 
@@ -396,6 +531,7 @@ button:disabled{
   left:-9999px;
   top:-9999px
 }
+
 
 @media(max-width:700px){
 
@@ -411,39 +547,63 @@ button:disabled{
 }
 
 </style>
+
 </head>
+
 
 <body>
 
+
 <div id="qrGenerator"></div>
+
 
 <div class="wrap">
 
-<h1>商品條碼／QR Code 列印</h1>
+
+<h1>
+商品條碼／QR Code 列印
+</h1>
+
 
 <div class="sub">
-B3S 工作實用版 V19
+
+B3S 工作實用版 V20
+
 <br>
+
 <span class="modeBadge">
-雙 B3S 印表機
+雙機記憶／快速切換
 </span>
+
 </div>
+
 
 
 <!-- 新增商品 -->
 
+
 <div class="card">
 
-<h2>新增商品</h2>
 
-<label>商品名稱</label>
+<h2>
+新增商品
+</h2>
+
+
+<label>
+商品名稱
+</label>
+
 
 <input
 id="name"
 placeholder="例如：可口可樂 ZERO">
 
 
-<label>商品條碼</label>
+<label>
+商品條碼
+</label>
+
 
 <input
 id="code"
@@ -451,7 +611,10 @@ inputmode="numeric"
 placeholder="沒有條碼也可以留空">
 
 
-<label>QR Code 內容</label>
+<label>
+QR Code 內容
+</label>
+
 
 <textarea
 id="qrContent"
@@ -464,21 +627,31 @@ https://example.com
 
 <div class="actions">
 
+
 <button
 id="scanBtn"
 class="ok">
+
 📷 掃描商品條碼
+
 </button>
+
 
 <button
 id="addBtn"
 class="primary">
+
 ＋ 新增商品
+
 </button>
 
+
 <button id="clearInputBtn">
+
 清除
+
 </button>
+
 
 </div>
 
@@ -490,13 +663,24 @@ margin:18px 0">
 
 
 <h2 style="font-size:18px">
+
 一次新增多筆
+
 </h2>
 
+
 <div class="help">
-格式：商品名稱,條碼,QR Code內容
+
+格式：
+
+商品名稱,條碼,QR Code內容
+
 <br>
-沒有條碼時：商品名稱,,QR Code內容
+
+沒有條碼：
+
+商品名稱,,QR Code內容
+
 </div>
 
 
@@ -509,21 +693,31 @@ placeholder="可口可樂,4710000000001,https://example.com/coke
 
 <div class="actions">
 
+
 <button
 id="bulkAddBtn"
 class="primary">
+
 ＋ 加入全部
+
 </button>
+
 
 <button
 id="bulkScanBtn"
 class="ok">
+
 📷 批次連續掃描
+
 </button>
 
+
 <button id="bulkClearBtn">
+
 清除
+
 </button>
+
 
 </div>
 
@@ -534,30 +728,47 @@ class="help"
 style="margin-top:8px">
 </div>
 
+
 </div>
+
 
 
 <!-- 商品 -->
 
+
 <div class="card">
 
-<h2>待列印商品</h2>
+
+<h2>
+待列印商品
+</h2>
+
 
 <div class="actions">
 
+
 <button id="selectAllBtn">
+
 ☑️ 全選
+
 </button>
 
+
 <button id="unselectAllBtn">
+
 取消全選
+
 </button>
+
 
 <button
 id="clearAllBtn"
 class="danger">
+
 全部清除
+
 </button>
+
 
 </div>
 
@@ -566,223 +777,394 @@ class="danger">
 id="itemCount"
 class="help"
 style="margin-top:10px">
+
 0 筆商品
+
 </div>
 
 
 <div id="items"></div>
 
+
 </div>
 
 
-<!-- 設定 -->
+
+<!-- 列印設定 -->
+
 
 <div class="card">
 
-<h2>列印設定</h2>
+
+<h2>
+列印設定
+</h2>
 
 
-<label>列印模式</label>
+<label>
+列印模式
+</label>
+
 
 <select id="printMode">
+
 
 <option
 value="name_barcode_number"
 selected>
+
 商品名稱＋條碼＋條碼號碼
+
 </option>
+
 
 <option value="name_barcode">
+
 商品名稱＋條碼
+
 </option>
+
 
 <option value="barcode_number">
+
 條碼＋條碼號碼
+
 </option>
+
 
 <option value="barcode">
+
 只有條碼
+
 </option>
+
 
 <option value="name">
+
 只有商品名稱
+
 </option>
+
 
 <option value="name_qr">
+
 商品名稱＋QR Code
+
 </option>
+
 
 <option value="qr">
+
 只有 QR Code
+
 </option>
+
 
 <option value="qr_text">
+
 QR Code＋內容文字
+
 </option>
+
 
 <option value="name_qr_text">
+
 商品名稱＋QR Code＋內容文字
+
 </option>
+
 
 <option value="name_barcode_qr">
+
 商品名稱＋條碼＋QR Code
+
 </option>
+
 
 <option value="name_barcode_number_qr">
+
 商品名稱＋條碼＋條碼號碼＋QR Code
+
 </option>
+
 
 <option value="name_custom">
+
 商品名稱＋自訂文字
+
 </option>
+
 
 <option value="custom">
+
 純自訂文字
+
 </option>
 
+
 </select>
+
 
 
 <div
 id="customTextArea"
 class="hidden">
 
-<label>自訂列印文字</label>
+
+<label>
+自訂列印文字
+</label>
+
 
 <textarea
 id="customText"
 placeholder="可以輸入多行文字">
 </textarea>
 
+
 </div>
+
 
 
 <div class="row">
 
+
 <div>
 
-<label>紙張模式</label>
+
+<label>
+紙張模式
+</label>
+
 
 <select id="paperMode">
 
+
 <option value="1">
+
 間隙紙
+
 </option>
 
+
 <option value="2">
+
 黑標紙
+
 </option>
+
 
 <option
 value="3"
 selected>
+
 連續紙
+
 </option>
+
 
 <option value="4">
+
 打孔紙
+
 </option>
+
 
 <option value="5">
+
 透明紙
+
 </option>
 
+
 </select>
+
 
 </div>
 
 
+
 <div>
 
-<label>紙寬</label>
+
+<label>
+紙寬
+</label>
+
 
 <select id="paperWidth">
 
-<option value="77">77 mm</option>
-<option value="70">70 mm</option>
-<option value="60">60 mm</option>
+
+<option value="77">
+77 mm
+</option>
+
+
+<option value="70">
+70 mm
+</option>
+
+
+<option value="60">
+60 mm
+</option>
+
 
 <option
 value="58"
 selected>
+
 58 mm
+
 </option>
 
-<option value="50">50 mm</option>
-<option value="40">40 mm</option>
-<option value="30">30 mm</option>
-<option value="20">20 mm</option>
+
+<option value="50">
+50 mm
+</option>
+
+
+<option value="40">
+40 mm
+</option>
+
+
+<option value="30">
+30 mm
+</option>
+
+
+<option value="20">
+20 mm
+</option>
+
 
 </select>
 
-</div>
 
 </div>
+
+
+</div>
+
 
 
 <div class="row">
 
+
 <div>
 
-<label>條碼高度</label>
+
+<label>
+條碼高度
+</label>
+
 
 <select id="barcodeHeight"></select>
 
+
 </div>
+
 
 
 <div>
 
-<label>QR Code 尺寸</label>
+
+<label>
+QR Code 尺寸
+</label>
+
 
 <select id="qrSize"></select>
 
-</div>
 
 </div>
+
+
+</div>
+
 
 
 <div class="row">
 
+
 <div>
 
-<label>列印濃度</label>
+
+<label>
+列印濃度
+</label>
+
 
 <select id="density">
 
-<option value="1">1</option>
+
+<option value="1">
+1
+</option>
+
 
 <option
 value="2"
 selected>
+
 2
+
 </option>
 
-<option value="3">3</option>
-<option value="4">4</option>
-<option value="5">5</option>
+
+<option value="3">
+3
+</option>
+
+
+<option value="4">
+4
+</option>
+
+
+<option value="5">
+5
+</option>
+
 
 </select>
 
+
 </div>
+
 
 
 <div>
 
-<label>商品間距</label>
+
+<label>
+商品間距
+</label>
+
 
 <select id="itemGap"></select>
 
-</div>
 
 </div>
 
 
-<label>最下方文字／備註</label>
+</div>
+
+
+
+<label>
+最下方文字／備註
+</label>
+
 
 <div class="help">
-可輸入多行，會照換行分段列印。
+
+可輸入多行，
+會照換行分段列印。
+
 </div>
+
 
 <textarea
 id="footerText"
@@ -793,269 +1175,500 @@ placeholder="例如：
 </textarea>
 
 
+
 <div class="switchRow">
+
 
 <div>
 
-<b>列印完成後自動清除</b>
+
+<b>
+列印完成後自動清除
+</b>
+
 
 <div class="help">
-成功列印後自動移除這次商品。
-</div>
+
+成功列印後，
+自動移除這次商品。
 
 </div>
+
+
+</div>
+
 
 
 <label class="switch">
+
 
 <input
 type="checkbox"
 id="autoClear">
 
+
 <span class="slider"></span>
+
 
 </label>
 
+
 </div>
+
 
 
 <div class="actions">
 
+
 <button id="refreshBtn">
+
 重新預覽
+
 </button>
 
-</div>
 
 </div>
+
+
+</div>
+
 
 
 <!-- 預覽 -->
 
+
 <div class="card">
 
-<h2>預覽</h2>
+
+<h2>
+預覽
+</h2>
+
 
 <div class="preview">
 
+
 <canvas id="previewCanvas"></canvas>
 
-</div>
 
 </div>
 
 
-<!-- 雙印表機 -->
+</div>
+
+
+
+<!-- B3S 管理 -->
+
 
 <div class="card">
 
-<h2>B3S 印表機管理</h2>
+
+<h2>
+B3S 印表機
+</h2>
+
 
 <div class="help">
-可以連接兩台 B3S，再選擇目前要使用哪一台列印。
+
+兩個位置可以各記住一台 B3S。
+
+<br>
+
+平常只連目前身邊的那一台，
+不需要兩台同時開機。
+
 </div>
+
+
 
 <div class="printerGrid">
 
 
-<!-- P1 -->
+<!-- SLOT 1 -->
+
 
 <div
 id="printerCard1"
 class="printerCard active">
 
+
 <div class="printerTitle">
 
-<b>印表機 1</b>
+
+<b>
+印表機 1
+</b>
+
 
 <span class="activeBadge">
-目前使用
+
+目前槽位
+
 </span>
 
+
 </div>
+
+
+<label>
+自訂名稱
+</label>
+
+
+<input
+id="slotName1"
+placeholder="例如：家裡 B3S">
 
 
 <div
-id="bleStatus1"
+id="slotStatus1"
 class="status">
-尚未連線
+
+尚未設定
+
 </div>
 
 
-<div class="deviceGrid">
+<div class="slotDevice">
 
-<b>裝置</b>
-<span id="deviceName1">—</span>
+已記住裝置：
 
-<b>連線</b>
-<span id="gattState1">false</span>
+<span id="rememberedDevice1">
+
+無
+
+</span>
+
 
 </div>
 
 
 <div class="actions">
 
+
 <button
-id="connectBtn1"
+id="connectSlot1"
 class="ok">
-🔵 連接
+
+🔵 連接／切換
+
 </button>
 
-<button
-id="useBtn1"
-class="activeBtn">
-✓ 使用這台
-</button>
 
 <button
-id="disconnectBtn1"
-disabled>
-中斷
+id="saveName1">
+
+儲存名稱
+
 </button>
+
+
+<button
+id="clearSlot1"
+class="danger">
+
+清除記憶
+
+</button>
+
 
 </div>
 
+
 </div>
 
 
-<!-- P2 -->
+
+<!-- SLOT 2 -->
+
 
 <div
 id="printerCard2"
 class="printerCard">
 
+
 <div class="printerTitle">
 
-<b>印表機 2</b>
+
+<b>
+印表機 2
+</b>
+
 
 <span class="activeBadge">
-目前使用
+
+目前槽位
+
 </span>
 
+
 </div>
+
+
+<label>
+自訂名稱
+</label>
+
+
+<input
+id="slotName2"
+placeholder="例如：店裡 B3S">
 
 
 <div
-id="bleStatus2"
+id="slotStatus2"
 class="status">
-尚未連線
+
+尚未設定
+
 </div>
 
 
-<div class="deviceGrid">
+<div class="slotDevice">
 
-<b>裝置</b>
-<span id="deviceName2">—</span>
+已記住裝置：
 
-<b>連線</b>
-<span id="gattState2">false</span>
+<span id="rememberedDevice2">
+
+無
+
+</span>
+
 
 </div>
 
 
 <div class="actions">
 
+
 <button
-id="connectBtn2"
+id="connectSlot2"
 class="ok">
-🔵 連接
+
+🔵 連接／切換
+
 </button>
+
 
 <button
-id="useBtn2">
-使用這台
+id="saveName2">
+
+儲存名稱
+
 </button>
+
 
 <button
-id="disconnectBtn2"
-disabled>
-中斷
+id="clearSlot2"
+class="danger">
+
+清除記憶
+
 </button>
 
-</div>
 
 </div>
 
+
 </div>
+
+
+</div>
+
 
 
 <div
-id="activePrinterStatus"
-class="status ok">
+id="bleStatus"
+class="status">
 
-目前列印：印表機 1
+尚未連線
 
 </div>
+
 
 
 <div class="deviceGrid">
 
-<b>紙張模式</b>
+
+<b>
+目前槽位
+</b>
+
+<span id="activeSlotDisplay">
+
+印表機 1
+
+</span>
+
+
+<b>
+名稱
+</b>
+
+<span id="activeSlotName">
+
+印表機 1
+
+</span>
+
+
+<b>
+實際裝置
+</b>
+
+<span id="deviceName">
+
+—
+
+</span>
+
+
+<b>
+Device ID
+</b>
+
+<span
+id="deviceId"
+style="overflow-wrap:anywhere">
+
+—
+
+</span>
+
+
+<b>
+GATT
+</b>
+
+<span id="gattState">
+
+false
+
+</span>
+
+
+<b>
+列印通道
+</b>
+
+<span id="channelState">
+
+未就緒
+
+</span>
+
+
+<b>
+紙張模式
+</b>
+
 <span id="paperModeDisplay">
+
 連續紙
+
 </span>
 
-<b>目前裝置</b>
-<span id="activeDeviceName">
-尚未連線
-</span>
 
 </div>
 
+
+
+<div class="actions">
+
+
+<button
+id="disconnectBtn"
+disabled>
+
+中斷目前連線
+
+</button>
+
+
 </div>
+
+
+</div>
+
 
 
 <!-- Print -->
 
+
 <div class="card">
 
-<h2>列印</h2>
+
+<h2>
+列印
+</h2>
+
 
 <div class="actions">
+
 
 <button
 id="printSelectedBtn"
 class="primary"
 disabled>
+
 🖨 列印勾選商品
+
 </button>
+
 
 <button
 id="printAllBtn"
 class="ok"
 disabled>
+
 🖨 列印全部
+
 </button>
+
 
 <button
 id="printCustomBtn"
 class="primary"
 disabled>
+
 📝 列印純文字
+
 </button>
+
 
 <button
 id="stopPrintBtn"
 class="stop"
 disabled>
-⏹ 停止目前印表機
+
+⏹ 停止送紙
+
 </button>
 
+
 </div>
+
 
 
 <div
 id="printStatus"
 class="status">
+
 等待列印
+
 </div>
+
 
 
 <div class="progress">
 
+
 <div id="progressBar"></div>
 
+
 </div>
+
 
 
 <div
@@ -1064,24 +1677,38 @@ class="help"
 style="margin-top:8px">
 </div>
 
+
 </div>
+
 
 
 <!-- LOG -->
 
+
 <div class="card">
 
-<h2>通訊紀錄</h2>
+
+<h2>
+通訊紀錄
+</h2>
+
 
 <div class="actions">
 
+
 <button id="copyLogBtn">
+
 複製
+
 </button>
 
+
 <button id="clearLogBtn">
+
 清除
+
 </button>
+
 
 </div>
 
@@ -1091,31 +1718,42 @@ id="log"
 readonly>
 </textarea>
 
-</div>
 
 </div>
+
+
+</div>
+
 
 
 <!-- Scanner -->
+
 
 <div
 id="scannerModal"
 class="modal">
 
+
 <div class="modalBox">
 
+
 <h2 id="scannerTitle">
+
 掃描商品條碼
+
 </h2>
+
 
 
 <div
 id="bulkScanNameArea"
 style="display:none">
 
+
 <label>
 商品名稱
 </label>
+
 
 <input
 id="bulkScanName"
@@ -1126,23 +1764,32 @@ placeholder="先輸入商品名稱">
 QR Code 內容
 </label>
 
+
 <textarea
 id="bulkScanQr"
 placeholder="可選填">
 </textarea>
 
+
 <div class="help">
-掃描條碼成功後會自動加入批次欄。
-</div>
+
+掃描條碼後會自動加入批次欄。
 
 </div>
+
+
+</div>
+
 
 
 <div
 id="scannerStatus"
 class="status">
+
 準備啟動相機…
+
 </div>
+
 
 
 <div
@@ -1151,34 +1798,46 @@ class="bulkScanCounter">
 </div>
 
 
+
 <div id="qrReader"></div>
+
 
 
 <div class="actions">
 
+
 <button
 id="closeScannerBtn"
 class="danger">
+
 完成／關閉
+
 </button>
 
-</div>
 
 </div>
 
+
 </div>
+
+
+</div>
+
 
 
 <script>
+
 
 const $ =
 id =>
 document.getElementById(id);
 
 
+
 /* =========================
-   選單
+   SELECT OPTIONS
 ========================= */
+
 
 for(
   let cm=1;
@@ -1186,28 +1845,37 @@ for(
   cm++
 ){
 
-  const o =
+  const option =
   document.createElement(
     "option"
   );
 
-  o.value =
+
+  option.value =
   cm;
 
-  o.textContent =
+
+  option.textContent =
   `${cm} cm`;
 
-  if(cm === 2){
 
-    o.selected =
+  if(
+    cm === 2
+  ){
+
+    option.selected =
     true;
 
   }
 
+
   $("barcodeHeight")
-  .appendChild(o);
+  .appendChild(
+    option
+  );
 
 }
+
 
 
 for(
@@ -1216,28 +1884,37 @@ for(
   cm++
 ){
 
-  const o =
+  const option =
   document.createElement(
     "option"
   );
 
-  o.value =
+
+  option.value =
   cm;
 
-  o.textContent =
+
+  option.textContent =
   `${cm} cm`;
 
-  if(cm === 3){
 
-    o.selected =
+  if(
+    cm === 3
+  ){
+
+    option.selected =
     true;
 
   }
 
+
   $("qrSize")
-  .appendChild(o);
+  .appendChild(
+    option
+  );
 
 }
+
 
 
 for(
@@ -1246,95 +1923,199 @@ for(
   mm++
 ){
 
-  const o =
+  const option =
   document.createElement(
     "option"
   );
 
-  o.value =
+
+  option.value =
   mm;
 
-  o.textContent =
+
+  option.textContent =
   `${mm} mm`;
 
-  if(mm === 2){
 
-    o.selected =
+  if(
+    mm === 2
+  ){
+
+    option.selected =
     true;
 
   }
 
+
   $("itemGap")
-  .appendChild(o);
+  .appendChild(
+    option
+  );
 
 }
 
 
+
 /* =========================
-   BLE
+   BLE UUID
 ========================= */
+
 
 const SERVICE =
 "49535343-fe7d-4ae5-8fa9-9fafd205e455";
 
+
 const WRITE_UUID =
 "49535343-8841-43f4-a8d4-ecbe34729bb3";
 
+
 const NOTIFY_UUID =
 "49535343-1e4d-4bd9-ba61-23c647249616";
+
+
+
+/* =========================
+   SLOT STORAGE
+========================= */
+
+
+const SLOT_KEY =
+"B3S_V20_SLOTS";
+
+
+function defaultSlots(){
+
+  return {
+
+    1:{
+      name:"印表機 1",
+      deviceId:"",
+      deviceName:""
+    },
+
+    2:{
+      name:"印表機 2",
+      deviceId:"",
+      deviceName:""
+    }
+
+  };
+
+}
+
+
+function loadSlots(){
+
+  try{
+
+    const raw =
+    localStorage.getItem(
+      SLOT_KEY
+    );
+
+
+    if(
+      !raw
+    ){
+
+      return defaultSlots();
+
+    }
+
+
+    const parsed =
+    JSON.parse(raw);
+
+
+    return {
+
+      1:{
+        ...defaultSlots()[1],
+        ...(parsed[1] || {})
+      },
+
+      2:{
+        ...defaultSlots()[2],
+        ...(parsed[2] || {})
+      }
+
+    };
+
+  }
+
+  catch{
+
+    return defaultSlots();
+
+  }
+
+}
+
+
+function saveSlots(){
+
+  localStorage.setItem(
+
+    SLOT_KEY,
+
+    JSON.stringify(
+      state.slots
+    )
+
+  );
+
+}
+
+
+
+/* =========================
+   STATE
+========================= */
 
 
 const state = {
 
   items:[],
 
-  activePrinter:1,
+  slots:
+  loadSlots(),
 
-  printers:{
+  activeSlot:
+  1,
 
-    1:{
-      device:null,
-      server:null,
-      write:null,
-      notify:null,
-      rx:[]
-    },
+  device:null,
 
-    2:{
-      device:null,
-      server:null,
-      write:null,
-      notify:null,
-      rx:[]
-    }
+  server:null,
 
-  },
+  write:null,
+
+  notify:null,
+
+  rx:[],
 
   printing:false,
 
-  forceStop:false
+  cancelRequested:false,
+
+  connecting:false
 
 };
 
-
-function printer(
-  number=state.activePrinter
-){
-
-  return state.printers[number];
-
-}
 
 
 /* =========================
    UTILS
 ========================= */
 
+
 function delay(ms){
 
   return new Promise(
     resolve =>
-    setTimeout(resolve,ms)
+    setTimeout(
+      resolve,
+      ms
+    )
   );
 
 }
@@ -1343,9 +2124,11 @@ function delay(ms){
 function mmToPx(mm){
 
   return Math.round(
+
     mm *
     203 /
     25.4
+
   );
 
 }
@@ -1382,11 +2165,15 @@ function u16(value){
 
   return [
 
-    (value >> 8)
-    & 255,
+    (
+      value >>
+      8
+    )
+    &
+    255,
 
-    value
-    & 255
+    value &
+    255
 
   ];
 
@@ -1416,8 +2203,11 @@ function log(text){
   const box =
   $("log");
 
+
   box.value +=
+
   `[${new Date().toLocaleTimeString()}] ${text}\n`;
+
 
   box.scrollTop =
   box.scrollHeight;
@@ -1427,7 +2217,9 @@ function log(text){
 
 function escapeHtml(text){
 
-  return String(text ?? "")
+  return String(
+    text ?? ""
+  )
   .replace(
 
     /[&<>"']/g,
@@ -1451,9 +2243,11 @@ function escapeHtml(text){
 }
 
 
+
 /* =========================
-   PACKETS
+   PACKET
 ========================= */
+
 
 function frame(
   command,
@@ -1516,7 +2310,14 @@ function frame(
 }
 
 
+
+/* =========================
+   CONTROL
+========================= */
+
+
 const CONTROL = {
+
 
   connect:
   () =>
@@ -1585,62 +2386,81 @@ const CONTROL = {
     [1]
   )
 
+
 };
+
 
 
 /* =========================
    RX
 ========================= */
 
+
 function parsePackets(text){
 
   const bytes =
-  String(text || "")
+  String(
+    text || ""
+  )
+
   .trim()
+
   .split(/\s+/)
+
   .filter(Boolean)
+
   .map(
-    v =>
-    parseInt(v,16)
+    value =>
+    parseInt(
+      value,
+      16
+    )
   );
 
 
-  const result = [];
+  const output =
+  [];
 
-  let pos =
+
+  let position =
   0;
 
 
   while(
-    pos <
+    position <
     bytes.length
   ){
 
     if(
-      bytes[pos] !== 0x55
+      bytes[position] !==
+      0x55
+
       ||
-      bytes[pos+1] !== 0x55
+
+      bytes[position+1] !==
+      0x55
     ){
 
-      pos++;
+      position++;
 
       continue;
 
     }
 
 
-    const cmd =
-    bytes[pos+2];
+    const command =
+    bytes[position+2];
 
 
-    const len =
-    bytes[pos+3];
+    const length =
+    bytes[position+3];
 
 
     const checksumIndex =
-    pos +
+
+    position +
     4 +
-    len;
+    length;
 
 
     const tail =
@@ -1649,7 +2469,7 @@ function parsePackets(text){
 
 
     if(
-      tail+1 >=
+      tail + 1 >=
       bytes.length
     ){
 
@@ -1659,12 +2479,16 @@ function parsePackets(text){
 
 
     if(
-      bytes[tail] !== 0xAA
+      bytes[tail] !==
+      0xAA
+
       ||
-      bytes[tail+1] !== 0xAA
+
+      bytes[tail+1] !==
+      0xAA
     ){
 
-      pos++;
+      position++;
 
       continue;
 
@@ -1673,72 +2497,73 @@ function parsePackets(text){
 
     const payload =
     bytes.slice(
-      pos+4,
-      pos+4+len
+
+      position+4,
+
+      position+4+length
+
     );
 
 
     let checksum =
-    cmd ^
-    len;
+    command ^
+    length;
 
 
     for(
-      const v
+      const value
       of payload
     ){
 
       checksum ^=
-      v;
+      value;
 
     }
 
 
-    result.push({
+    output.push({
 
-      command:cmd,
+      command,
 
       payload,
 
       checksumOk:
-      (checksum & 255)
+      (
+        checksum &
+        255
+      )
       ===
       bytes[checksumIndex]
 
     });
 
 
-    pos =
+    position =
     tail +
     2;
 
   }
 
 
-  return result;
+  return output;
 
 }
+
 
 
 /* =========================
    BLE WRITE
 ========================= */
 
-async function writeRaw(
-  bytes,
-  number=state.activePrinter
-){
 
-  const p =
-  printer(number);
-
+async function writeRaw(bytes){
 
   if(
-    !p.write
+    !state.write
   ){
 
     throw new Error(
-      `印表機 ${number} 尚未連線`
+      "B3S 尚未連線"
     );
 
   }
@@ -1749,13 +2574,13 @@ async function writeRaw(
 
 
   for(
-    let i=0;
-    i<bytes.length;
-    i+=chunkSize
+    let index=0;
+    index<bytes.length;
+    index+=chunkSize
   ){
 
     if(
-      state.forceStop
+      state.cancelRequested
     ){
 
       throw new Error(
@@ -1767,23 +2592,27 @@ async function writeRaw(
 
     const part =
     bytes.slice(
-      i,
-      i+chunkSize
+
+      index,
+
+      index +
+      chunkSize
+
     );
 
 
     if(
-      p.write
+      state.write
       .properties
       .writeWithoutResponse
 
       &&
 
-      p.write
+      state.write
       .writeValueWithoutResponse
     ){
 
-      await p.write
+      await state.write
       .writeValueWithoutResponse(
         part
       );
@@ -1791,11 +2620,11 @@ async function writeRaw(
     }
 
     else if(
-      p.write
+      state.write
       .writeValueWithResponse
     ){
 
-      await p.write
+      await state.write
       .writeValueWithResponse(
         part
       );
@@ -1804,7 +2633,7 @@ async function writeRaw(
 
     else{
 
-      await p.write
+      await state.write
       .writeValue(
         part
       );
@@ -1826,38 +2655,32 @@ async function writeRaw(
 }
 
 
-async function writeControl(
-  bytes,
-  number=state.activePrinter
-){
 
-  const p =
-  printer(number);
-
+async function writeControl(bytes){
 
   if(
-    !p.write
+    !state.write
   ){
 
     throw new Error(
-      `印表機 ${number} 尚未連線`
+      "B3S 尚未連線"
     );
 
   }
 
 
   if(
-    p.write
+    state.write
     .properties
     .writeWithoutResponse
 
     &&
 
-    p.write
+    state.write
     .writeValueWithoutResponse
   ){
 
-    await p.write
+    await state.write
     .writeValueWithoutResponse(
       bytes
     );
@@ -1865,11 +2688,11 @@ async function writeControl(
   }
 
   else if(
-    p.write
+    state.write
     .writeValueWithResponse
   ){
 
-    await p.write
+    await state.write
     .writeValueWithResponse(
       bytes
     );
@@ -1878,7 +2701,7 @@ async function writeControl(
 
   else{
 
-    await p.write
+    await state.write
     .writeValue(
       bytes
     );
@@ -1888,34 +2711,30 @@ async function writeControl(
 }
 
 
+
 /* =========================
    ACK
 ========================= */
 
+
 async function sendWait(
   packet,
   expected,
-  timeout=3500,
-  number=state.activePrinter
+  timeout=3500
 ){
 
-  const p =
-  printer(number);
-
-
   const startIndex =
-  p.rx.length;
+  state.rx.length;
 
 
   log(
-    `P${number} TX：` +
+    "TX：" +
     hex(packet)
   );
 
 
   await writeControl(
-    packet,
-    number
+    packet
   );
 
 
@@ -1929,8 +2748,19 @@ async function sendWait(
     timeout
   ){
 
+    if(
+      state.cancelRequested
+    ){
+
+      throw new Error(
+        "FORCE_STOP"
+      );
+
+    }
+
+
     const incoming =
-    p.rx.slice(
+    state.rx.slice(
       startIndex
     );
 
@@ -1941,12 +2771,12 @@ async function sendWait(
     ){
 
       for(
-        const packet
+        const parsed
         of parsePackets(raw)
       ){
 
         if(
-          !packet.checksumOk
+          !parsed.checksumOk
         ){
 
           continue;
@@ -1955,7 +2785,7 @@ async function sendWait(
 
 
         if(
-          packet.command ===
+          parsed.command ===
           0x00
         ){
 
@@ -1963,7 +2793,9 @@ async function sendWait(
 
             ok:false,
 
-            unsupported:true
+            unsupported:true,
+
+            packet:parsed
 
           };
 
@@ -1971,7 +2803,7 @@ async function sendWait(
 
 
         if(
-          packet.command ===
+          parsed.command ===
           expected
         ){
 
@@ -1979,7 +2811,7 @@ async function sendWait(
 
             ok:true,
 
-            packet
+            packet:parsed
 
           };
 
@@ -2006,16 +2838,16 @@ async function sendWait(
 }
 
 
+
 async function ackStep(
   label,
   packet,
   expected,
-  timeout=3500,
-  number=state.activePrinter
+  timeout=3500
 ){
 
   if(
-    state.forceStop
+    state.cancelRequested
   ){
 
     throw new Error(
@@ -2032,15 +2864,18 @@ async function ackStep(
 
   $("printStatus")
   .textContent =
-  `印表機 ${number}｜${label}`;
+  label;
 
 
   const result =
   await sendWait(
+
     packet,
+
     expected,
-    timeout,
-    number
+
+    timeout
+
   );
 
 
@@ -2048,7 +2883,7 @@ async function ackStep(
     result.ok
   ){
 
-    return;
+    return result;
 
   }
 
@@ -2071,14 +2906,17 @@ async function ackStep(
 }
 
 
+
 /* =========================
    BARCODE
 ========================= */
 
+
 function detectFormat(code){
 
   if(
-    /^\d{13}$/.test(code)
+    /^\d{13}$/
+    .test(code)
   ){
 
     return "EAN13";
@@ -2087,7 +2925,8 @@ function detectFormat(code){
 
 
   if(
-    /^\d{8}$/.test(code)
+    /^\d{8}$/
+    .test(code)
   ){
 
     return "EAN8";
@@ -2096,7 +2935,8 @@ function detectFormat(code){
 
 
   if(
-    /^\d{12}$/.test(code)
+    /^\d{12}$/
+    .test(code)
   ){
 
     return "UPC";
@@ -2107,6 +2947,7 @@ function detectFormat(code){
   return "CODE128";
 
 }
+
 
 
 function makeBarcode(
@@ -2224,9 +3065,11 @@ function makeBarcode(
 }
 
 
+
 /* =========================
-   QR CODE
+   QR
 ========================= */
+
 
 function makeQrCanvas(
   text,
@@ -2259,7 +3102,9 @@ function makeQrCanvas(
 
 
   new QRCode(
+
     holder,
+
     {
 
       text,
@@ -2276,6 +3121,7 @@ function makeQrCanvas(
       QRCode.CorrectLevel.M
 
     }
+
   );
 
 
@@ -2340,9 +3186,11 @@ function makeQrCanvas(
 }
 
 
+
 /* =========================
    ITEMS
 ========================= */
+
 
 function renderItems(){
 
@@ -2357,6 +3205,7 @@ function renderItems(){
 
     $("items")
     .innerHTML =
+
     '<div class="help" style="margin-top:10px">目前沒有商品</div>';
 
 
@@ -2369,6 +3218,7 @@ function renderItems(){
 
   $("items")
   .innerHTML =
+
   state.items
 
   .map(
@@ -2454,6 +3304,7 @@ function renderItems(){
 }
 
 
+
 $("items")
 .addEventListener(
   "change",
@@ -2477,8 +3328,7 @@ $("items")
 
       state.items[index]
       .selected =
-      event.target
-      .checked;
+      event.target.checked;
 
     }
 
@@ -2503,8 +3353,7 @@ $("items")
         qty < 1
       ){
 
-        qty =
-        1;
+        qty = 1;
 
       }
 
@@ -2533,6 +3382,7 @@ $("items")
 
   }
 );
+
 
 
 $("items")
@@ -2575,9 +3425,11 @@ $("items")
 );
 
 
+
 /* =========================
-   ADD
+   ADD ITEM
 ========================= */
+
 
 $("addBtn")
 .onclick =
@@ -2652,6 +3504,7 @@ $("addBtn")
 };
 
 
+
 $("clearInputBtn")
 .onclick =
 () => {
@@ -2668,9 +3521,11 @@ $("clearInputBtn")
 };
 
 
+
 /* =========================
    BULK
 ========================= */
+
 
 $("bulkAddBtn")
 .onclick =
@@ -2814,12 +3669,12 @@ $("bulkAddBtn")
 };
 
 
+
 $("bulkClearBtn")
 .onclick =
 () => {
 
-  $("bulkInput")
-  .value =
+  $("bulkInput").value =
   "";
 
 
@@ -2830,9 +3685,11 @@ $("bulkClearBtn")
 };
 
 
+
 /* =========================
    SELECT
 ========================= */
+
 
 $("selectAllBtn")
 .onclick =
@@ -2851,6 +3708,7 @@ $("selectAllBtn")
   drawPreview();
 
 };
+
 
 
 $("unselectAllBtn")
@@ -2872,6 +3730,7 @@ $("unselectAllBtn")
 };
 
 
+
 $("clearAllBtn")
 .onclick =
 () => {
@@ -2887,15 +3746,18 @@ $("clearAllBtn")
 };
 
 
+
 /* =========================
-   EXPAND
+   EXPAND ITEMS
 ========================= */
+
 
 function expandedItems(
   mode="selected"
 ){
 
   const source =
+
   mode === "all"
 
   ?
@@ -2904,7 +3766,8 @@ function expandedItems(
 
   :
 
-  state.items.filter(
+  state.items
+  .filter(
     item =>
     item.selected
   );
@@ -2921,18 +3784,22 @@ function expandedItems(
 
     const qty =
     Math.max(
+
       1,
+
       Number(
         item.qty
-      ) ||
+      )
+      ||
       1
+
     );
 
 
     for(
-      let i=0;
-      i<qty;
-      i++
+      let index=0;
+      index<qty;
+      index++
     ){
 
       output.push(
@@ -2949,9 +3816,11 @@ function expandedItems(
 }
 
 
+
 /* =========================
    TEXT
 ========================= */
+
 
 function drawMultilineText(
   ctx,
@@ -2965,9 +3834,9 @@ function drawMultilineText(
 
   const lines =
   String(
-    text ||
-    ""
+    text || ""
   )
+
   .split(
     /\r?\n/
   );
@@ -3022,9 +3891,11 @@ function drawMultilineText(
 }
 
 
+
 /* =========================
    CANVAS
 ========================= */
+
 
 function buildCanvas(
   printItems
@@ -3033,7 +3904,8 @@ function buildCanvas(
   const width =
   paperDots(
     Number(
-      $("paperWidth").value
+      $("paperWidth")
+      .value
     )
   );
 
@@ -3050,7 +3922,8 @@ function buildCanvas(
   const barcodeHeight =
   cmToPx(
     Number(
-      $("barcodeHeight").value
+      $("barcodeHeight")
+      .value
     )
   );
 
@@ -3058,7 +3931,8 @@ function buildCanvas(
   const qrSize =
   cmToPx(
     Number(
-      $("qrSize").value
+      $("qrSize")
+      .value
     )
   );
 
@@ -3066,7 +3940,8 @@ function buildCanvas(
   const gap =
   mmToPx(
     Number(
-      $("itemGap").value
+      $("itemGap")
+      .value
     )
   );
 
@@ -3220,12 +4095,15 @@ function buildCanvas(
     height +=
 
     Math.max(
+
       1,
+
       customText
       .split(
         /\r?\n/
       )
       .length
+
     )
 
     *
@@ -3249,8 +4127,11 @@ function buildCanvas(
         mode.startsWith(
           "name_"
         )
+
         ||
-        mode === "name"
+
+        mode ===
+        "name"
       ){
 
         height +=
@@ -3274,7 +4155,9 @@ function buildCanvas(
       ){
 
         height +=
-        block.qr.height +
+
+        block.qr.height
+        +
         mmToPx(1);
 
       }
@@ -3286,20 +4169,28 @@ function buildCanvas(
           "name_qr_text"
         ]
         .includes(mode)
+
         &&
+
         item.qr
       ){
 
         height +=
+
         Math.max(
+
           1,
+
           item.qr
           .split(
             /\r?\n/
           )
           .length
+
         )
+
         *
+
         25;
 
       }
@@ -3308,17 +4199,22 @@ function buildCanvas(
       if(
         mode ===
         "name_custom"
+
         &&
+
         customText
       ){
 
         height +=
+
         customText
         .split(
           /\r?\n/
         )
         .length
+
         *
+
         26;
 
       }
@@ -3431,8 +4327,7 @@ function buildCanvas(
 
       ctx,
 
-      customText ||
-      " ",
+      customText || " ",
 
       width/2,
 
@@ -3486,13 +4381,13 @@ function buildCanvas(
       ){
 
         ctx.font =
+
         '700 21px "PingFang TC","Microsoft JhengHei",sans-serif';
 
 
         ctx.fillText(
 
-          item.name ||
-          "",
+          item.name || "",
 
           width/2,
 
@@ -3579,7 +4474,9 @@ function buildCanvas(
           "name_qr_text"
         ]
         .includes(mode)
+
         &&
+
         item.qr
       ){
 
@@ -3612,7 +4509,9 @@ function buildCanvas(
       if(
         mode ===
         "name_custom"
+
         &&
+
         customText
       ){
 
@@ -3677,13 +4576,13 @@ function buildCanvas(
 }
 
 
+
 /* =========================
    CROP
 ========================= */
 
-function cropBottom(
-  source
-){
+
+function cropBottom(source){
 
   const ctx =
   source.getContext(
@@ -3738,20 +4637,17 @@ function cropBottom(
       const gray =
 
       (
-        pixels[index]
-        *
+        pixels[index] *
         299
 
         +
 
-        pixels[index+1]
-        *
+        pixels[index+1] *
         587
 
         +
 
-        pixels[index+2]
-        *
+        pixels[index+2] *
         114
       )
 
@@ -3775,9 +4671,7 @@ function cropBottom(
     }
 
 
-    if(
-      found
-    ){
+    if(found){
 
       lastRow =
       y;
@@ -3809,10 +4703,8 @@ function cropBottom(
 
       8,
 
-      lastRow
-      +
-      1
-      +
+      lastRow +
+      1 +
       mmToPx(1)
 
     )
@@ -3856,12 +4748,9 @@ function cropBottom(
 
 
   out.drawImage(
-
     source,
-
     0,
     0
-
   );
 
 
@@ -3870,9 +4759,11 @@ function cropBottom(
 }
 
 
+
 /* =========================
    PREVIEW
 ========================= */
+
 
 function drawPreview(){
 
@@ -3915,7 +4806,8 @@ function drawPreview(){
     target.width =
     paperDots(
       Number(
-        $("paperWidth").value
+        $("paperWidth")
+        .value
       )
     );
 
@@ -3973,12 +4865,9 @@ function drawPreview(){
     target
     .getContext("2d")
     .drawImage(
-
       source,
-
       0,
       0
-
     );
 
   }
@@ -3994,9 +4883,11 @@ function drawPreview(){
 }
 
 
+
 /* =========================
    BITMAP
 ========================= */
+
 
 function sameRow(a,b){
 
@@ -4011,14 +4902,14 @@ function sameRow(a,b){
 
 
   for(
-    let i=0;
-    i<a.length;
-    i++
+    let index=0;
+    index<a.length;
+    index++
   ){
 
     if(
-      a[i] !==
-      b[i]
+      a[index] !==
+      b[index]
     ){
 
       return false;
@@ -4031,6 +4922,7 @@ function sameRow(a,b){
   return true;
 
 }
+
 
 
 function canvasToRuns(canvas){
@@ -4097,20 +4989,17 @@ function canvasToRuns(canvas){
       const gray =
 
       (
-        pixels[index]
-        *
+        pixels[index] *
         299
 
         +
 
-        pixels[index+1]
-        *
+        pixels[index+1] *
         587
 
         +
 
-        pixels[index+2]
-        *
+        pixels[index+2] *
         114
       )
 
@@ -4220,6 +5109,7 @@ function canvasToRuns(canvas){
 }
 
 
+
 function rowPacket(run){
 
   return frame(
@@ -4255,156 +5145,789 @@ function rowPacket(run){
 }
 
 
+
 /* =========================
-   PRINTER STATUS
+   CONNECTION
 ========================= */
 
-function connected(
-  number=state.activePrinter
-){
 
-  const p =
-  printer(number);
-
+function connected(){
 
   return !!(
 
-    p.server?.connected
+    state.server?.connected
 
     &&
 
-    p.write
+    state.write
 
     &&
 
-    p.notify
+    state.notify
 
   );
 
 }
 
 
-function updatePrinterCard(
+
+function resetConnection(){
+
+  state.device =
+  null;
+
+
+  state.server =
+  null;
+
+
+  state.write =
+  null;
+
+
+  state.notify =
+  null;
+
+
+  state.rx =
+  [];
+
+
+  state.cancelRequested =
+  false;
+
+}
+
+
+
+async function disconnectCurrent(){
+
+  if(
+    state.device
+    ?.gatt
+    ?.connected
+  ){
+
+    try{
+
+      state.device
+      .gatt
+      .disconnect();
+
+    }
+
+    catch{}
+
+  }
+
+
+  await delay(100);
+
+
+  resetConnection();
+
+
+  updateButtons();
+
+}
+
+
+
+/* =========================
+   SLOTS UI
+========================= */
+
+
+function slotLabel(number){
+
+  const slot =
+  state.slots[number];
+
+
+  return (
+    slot.name ||
+    `印表機 ${number}`
+  );
+
+}
+
+
+
+function renderSlots(){
+
+  for(
+    const number
+    of [1,2]
+  ){
+
+    const slot =
+    state.slots[number];
+
+
+    $(`slotName${number}`)
+    .value =
+    slot.name;
+
+
+    $(`rememberedDevice${number}`)
+    .textContent =
+
+    slot.deviceName
+
+    ?
+
+    `${slot.deviceName}${slot.deviceId ? "｜" + slot.deviceId : ""}`
+
+    :
+
+    "無";
+
+
+    const card =
+    $(`printerCard${number}`);
+
+
+    card
+    .classList
+    .toggle(
+
+      "active",
+
+      state.activeSlot ===
+      number
+
+    );
+
+
+    const status =
+    $(`slotStatus${number}`);
+
+
+    if(
+      connected()
+
+      &&
+
+      state.activeSlot ===
+      number
+    ){
+
+      status.className =
+      "status ok";
+
+
+      status.textContent =
+      "✅ 目前已連線";
+
+    }
+
+    else if(
+      slot.deviceId
+      ||
+      slot.deviceName
+    ){
+
+      status.className =
+      "status";
+
+
+      status.textContent =
+      "已記住，尚未連線";
+
+    }
+
+    else{
+
+      status.className =
+      "status";
+
+
+      status.textContent =
+      "尚未設定";
+
+    }
+
+  }
+
+
+  $("activeSlotDisplay")
+  .textContent =
+  `印表機 ${state.activeSlot}`;
+
+
+  $("activeSlotName")
+  .textContent =
+  slotLabel(
+    state.activeSlot
+  );
+
+}
+
+
+
+/* =========================
+   SAVE SLOT NAMES
+========================= */
+
+
+function saveSlotName(number){
+
+  const value =
+  $(`slotName${number}`)
+  .value
+  .trim();
+
+
+  state.slots[number]
+  .name =
+
+  value ||
+  `印表機 ${number}`;
+
+
+  saveSlots();
+
+  renderSlots();
+
+  updateButtons();
+
+}
+
+
+
+$("saveName1")
+.onclick =
+() =>
+saveSlotName(1);
+
+
+$("saveName2")
+.onclick =
+() =>
+saveSlotName(2);
+
+
+
+/* =========================
+   CLEAR SLOT
+========================= */
+
+
+async function clearSlot(number){
+
+  if(
+    state.activeSlot ===
+    number
+
+    &&
+
+    connected()
+  ){
+
+    await disconnectCurrent();
+
+  }
+
+
+  state.slots[number] = {
+
+    name:
+    `印表機 ${number}`,
+
+    deviceId:"",
+
+    deviceName:""
+
+  };
+
+
+  saveSlots();
+
+  renderSlots();
+
+  updateButtons();
+
+}
+
+
+
+$("clearSlot1")
+.onclick =
+() =>
+clearSlot(1);
+
+
+$("clearSlot2")
+.onclick =
+() =>
+clearSlot(2);
+
+
+
+/* =========================
+   GET REMEMBERED DEVICE
+========================= */
+
+
+async function findRememberedDevice(
   number
 ){
 
-  const p =
-  printer(number);
-
-
-  const isConnected =
-  connected(number);
-
-
-  const status =
-  $(`bleStatus${number}`);
-
-
-  const card =
-  $(`printerCard${number}`);
-
-
-  const useBtn =
-  $(`useBtn${number}`);
-
-
-  card.classList.toggle(
-    "active",
-    state.activePrinter === number
-  );
-
-
-  status.className =
-  "status " +
-  (
-    isConnected
-    ?
-    "ok"
-    :
-    ""
-  );
-
-
-  status.textContent =
-  isConnected
-  ?
-  "✅ 已連線"
-  :
-  "尚未連線";
-
-
-  $(`deviceName${number}`)
-  .textContent =
-  p.device?.name ||
-  "—";
-
-
-  $(`gattState${number}`)
-  .textContent =
-  String(
-    !!p.server?.connected
-  );
-
-
-  $(`disconnectBtn${number}`)
-  .disabled =
-  !isConnected
-  ||
-  state.printing;
-
-
-  $(`connectBtn${number}`)
-  .disabled =
-  state.printing;
-
-
-  useBtn.disabled =
-  state.printing;
+  const slot =
+  state.slots[number];
 
 
   if(
-    state.activePrinter ===
-    number
+    !slot.deviceId
   ){
 
-    useBtn.classList.add(
-      "activeBtn"
-    );
-
-
-    useBtn.textContent =
-    "✓ 使用中";
+    return null;
 
   }
 
-  else{
 
-    useBtn.classList.remove(
-      "activeBtn"
+  if(
+    !navigator.bluetooth
+    ?.getDevices
+  ){
+
+    return null;
+
+  }
+
+
+  try{
+
+    const devices =
+    await navigator.bluetooth
+    .getDevices();
+
+
+    return (
+      devices.find(
+        device =>
+        device.id ===
+        slot.deviceId
+      )
+      ||
+      null
     );
 
+  }
 
-    useBtn.textContent =
-    "使用這台";
+  catch{
+
+    return null;
 
   }
 
 }
 
 
+
+/* =========================
+   CONNECT DEVICE
+========================= */
+
+
+async function setupDevice(
+  device,
+  slotNumber
+){
+
+  state.device =
+  device;
+
+
+  state.server =
+  await device.gatt
+  .connect();
+
+
+  const service =
+  await state.server
+  .getPrimaryService(
+    SERVICE
+  );
+
+
+  state.write =
+  await service
+  .getCharacteristic(
+    WRITE_UUID
+  );
+
+
+  state.notify =
+  await service
+  .getCharacteristic(
+    NOTIFY_UUID
+  );
+
+
+  state.rx =
+  [];
+
+
+  state.notify
+  .addEventListener(
+
+    "characteristicvaluechanged",
+
+    event => {
+
+      const value =
+      event.target.value;
+
+
+      const bytes =
+      new Uint8Array(
+
+        value.buffer,
+
+        value.byteOffset,
+
+        value.byteLength
+
+      );
+
+
+      const data =
+      hex(bytes);
+
+
+      state.rx.push(
+        data
+      );
+
+
+      if(
+        state.rx.length >
+        1000
+      ){
+
+        state.rx.shift();
+
+      }
+
+
+      log(
+        "RX：" +
+        data
+      );
+
+    }
+
+  );
+
+
+  await state.notify
+  .startNotifications();
+
+
+  device
+  .addEventListener(
+
+    "gattserverdisconnected",
+
+    () => {
+
+      state.server =
+      null;
+
+
+      state.write =
+      null;
+
+
+      state.notify =
+      null;
+
+
+      state.printing =
+      false;
+
+
+      state.cancelRequested =
+      false;
+
+
+      $("bleStatus")
+      .className =
+      "status warn";
+
+
+      $("bleStatus")
+      .textContent =
+      "已中斷";
+
+
+      updateButtons();
+
+    }
+
+  );
+
+
+  state.slots[slotNumber]
+  .deviceId =
+  device.id ||
+  "";
+
+
+  state.slots[slotNumber]
+  .deviceName =
+  device.name ||
+  "B3S";
+
+
+  saveSlots();
+
+
+  $("deviceName")
+  .textContent =
+  device.name ||
+  "B3S";
+
+
+  $("deviceId")
+  .textContent =
+  device.id ||
+  "—";
+
+
+  $("bleStatus")
+  .className =
+  "status ok";
+
+
+  $("bleStatus")
+  .textContent =
+  `✅ 已連線｜${slotLabel(slotNumber)}`;
+
+
+  log(
+    `CONNECTED SLOT ${slotNumber}｜${device.name || "B3S"}`
+  );
+
+
+  renderSlots();
+
+  updateButtons();
+
+}
+
+
+
+/* =========================
+   SWITCH SLOT
+========================= */
+
+
+async function connectSlot(number){
+
+  if(
+    state.connecting
+    ||
+    state.printing
+  ){
+
+    return;
+
+  }
+
+
+  state.connecting =
+  true;
+
+
+  state.activeSlot =
+  number;
+
+
+  renderSlots();
+
+  updateButtons();
+
+
+  try{
+
+    if(
+      connected()
+    ){
+
+      $("bleStatus")
+      .className =
+      "status warn";
+
+
+      $("bleStatus")
+      .textContent =
+      "正在切換印表機…";
+
+
+      await disconnectCurrent();
+
+    }
+
+
+    $("bleStatus")
+    .className =
+    "status warn";
+
+
+    $("bleStatus")
+    .textContent =
+    `正在連接 ${slotLabel(number)}…`;
+
+
+    let device =
+    await findRememberedDevice(
+      number
+    );
+
+
+    if(
+      device
+    ){
+
+      log(
+        `TRY REMEMBERED SLOT ${number}`
+      );
+
+
+      try{
+
+        await setupDevice(
+          device,
+          number
+        );
+
+
+        return;
+
+      }
+
+      catch(error){
+
+        log(
+          `REMEMBERED CONNECT FAILED：${error.message}`
+        );
+
+
+        resetConnection();
+
+      }
+
+    }
+
+
+    device =
+    await navigator.bluetooth
+    .requestDevice({
+
+      acceptAllDevices:true,
+
+      optionalServices:[
+        SERVICE
+      ]
+
+    });
+
+
+    await setupDevice(
+      device,
+      number
+    );
+
+  }
+
+  catch(error){
+
+    $("bleStatus")
+    .className =
+    "status err";
+
+
+    $("bleStatus")
+    .textContent =
+    "連線失敗：" +
+    error.message;
+
+
+    log(
+      "CONNECT ERROR：" +
+      error.message
+    );
+
+
+    resetConnection();
+
+  }
+
+  finally{
+
+    state.connecting =
+    false;
+
+
+    renderSlots();
+
+    updateButtons();
+
+  }
+
+}
+
+
+
+$("connectSlot1")
+.onclick =
+() =>
+connectSlot(1);
+
+
+$("connectSlot2")
+.onclick =
+() =>
+connectSlot(2);
+
+
+
+$("disconnectBtn")
+.onclick =
+async () => {
+
+  await disconnectCurrent();
+
+
+  $("bleStatus")
+  .className =
+  "status";
+
+
+  $("bleStatus")
+  .textContent =
+  "尚未連線";
+
+};
+
+
+
+/* =========================
+   BUTTON STATUS
+========================= */
+
+
 function updateButtons(){
-
-  updatePrinterCard(1);
-
-  updatePrinterCard(2);
-
 
   const c =
   connected();
 
 
   const selected =
-  state.items.some(
+  state.items
+  .some(
     item =>
     item.selected
   );
@@ -4413,6 +5936,13 @@ function updateButtons(){
   const mode =
   $("printMode")
   .value;
+
+
+  $("disconnectBtn")
+  .disabled =
+  !c
+  ||
+  state.printing;
 
 
   $("printSelectedBtn")
@@ -4485,23 +6015,72 @@ function updateButtons(){
   !c;
 
 
-  $("activePrinterStatus")
+  $("gattState")
   .textContent =
-  `目前列印：印表機 ${state.activePrinter}`;
+  String(
+    !!state.server?.connected
+  );
 
 
-  $("activeDeviceName")
+  $("channelState")
   .textContent =
-  printer().device?.name
-  ||
-  "尚未連線";
+  c
+  ?
+  "已就緒"
+  :
+  "未就緒";
+
+
+  $("deviceName")
+  .textContent =
+  state.device?.name ||
+  "—";
+
+
+  $("deviceId")
+  .textContent =
+  state.device?.id ||
+  "—";
+
+
+  for(
+    const number
+    of [1,2]
+  ){
+
+    $(`connectSlot${number}`)
+    .disabled =
+    state.printing
+    ||
+    state.connecting;
+
+
+    $(`saveName${number}`)
+    .disabled =
+    state.printing
+    ||
+    state.connecting;
+
+
+    $(`clearSlot${number}`)
+    .disabled =
+    state.printing
+    ||
+    state.connecting;
+
+  }
+
+
+  renderSlots();
 
 }
+
 
 
 /* =========================
    PAPER MODE
 ========================= */
+
 
 function paperModeName(value){
 
@@ -4527,6 +6106,7 @@ function paperModeName(value){
 }
 
 
+
 $("paperMode")
 .onchange =
 () => {
@@ -4534,364 +6114,18 @@ $("paperMode")
   $("paperModeDisplay")
   .textContent =
   paperModeName(
-    $("paperMode").value
+    $("paperMode")
+    .value
   );
 
 };
 
 
-/* =========================
-   CONNECT PRINTER
-========================= */
-
-async function connectPrinter(
-  number
-){
-
-  const p =
-  printer(number);
-
-
-  try{
-
-    $(`bleStatus${number}`)
-    .className =
-    "status warn";
-
-
-    $(`bleStatus${number}`)
-    .textContent =
-    "正在連接…";
-
-
-    const device =
-    await navigator.bluetooth
-    .requestDevice({
-
-      acceptAllDevices:true,
-
-      optionalServices:[
-        SERVICE
-      ]
-
-    });
-
-
-    const otherNumber =
-    number === 1
-    ?
-    2
-    :
-    1;
-
-
-    const other =
-    printer(
-      otherNumber
-    );
-
-
-    if(
-      other.device
-      &&
-      other.device.id ===
-      device.id
-      &&
-      connected(
-        otherNumber
-      )
-    ){
-
-      throw new Error(
-        `這台 B3S 已經連在印表機 ${otherNumber}`
-      );
-
-    }
-
-
-    if(
-      p.device?.gatt?.connected
-    ){
-
-      try{
-
-        p.device.gatt
-        .disconnect();
-
-      }
-      catch{}
-
-    }
-
-
-    p.device =
-    device;
-
-
-    p.server =
-    await device.gatt
-    .connect();
-
-
-    const service =
-    await p.server
-    .getPrimaryService(
-      SERVICE
-    );
-
-
-    p.write =
-    await service
-    .getCharacteristic(
-      WRITE_UUID
-    );
-
-
-    p.notify =
-    await service
-    .getCharacteristic(
-      NOTIFY_UUID
-    );
-
-
-    p.rx =
-    [];
-
-
-    p.notify
-    .addEventListener(
-
-      "characteristicvaluechanged",
-
-      event => {
-
-        const value =
-        event.target.value;
-
-
-        const bytes =
-        new Uint8Array(
-
-          value.buffer,
-
-          value.byteOffset,
-
-          value.byteLength
-
-        );
-
-
-        const data =
-        hex(bytes);
-
-
-        p.rx.push(
-          data
-        );
-
-
-        if(
-          p.rx.length >
-          1000
-        ){
-
-          p.rx.shift();
-
-        }
-
-
-        log(
-          `P${number} RX：` +
-          data
-        );
-
-      }
-
-    );
-
-
-    await p.notify
-    .startNotifications();
-
-
-    device
-    .addEventListener(
-
-      "gattserverdisconnected",
-
-      () => {
-
-        p.server =
-        null;
-
-
-        p.write =
-        null;
-
-
-        p.notify =
-        null;
-
-
-        log(
-          `P${number} disconnected`
-        );
-
-
-        updateButtons();
-
-      }
-
-    );
-
-
-    log(
-      `P${number} CONNECTED：${device.name || "B3S"}`
-    );
-
-
-    if(
-      !connected(
-        state.activePrinter
-      )
-    ){
-
-      state.activePrinter =
-      number;
-
-    }
-
-
-    updateButtons();
-
-  }
-
-  catch(error){
-
-    $(`bleStatus${number}`)
-    .className =
-    "status err";
-
-
-    $(`bleStatus${number}`)
-    .textContent =
-    "連線失敗：" +
-    error.message;
-
-
-    log(
-      `P${number} CONNECT ERROR：${error.message}`
-    );
-
-
-    updateButtons();
-
-  }
-
-}
-
-
-$("connectBtn1")
-.onclick =
-() =>
-connectPrinter(1);
-
-
-$("connectBtn2")
-.onclick =
-() =>
-connectPrinter(2);
-
-
-/* =========================
-   DISCONNECT
-========================= */
-
-function disconnectPrinter(
-  number
-){
-
-  try{
-
-    printer(number)
-    .device
-    ?.gatt
-    ?.disconnect();
-
-  }
-
-  catch{}
-
-}
-
-
-$("disconnectBtn1")
-.onclick =
-() =>
-disconnectPrinter(1);
-
-
-$("disconnectBtn2")
-.onclick =
-() =>
-disconnectPrinter(2);
-
-
-/* =========================
-   ACTIVE PRINTER
-========================= */
-
-function selectPrinter(
-  number
-){
-
-  if(
-    state.printing
-  ){
-
-    return;
-
-  }
-
-
-  state.activePrinter =
-  number;
-
-
-  $("printStatus")
-  .className =
-  "status";
-
-
-  $("printStatus")
-  .textContent =
-  connected(number)
-  ?
-  `等待列印｜目前使用印表機 ${number}`
-  :
-  `印表機 ${number} 尚未連線`;
-
-
-  updateButtons();
-
-}
-
-
-$("useBtn1")
-.onclick =
-() =>
-selectPrinter(1);
-
-
-$("useBtn2")
-.onclick =
-() =>
-selectPrinter(2);
-
 
 /* =========================
    PROGRESS
 ========================= */
+
 
 function progress(
   percent,
@@ -4924,25 +6158,27 @@ function progress(
 }
 
 
+
 /* =========================
    STOP
 ========================= */
+
 
 $("stopPrintBtn")
 .onclick =
 async () => {
 
-  const number =
-  state.activePrinter;
-
-
   if(
-    !connected(number)
+    !connected()
   ){
 
     return;
 
   }
+
+
+  state.cancelRequested =
+  true;
 
 
   $("printStatus")
@@ -4952,26 +6188,22 @@ async () => {
 
   $("printStatus")
   .textContent =
-  `⏹ 正在停止印表機 ${number}…`;
+  "⏹ 正在停止送紙…";
 
 
   log(
-    `P${number} USER FORCE STOP`
+    "USER FORCE STOP"
   );
-
-
-  state.forceStop =
-  false;
 
 
   try{
 
     await writeControl(
-      CONTROL.pageEnd(),
-      number
+      CONTROL.pageEnd()
     );
 
   }
+
   catch{}
 
 
@@ -4981,11 +6213,11 @@ async () => {
   try{
 
     await writeControl(
-      CONTROL.printEnd(),
-      number
+      CONTROL.printEnd()
     );
 
   }
+
   catch{}
 
 
@@ -4994,12 +6226,12 @@ async () => {
 
   try{
 
-    printer(number)
-    .device
+    state.device
     ?.gatt
     ?.disconnect();
 
   }
+
   catch{}
 
 
@@ -5007,7 +6239,7 @@ async () => {
   false;
 
 
-  state.forceStop =
+  state.cancelRequested =
   false;
 
 
@@ -5018,7 +6250,7 @@ async () => {
 
   $("printStatus")
   .textContent =
-  `⏹ 印表機 ${number} 已停止並中斷`;
+  "⏹ 已停止並中斷 B3S";
 
 
   updateButtons();
@@ -5026,9 +6258,11 @@ async () => {
 };
 
 
+
 /* =========================
    PRINT
 ========================= */
+
 
 async function printItems(
   list,
@@ -5040,13 +6274,12 @@ async function printItems(
   .value;
 
 
-  const number =
-  state.activePrinter;
-
-
   if(
-    mode !== "custom"
+    mode !==
+    "custom"
+
     &&
+
     !list.length
   ){
 
@@ -5060,8 +6293,11 @@ async function printItems(
 
 
   if(
-    mode === "custom"
+    mode ===
+    "custom"
+
     &&
+
     !$("customText")
     .value
     .trim()
@@ -5077,11 +6313,11 @@ async function printItems(
 
 
   if(
-    !connected(number)
+    !connected()
   ){
 
     alert(
-      `請先連接印表機 ${number}`
+      "請先連接 B3S"
     );
 
     return;
@@ -5093,7 +6329,7 @@ async function printItems(
   true;
 
 
-  state.forceStop =
+  state.cancelRequested =
   false;
 
 
@@ -5102,7 +6338,7 @@ async function printItems(
 
   progress(
     0,
-    `使用印表機 ${number} 建立資料…`
+    "建立列印資料…"
   );
 
 
@@ -5128,15 +6364,18 @@ async function printItems(
 
     $("printMeta")
     .textContent =
-    `印表機 ${number}｜${canvas.width} × ${canvas.height} dots｜${paperModeName($("paperMode").value)}`;
+
+    `${slotLabel(state.activeSlot)}｜${canvas.width} × ${canvas.height} dots｜${paperModeName($("paperMode").value)}`;
 
 
     await ackStep(
+
       "CONNECT",
+
       CONTROL.connect(),
-      0xC2,
-      3500,
-      number
+
+      0xC2
+
     );
 
 
@@ -5149,15 +6388,12 @@ async function printItems(
 
       CONTROL.density(
         Number(
-          $("density").value
+          $("density")
+          .value
         )
       ),
 
-      0x31,
-
-      3500,
-
-      number
+      0x31
 
     );
 
@@ -5171,15 +6407,12 @@ async function printItems(
 
       CONTROL.labelType(
         Number(
-          $("paperMode").value
+          $("paperMode")
+          .value
         )
       ),
 
-      0x33,
-
-      3500,
-
-      number
+      0x33
 
     );
 
@@ -5188,11 +6421,13 @@ async function printItems(
 
 
     await ackStep(
+
       "PRINT START",
+
       CONTROL.printStart(),
-      0x02,
-      3500,
-      number
+
+      0x02
+
     );
 
 
@@ -5200,11 +6435,13 @@ async function printItems(
 
 
     await ackStep(
+
       "PAGE START",
+
       CONTROL.pageStart(),
-      0x04,
-      3500,
-      number
+
+      0x04
+
     );
 
 
@@ -5225,27 +6462,28 @@ async function printItems(
 
       0x14,
 
-      5000,
-
-      number
+      5000
 
     );
 
 
     progress(
+
       30,
-      `印表機 ${number}｜傳送點陣 0/${runs.length}`
+
+      `傳送點陣 0/${runs.length}`
+
     );
 
 
     for(
-      let i=0;
-      i<runs.length;
-      i++
+      let index=0;
+      index<runs.length;
+      index++
     ){
 
       if(
-        state.forceStop
+        state.cancelRequested
       ){
 
         throw new Error(
@@ -5256,17 +6494,20 @@ async function printItems(
 
 
       await writeRaw(
+
         rowPacket(
-          runs[i]
-        ),
-        number
+          runs[index]
+        )
+
       );
 
 
       if(
-        i % 4 === 0
+        index % 4 === 0
+
         ||
-        i ===
+
+        index ===
         runs.length - 1
       ){
 
@@ -5275,16 +6516,18 @@ async function printItems(
           30
           +
           Math.round(
+
             (
-              i + 1
+              index + 1
             )
             /
             runs.length
             *
             55
+
           ),
 
-          `印表機 ${number}｜傳送點陣 ${i+1}/${runs.length}`
+          `傳送點陣 ${index+1}/${runs.length}`
 
         );
 
@@ -5298,7 +6541,7 @@ async function printItems(
 
     progress(
       88,
-      `印表機 ${number}｜正在結束列印…`
+      "內容完成，正在結束列印…"
     );
 
 
@@ -5309,9 +6552,7 @@ async function printItems(
 
       0xE4,
 
-      7000,
-
-      number
+      7000
 
     );
 
@@ -5340,9 +6581,7 @@ async function printItems(
 
       0xF4,
 
-      7000,
-
-      number
+      7000
 
     );
 
@@ -5360,7 +6599,7 @@ async function printItems(
 
     progress(
       100,
-      `印表機 ${number}｜列印完成`
+      "列印完成"
     );
 
 
@@ -5371,23 +6610,27 @@ async function printItems(
 
     $("printStatus")
     .textContent =
-    `✅ 印表機 ${number} 列印完成`;
+
+    `✅ ${slotLabel(state.activeSlot)} 列印完成`;
 
 
     if(
       $("autoClear")
       .checked
+
       &&
+
       mode !==
       "custom"
     ){
 
       state.items =
-      state.items.filter(
+
+      state.items
+      .filter(
         item =>
-        !sourceItems.includes(
-          item
-        )
+        !sourceItems
+        .includes(item)
       );
 
 
@@ -5413,7 +6656,7 @@ async function printItems(
 
       $("printStatus")
       .textContent =
-      `⏹ 印表機 ${number} 列印已停止`;
+      "⏹ 列印已停止";
 
     }
 
@@ -5426,11 +6669,13 @@ async function printItems(
 
       $("printStatus")
       .textContent =
-      `❌ 印表機 ${number}｜${error.message}`;
+      "❌ " +
+      error.message;
 
 
       log(
-        `P${number} PRINT ERROR：${error.message}`
+        "PRINT ERROR：" +
+        error.message
       );
 
     }
@@ -5443,8 +6688,14 @@ async function printItems(
     false;
 
 
-    state.forceStop =
-    false;
+    if(
+      !state.cancelRequested
+    ){
+
+      state.cancelRequested =
+      false;
+
+    }
 
 
     updateButtons();
@@ -5454,16 +6705,19 @@ async function printItems(
 }
 
 
+
 /* =========================
    PRINT BUTTONS
 ========================= */
+
 
 $("printSelectedBtn")
 .onclick =
 async () => {
 
   const source =
-  state.items.filter(
+  state.items
+  .filter(
     item =>
     item.selected
   );
@@ -5479,9 +6733,9 @@ async () => {
   ){
 
     for(
-      let i=0;
-      i<item.qty;
-      i++
+      let index=0;
+      index<item.qty;
+      index++
     ){
 
       expanded.push(
@@ -5494,11 +6748,15 @@ async () => {
 
 
   await printItems(
+
     expanded,
+
     source
+
   );
 
 };
+
 
 
 $("printAllBtn")
@@ -5506,7 +6764,9 @@ $("printAllBtn")
 async () => {
 
   const source =
-  [...state.items];
+  [
+    ...state.items
+  ];
 
 
   const expanded =
@@ -5519,9 +6779,9 @@ async () => {
   ){
 
     for(
-      let i=0;
-      i<item.qty;
-      i++
+      let index=0;
+      index<item.qty;
+      index++
     ){
 
       expanded.push(
@@ -5534,11 +6794,15 @@ async () => {
 
 
   await printItems(
+
     expanded,
+
     source
+
   );
 
 };
+
 
 
 $("printCustomBtn")
@@ -5553,9 +6817,11 @@ async () => {
 };
 
 
+
 /* =========================
    MODE
 ========================= */
+
 
 function updateMode(){
 
@@ -5573,7 +6839,9 @@ function updateMode(){
     !(
       mode ===
       "custom"
+
       ||
+
       mode ===
       "name_custom"
     )
@@ -5588,9 +6856,11 @@ function updateMode(){
 }
 
 
+
 $("printMode")
 .onchange =
 updateMode;
+
 
 
 $("customText")
@@ -5604,27 +6874,35 @@ $("customText")
 };
 
 
+
 /* =========================
    SCANNER
 ========================= */
 
+
 let scanner =
 null;
+
 
 let scanning =
 false;
 
+
 let scannerMode =
 "single";
+
 
 let bulkScanCount =
 0;
 
+
 let lastCode =
 "";
 
+
 let lastTime =
 0;
+
 
 
 async function openScanner(mode){
@@ -5871,10 +7149,16 @@ async function openScanner(mode){
 
     $("scannerStatus")
     .textContent =
-    mode === "bulk"
+
+    mode ===
+    "bulk"
+
     ?
+
     "請連續掃描商品條碼"
+
     :
+
     "請對準商品條碼";
 
   }
@@ -5895,12 +7179,14 @@ async function openScanner(mode){
 }
 
 
+
 async function closeScanner(){
 
   try{
 
     if(
-      scanner &&
+      scanner
+      &&
       scanning
     ){
 
@@ -5909,20 +7195,20 @@ async function closeScanner(){
     }
 
   }
+
   catch{}
 
 
   try{
 
-    if(
-      scanner
-    ){
+    if(scanner){
 
       await scanner.clear();
 
     }
 
   }
+
   catch{}
 
 
@@ -5942,12 +7228,14 @@ async function closeScanner(){
 }
 
 
+
 $("scanBtn")
 .onclick =
 () =>
 openScanner(
   "single"
 );
+
 
 
 $("bulkScanBtn")
@@ -5958,14 +7246,17 @@ openScanner(
 );
 
 
+
 $("closeScannerBtn")
 .onclick =
 closeScanner;
 
 
+
 /* =========================
    SETTINGS
 ========================= */
+
 
 [
   "paperWidth",
@@ -5974,6 +7265,7 @@ closeScanner;
   "itemGap",
   "footerText"
 ]
+
 .forEach(
   id => {
 
@@ -5994,14 +7286,17 @@ closeScanner;
 );
 
 
+
 $("refreshBtn")
 .onclick =
 drawPreview;
 
 
+
 /* =========================
    LOG
 ========================= */
+
 
 $("clearLogBtn")
 .onclick =
@@ -6011,6 +7306,7 @@ $("clearLogBtn")
   "";
 
 };
+
 
 
 $("copyLogBtn")
@@ -6033,24 +7329,34 @@ async () => {
 
   catch{
 
-    $("log").select();
+    $("log")
+    .select();
 
   }
 
 };
 
 
+
 /* =========================
    INIT
 ========================= */
 
+
 renderItems();
+
+
+renderSlots();
+
 
 updateMode();
 
+
 drawPreview();
 
+
 updateButtons();
+
 
 progress(0);
 
@@ -6058,10 +7364,13 @@ progress(0);
 $("paperModeDisplay")
 .textContent =
 paperModeName(
-  $("paperMode").value
+  $("paperMode")
+  .value
 );
 
+
 </script>
+
 
 </body>
 </html>
