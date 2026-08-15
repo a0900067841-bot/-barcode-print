@@ -3,48 +3,47 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>商品條碼列印｜B3S V12</title>
 
-<title>B3S V11 最小列印測試</title>
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 
 <style>
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
   margin:0;
   background:#f4f6f8;
   color:#18202a;
-  font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif;
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif
 }
 
 .wrap{
   max-width:900px;
   margin:auto;
-  padding:18px;
+  padding:18px
 }
 
 h1{
-  margin:0 0 6px;
-  font-size:28px;
+  margin:0 0 5px;
+  font-size:28px
 }
 
 h2{
-  margin-top:0;
+  margin-top:0
 }
 
-.sub,
-.help{
-  color:#667085;
+.sub,.help,label{
+  color:#667085
 }
 
 .sub{
-  margin-bottom:18px;
+  margin-bottom:18px
 }
 
 .help{
-  font-size:14px;
-  line-height:1.65;
+  font-size:13px;
+  line-height:1.6
 }
 
 .card{
@@ -52,114 +51,165 @@ h2{
   border:1px solid #d8dee8;
   border-radius:16px;
   padding:16px;
-  margin-bottom:16px;
+  margin-bottom:16px
+}
+
+label{
+  display:block;
+  font-size:14px;
+  margin:8px 0 6px
+}
+
+input,textarea,select{
+  width:100%;
+  min-height:46px;
+  padding:10px 12px;
+  border:1px solid #cfd6e1;
+  border-radius:10px;
+  background:#fff;
+  font-size:16px
+}
+
+textarea{
+  min-height:180px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:13px
+}
+
+.row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px
 }
 
 .actions{
   display:flex;
   flex-wrap:wrap;
   gap:8px;
-  margin-top:12px;
+  margin-top:12px
 }
 
 button{
   border:0;
   border-radius:10px;
-  min-height:48px;
+  min-height:46px;
   padding:10px 14px;
   font-size:16px;
   font-weight:700;
   background:#eef2f6;
-  color:#18202a;
+  color:#18202a
 }
 
 button:disabled{
-  opacity:.45;
+  opacity:.45
 }
 
 .primary{
   background:#1265f3;
-  color:#fff;
+  color:#fff
 }
 
-.okbtn{
+.ok{
   background:#e7f8ef;
-  color:#087443;
+  color:#087443
 }
 
 .danger{
   background:#fff0ef;
-  color:#d92d20;
+  color:#d92d20
 }
 
 .status{
-  padding:12px;
+  padding:11px 12px;
   border-radius:10px;
   background:#f2f4f7;
-  margin:12px 0;
+  margin:10px 0
 }
 
 .status.ok{
   background:#ecfdf3;
-  color:#067647;
+  color:#067647
 }
 
 .status.warn{
   background:#fff8e6;
-  color:#8a5a00;
+  color:#8a5a00
 }
 
 .status.err{
   background:#fff1f0;
-  color:#d92d20;
+  color:#d92d20
 }
 
-.step{
+.item{
   border:1px solid #d8dee8;
   border-radius:12px;
+  padding:10px;
+  margin-top:8px
+}
+
+.preview{
+  background:#e8eaed;
+  border-radius:12px;
   padding:12px;
-  margin:8px 0;
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-  font-size:14px;
+  overflow:auto
 }
 
-.step.ok{
-  background:#ecfdf3;
+#previewCanvas{
+  display:block;
+  margin:auto;
+  max-width:100%;
+  height:auto;
+  background:#fff
 }
 
-.step.wait{
-  background:#fff8e6;
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  background:rgba(0,0,0,.75);
+  padding:16px;
+  overflow:auto
 }
 
-.step.err{
-  background:#fff1f0;
-}
-
-textarea{
-  width:100%;
-  min-height:320px;
-  padding:12px;
-  border:1px solid #cfd6e1;
-  border-radius:10px;
+.modalBox{
+  max-width:520px;
+  margin:5vh auto;
   background:#fff;
-  font:13px ui-monospace,SFMono-Regular,Menlo,monospace;
+  border-radius:16px;
+  padding:16px
 }
 
-.info{
+.device-grid{
   display:grid;
-  grid-template-columns:150px 1fr;
+  grid-template-columns:145px 1fr;
   gap:8px 12px;
   font-size:14px;
+  margin-top:12px
 }
 
-.info b{
-  color:#475467;
+.device-grid b{
+  color:#475467
 }
 
-@media(max-width:650px){
-  .info{
-    grid-template-columns:1fr;
-  }
+.progress{
+  height:10px;
+  background:#eaecf0;
+  border-radius:999px;
+  overflow:hidden
+}
+
+.progress>div{
+  height:100%;
+  width:0;
+  background:#1265f3;
+  transition:width .15s
+}
+
+@media(max-width:700px){
+  .row{grid-template-columns:1fr}
+  .device-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -168,18 +218,232 @@ textarea{
 
 <div class="wrap">
 
-<h1>B3S 最小列印測試</h1>
+<h1>商品條碼列印</h1>
+<div class="sub">B3S iPhone / Bluefy 直連列印 V12</div>
 
-<div class="sub">
-NIIMBOT 協定 V11｜跳過 PRINT_CLEAR／PRINT_QUANTITY
+
+<div class="card">
+
+<h2>新增商品</h2>
+
+<label>商品名稱</label>
+<input id="name" placeholder="例如：可口可樂 ZERO">
+
+<label>商品條碼</label>
+<input id="code" inputmode="numeric" placeholder="掃描或輸入條碼">
+
+<div class="actions">
+
+<button id="scanBtn" class="ok">
+📷 相機掃描
+</button>
+
+<button id="addBtn" class="primary">
+＋ 新增
+</button>
+
+<button id="clearInputBtn">
+清除輸入
+</button>
+
+</div>
+
+<hr style="border:0;border-top:1px solid #d8dee8;margin:18px 0">
+
+<h2 style="font-size:18px">一次新增多筆</h2>
+
+<p class="help">
+每行一筆，可輸入「商品名稱,條碼」，也可以直接貼上 Excel 的商品名稱＋條碼兩欄。
+</p>
+
+<textarea
+id="bulkInput"
+style="min-height:120px"
+placeholder="可口可樂 ZERO,4710018028809
+御茶園金萱烏龍茶,4710421074806"></textarea>
+
+<div class="actions">
+
+<button id="bulkAddBtn" class="primary">
+＋ 加入全部
+</button>
+
+<button id="bulkClearBtn">
+清除批次輸入
+</button>
+
+</div>
+
+<div
+id="bulkStatus"
+class="help"
+style="margin-top:8px">
+</div>
+
 </div>
 
 
 <div class="card">
 
-<h2>1. 連接 B3S</h2>
+<h2>待列印商品</h2>
 
-<div id="bleStatus" class="status">
+<div id="items"></div>
+
+<div class="actions">
+
+<button
+id="clearAllBtn"
+class="danger">
+全部清除
+</button>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>列印設定</h2>
+
+<div class="row">
+
+<div>
+
+<label>紙寬</label>
+
+<select id="paperWidth">
+
+<option value="77">77 mm</option>
+<option value="70">70 mm</option>
+<option value="60">60 mm</option>
+
+<option value="58" selected>
+58 mm
+</option>
+
+<option value="50">50 mm</option>
+<option value="40">40 mm</option>
+<option value="30">30 mm</option>
+<option value="20">20 mm</option>
+
+</select>
+
+</div>
+
+
+<div>
+
+<label>條碼高度</label>
+
+<select id="barcodeHeight">
+
+<option value="10">10 mm</option>
+
+<option value="12" selected>
+12 mm
+</option>
+
+<option value="14">14 mm</option>
+<option value="16">16 mm</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+<div class="row">
+
+<div>
+
+<label>列印濃度</label>
+
+<select id="density">
+
+<option value="1">
+1 淺
+</option>
+
+<option value="2" selected>
+2 標準
+</option>
+
+<option value="3">
+3 深
+</option>
+
+</select>
+
+</div>
+
+
+<div>
+
+<label>商品間距</label>
+
+<select id="itemGap">
+
+<option value="1">1 mm</option>
+
+<option value="2" selected>
+2 mm
+</option>
+
+<option value="3">3 mm</option>
+
+<option value="4">4 mm</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+<label>最下方自訂文字</label>
+
+<input
+id="footerText"
+placeholder="例如：115/08/15-08/18">
+
+
+<div class="actions">
+
+<button id="refreshBtn">
+重新產生預覽
+</button>
+
+<button id="browserPrintBtn">
+瀏覽器列印
+</button>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>列印預覽</h2>
+
+<div class="preview">
+
+<canvas id="previewCanvas"></canvas>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>B3S 直連</h2>
+
+<div
+id="bleStatus"
+class="status">
 尚未連線
 </div>
 
@@ -187,7 +451,7 @@ NIIMBOT 協定 V11｜跳過 PRINT_CLEAR／PRINT_QUANTITY
 
 <button
 id="connectBtn"
-class="okbtn">
+class="ok">
 🔵 連接 B3S
 </button>
 
@@ -199,7 +463,8 @@ disabled>
 
 </div>
 
-<div class="info">
+
+<div class="device-grid">
 
 <b>裝置</b>
 <span id="deviceName">—</span>
@@ -207,14 +472,8 @@ disabled>
 <b>GATT</b>
 <span id="gattState">false</span>
 
-<b>Write</b>
-<span id="writeState">false</span>
-
-<b>Notify</b>
-<span id="notifyState">false</span>
-
-<b>乾淨測試狀態</b>
-<span id="freshState">否</span>
+<b>列印通道</b>
+<span id="channelState">未就緒</span>
 
 </div>
 
@@ -223,53 +482,48 @@ disabled>
 
 <div class="card">
 
-<h2>2. V11 最小黑線測試</h2>
+<h2>直接列印到 B3S</h2>
 
 <p class="help">
-這次會真的送一張非常小的測試資料：
-<strong>64 dots 寬 × 8 dots 高</strong>。
-如果協定正確，B3S 可能會短暫走紙並印出一條短黑線。
+使用已成功驗證的 B3S 流程：
+不送 PRINT_CLEAR、不送 PRINT_QUANTITY，直接送頁面點陣。
 </p>
-
-<div class="status warn">
-⚠️ 每次連線只允許測試一次。測完後若要再測，請先中斷再重新連接。
-</div>
 
 <div class="actions">
 
 <button
-id="testBtn"
+id="directPrintBtn"
 class="primary"
 disabled>
-🖨 執行 V11 最小黑線測試
-</button>
-
-<button id="clearBtn">
-清除結果
+🖨 直接列印到 B3S
 </button>
 
 </div>
 
 <div
-id="testStatus"
+id="printStatus"
 class="status">
-尚未測試
+等待列印
 </div>
 
-<div id="steps"></div>
+<div class="progress">
 
-<textarea
-id="result"
-readonly
-placeholder="V11 測試結果">
-</textarea>
+<div id="progressBar"></div>
+
+</div>
+
+<div
+id="printMeta"
+class="help"
+style="margin-top:8px">
+</div>
 
 </div>
 
 
 <div class="card">
 
-<h2>原始通訊紀錄</h2>
+<h2>通訊紀錄</h2>
 
 <div class="actions">
 
@@ -293,6 +547,37 @@ readonly>
 </div>
 
 
+<div
+id="scannerModal"
+class="modal">
+
+<div class="modalBox">
+
+<h2>掃描商品條碼</h2>
+
+<div
+id="scannerStatus"
+class="status">
+準備啟動相機…
+</div>
+
+<div id="qrReader"></div>
+
+<div class="actions">
+
+<button
+id="closeScannerBtn"
+class="danger">
+關閉
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
 <script>
 
 const $ =
@@ -301,7 +586,7 @@ document.getElementById(id);
 
 
 /* =========================
-   BLE UUID
+   B3S UUID
 ========================= */
 
 const SERVICE =
@@ -316,6 +601,8 @@ const NOTIFY_UUID =
 
 const state = {
 
+  items:[],
+
   device:null,
 
   server:null,
@@ -326,9 +613,9 @@ const state = {
 
   rx:[],
 
-  fresh:false,
+  printing:false,
 
-  testing:false
+  needsReconnect:false
 
 };
 
@@ -341,7 +628,34 @@ function delay(ms){
 
   return new Promise(
     resolve =>
-    setTimeout(resolve,ms)
+    setTimeout(
+      resolve,
+      ms
+    )
+  );
+
+}
+
+
+function mmToPx(mm){
+
+  return Math.round(
+    mm * 203 / 25.4
+  );
+
+}
+
+
+function paperDots(mm){
+
+  return Math.max(
+
+    8,
+
+    Math.floor(
+      mmToPx(mm) / 8
+    ) * 8
+
   );
 
 }
@@ -351,6 +665,7 @@ function hex(bytes){
 
   return Array
   .from(bytes)
+
   .map(
     value =>
     value
@@ -358,6 +673,7 @@ function hex(bytes){
     .padStart(2,"0")
     .toUpperCase()
   )
+
   .join(" ");
 
 }
@@ -373,31 +689,15 @@ function hx(value){
 }
 
 
-function payloadText(payload){
-
-  if(
-    !payload ||
-    !payload.length
-  ){
-
-    return "(空)";
-
-  }
-
-  return payload
-  .map(hx)
-  .join(" ");
-
-}
-
-
 function log(text){
 
   const box =
   $("log");
 
+
   box.value +=
   `[${new Date().toLocaleTimeString()}] ${text}\n`;
+
 
   box.scrollTop =
   box.scrollHeight;
@@ -405,46 +705,44 @@ function log(text){
 }
 
 
-function updateInfo(){
+function escapeHtml(text){
 
-  $("gattState")
-  .textContent =
-  String(
-    !!state.server?.connected
+  return String(
+    text ?? ""
+  )
+
+  .replace(
+
+    /[&<>"']/g,
+
+    c => ({
+
+      "&":"&amp;",
+
+      "<":"&lt;",
+
+      ">":"&gt;",
+
+      '"':"&quot;",
+
+      "'":"&#039;"
+
+    }[c])
+
   );
 
-
-  $("writeState")
-  .textContent =
-  String(
-    !!state.write
-  );
+}
 
 
-  $("notifyState")
-  .textContent =
-  String(
-    !!state.notify
-  );
+function u16(value){
 
+  return [
 
-  $("freshState")
-  .textContent =
-  state.fresh
-  ?
-  "是"
-  :
-  "否";
+    (value >> 8) & 255,
 
+    value & 255
 
-  $("testBtn").disabled =
-  !(
-    state.server?.connected &&
-    state.write &&
-    state.notify &&
-    state.fresh &&
-    !state.testing
-  );
+  ];
 
 }
 
@@ -455,7 +753,7 @@ function updateInfo(){
 
 function frame(
   command,
-  data=[0x01],
+  data=[1],
   connectPrefix=false
 ){
 
@@ -490,7 +788,7 @@ function frame(
 
     ...payload,
 
-    checksum & 0xFF,
+    checksum & 255,
 
     0xAA,
     0xAA
@@ -498,7 +796,9 @@ function frame(
   ];
 
 
-  if(connectPrefix){
+  if(
+    connectPrefix
+  ){
 
     packet.unshift(
       0x03
@@ -514,75 +814,67 @@ function frame(
 }
 
 
-function u16(value){
-
-  return [
-
-    (value >> 8) & 0xFF,
-
-    value & 0xFF
-
-  ];
-
-}
-
-
-/* =========================
-   已確認的 B3S 控制封包
-========================= */
-
-const P = {
+const CONTROL = {
 
   connect:
+  () =>
   frame(
     0xC1,
-    [0x01],
+    [1],
     true
   ),
 
+
   density:
+  value =>
   frame(
     0x21,
-    [0x02]
+    [value]
   ),
+
 
   label:
+  () =>
   frame(
     0x23,
-    [0x01]
+    [1]
   ),
 
+
   printStart:
+  () =>
   frame(
     0x01
   ),
 
+
   pageStart:
+  () =>
   frame(
     0x03
   ),
 
-  /*
-  D110：
-  HEIGHT = 8
-  WIDTH  = 64
-  */
 
   pageSize:
+  (height,width) =>
   frame(
     0x13,
     [
-      ...u16(8),
-      ...u16(64)
+      ...u16(height),
+      ...u16(width)
     ]
   ),
 
+
   pageEnd:
+  () =>
   frame(
     0xE3
   ),
 
+
   printEnd:
+  () =>
   frame(
     0xF3
   )
@@ -591,61 +883,7 @@ const P = {
 
 
 /* =========================
-   Bitmap Row
-
-   64 dots 全黑
-   row number = 0
-   pixel count = 00 40 00
-   repeat = 8
-   data = 8 bytes FF
-========================= */
-
-function buildBlackRow(){
-
-  const data = [
-
-    /* row number */
-    0x00,
-    0x00,
-
-    /*
-    black pixel count = 64
-    NIIMBOT count format
-    */
-    0x00,
-    0x40,
-    0x00,
-
-    /* repeat */
-    0x08,
-
-    /* 64 black dots */
-    0xFF,
-    0xFF,
-    0xFF,
-    0xFF,
-    0xFF,
-    0xFF,
-    0xFF,
-    0xFF
-
-  ];
-
-
-  return frame(
-    0x85,
-    data
-  );
-
-}
-
-
-P.bitmap =
-buildBlackRow();
-
-
-/* =========================
-   Packet Parser
+   RX parser
 ========================= */
 
 function parsePackets(text){
@@ -657,29 +895,33 @@ function parsePackets(text){
   .filter(Boolean)
   .map(
     value =>
-    parseInt(value,16)
+    parseInt(
+      value,
+      16
+    )
   );
 
 
-  const result =
+  const output =
   [];
 
 
-  let pos =
+  let position =
   0;
 
 
   while(
-    pos <
+    position <
     bytes.length
   ){
 
     if(
-      bytes[pos] !== 0x55 ||
-      bytes[pos+1] !== 0x55
+      bytes[position] !== 0x55
+      ||
+      bytes[position+1] !== 0x55
     ){
 
-      pos++;
+      position++;
 
       continue;
 
@@ -687,7 +929,7 @@ function parsePackets(text){
 
 
     if(
-      pos + 6 >
+      position + 6 >
       bytes.length
     ){
 
@@ -697,23 +939,26 @@ function parsePackets(text){
 
 
     const command =
-    bytes[pos+2];
+    bytes[position+2];
 
 
     const length =
-    bytes[pos+3];
+    bytes[position+3];
 
 
     const checksumIndex =
-    pos + 4 + length;
+    position +
+    4 +
+    length;
 
 
-    const tailIndex =
-    checksumIndex + 1;
+    const tail =
+    checksumIndex +
+    1;
 
 
     if(
-      tailIndex + 1 >=
+      tail + 1 >=
       bytes.length
     ){
 
@@ -723,11 +968,12 @@ function parsePackets(text){
 
 
     if(
-      bytes[tailIndex] !== 0xAA ||
-      bytes[tailIndex+1] !== 0xAA
+      bytes[tail] !== 0xAA
+      ||
+      bytes[tail+1] !== 0xAA
     ){
 
-      pos++;
+      position++;
 
       continue;
 
@@ -736,8 +982,11 @@ function parsePackets(text){
 
     const payload =
     bytes.slice(
-      pos+4,
-      pos+4+length
+
+      position+4,
+
+      position+4+length
+
     );
 
 
@@ -757,109 +1006,160 @@ function parsePackets(text){
     }
 
 
-    result.push({
+    output.push({
 
       command,
 
       payload,
 
       checksumOk:
-      (checksum & 0xFF)
+      (checksum & 255)
       ===
       bytes[checksumIndex]
 
     });
 
 
-    pos =
-    tailIndex + 2;
+    position =
+    tail + 2;
 
   }
 
 
-  return result;
+  return output;
 
 }
 
 
 /* =========================
-   BLE Write
+   BLE write
 ========================= */
 
-async function writeBle(bytes){
+async function writeRaw(bytes){
 
-  if(!state.write){
+  if(
+    !state.write
+  ){
 
     throw new Error(
-      "Write characteristic 未就緒"
+      "B3S 寫入通道未就緒"
     );
 
   }
 
 
+  /*
+  為避免大點陣超過 BLE MTU，
+  拆成 20 bytes 串流送出。
+  */
+
+  const chunkSize =
+  20;
+
+
+  for(
+    let i=0;
+    i<bytes.length;
+    i+=chunkSize
+  ){
+
+    const part =
+    bytes.slice(
+      i,
+      i+chunkSize
+    );
+
+
+    if(
+      state.write
+      .properties
+      .writeWithoutResponse
+
+      &&
+
+      state.write
+      .writeValueWithoutResponse
+    ){
+
+      await state.write
+      .writeValueWithoutResponse(
+        part
+      );
+
+    }
+
+
+    else if(
+      state.write
+      .writeValueWithResponse
+    ){
+
+      await state.write
+      .writeValueWithResponse(
+        part
+      );
+
+    }
+
+
+    else{
+
+      await state.write
+      .writeValue(
+        part
+      );
+
+    }
+
+
+    if(
+      bytes.length >
+      chunkSize
+    ){
+
+      await delay(
+        6
+      );
+
+    }
+
+  }
+
+}
+
+
+async function writePacket(
+  bytes,
+  label="TX"
+){
+
   log(
-    "TX：" +
-    hex(bytes)
+    `${label}：${hex(bytes)}`
   );
 
 
-  if(
-    state.write
-    .properties
-    .writeWithoutResponse
-    &&
-    state.write
-    .writeValueWithoutResponse
-  ){
-
-    await state.write
-    .writeValueWithoutResponse(
-      bytes
-    );
-
-  }
-
-
-  else if(
-    state.write
-    .writeValueWithResponse
-  ){
-
-    await state.write
-    .writeValueWithResponse(
-      bytes
-    );
-
-  }
-
-
-  else{
-
-    await state.write
-    .writeValue(
-      bytes
-    );
-
-  }
+  await writeRaw(
+    bytes
+  );
 
 }
 
 
 /* =========================
-   Send + Wait ACK
+   Send + wait
 ========================= */
 
 async function sendWait(
   packet,
   expectedCommand,
-  timeout=2000
+  timeout=2500
 ){
 
   const startIndex =
   state.rx.length;
 
 
-  await writeBle(
+  await writePacket(
     packet
   );
 
@@ -874,7 +1174,7 @@ async function sendWait(
     timeout
   ){
 
-    const newRx =
+    const newPackets =
     state.rx.slice(
       startIndex
     );
@@ -882,7 +1182,7 @@ async function sendWait(
 
     for(
       const rx
-      of newRx
+      of newPackets
     ){
 
       const packets =
@@ -892,12 +1192,12 @@ async function sendWait(
 
 
       for(
-        const parsed
+        const packet
         of packets
       ){
 
         if(
-          !parsed.checksumOk
+          !packet.checksumOk
         ){
 
           continue;
@@ -906,7 +1206,7 @@ async function sendWait(
 
 
         if(
-          parsed.command ===
+          packet.command ===
           0x00
         ){
 
@@ -916,8 +1216,7 @@ async function sendWait(
 
             unsupported:true,
 
-            packet:
-            parsed
+            packet
 
           };
 
@@ -925,7 +1224,7 @@ async function sendWait(
 
 
         if(
-          parsed.command ===
+          packet.command ===
           expectedCommand
         ){
 
@@ -933,8 +1232,7 @@ async function sendWait(
 
             ok:true,
 
-            packet:
-            parsed
+            packet
 
           };
 
@@ -964,26 +1262,1115 @@ async function sendWait(
 
 
 /* =========================
-   Connect
+   Barcode
+========================= */
+
+function detectFormat(code){
+
+  if(
+    /^\d{13}$/.test(code)
+  ){
+
+    return "EAN13";
+
+  }
+
+
+  if(
+    /^\d{8}$/.test(code)
+  ){
+
+    return "EAN8";
+
+  }
+
+
+  if(
+    /^\d{12}$/.test(code)
+  ){
+
+    return "UPC";
+
+  }
+
+
+  return "CODE128";
+
+}
+
+
+function makeBarcode(
+  code,
+  maxWidth,
+  height
+){
+
+  const canvas =
+  document.createElement(
+    "canvas"
+  );
+
+
+  try{
+
+    JsBarcode(
+      canvas,
+      code,
+      {
+
+        format:
+        detectFormat(code),
+
+        displayValue:true,
+
+        height,
+
+        margin:0,
+
+        width:2,
+
+        fontSize:18,
+
+        textMargin:3
+
+      }
+    );
+
+  }
+
+  catch{
+
+    JsBarcode(
+      canvas,
+      code,
+      {
+
+        format:"CODE128",
+
+        displayValue:true,
+
+        height,
+
+        margin:0,
+
+        width:2,
+
+        fontSize:18,
+
+        textMargin:3
+
+      }
+    );
+
+  }
+
+
+  if(
+    canvas.width <=
+    maxWidth
+  ){
+
+    return canvas;
+
+  }
+
+
+  const scaled =
+  document.createElement(
+    "canvas"
+  );
+
+
+  scaled.width =
+  maxWidth;
+
+
+  scaled.height =
+  Math.round(
+
+    canvas.height *
+    maxWidth /
+    canvas.width
+
+  );
+
+
+  const ctx =
+  scaled.getContext(
+    "2d"
+  );
+
+
+  ctx.imageSmoothingEnabled =
+  false;
+
+
+  ctx.drawImage(
+
+    canvas,
+
+    0,
+    0,
+
+    scaled.width,
+    scaled.height
+
+  );
+
+
+  return scaled;
+
+}
+
+
+/* =========================
+   Preview canvas
+========================= */
+
+function buildPreviewCanvas(){
+
+  const width =
+  paperDots(
+    Number(
+      $("paperWidth").value
+    )
+  );
+
+
+  const margin =
+  mmToPx(2);
+
+
+  const contentWidth =
+  width -
+  margin * 2;
+
+
+  const barcodeHeight =
+  mmToPx(
+    Number(
+      $("barcodeHeight").value
+    )
+  );
+
+
+  const gap =
+  mmToPx(
+    Number(
+      $("itemGap").value
+    )
+  );
+
+
+  const blocks =
+  state.items.map(
+    item => {
+
+      const barcode =
+      makeBarcode(
+
+        item.code,
+
+        contentWidth,
+
+        barcodeHeight
+
+      );
+
+
+      return {
+
+        item,
+
+        barcode,
+
+        height:
+        30 +
+        barcode.height +
+        gap
+
+      };
+
+    }
+  );
+
+
+  const footer =
+  $("footerText")
+  .value
+  .trim();
+
+
+  let height =
+
+  mmToPx(2)
+
+  +
+
+  blocks.reduce(
+    (sum,block) =>
+    sum +
+    block.height,
+    0
+  )
+
+  +
+
+  (
+    footer
+    ?
+    34 +
+    mmToPx(2)
+    :
+    mmToPx(2)
+  );
+
+
+  height =
+  Math.max(
+    24,
+    height
+  );
+
+
+  if(
+    height >
+    65000
+  ){
+
+    throw new Error(
+      "內容太長，請減少商品筆數後再列印"
+    );
+
+  }
+
+
+  const canvas =
+  $("previewCanvas");
+
+
+  canvas.width =
+  width;
+
+
+  canvas.height =
+  height;
+
+
+  const ctx =
+  canvas.getContext(
+    "2d"
+  );
+
+
+  ctx.fillStyle =
+  "#fff";
+
+
+  ctx.fillRect(
+
+    0,
+    0,
+
+    width,
+    height
+
+  );
+
+
+  ctx.fillStyle =
+  "#000";
+
+
+  ctx.textAlign =
+  "center";
+
+
+  ctx.textBaseline =
+  "top";
+
+
+  let y =
+  mmToPx(2);
+
+
+  for(
+    const block
+    of blocks
+  ){
+
+    ctx.font =
+    '600 20px "PingFang TC","Microsoft JhengHei",sans-serif';
+
+
+    ctx.fillText(
+
+      block.item.name ||
+      "",
+
+      width / 2,
+
+      y,
+
+      contentWidth
+
+    );
+
+
+    y +=
+    30;
+
+
+    ctx.imageSmoothingEnabled =
+    false;
+
+
+    ctx.drawImage(
+
+      block.barcode,
+
+      (
+        width -
+        block.barcode.width
+      ) / 2,
+
+      y
+
+    );
+
+
+    y +=
+
+    block.barcode.height
+
+    +
+
+    gap;
+
+  }
+
+
+  if(
+    footer
+  ){
+
+    ctx.font =
+    '700 18px "PingFang TC","Microsoft JhengHei",sans-serif';
+
+
+    ctx.fillText(
+
+      footer,
+
+      width / 2,
+
+      y,
+
+      contentWidth
+
+    );
+
+  }
+
+
+  return canvas;
+
+}
+
+
+function drawPreview(){
+
+  try{
+
+    buildPreviewCanvas();
+
+  }
+
+  catch(error){
+
+    alert(
+      error.message
+    );
+
+  }
+
+}
+
+
+/* =========================
+   Items
+========================= */
+
+function renderItems(){
+
+  const box =
+  $("items");
+
+
+  if(
+    !state.items.length
+  ){
+
+    box.innerHTML =
+    '<div class="help">目前沒有商品</div>';
+
+
+    updatePrintButton();
+
+
+    return;
+
+  }
+
+
+  box.innerHTML =
+  state.items
+
+  .map(
+    (item,index) => `
+
+    <div class="item">
+
+      <b>
+      ${escapeHtml(
+        item.name ||
+        "未命名商品"
+      )}
+      </b>
+
+      <br>
+
+      <small>
+      ${escapeHtml(
+        item.code
+      )}
+      </small>
+
+      <div class="actions">
+
+        <button
+        class="danger deleteBtn"
+        data-index="${index}">
+        刪除
+        </button>
+
+      </div>
+
+    </div>
+
+    `
+  )
+
+  .join("");
+
+
+  updatePrintButton();
+
+}
+
+
+function addItem(){
+
+  const name =
+  $("name")
+  .value
+  .trim();
+
+
+  const code =
+  $("code")
+  .value
+  .trim();
+
+
+  if(
+    !code
+  ){
+
+    alert(
+      "請輸入商品條碼"
+    );
+
+    return;
+
+  }
+
+
+  state.items.push({
+    name,
+    code
+  });
+
+
+  $("name").value =
+  "";
+
+
+  $("code").value =
+  "";
+
+
+  renderItems();
+
+  drawPreview();
+
+}
+
+
+$("addBtn").onclick =
+addItem;
+
+
+$("clearInputBtn").onclick =
+() => {
+
+  $("name").value =
+  "";
+
+
+  $("code").value =
+  "";
+
+};
+
+
+$("items").onclick =
+event => {
+
+  const button =
+  event.target.closest(
+    ".deleteBtn"
+  );
+
+
+  if(
+    !button
+  ){
+
+    return;
+
+  }
+
+
+  state.items.splice(
+
+    Number(
+      button.dataset.index
+    ),
+
+    1
+
+  );
+
+
+  renderItems();
+
+  drawPreview();
+
+};
+
+
+$("clearAllBtn").onclick =
+() => {
+
+  state.items =
+  [];
+
+
+  renderItems();
+
+  drawPreview();
+
+};
+
+
+/* =========================
+   Bulk
+========================= */
+
+$("bulkAddBtn").onclick =
+() => {
+
+  const text =
+  $("bulkInput")
+  .value
+  .trim();
+
+
+  if(
+    !text
+  ){
+
+    $("bulkStatus")
+    .textContent =
+    "請先輸入商品名稱與條碼";
+
+
+    return;
+
+  }
+
+
+  let added =
+  0;
+
+
+  let skipped =
+  0;
+
+
+  const lines =
+  text.split(
+    /\r?\n/
+  );
+
+
+  for(
+    const raw
+    of lines
+  ){
+
+    const line =
+    raw.trim();
+
+
+    if(
+      !line
+    ){
+
+      continue;
+
+    }
+
+
+    let name =
+    "";
+
+
+    let code =
+    "";
+
+
+    if(
+      line.includes("\t")
+    ){
+
+      const parts =
+      line.split("\t");
+
+
+      name =
+      (
+        parts[0] ||
+        ""
+      )
+      .trim();
+
+
+      code =
+      (
+        parts[1] ||
+        ""
+      )
+      .trim();
+
+    }
+
+
+    else if(
+      line.includes(",")
+    ){
+
+      const parts =
+      line.split(",");
+
+
+      code =
+      (
+        parts.pop() ||
+        ""
+      )
+      .trim();
+
+
+      name =
+      parts
+      .join(",")
+      .trim();
+
+    }
+
+
+    else{
+
+      const match =
+      line.match(
+        /^(.*?)[\s]+(\d{6,})$/
+      );
+
+
+      if(
+        match
+      ){
+
+        name =
+        match[1]
+        .trim();
+
+
+        code =
+        match[2]
+        .trim();
+
+      }
+
+    }
+
+
+    if(
+      !code
+    ){
+
+      skipped++;
+
+      continue;
+
+    }
+
+
+    state.items.push({
+      name,
+      code
+    });
+
+
+    added++;
+
+  }
+
+
+  $("bulkStatus")
+  .textContent =
+
+  `已加入 ${added} 筆`
+
+  +
+
+  (
+    skipped
+    ?
+    `，略過 ${skipped} 筆`
+    :
+    ""
+  );
+
+
+  if(
+    added
+  ){
+
+    $("bulkInput").value =
+    "";
+
+  }
+
+
+  renderItems();
+
+  drawPreview();
+
+};
+
+
+$("bulkClearBtn").onclick =
+() => {
+
+  $("bulkInput").value =
+  "";
+
+
+  $("bulkStatus").textContent =
+  "";
+
+};
+
+
+/* =========================
+   Preview controls
+========================= */
+
+$("refreshBtn").onclick =
+drawPreview;
+
+
+$("paperWidth").onchange =
+drawPreview;
+
+
+$("barcodeHeight").onchange =
+drawPreview;
+
+
+$("itemGap").onchange =
+drawPreview;
+
+
+$("footerText").oninput =
+drawPreview;
+
+
+$("browserPrintBtn").onclick =
+() => {
+
+  drawPreview();
+
+  window.print();
+
+};
+
+
+/* =========================
+   Camera
+========================= */
+
+let qrScanner =
+null;
+
+
+let scannerRunning =
+false;
+
+
+$("scanBtn").onclick =
+async () => {
+
+  $("scannerModal")
+  .style
+  .display =
+  "block";
+
+
+  $("scannerStatus")
+  .textContent =
+  "正在啟動相機…";
+
+
+  try{
+
+    qrScanner =
+    new Html5Qrcode(
+      "qrReader"
+    );
+
+
+    await qrScanner.start(
+
+      {
+        facingMode:
+        "environment"
+      },
+
+      {
+        fps:12,
+
+        qrbox:{
+          width:280,
+          height:130
+        }
+      },
+
+      decoded => {
+
+        $("code").value =
+        decoded;
+
+
+        $("scannerStatus")
+        .className =
+        "status ok";
+
+
+        $("scannerStatus")
+        .textContent =
+        "掃描成功：" +
+        decoded;
+
+
+        setTimeout(
+          closeScanner,
+          400
+        );
+
+      },
+
+      () => {}
+
+    );
+
+
+    scannerRunning =
+    true;
+
+
+    $("scannerStatus")
+    .className =
+    "status ok";
+
+
+    $("scannerStatus")
+    .textContent =
+    "請對準商品條碼";
+
+  }
+
+
+  catch(error){
+
+    $("scannerStatus")
+    .className =
+    "status err";
+
+
+    $("scannerStatus")
+    .textContent =
+    "相機啟動失敗：" +
+    error.message;
+
+  }
+
+};
+
+
+async function closeScanner(){
+
+  try{
+
+    if(
+      qrScanner &&
+      scannerRunning
+    ){
+
+      await qrScanner.stop();
+
+    }
+
+  }catch{}
+
+
+  try{
+
+    if(
+      qrScanner
+    ){
+
+      await qrScanner.clear();
+
+    }
+
+  }catch{}
+
+
+  qrScanner =
+  null;
+
+
+  scannerRunning =
+  false;
+
+
+  $("scannerModal")
+  .style
+  .display =
+  "none";
+
+}
+
+
+$("closeScannerBtn").onclick =
+closeScanner;
+
+
+/* =========================
+   BLE UI
+========================= */
+
+function updateBleUi(){
+
+  const connected =
+  !!state.server?.connected;
+
+
+  $("disconnectBtn").disabled =
+  !connected;
+
+
+  $("gattState").textContent =
+  String(
+    connected
+  );
+
+
+  $("channelState")
+  .textContent =
+
+  state.write &&
+  state.notify
+
+  ?
+
+  "已就緒"
+
+  :
+
+  "未就緒";
+
+
+  updatePrintButton();
+
+}
+
+
+function updatePrintButton(){
+
+  $("directPrintBtn").disabled =
+
+  !(
+
+    state.server?.connected
+
+    &&
+
+    state.write
+
+    &&
+
+    state.notify
+
+    &&
+
+    state.items.length
+
+    &&
+
+    !state.printing
+
+    &&
+
+    !state.needsReconnect
+
+  );
+
+}
+
+
+/* =========================
+   BLE Connect
 ========================= */
 
 $("connectBtn").onclick =
 async () => {
 
   try{
-
-    if(
-      state.server?.connected
-    ){
-
-      alert(
-        "目前已經連線"
-      );
-
-      return;
-
-    }
-
 
     $("bleStatus")
     .className =
@@ -1048,6 +2435,10 @@ async () => {
     [];
 
 
+    state.needsReconnect =
+    false;
+
+
     state.notify
     .addEventListener(
       "characteristicvaluechanged",
@@ -1087,7 +2478,7 @@ async () => {
 
         if(
           state.rx.length >
-          500
+          800
         ){
 
           state.rx.shift();
@@ -1125,11 +2516,11 @@ async () => {
         null;
 
 
-        state.fresh =
+        state.printing =
         false;
 
 
-        state.testing =
+        state.needsReconnect =
         false;
 
 
@@ -1143,24 +2534,10 @@ async () => {
         "已中斷";
 
 
-        updateInfo();
+        updateBleUi();
 
       }
     );
-
-
-    /*
-    重要：
-    剛建立新 GATT session
-    才標示 fresh
-    */
-
-    state.fresh =
-    true;
-
-
-    state.testing =
-    false;
 
 
     $("bleStatus")
@@ -1170,23 +2547,20 @@ async () => {
 
     $("bleStatus")
     .textContent =
-    "✅ B3S 已重新連線，現在是乾淨測試狀態";
+    "✅ B3S 已連線，可直接列印";
 
 
     log(
-      "V11 B3S fresh session ready"
+      "V12 B3S print channel ready"
     );
 
 
-    updateInfo();
+    updateBleUi();
 
   }
 
+
   catch(error){
-
-    state.fresh =
-    false;
-
 
     $("bleStatus")
     .className =
@@ -1199,7 +2573,7 @@ async () => {
     error.message;
 
 
-    updateInfo();
+    updateBleUi();
 
   }
 
@@ -1221,857 +2595,886 @@ $("disconnectBtn").onclick =
 
 
 /* =========================
-   Step UI
+   Canvas → BW1 rows
 ========================= */
 
-function renderSteps(rows){
+function rowEqual(
+  a,
+  b
+){
 
-  $("steps")
-  .innerHTML =
-  rows
+  if(
+    a.length !==
+    b.length
+  ){
 
-  .map(
-    row => `
+    return false;
 
-    <div class="step ${row.type}">
+  }
 
-      <b>
-      ${row.name}
-      </b>
 
-      <br>
+  for(
+    let i=0;
+    i<a.length;
+    i++
+  ){
 
-      ${row.text}
+    if(
+      a[i] !==
+      b[i]
+    ){
 
-    </div>
+      return false;
 
-    `
-  )
+    }
 
-  .join("");
+  }
+
+
+  return true;
 
 }
 
 
-/* =========================
-   V11 TEST
-========================= */
+function canvasToRuns(canvas){
 
-$("testBtn").onclick =
-async () => {
-
-  if(
-    !state.server?.connected ||
-    !state.write ||
-    !state.notify
-  ){
-
-    alert(
-      "請先重新連接 B3S"
-    );
-
-    return;
-
-  }
+  const ctx =
+  canvas.getContext(
+    "2d"
+  );
 
 
-  if(
-    !state.fresh
-  ){
+  const image =
+  ctx.getImageData(
 
-    alert(
-      "目前不是乾淨狀態，請先中斷 B3S，再重新連線後測試。"
-    );
+    0,
+    0,
 
-    return;
+    canvas.width,
+    canvas.height
 
-  }
-
-
-  if(
-    state.testing
-  ){
-
-    return;
-
-  }
+  )
+  .data;
 
 
-  /*
-  一按下就消耗 fresh session
-  避免重複執行
-  */
-
-  state.fresh =
-  false;
+  const width =
+  canvas.width;
 
 
-  state.testing =
-  true;
+  const height =
+  canvas.height;
 
 
-  updateInfo();
-
-
-  $("testStatus")
-  .className =
-  "status warn";
-
-
-  $("testStatus")
-  .textContent =
-  "V11 最小列印測試進行中…";
-
-
-  $("result")
-  .value =
-  "";
+  const rowBytes =
+  width / 8;
 
 
   const rows =
   [];
 
 
-  const output =
+  for(
+    let y=0;
+    y<height;
+    y++
+  ){
+
+    const data =
+    new Uint8Array(
+      rowBytes
+    );
+
+
+    let black =
+    0;
+
+
+    for(
+      let x=0;
+      x<width;
+      x++
+    ){
+
+      const index =
+      (
+        y *
+        width +
+        x
+      ) * 4;
+
+
+      const gray =
+
+      (
+        image[index] *
+        299
+
+        +
+
+        image[index+1] *
+        587
+
+        +
+
+        image[index+2] *
+        114
+      )
+
+      /
+
+      1000;
+
+
+      const isBlack =
+      gray <
+      170;
+
+
+      if(
+        isBlack
+      ){
+
+        data[x >> 3] |=
+
+        (
+          0x80 >>
+          (x & 7)
+        );
+
+
+        black++;
+
+      }
+
+    }
+
+
+    rows.push({
+      data,
+      black
+    });
+
+  }
+
+
+  /*
+  相同連續列壓縮成 repeat，
+  降低 BLE 傳輸量。
+  */
+
+  const runs =
   [];
 
 
-  let failed =
-  false;
+  let y =
+  0;
 
 
-  const controlSteps = [
-
-    {
-      name:
-      "1. CONNECT",
-
-      packet:
-      P.connect,
-
-      ack:
-      0xC2
-    },
-
-    {
-      name:
-      "2. SET DENSITY",
-
-      packet:
-      P.density,
-
-      ack:
-      0x31
-    },
-
-    {
-      name:
-      "3. SET LABEL TYPE",
-
-      packet:
-      P.label,
-
-      ack:
-      0x33
-    },
-
-    {
-      name:
-      "4. PRINT START",
-
-      packet:
-      P.printStart,
-
-      ack:
-      0x02
-    },
-
-    {
-      name:
-      "5. PAGE START",
-
-      packet:
-      P.pageStart,
-
-      ack:
-      0x04
-    },
-
-    {
-      name:
-      "6. SET PAGE SIZE 8 × 64",
-
-      packet:
-      P.pageSize,
-
-      ack:
-      0x14
-    }
-
-  ];
-
-
-  for(
-    const step
-    of controlSteps
+  while(
+    y <
+    rows.length
   ){
 
-    rows.push({
+    const first =
+    rows[y];
 
-      name:
-      step.name,
 
-      text:
-      "等待回應…",
+    let repeat =
+    1;
 
-      type:
-      "wait"
+
+    while(
+
+      y + repeat <
+      rows.length
+
+      &&
+
+      repeat <
+      255
+
+      &&
+
+      rowEqual(
+
+        first.data,
+
+        rows[y+repeat].data
+
+      )
+
+    ){
+
+      repeat++;
+
+    }
+
+
+    runs.push({
+
+      row:
+      y,
+
+      repeat,
+
+      data:
+      first.data,
+
+      black:
+      first.black
 
     });
 
 
-    renderSteps(
-      rows
+    y +=
+    repeat;
+
+  }
+
+
+  return runs;
+
+}
+
+
+/* =========================
+   Bitmap row
+
+   已成功測試：
+   PRINT_BITMAP_ROW = 0x85
+
+   pixel count 使用
+   total mode：
+   00, LOW, HIGH
+========================= */
+
+function rowPacket(run){
+
+  const count = [
+
+    0x00,
+
+    run.black &
+    0xFF,
+
+    (
+      run.black >>
+      8
+    )
+    &
+    0xFF
+
+  ];
+
+
+  const payload = [
+
+    ...u16(
+      run.row
+    ),
+
+    ...count,
+
+    run.repeat,
+
+    ...run.data
+
+  ];
+
+
+  return frame(
+    0x85,
+    payload
+  );
+
+}
+
+
+/* =========================
+   Progress
+========================= */
+
+function progress(
+  value,
+  text=""
+){
+
+  const result =
+  Math.max(
+    0,
+    Math.min(
+      100,
+      value
+    )
+  );
+
+
+  $("progressBar")
+  .style
+  .width =
+  result + "%";
+
+
+  if(
+    text
+  ){
+
+    $("printMeta")
+    .textContent =
+    text;
+
+  }
+
+}
+
+
+/* =========================
+   ACK step
+========================= */
+
+async function expectStep(
+  name,
+  packet,
+  ack,
+  timeout=3000
+){
+
+  $("printStatus")
+  .className =
+  "status warn";
+
+
+  $("printStatus")
+  .textContent =
+  name;
+
+
+  const result =
+  await sendWait(
+    packet,
+    ack,
+    timeout
+  );
+
+
+  if(
+    result.ok
+  ){
+
+    log(
+
+      `${name} ACK ${hx(result.packet.command)} DATA ${result.packet.payload.map(hx).join(" ")}`
+
     );
 
 
-    output.push(
-      `\n=== ${step.name} ===`
+    return result;
+
+  }
+
+
+  if(
+    result.unsupported
+  ){
+
+    throw new Error(
+
+      `${name}：B3S 回 CMD 00 NOT_SUPPORTED`
+
     );
 
+  }
 
-    output.push(
-      "TX：" +
-      hex(step.packet)
+
+  throw new Error(
+
+    `${name}：等待 ACK 逾時`
+
+  );
+
+}
+
+
+/* =========================
+   DIRECT PRINT
+========================= */
+
+$("directPrintBtn").onclick =
+async () => {
+
+  if(
+    !state.items.length
+  ){
+
+    alert(
+      "請先新增商品"
     );
 
+    return;
 
-    let result;
-
-
-    try{
-
-      result =
-      await sendWait(
-        step.packet,
-        step.ack
-      );
-
-    }
-
-    catch(error){
-
-      result = {
-
-        ok:false,
-
-        error:
-        error.message
-
-      };
-
-    }
+  }
 
 
-    const row =
-    rows[
-      rows.length - 1
-    ];
+  if(
+    !state.server?.connected
+    ||
+    !state.write
+    ||
+    !state.notify
+  ){
+
+    alert(
+      "請先連接 B3S"
+    );
+
+    return;
+
+  }
+
+
+  if(
+    state.needsReconnect
+  ){
+
+    alert(
+      "上一筆列印未正常結束，請先中斷再重新連接 B3S"
+    );
+
+    return;
+
+  }
+
+
+  state.printing =
+  true;
+
+
+  updatePrintButton();
+
+
+  progress(
+    0,
+    "正在建立列印點陣…"
+  );
+
+
+  try{
+
+    const canvas =
+    buildPreviewCanvas();
+
+
+    const width =
+    canvas.width;
+
+
+    const height =
+    canvas.height;
 
 
     if(
-      result.ok
+      width % 8 !== 0
     ){
 
-      row.type =
-      "ok";
-
-
-      row.text =
-      `✅ CMD ${hx(result.packet.command)} / DATA ${payloadText(result.packet.payload)}`;
-
-
-      output.push(
-        row.text
+      throw new Error(
+        "列印寬度必須是 8 dots 的倍數"
       );
 
     }
 
 
-    else{
+    const runs =
+    canvasToRuns(
+      canvas
+    );
 
-      row.type =
-      "err";
+
+    $("printMeta")
+    .textContent =
+
+    `${width} × ${height} dots｜${state.items.length} 筆商品｜${runs.length} 個點陣區段`;
+
+
+    /*
+    1 CONNECT
+    */
+
+    await expectStep(
+
+      "1/7 CONNECT",
+
+      CONTROL.connect(),
+
+      0xC2
+
+    );
+
+
+    progress(
+      5
+    );
+
+
+    /*
+    2 Density
+    */
+
+    await expectStep(
+
+      "2/7 SET DENSITY",
+
+      CONTROL.density(
+        Number(
+          $("density").value
+        )
+      ),
+
+      0x31
+
+    );
+
+
+    progress(
+      10
+    );
+
+
+    /*
+    3 Label type
+    */
+
+    await expectStep(
+
+      "3/7 SET LABEL TYPE",
+
+      CONTROL.label(),
+
+      0x33
+
+    );
+
+
+    progress(
+      15
+    );
+
+
+    /*
+    4 Print Start
+    */
+
+    await expectStep(
+
+      "4/7 PRINT START",
+
+      CONTROL.printStart(),
+
+      0x02
+
+    );
+
+
+    progress(
+      20
+    );
+
+
+    /*
+    5 Page Start
+    */
+
+    await expectStep(
+
+      "5/7 PAGE START",
+
+      CONTROL.pageStart(),
+
+      0x04
+
+    );
+
+
+    progress(
+      25
+    );
+
+
+    /*
+    6 Page size
+
+    B3S 已確認：
+    height + width
+    */
+
+    await expectStep(
+
+      "6/7 SET PAGE SIZE",
+
+      CONTROL.pageSize(
+        height,
+        width
+      ),
+
+      0x14,
+
+      5000
+
+    );
+
+
+    progress(
+      30
+    );
+
+
+    /*
+    Bitmap
+    */
+
+    $("printStatus")
+    .className =
+    "status warn";
+
+
+    $("printStatus")
+    .textContent =
+    "正在傳送商品條碼點陣…";
+
+
+    for(
+      let i=0;
+      i<runs.length;
+      i++
+    ){
+
+      await writeRaw(
+        rowPacket(
+          runs[i]
+        )
+      );
 
 
       if(
-        result.unsupported
+        i % 4 === 0
       ){
 
-        row.text =
-        "❌ CMD 00 NOT_SUPPORTED";
+        progress(
+
+          30
+
+          +
+
+          Math.round(
+
+            (
+              i + 1
+            )
+
+            /
+
+            runs.length
+
+            *
+
+            55
+
+          ),
+
+          `正在傳送點陣 ${i+1}/${runs.length}`
+
+        );
+
+
+        await delay(
+          8
+        );
 
       }
 
+    }
 
-      else if(
-        result.timeout
+
+    progress(
+
+      87,
+
+      "點陣已送完，正在結束頁面…"
+
+    );
+
+
+    /*
+    PAGE END
+    */
+
+    await expectStep(
+
+      "PAGE END",
+
+      CONTROL.pageEnd(),
+
+      0xE4,
+
+      7000
+
+    );
+
+
+    progress(
+      92
+    );
+
+
+    await delay(
+      500
+    );
+
+
+    /*
+    PRINT END
+    */
+
+    const end =
+    await sendWait(
+
+      CONTROL.printEnd(),
+
+      0xF4,
+
+      7000
+
+    );
+
+
+    if(
+      !end.ok
+    ){
+
+      if(
+        end.unsupported
       ){
 
-        row.text =
-        "❌ 等待 ACK 逾時";
-
-      }
-
-
-      else{
-
-        row.text =
-        "❌ " +
-        (
-          result.error ||
-          "未知錯誤"
+        throw new Error(
+          "PRINT END：B3S 回 CMD 00"
         );
 
       }
 
 
-      output.push(
-        row.text
-      );
-
-
-      failed =
-      true;
-
-    }
-
-
-    renderSteps(
-      rows
-    );
-
-
-    $("result")
-    .value =
-    output.join("\n");
-
-
-    if(failed){
-
-      break;
-
-    }
-
-
-    await delay(
-      150
-    );
-
-  }
-
-
-  /* =========================
-     Bitmap
-  ========================= */
-
-  if(!failed){
-
-    rows.push({
-
-      name:
-      "7. PRINT BITMAP ROW",
-
-      text:
-      "正在送 64 × 8 黑線…",
-
-      type:
-      "wait"
-
-    });
-
-
-    renderSteps(
-      rows
-    );
-
-
-    output.push(
-      "\n=== 7. PRINT BITMAP ROW ==="
-    );
-
-
-    output.push(
-      "TX：" +
-      hex(P.bitmap)
-    );
-
-
-    try{
-
-      /*
-      Bitmap row 是 send，
-      開源流程沒有要求每列 ACK。
-      */
-
-      await writeBle(
-        P.bitmap
-      );
-
-
-      await delay(
-        400
-      );
-
-
-      rows[
-        rows.length - 1
-      ] = {
-
-        name:
-        "7. PRINT BITMAP ROW",
-
-        text:
-        "✅ 64 × 8 黑線資料已送出",
-
-        type:
-        "ok"
-
-      };
-
-
-      output.push(
-        "✅ Bitmap row 已送出"
+      throw new Error(
+        "PRINT END：沒有收到 F4"
       );
 
     }
 
-    catch(error){
 
-      rows[
-        rows.length - 1
-      ] = {
-
-        name:
-        "7. PRINT BITMAP ROW",
-
-        text:
-        "❌ " +
-        error.message,
-
-        type:
-        "err"
-
-      };
+    const endData =
+    end.packet
+    .payload?.[0];
 
 
-      output.push(
-        "❌ Bitmap 傳送失敗：" +
-        error.message
-      );
+    progress(
 
+      100,
 
-      failed =
-      true;
+      "列印資料傳送完成"
 
-    }
-
-
-    renderSteps(
-      rows
     );
-
-  }
-
-
-  /* =========================
-     PAGE END
-  ========================= */
-
-  if(!failed){
-
-    rows.push({
-
-      name:
-      "8. PAGE END",
-
-      text:
-      "等待 CMD E4…",
-
-      type:
-      "wait"
-
-    });
-
-
-    renderSteps(
-      rows
-    );
-
-
-    output.push(
-      "\n=== 8. PAGE END ==="
-    );
-
-
-    output.push(
-      "TX：" +
-      hex(P.pageEnd)
-    );
-
-
-    const pageEnd =
-    await sendWait(
-      P.pageEnd,
-      0xE4,
-      5000
-    );
-
-
-    const row =
-    rows[
-      rows.length - 1
-    ];
 
 
     if(
-      pageEnd.ok
+      endData ===
+      1
     ){
 
-      row.type =
-      "ok";
+      $("printStatus")
+      .className =
+      "status ok";
 
 
-      row.text =
-      `✅ CMD E4 / DATA ${payloadText(pageEnd.packet.payload)}`;
+      $("printStatus")
+      .textContent =
+      "✅ B3S 列印完成";
 
 
-      output.push(
-        row.text
-      );
+      state.needsReconnect =
+      false;
 
     }
 
 
     else{
 
-      row.type =
-      "err";
+      $("printStatus")
+      .className =
+      "status warn";
 
 
-      row.text =
-      pageEnd.unsupported
-      ?
-      "❌ PAGE END 回 CMD 00"
-      :
-      "❌ PAGE END 沒有收到 E4";
+      $("printStatus")
+      .textContent =
+
+      `⚠️ 已送完列印資料，但 PRINT END DATA=${hx(endData ?? 0)}；若實體已正常列印可繼續使用`;
 
 
-      output.push(
-        row.text
-      );
-
-
-      failed =
-      true;
+      state.needsReconnect =
+      false;
 
     }
 
-
-    renderSteps(
-      rows
-    );
-
   }
 
 
-  /* =========================
-     稍等印表機處理
-  ========================= */
+  catch(error){
 
-  if(!failed){
-
-    rows.push({
-
-      name:
-      "9. 等待列印處理",
-
-      text:
-      "等待 1 秒…",
-
-      type:
-      "wait"
-
-    });
-
-
-    renderSteps(
-      rows
+    log(
+      "V12 PRINT ERROR：" +
+      error.message
     );
 
 
-    await delay(
-      1000
-    );
-
-
-    rows[
-      rows.length - 1
-    ] = {
-
-      name:
-      "9. 等待列印處理",
-
-      text:
-      "✅ 已等待 1 秒",
-
-      type:
-      "ok"
-
-    };
-
-
-    renderSteps(
-      rows
-    );
-
-  }
-
-
-  /* =========================
-     PRINT END
-  ========================= */
-
-  if(!failed){
-
-    rows.push({
-
-      name:
-      "10. PRINT END",
-
-      text:
-      "等待 CMD F4…",
-
-      type:
-      "wait"
-
-    });
-
-
-    renderSteps(
-      rows
-    );
-
-
-    output.push(
-      "\n=== 10. PRINT END ==="
-    );
-
-
-    output.push(
-      "TX：" +
-      hex(P.printEnd)
-    );
-
-
-    const end =
-    await sendWait(
-      P.printEnd,
-      0xF4,
-      5000
-    );
-
-
-    const row =
-    rows[
-      rows.length - 1
-    ];
-
-
-    if(
-      end.ok
-    ){
-
-      const success =
-      end.packet.payload?.[0]
-      ===
-      0x01;
-
-
-      row.type =
-      success
-      ?
-      "ok"
-      :
-      "err";
-
-
-      row.text =
-      `CMD F4 / DATA ${payloadText(end.packet.payload)}`
-      +
-      (
-        success
-        ?
-        " ✅"
-        :
-        " ⚠️ DATA 不是 01"
-      );
-
-
-      output.push(
-        row.text
-      );
-
-
-      if(
-        !success
-      ){
-
-        failed =
-        true;
-
-      }
-
-    }
-
-
-    else{
-
-      row.type =
-      "err";
-
-
-      row.text =
-      end.unsupported
-      ?
-      "❌ PRINT END 回 CMD 00"
-      :
-      "❌ 沒有收到 F4";
-
-
-      output.push(
-        row.text
-      );
-
-
-      failed =
-      true;
-
-    }
-
-
-    renderSteps(
-      rows
-    );
-
-  }
-
-
-  /* =========================
-     RESULT
-  ========================= */
-
-  output.push(
-    "\n=== V11 最終結果 ==="
-  );
-
-
-  if(!failed){
-
-    $("testStatus")
-    .className =
-    "status ok";
-
-
-    $("testStatus")
-    .textContent =
-    "✅ V11 協定流程完整完成，請確認 B3S 是否有走紙／印出短黑線";
-
-
-    output.push(
-      "✅ 控制流程完整完成。"
-    );
-
-
-    output.push(
-      "請確認實體 B3S 是否走紙並印出短黑線。"
-    );
-
-  }
-
-
-  else{
-
-    $("testStatus")
+    $("printStatus")
     .className =
     "status err";
 
 
-    $("testStatus")
+    $("printStatus")
     .textContent =
-    "V11 已在失敗步驟停止";
+    "❌ " +
+    error.message;
 
 
-    output.push(
-      "❌ V11 未完整完成。"
-    );
+    state.needsReconnect =
+    true;
+
+
+    $("printMeta")
+    .textContent =
+    "請中斷 B3S 後重新連線再試。";
 
   }
 
 
-  output.push(
-    "\n注意：這個連線 session 已使用。若要再次測試，請先中斷，再重新連接 B3S。"
-  );
+  finally{
+
+    state.printing =
+    false;
 
 
-  $("result")
-  .value =
-  output.join("\n");
+    updatePrintButton();
 
-
-  state.testing =
-  false;
-
-
-  updateInfo();
+  }
 
 };
 
 
 /* =========================
-   Buttons
+   Log
 ========================= */
-
-$("clearBtn").onclick =
-() => {
-
-  $("steps")
-  .innerHTML =
-  "";
-
-
-  $("result")
-  .value =
-  "";
-
-
-  $("testStatus")
-  .className =
-  "status";
-
-
-  $("testStatus")
-  .textContent =
-  "尚未測試";
-
-};
-
 
 $("clearLogBtn").onclick =
 () => {
 
-  $("log")
-  .value =
+  $("log").value =
   "";
 
 };
@@ -2108,1578 +3511,13 @@ async () => {
    Init
 ========================= */
 
-updateInfo();
+renderItems();
 
-</script>
+drawPreview();
 
-</body>
-</html><!doctype html>
-<html lang="zh-Hant">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>商品條碼列印｜B3S V10</title>
+updateBleUi();
 
-<style>
-*{box-sizing:border-box}
-body{
-  margin:0;background:#f4f6f8;color:#18202a;
-  font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif
-}
-.wrap{max-width:900px;margin:auto;padding:18px}
-h1{margin:0 0 5px;font-size:28px}
-h2{margin-top:0}
-.sub,.help{color:#667085}
-.sub{margin-bottom:18px}
-.help{font-size:14px;line-height:1.6}
-.card{
-  background:#fff;border:1px solid #d8dee8;
-  border-radius:16px;padding:16px;margin-bottom:16px
-}
-button{
-  border:0;border-radius:10px;min-height:48px;padding:10px 14px;
-  font-size:16px;font-weight:700;background:#eef2f6;color:#18202a
-}
-button:disabled{opacity:.45}
-.primary{background:#1265f3;color:#fff}
-.okbtn{background:#e7f8ef;color:#087443}
-.danger{background:#fff0ef;color:#d92d20}
-.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-.status{
-  padding:12px;border-radius:10px;background:#f2f4f7;margin:12px 0
-}
-.status.ok{background:#ecfdf3;color:#067647}
-.status.warn{background:#fff8e6;color:#8a5a00}
-.status.err{background:#fff1f0;color:#d92d20}
-.step{
-  border:1px solid #d8dee8;border-radius:12px;
-  padding:12px;margin:8px 0;
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace
-}
-.step.ok{background:#ecfdf3}
-.step.err{background:#fff1f0}
-.step.wait{background:#fff8e6}
-textarea{
-  width:100%;min-height:300px;padding:12px;
-  border:1px solid #cfd6e1;border-radius:10px;
-  font:13px ui-monospace,SFMono-Regular,Menlo,monospace
-}
-.device-grid{
-  display:grid;grid-template-columns:140px 1fr;
-  gap:8px 12px;font-size:14px
-}
-@media(max-width:650px){
-  .device-grid{grid-template-columns:1fr}
-}
-</style>
-</head>
-
-<body>
-<div class="wrap">
-
-<h1>B3S 頁面流程測試</h1>
-<div class="sub">NIIMBOT 協定辨識 V10</div>
-
-<div class="card">
-
-<h2>藍牙連線</h2>
-
-<div id="bleStatus" class="status">
-尚未連線
-</div>
-
-<div class="actions">
-<button id="connectBtn" class="okbtn">
-🔵 連接 B3S
-</button>
-
-<button id="disconnectBtn" disabled>
-中斷連線
-</button>
-</div>
-
-<div class="device-grid">
-<b>裝置</b>
-<span id="deviceName">—</span>
-
-<b>固定寫入通道</b>
-<span>49535343…8841</span>
-
-<b>固定通知通道</b>
-<span>49535343…1E4D</span>
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h2>V10 頁面流程辨識</h2>
-
-<p class="help">
-這版不送 PRINT_CLEAR，也不送圖片。
-會先測 PAGE START，接著自動辨識 B3S 使用哪一種 SET PAGE SIZE 格式。
-</p>
-
-<p class="help">
-測試尺寸固定為 64 dots 寬 × 8 dots 高，只用來辨識協定。
-</p>
-
-<div class="actions">
-
-<button id="autoTestBtn" class="primary" disabled>
-🧪 自動辨識頁面格式
-</button>
-
-<button id="d110Btn" disabled>
-測試 D110：高度＋寬度
-</button>
-
-<button id="d11Btn" disabled>
-測試 D11：只有高度
-</button>
-
-<button id="clearBtn">
-清除結果
-</button>
-
-</div>
-
-<div id="testStatus" class="status">
-尚未測試
-</div>
-
-<div id="steps"></div>
-
-<textarea
-id="result"
-readonly
-placeholder="V10 測試結果會顯示在這裡">
-</textarea>
-
-</div>
-
-
-<div class="card">
-
-<h2>通訊紀錄</h2>
-
-<div class="actions">
-
-<button id="copyBtn">
-複製紀錄
-</button>
-
-<button id="clearLogBtn">
-清除紀錄
-</button>
-
-</div>
-
-<textarea id="log" readonly></textarea>
-
-</div>
-
-</div>
-
-
-<script>
-
-const $ = id =>
-document.getElementById(id);
-
-
-const SERVICE =
-"49535343-fe7d-4ae5-8fa9-9fafd205e455";
-
-const WRITE_UUID =
-"49535343-8841-43f4-a8d4-ecbe34729bb3";
-
-const NOTIFY_UUID =
-"49535343-1e4d-4bd9-ba61-23c647249616";
-
-
-const state = {
-
-  device:null,
-
-  server:null,
-
-  write:null,
-
-  notify:null,
-
-  rx:[]
-
-};
-
-
-function delay(ms){
-
-  return new Promise(
-    resolve =>
-    setTimeout(resolve,ms)
-  );
-
-}
-
-
-function hex(bytes){
-
-  return Array
-  .from(bytes)
-  .map(
-    value =>
-    value
-    .toString(16)
-    .padStart(2,"0")
-    .toUpperCase()
-  )
-  .join(" ");
-
-}
-
-
-function log(text){
-
-  const box =
-  $("log");
-
-  box.value +=
-  `[${new Date().toLocaleTimeString()}] ${text}\n`;
-
-  box.scrollTop =
-  box.scrollHeight;
-
-}
-
-
-function frame(
-  command,
-  data=[0x01],
-  connect=false
-){
-
-  const payload =
-  Array.from(data);
-
-  let checksum =
-  command ^
-  payload.length;
-
-  for(const value of payload){
-
-    checksum ^=
-    value;
-
-  }
-
-  const packet = [
-
-    0x55,
-    0x55,
-
-    command,
-
-    payload.length,
-
-    ...payload,
-
-    checksum & 0xFF,
-
-    0xAA,
-    0xAA
-
-  ];
-
-
-  if(connect){
-
-    packet.unshift(
-      0x03
-    );
-
-  }
-
-
-  return new Uint8Array(
-    packet
-  );
-
-}
-
-
-function u16(value){
-
-  return [
-
-    (value >> 8) & 0xFF,
-
-    value & 0xFF
-
-  ];
-
-}
-
-
-/*
-已確認成功：
-CONNECT       C1 -> C2
-SET DENSITY   21 -> 31
-SET LABEL     23 -> 33
-PRINT START   01 -> 02
-
-V10 要測：
-PAGE START      03 -> 04
-SET PAGE SIZE   13 -> 14
-PRINT QUANTITY  15 -> 16
-*/
-
-const PACKET = {
-
-  connect:
-  frame(
-    0xC1,
-    [0x01],
-    true
-  ),
-
-  density:
-  frame(
-    0x21,
-    [0x02]
-  ),
-
-  label:
-  frame(
-    0x23,
-    [0x01]
-  ),
-
-  printStart:
-  frame(
-    0x01
-  ),
-
-  pageStart:
-  frame(
-    0x03
-  ),
-
-  /* D110 = height + width */
-  pageSizeD110:
-  frame(
-    0x13,
-    [
-      ...u16(8),
-      ...u16(64)
-    ]
-  ),
-
-  /* D11_V1 = height only */
-  pageSizeD11:
-  frame(
-    0x13,
-    [
-      ...u16(8)
-    ]
-  ),
-
-  quantity:
-  frame(
-    0x15,
-    [
-      ...u16(1)
-    ]
-  ),
-
-  printEnd:
-  frame(
-    0xF3
-  )
-
-};
-
-
-function parse(hexText){
-
-  const bytes =
-  String(hexText || "")
-  .trim()
-  .split(/\s+/)
-  .filter(Boolean)
-  .map(x => parseInt(x,16));
-
-
-  const packets =
-  [];
-
-
-  for(
-    let i=0;
-    i<bytes.length;
-    i++
-  ){
-
-    if(
-      bytes[i] !== 0x55 ||
-      bytes[i+1] !== 0x55
-    ){
-
-      continue;
-
-    }
-
-
-    const cmd =
-    bytes[i+2];
-
-
-    const len =
-    bytes[i+3];
-
-
-    const checksumIndex =
-    i + 4 + len;
-
-
-    const tail =
-    checksumIndex + 1;
-
-
-    if(
-      bytes[tail] !== 0xAA ||
-      bytes[tail+1] !== 0xAA
-    ){
-
-      continue;
-
-    }
-
-
-    const payload =
-    bytes.slice(
-      i+4,
-      i+4+len
-    );
-
-
-    let checksum =
-    cmd ^ len;
-
-
-    for(const value of payload){
-
-      checksum ^=
-      value;
-
-    }
-
-
-    packets.push({
-
-      command:cmd,
-
-      payload,
-
-      checksumOk:
-      (checksum & 0xFF)
-      ===
-      bytes[checksumIndex]
-
-    });
-
-  }
-
-
-  return packets;
-
-}
-
-
-async function write(bytes){
-
-  log(
-    "TX：" +
-    hex(bytes)
-  );
-
-
-  if(
-    state.write.properties.writeWithoutResponse &&
-    state.write.writeValueWithoutResponse
-  ){
-
-    await state.write
-    .writeValueWithoutResponse(
-      bytes
-    );
-
-  }
-
-  else if(
-    state.write.writeValueWithResponse
-  ){
-
-    await state.write
-    .writeValueWithResponse(
-      bytes
-    );
-
-  }
-
-  else{
-
-    await state.write
-    .writeValue(bytes);
-
-  }
-
-}
-
-
-async function sendWait(
-  packet,
-  expected,
-  timeout=1800
-){
-
-  const startIndex =
-  state.rx.length;
-
-
-  await write(packet);
-
-
-  const start =
-  Date.now();
-
-
-  while(
-    Date.now() - start <
-    timeout
-  ){
-
-    const newPackets =
-    state.rx.slice(
-      startIndex
-    );
-
-
-    for(
-      const rx
-      of newPackets
-    ){
-
-      for(
-        const packetData
-        of parse(rx.hex)
-      ){
-
-        if(
-          !packetData.checksumOk
-        ){
-
-          continue;
-
-        }
-
-
-        if(
-          packetData.command ===
-          0x00
-        ){
-
-          return {
-
-            ok:false,
-
-            unsupported:true,
-
-            packet:
-            packetData
-
-          };
-
-        }
-
-
-        if(
-          packetData.command ===
-          expected
-        ){
-
-          return {
-
-            ok:true,
-
-            packet:
-            packetData
-
-          };
-
-        }
-
-      }
-
-    }
-
-
-    await delay(40);
-
-  }
-
-
-  return {
-
-    ok:false,
-
-    timeout:true
-
-  };
-
-}
-
-
-function hx(value){
-
-  return value
-  .toString(16)
-  .padStart(2,"0")
-  .toUpperCase();
-
-}
-
-
-function payloadText(payload){
-
-  if(
-    !payload ||
-    !payload.length
-  ){
-
-    return "(空)";
-
-  }
-
-
-  return payload
-  .map(hx)
-  .join(" ");
-
-}
-
-
-function enable(value){
-
-  $("disconnectBtn").disabled =
-  !value;
-
-  $("autoTestBtn").disabled =
-  !value;
-
-  $("d110Btn").disabled =
-  !value;
-
-  $("d11Btn").disabled =
-  !value;
-
-}
-
-
-$("connectBtn").onclick =
-async () => {
-
-  try{
-
-    $("bleStatus")
-    .className =
-    "status warn";
-
-
-    $("bleStatus")
-    .textContent =
-    "正在連接…";
-
-
-    const device =
-    await navigator.bluetooth
-    .requestDevice({
-
-      acceptAllDevices:true,
-
-      optionalServices:[
-        SERVICE
-      ]
-
-    });
-
-
-    state.device =
-    device;
-
-
-    $("deviceName")
-    .textContent =
-    device.name ||
-    "—";
-
-
-    state.server =
-    await device.gatt.connect();
-
-
-    const service =
-    await state.server
-    .getPrimaryService(
-      SERVICE
-    );
-
-
-    state.write =
-    await service
-    .getCharacteristic(
-      WRITE_UUID
-    );
-
-
-    state.notify =
-    await service
-    .getCharacteristic(
-      NOTIFY_UUID
-    );
-
-
-    state.notify
-    .addEventListener(
-      "characteristicvaluechanged",
-
-      event => {
-
-        const value =
-        event.target.value;
-
-
-        const bytes =
-        new Uint8Array(
-          value.buffer,
-          value.byteOffset,
-          value.byteLength
-        );
-
-
-        const data =
-        hex(bytes);
-
-
-        state.rx.push({
-
-          time:Date.now(),
-
-          hex:data
-
-        });
-
-
-        if(
-          state.rx.length >
-          500
-        ){
-
-          state.rx.shift();
-
-        }
-
-
-        log(
-          "RX：" +
-          data
-        );
-
-      }
-    );
-
-
-    await state.notify
-    .startNotifications();
-
-
-    device.addEventListener(
-      "gattserverdisconnected",
-      () => {
-
-        state.server =
-        null;
-
-        state.write =
-        null;
-
-        state.notify =
-        null;
-
-
-        enable(false);
-
-
-        $("bleStatus")
-        .className =
-        "status warn";
-
-
-        $("bleStatus")
-        .textContent =
-        "已中斷";
-
-      }
-    );
-
-
-    $("bleStatus")
-    .className =
-    "status ok";
-
-
-    $("bleStatus")
-    .textContent =
-    "✅ B3S 已連線，NIIMBOT 通道準備完成";
-
-
-    log(
-      "B3S V10 通道準備完成"
-    );
-
-
-    enable(true);
-
-  }
-
-  catch(error){
-
-    $("bleStatus")
-    .className =
-    "status err";
-
-
-    $("bleStatus")
-    .textContent =
-    "連線失敗：" +
-    error.message;
-
-  }
-
-};
-
-
-$("disconnectBtn").onclick =
-() => {
-
-  try{
-
-    state.device
-    ?.gatt
-    ?.disconnect();
-
-  }catch{}
-
-};
-
-
-/* 顯示步驟 */
-
-function renderSteps(rows){
-
-  $("steps")
-  .innerHTML =
-  rows
-
-  .map(
-    row => `
-
-    <div class="step ${row.type}">
-
-      <b>
-      ${row.name}
-      </b>
-
-      <br>
-
-      ${row.text}
-
-    </div>
-
-    `
-  )
-
-  .join("");
-
-}
-
-
-async function runBasicStart(
-  rows,
-  output
-){
-
-  const basic = [
-
-    {
-      name:"1. CONNECT",
-      packet:PACKET.connect,
-      ack:0xC2
-    },
-
-    {
-      name:"2. SET DENSITY",
-      packet:PACKET.density,
-      ack:0x31
-    },
-
-    {
-      name:"3. SET LABEL TYPE",
-      packet:PACKET.label,
-      ack:0x33
-    },
-
-    {
-      name:"4. PRINT START",
-      packet:PACKET.printStart,
-      ack:0x02
-    },
-
-    {
-      name:"5. PAGE START",
-      packet:PACKET.pageStart,
-      ack:0x04
-    }
-
-  ];
-
-
-  for(
-    const step
-    of basic
-  ){
-
-    rows.push({
-
-      name:step.name,
-
-      text:
-      "等待回應…",
-
-      type:"wait"
-
-    });
-
-
-    renderSteps(rows);
-
-
-    output.push(
-      `\n=== ${step.name} ===`
-    );
-
-
-    output.push(
-      "TX：" +
-      hex(step.packet)
-    );
-
-
-    const result =
-    await sendWait(
-      step.packet,
-      step.ack
-    );
-
-
-    const row =
-    rows[
-      rows.length - 1
-    ];
-
-
-    if(result.ok){
-
-      row.type =
-      "ok";
-
-
-      row.text =
-      `✅ CMD ${hx(result.packet.command)} / DATA ${payloadText(result.packet.payload)}`;
-
-
-      output.push(
-        row.text
-      );
-
-    }
-
-    else{
-
-      row.type =
-      "err";
-
-
-      row.text =
-      result.unsupported
-      ?
-      "❌ CMD 00 NOT_SUPPORTED"
-      :
-      "❌ 等待 ACK 逾時";
-
-
-      output.push(
-        row.text
-      );
-
-
-      renderSteps(rows);
-
-
-      return false;
-
-    }
-
-
-    renderSteps(rows);
-
-
-    await delay(
-      150
-    );
-
-  }
-
-
-  return true;
-
-}
-
-
-async function cleanup(){
-
-  try{
-
-    await write(
-      PACKET.printEnd
-    );
-
-
-    await delay(
-      300
-    );
-
-  }
-
-  catch{}
-
-}
-
-
-/* 單一格式測試 */
-
-async function testFormat(
-  type
-){
-
-  $("autoTestBtn").disabled =
-  true;
-
-
-  $("d110Btn").disabled =
-  true;
-
-
-  $("d11Btn").disabled =
-  true;
-
-
-  const rows =
-  [];
-
-
-  const output =
-  [];
-
-
-  $("result").value =
-  "";
-
-
-  $("testStatus")
-  .className =
-  "status warn";
-
-
-  $("testStatus")
-  .textContent =
-  "V10 測試進行中…";
-
-
-  const basicOk =
-  await runBasicStart(
-    rows,
-    output
-  );
-
-
-  if(!basicOk){
-
-    $("testStatus")
-    .className =
-    "status err";
-
-
-    $("testStatus")
-    .textContent =
-    "前置流程失敗";
-
-
-    $("result").value =
-    output.join("\n");
-
-
-    await cleanup();
-
-
-    enable(true);
-
-    return null;
-
-  }
-
-
-  const isD110 =
-  type === "d110";
-
-
-  const sizePacket =
-  isD110
-  ?
-  PACKET.pageSizeD110
-  :
-  PACKET.pageSizeD11;
-
-
-  rows.push({
-
-    name:
-    isD110
-    ?
-    "6. SET PAGE SIZE：D110 高度＋寬度"
-    :
-    "6. SET PAGE SIZE：D11 只有高度",
-
-    text:
-    "等待 CMD 14…",
-
-    type:"wait"
-
-  });
-
-
-  renderSteps(rows);
-
-
-  output.push(
-    "\n=== SET PAGE SIZE ==="
-  );
-
-
-  output.push(
-    "格式：" +
-    (
-      isD110
-      ?
-      "D110 = HEIGHT + WIDTH"
-      :
-      "D11_V1 = HEIGHT ONLY"
-    )
-  );
-
-
-  output.push(
-    "TX：" +
-    hex(sizePacket)
-  );
-
-
-  const sizeResult =
-  await sendWait(
-    sizePacket,
-    0x14,
-    3000
-  );
-
-
-  let row =
-  rows[
-    rows.length-1
-  ];
-
-
-  if(!sizeResult.ok){
-
-    row.type =
-    "err";
-
-
-    row.text =
-    sizeResult.unsupported
-    ?
-    "❌ CMD 00 NOT_SUPPORTED"
-    :
-    "❌ SET PAGE SIZE timeout";
-
-
-    output.push(
-      row.text
-    );
-
-
-    renderSteps(rows);
-
-
-    $("testStatus")
-    .className =
-    "status warn";
-
-
-    $("testStatus")
-    .textContent =
-    "此頁面格式不相容";
-
-
-    $("result").value =
-    output.join("\n");
-
-
-    await cleanup();
-
-
-    enable(true);
-
-
-    return {
-
-      format:type,
-
-      success:false
-
-    };
-
-  }
-
-
-  row.type =
-  "ok";
-
-
-  row.text =
-  `✅ CMD 14 / DATA ${payloadText(sizeResult.packet.payload)}`;
-
-
-  output.push(
-    row.text
-  );
-
-
-  renderSteps(rows);
-
-
-  /* quantity */
-
-
-  rows.push({
-
-    name:
-    "7. PRINT QUANTITY = 1",
-
-    text:
-    "等待 CMD 16…",
-
-    type:"wait"
-
-  });
-
-
-  renderSteps(rows);
-
-
-  output.push(
-    "\n=== PRINT QUANTITY ==="
-  );
-
-
-  output.push(
-    "TX：" +
-    hex(PACKET.quantity)
-  );
-
-
-  const qtyResult =
-  await sendWait(
-    PACKET.quantity,
-    0x16
-  );
-
-
-  row =
-  rows[
-    rows.length-1
-  ];
-
-
-  if(qtyResult.ok){
-
-    row.type =
-    "ok";
-
-
-    row.text =
-    `✅ CMD 16 / DATA ${payloadText(qtyResult.packet.payload)}`;
-
-
-    output.push(
-      row.text
-    );
-
-
-    $("testStatus")
-    .className =
-    "status ok";
-
-
-    $("testStatus")
-    .textContent =
-    (
-      isD110
-      ?
-      "✅ B3S 使用 D110 頁面大小格式"
-      :
-      "✅ B3S 使用 D11_V1 頁面大小格式"
-    );
-
-
-    output.push(
-      "\n✅ V10 判定："
-      +
-      (
-        isD110
-        ?
-        "D110 HEIGHT + WIDTH 可用"
-        :
-        "D11_V1 HEIGHT ONLY 可用"
-      )
-    );
-
-  }
-
-  else{
-
-    row.type =
-    "err";
-
-
-    row.text =
-    qtyResult.unsupported
-    ?
-    "❌ PRINT QUANTITY 回 CMD 00"
-    :
-    "❌ PRINT QUANTITY timeout";
-
-
-    output.push(
-      row.text
-    );
-
-
-    $("testStatus")
-    .className =
-    "status warn";
-
-
-    $("testStatus")
-    .textContent =
-    "PAGE SIZE 成功，但 PRINT QUANTITY 不相容";
-
-  }
-
-
-  renderSteps(rows);
-
-
-  $("result").value =
-  output.join("\n");
-
-
-  await cleanup();
-
-
-  enable(true);
-
-
-  return {
-
-    format:type,
-
-    success:
-    sizeResult.ok &&
-    qtyResult.ok
-
-  };
-
-}
-
-
-$("d110Btn").onclick =
-() =>
-testFormat(
-  "d110"
-);
-
-
-$("d11Btn").onclick =
-() =>
-testFormat(
-  "d11"
-);
-
-
-/* 自動測試 */
-
-$("autoTestBtn").onclick =
-async () => {
-
-  $("testStatus")
-  .className =
-  "status warn";
-
-
-  $("testStatus")
-  .textContent =
-  "先測 D110 高度＋寬度…";
-
-
-  const first =
-  await testFormat(
-    "d110"
-  );
-
-
-  if(
-    first?.success
-  ){
-
-    return;
-
-  }
-
-
-  await delay(
-    700
-  );
-
-
-  $("testStatus")
-  .className =
-  "status warn";
-
-
-  $("testStatus")
-  .textContent =
-  "D110 不相容，改測 D11 只有高度…";
-
-
-  const second =
-  await testFormat(
-    "d11"
-  );
-
-
-  if(
-    second?.success
-  ){
-
-    return;
-
-  }
-
-
-  $("testStatus")
-  .className =
-  "status err";
-
-
-  $("testStatus")
-  .textContent =
-  "兩種已知頁面格式都沒有完整通過";
-
-};
-
-
-$("clearBtn").onclick =
-() => {
-
-  $("steps")
-  .innerHTML =
-  "";
-
-
-  $("result")
-  .value =
-  "";
-
-
-  $("testStatus")
-  .className =
-  "status";
-
-
-  $("testStatus")
-  .textContent =
-  "尚未測試";
-
-};
-
-
-$("clearLogBtn").onclick =
-() => {
-
-  $("log").value =
-  "";
-
-};
-
-
-$("copyBtn").onclick =
-async () => {
-
-  try{
-
-    await navigator.clipboard
-    .writeText(
-      $("log").value
-    );
-
-
-    alert(
-      "已複製"
-    );
-
-  }
-
-  catch{
-
-    $("log").select();
-
-  }
-
-};
-
-
-enable(false);
+progress(0);
 
 </script>
 
