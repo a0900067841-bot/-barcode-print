@@ -7,6 +7,7 @@
 
   <!-- 條碼產生 -->
   <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 
   <!-- NIIMBOT Web Bluetooth 通訊：固定版本，避免上游更新造成 API 變動 -->
   <script src="https://unpkg.com/@mmote/niimbluelib@0.0.1-alpha.42/dist/umd/niimbluelib.min.js"></script>
@@ -98,6 +99,7 @@
           </div>
         </div>
         <div class="actions">
+          <button id="scanBtn" class="ok">📷 相機掃描條碼</button>
           <button id="addBtn" class="primary">＋ 新增</button>
           <button id="clearInputBtn">清除輸入</button>
         </div>
@@ -228,6 +230,23 @@
           藍牙直印需要 Chrome / Edge 類瀏覽器及 HTTPS（或 localhost）。如果 B3S 能連線但無法列印，可切換「B1 相容模式」或「列印方向」再測試。
           iPhone Safari 不支援 Web Bluetooth，因此藍牙直印請用 Android Chrome / Edge 或支援 Web Bluetooth 的電腦瀏覽器。
         </div>
+      </div>
+
+
+      <div class="card" style="margin-top:16px">
+        <h2>B3S 藍牙診斷</h2>
+        <div class="help">
+          先按上方「連接 B3S」，成功連線後再按「讀取藍牙資訊」。
+          診斷結果會顯示裝置名稱、連線狀態、可存取的 Service / Characteristic UUID，以及目前程式庫能看到的連線物件資訊。
+        </div>
+        <div class="actions">
+          <button id="diagBtn">🔎 讀取藍牙資訊</button>
+          <button id="copyDiagBtn">複製診斷結果</button>
+          <button id="clearDiagBtn">清除</button>
+        </div>
+        <textarea id="diagOutput" readonly
+          style="margin-top:10px;min-height:260px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;"
+          placeholder="診斷結果會顯示在這裡"></textarea>
       </div>
 
       <div class="card" style="margin-top:16px">
@@ -571,9 +590,314 @@
     }
   };
 
+
+
+  // -------- 相機掃描條碼 --------
+  let html5QrCode = null;
+  let scannerRunning = false;
+  let lastScannedText = "";
+
+  async function stopScanner() {
+    if (!html5QrCode) {
+      $("scannerModal").style.display = "none";
+      return;
+    }
+    try {
+      if (scannerRunning) {
+        await html5QrCode.stop();
+      }
+    } catch (e) {
+      console.warn("停止相機失敗", e);
+    }
+    try {
+      await html5QrCode.clear();
+    } catch {}
+    html5QrCode = null;
+    scannerRunning = false;
+    $("scannerModal").style.display = "none";
+  }
+
+  async function startScanner() {
+    if (!navigator.mediaDevices?.getUserMedia) {
+      alert("此瀏覽器無法使用相機。請確認已允許相機權限。");
+      return;
+    }
+    if (!window.Html5Qrcode) {
+      alert("條碼掃描程式尚未載入，請確認網路連線後重新整理。");
+      return;
+    }
+
+    $("scannerModal").style.display = "block";
+    $("scannerStatus").className = "status";
+    $("scannerStatus").textContent = "正在啟動後鏡頭…";
+
+    html5QrCode = new Html5Qrcode("qrReader");
+    lastScannedText = "";
+
+    const formats = [
+      Html5QrcodeSupportedFormats.EAN_13,
+      Html5QrcodeSupportedFormats.EAN_8,
+      Html5QrcodeSupportedFormats.UPC_A,
+      Html5QrcodeSupportedFormats.UPC_E,
+      Html5QrcodeSupportedFormats.CODE_128,
+      Html5QrcodeSupportedFormats.CODE_39,
+      Html5QrcodeSupportedFormats.ITF
+    ];
+
+    const onSuccess = async (decodedText) => {
+      decodedText = String(decodedText || "").trim();
+      if (!decodedText || decodedText === lastScannedText) return;
+      lastScannedText = decodedText;
+
+      $("scannerStatus").className = "status ok";
+      $("scannerStatus").textContent = `掃描成功：${decodedText}`;
+      $("code").value = decodedText;
+
+      if (!$("name").value.trim()) {
+        $("name").focus();
+      }
+
+      if (navigator.vibrate) {
+        try { navigator.vibrate(80); } catch {}
+      }
+
+      setTimeout(() => stopScanner(), 350);
+    };
+
+    const config = {
+      fps: 12,
+      qrbox: (viewfinderWidth, viewfinderHeight) => {
+        const width = Math.floor(viewfinderWidth * 0.88);
+        const height = Math.min(Math.floor(viewfinderHeight * 0.36), 170);
+        return { width, height };
+      },
+      aspectRatio: 1.6,
+      formatsToSupport: formats,
+      experimentalFeatures: { useBarCodeDetectorIfSupported: true }
+    };
+
+    try {
+      await html5QrCode.start(
+        { facingMode: "environment" },
+        config,
+        onSuccess,
+        () => {}
+      );
+      scannerRunning = true;
+      $("scannerStatus").className = "status ok";
+      $("scannerStatus").textContent = "相機已啟動，請對準商品條碼";
+    } catch (e) {
+      console.error(e);
+      $("scannerStatus").className = "status err";
+      $("scannerStatus").textContent = "無法啟動相機：" + (e?.message || e);
+    }
+  }
+
+  $("scanBtn").onclick = startScanner;
+  $("closeScannerBtn").onclick = stopScanner;
+  $("scannerModal").addEventListener("click", (e) => {
+    if (e.target === $("scannerModal")) stopScanner();
+  });
+
+  function safeJson(value, depth=0, seen=new WeakSet()) {
+    if (depth > 3) return "[max depth]";
+    if (value === null || value === undefined) return value;
+    if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") return value;
+    if (typeof value === "function") return `[function ${value.name || "anonymous"}]`;
+    if (typeof value !== "object") return String(value);
+    if (seen.has(value)) return "[circular]";
+    seen.add(value);
+
+    if (Array.isArray(value)) {
+      return value.slice(0, 30).map(v => safeJson(v, depth + 1, seen));
+    }
+
+    const out = {};
+    let keys = [];
+    try { keys = Reflect.ownKeys(value).slice(0, 80); } catch {}
+    for (const k of keys) {
+      const key = String(k);
+      try {
+        const v = value[k];
+        if (
+          key.toLowerCase().includes("password") ||
+          key.toLowerCase().includes("token") ||
+          key.toLowerCase().includes("key")
+        ) {
+          out[key] = "[hidden]";
+        } else {
+          out[key] = safeJson(v, depth + 1, seen);
+        }
+      } catch (e) {
+        out[key] = `[unreadable: ${e?.message || e}]`;
+      }
+    }
+    return out;
+  }
+
+  function appendDiag(line="") {
+    const el = $("diagOutput");
+    el.value += (el.value ? "\n" : "") + line;
+    el.scrollTop = el.scrollHeight;
+  }
+
+  async function inspectGattFromDevice(device) {
+    if (!device) {
+      appendDiag("BluetoothDevice：找不到可直接存取的 device 物件");
+      return;
+    }
+
+    appendDiag(`BluetoothDevice.name：${device.name || "(無)"}`);
+    appendDiag(`BluetoothDevice.id：${device.id || "(無)"}`);
+    appendDiag(`GATT connected：${!!device.gatt?.connected}`);
+
+    if (!device.gatt) {
+      appendDiag("device.gatt：不存在");
+      return;
+    }
+
+    let server = device.gatt;
+    try {
+      if (!server.connected) {
+        appendDiag("嘗試重新連線 GATT…");
+        server = await server.connect();
+      }
+    } catch (e) {
+      appendDiag("GATT connect 失敗：" + (e?.message || e));
+      return;
+    }
+
+    try {
+      const services = await server.getPrimaryServices();
+      appendDiag(`可存取 Primary Services：${services.length}`);
+      for (const svc of services) {
+        appendDiag(`SERVICE ${svc.uuid}`);
+        try {
+          const chars = await svc.getCharacteristics();
+          for (const ch of chars) {
+            const p = ch.properties || {};
+            const props = [
+              p.read && "read",
+              p.write && "write",
+              p.writeWithoutResponse && "writeWithoutResponse",
+              p.notify && "notify",
+              p.indicate && "indicate"
+            ].filter(Boolean).join(",");
+            appendDiag(`  CHAR ${ch.uuid} [${props || "no-known-properties"}]`);
+          }
+        } catch (e) {
+          appendDiag(`  讀取 characteristics 失敗：${e?.message || e}`);
+        }
+      }
+    } catch (e) {
+      appendDiag("getPrimaryServices 失敗：" + (e?.message || e));
+      appendDiag("注意：Web Bluetooth 可能只允許讀取事先授權的 Service UUID。");
+    }
+  }
+
+  $("diagBtn").onclick = async () => {
+    $("diagOutput").value = "";
+    appendDiag("=== B3S Web Bluetooth 診斷 ===");
+    appendDiag(`時間：${new Date().toLocaleString()}`);
+    appendDiag(`User Agent：${navigator.userAgent}`);
+    appendDiag(`Web Bluetooth：${!!navigator.bluetooth}`);
+    appendDiag(`Secure Context：${window.isSecureContext}`);
+    appendDiag(`niimbluelib：${!!window.niimbluelib}`);
+    appendDiag(`client 存在：${!!state.client}`);
+
+    if (!state.client) {
+      appendDiag("");
+      appendDiag("請先按「連接 B3S」，成功後再診斷。");
+      return;
+    }
+
+    try {
+      let detected = null;
+      try { detected = state.client.getPrintTaskType?.(); } catch {}
+      appendDiag(`PrintTaskType：${detected || "(無法偵測)"}`);
+    } catch {}
+
+    // 嘗試從 client 常見欄位找 BluetoothDevice
+    const candidates = [
+      ["client.device", state.client?.device],
+      ["client.bluetoothDevice", state.client?.bluetoothDevice],
+      ["client._device", state.client?._device],
+      ["client.transport.device", state.client?.transport?.device],
+      ["client.connection.device", state.client?.connection?.device],
+      ["client.abstraction.device", state.client?.abstraction?.device]
+    ];
+
+    let device = null;
+    for (const [label, obj] of candidates) {
+      if (obj && typeof obj === "object" && ("gatt" in obj || "name" in obj)) {
+        appendDiag(`找到裝置物件：${label}`);
+        device = obj;
+        break;
+      }
+    }
+
+    await inspectGattFromDevice(device);
+
+    appendDiag("");
+    appendDiag("=== client 可見欄位摘要 ===");
+    try {
+      const keys = Reflect.ownKeys(state.client).map(String);
+      appendDiag(keys.join(", "));
+    } catch (e) {
+      appendDiag("無法列出 client 欄位：" + (e?.message || e));
+    }
+
+    appendDiag("");
+    appendDiag("=== client 結構（截斷） ===");
+    try {
+      appendDiag(JSON.stringify(safeJson(state.client), null, 2));
+    } catch (e) {
+      appendDiag("無法序列化 client：" + (e?.message || e));
+    }
+
+    appendDiag("");
+    appendDiag("=== 診斷完成 ===");
+  };
+
+  $("copyDiagBtn").onclick = async () => {
+    const text = $("diagOutput").value;
+    if (!text) return alert("目前沒有診斷結果");
+    try {
+      await navigator.clipboard.writeText(text);
+      alert("已複製診斷結果");
+    } catch {
+      $("diagOutput").focus();
+      $("diagOutput").select();
+      alert("已選取診斷文字，請手動複製");
+    }
+  };
+
+  $("clearDiagBtn").onclick = () => {
+    $("diagOutput").value = "";
+  };
+
   renderList();
   drawPreview();
 })();
 </script>
+
+<div id="scannerModal" style="
+  display:none; position:fixed; inset:0; z-index:9999;
+  background:rgba(0,0,0,.72); padding:16px; overflow:auto;">
+  <div style="
+    max-width:520px; margin:5vh auto; background:#fff;
+    border-radius:16px; padding:16px; box-shadow:0 20px 60px rgba(0,0,0,.35);">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;">
+      <h2 style="margin:0;font-size:20px;">掃描商品條碼</h2>
+      <button id="closeScannerBtn" class="danger" style="min-height:38px;">關閉</button>
+    </div>
+    <div id="scannerStatus" class="status">準備啟動相機…</div>
+    <div id="qrReader" style="width:100%;overflow:hidden;border-radius:12px;"></div>
+    <div class="help" style="margin-top:10px;">
+      請把商品條碼放在畫面中央。掃描成功後會自動填入「商品條碼」欄位並關閉相機。
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
