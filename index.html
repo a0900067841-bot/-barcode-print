@@ -10,14 +10,16 @@
   <script src="https://unpkg.com/@mmote/niimbluelib@0.0.1-alpha.42/dist/umd/niimbluelib.min.js"></script>
 
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
       background: #f4f6f8;
       color: #18202a;
-      font-family: -apple-system, BlinkMacSystemFont, "PingFang TC",
-        "Microsoft JhengHei", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont,
+        "PingFang TC", "Microsoft JhengHei", sans-serif;
     }
 
     .wrap {
@@ -68,7 +70,9 @@
     }
 
     textarea {
-      min-height: 120px;
+      min-height: 220px;
+      font-family: monospace;
+      font-size: 13px;
     }
 
     .row {
@@ -201,407 +205,902 @@
 <div class="wrap">
 
   <h1>商品條碼列印</h1>
-  <div class="sub">連續小票紙｜商品名稱＋條碼＋條碼號碼</div>
+
+  <div class="sub">
+    連續小票紙｜商品名稱＋條碼＋條碼號碼
+  </div>
+
 
   <div class="card">
+
     <h2>新增商品</h2>
 
     <label>商品名稱</label>
-    <input id="name" placeholder="例如：可口可樂 ZERO">
+
+    <input
+      id="name"
+      placeholder="例如：可口可樂 ZERO"
+    >
+
 
     <label>商品條碼</label>
-    <input id="code" inputmode="numeric" placeholder="掃描或輸入條碼">
+
+    <input
+      id="code"
+      inputmode="numeric"
+      placeholder="掃描或輸入條碼"
+    >
+
 
     <div class="actions">
-      <button id="scanBtn" class="ok">📷 相機掃描條碼</button>
-      <button id="addBtn" class="primary">＋ 新增</button>
-      <button id="clearInputBtn">清除輸入</button>
+
+      <button
+        id="scanBtn"
+        class="ok"
+      >
+        📷 相機掃描條碼
+      </button>
+
+      <button
+        id="addBtn"
+        class="primary"
+      >
+        ＋ 新增
+      </button>
+
+      <button id="clearInputBtn">
+        清除輸入
+      </button>
+
     </div>
+
   </div>
 
+
   <div class="card">
+
     <h2>待列印商品</h2>
+
     <div id="items"></div>
 
     <div class="actions">
-      <button id="clearAllBtn" class="danger">全部清除</button>
+
+      <button
+        id="clearAllBtn"
+        class="danger"
+      >
+        全部清除
+      </button>
+
     </div>
+
   </div>
 
+
   <div class="card">
+
     <h2>版面設定</h2>
 
     <div class="row">
-      <div>
-        <label>紙寬</label>
-        <select id="paperWidth">
-          <option value="80">80 mm</option>
-          <option value="70">70 mm</option>
-          <option value="60">60 mm</option>
-          <option value="58" selected>58 mm</option>
-          <option value="50">50 mm</option>
-          <option value="40">40 mm</option>
-        </select>
-      </div>
 
       <div>
-        <label>條碼高度</label>
-        <select id="barcodeHeight">
-          <option value="10">10 mm</option>
-          <option value="12" selected>12 mm</option>
-          <option value="14">14 mm</option>
-          <option value="16">16 mm</option>
+
+        <label>紙寬</label>
+
+        <select id="paperWidth">
+
+          <option value="80">
+            80 mm
+          </option>
+
+          <option value="70">
+            70 mm
+          </option>
+
+          <option value="60">
+            60 mm
+          </option>
+
+          <option
+            value="58"
+            selected
+          >
+            58 mm
+          </option>
+
+          <option value="50">
+            50 mm
+          </option>
+
+          <option value="40">
+            40 mm
+          </option>
+
         </select>
+
       </div>
+
+
+      <div>
+
+        <label>條碼高度</label>
+
+        <select id="barcodeHeight">
+
+          <option value="10">
+            10 mm
+          </option>
+
+          <option
+            value="12"
+            selected
+          >
+            12 mm
+          </option>
+
+          <option value="14">
+            14 mm
+          </option>
+
+          <option value="16">
+            16 mm
+          </option>
+
+        </select>
+
+      </div>
+
     </div>
 
-    <label>最下方自訂文字</label>
-    <input id="footerText" placeholder="例如：115/08/15-08/18">
+
+    <label>
+      最下方自訂文字
+    </label>
+
+    <input
+      id="footerText"
+      placeholder="例如：115/08/15-08/18"
+    >
+
 
     <div class="actions">
-      <button id="refreshBtn">重新產生預覽</button>
-      <button id="browserPrintBtn">瀏覽器列印</button>
+
+      <button id="refreshBtn">
+        重新產生預覽
+      </button>
+
+      <button id="browserPrintBtn">
+        瀏覽器列印
+      </button>
+
     </div>
+
   </div>
 
+
   <div class="card">
+
     <h2>列印預覽</h2>
+
     <div class="preview">
+
       <canvas id="previewCanvas"></canvas>
+
     </div>
+
   </div>
 
+
   <div class="card">
+
     <h2>B3S 藍牙列印</h2>
 
-    <div id="bleStatus" class="status">尚未連線</div>
+    <div
+      id="bleStatus"
+      class="status"
+    >
+      尚未連線
+    </div>
+
 
     <div class="row">
-      <div>
-        <label>列印協定</label>
-        <select id="taskType">
-          <option value="auto">自動偵測</option>
-          <option value="B1">B1 相容模式</option>
-        </select>
-      </div>
 
       <div>
-        <label>列印方向</label>
-        <select id="direction">
-          <option value="left">Left</option>
-          <option value="top">Top</option>
+
+        <label>
+          列印協定
+        </label>
+
+        <select id="taskType">
+
+          <option value="auto">
+            自動偵測
+          </option>
+
+          <option value="B1">
+            B1 相容模式
+          </option>
+
         </select>
+
       </div>
+
+
+      <div>
+
+        <label>
+          列印方向
+        </label>
+
+        <select id="direction">
+
+          <option value="left">
+            Left
+          </option>
+
+          <option value="top">
+            Top
+          </option>
+
+        </select>
+
+      </div>
+
     </div>
+
 
     <div class="actions">
-      <button id="connectBtn" class="ok">🔵 連接 B3S</button>
-      <button id="disconnectBtn">中斷連線</button>
-      <button id="blePrintBtn" class="primary">🖨 直接列印</button>
+
+      <button
+        id="connectBtn"
+        class="ok"
+      >
+        🔵 連接 B3S
+      </button>
+
+      <button id="disconnectBtn">
+        中斷連線
+      </button>
+
+      <button
+        id="blePrintBtn"
+        class="primary"
+      >
+        🖨 直接列印
+      </button>
+
     </div>
+
   </div>
 
+
   <div class="card">
-    <h2>B3S 藍牙診斷</h2>
+
+    <h2>B3S 藍牙診斷 V2</h2>
+
+    <p class="help">
+      先連接 B3S，再按「讀取藍牙資訊」。
+    </p>
+
 
     <div class="actions">
-      <button id="diagBtn">🔎 讀取藍牙資訊</button>
-      <button id="copyDiagBtn">複製診斷結果</button>
+
+      <button id="diagBtn">
+        🔎 讀取藍牙資訊
+      </button>
+
+      <button id="copyDiagBtn">
+        複製診斷結果
+      </button>
+
     </div>
 
-    <textarea id="diagOutput" readonly placeholder="診斷結果會顯示在這裡"></textarea>
+
+    <textarea
+      id="diagOutput"
+      readonly
+      placeholder="診斷結果會顯示在這裡"
+    ></textarea>
+
   </div>
 
 </div>
 
 
-<div id="scannerModal" class="modal">
+
+<div
+  id="scannerModal"
+  class="modal"
+>
+
   <div class="modalBox">
 
-    <div class="actions" style="justify-content:space-between;align-items:center">
-      <h2 style="margin:0">掃描商品條碼</h2>
-      <button id="closeScannerBtn" class="danger">關閉</button>
+    <div
+      class="actions"
+      style="
+        justify-content:space-between;
+        align-items:center
+      "
+    >
+
+      <h2 style="margin:0">
+        掃描商品條碼
+      </h2>
+
+      <button
+        id="closeScannerBtn"
+        class="danger"
+      >
+        關閉
+      </button>
+
     </div>
 
-    <div id="scannerStatus" class="status">準備啟動相機…</div>
+
+    <div
+      id="scannerStatus"
+      class="status"
+    >
+      準備啟動相機…
+    </div>
+
 
     <div id="qrReader"></div>
 
+
     <p class="help">
-      把商品條碼放到畫面中央，掃描成功後會自動填入商品條碼。
+
+      把商品條碼放到畫面中央。
+
+      掃描成功後會自動填入商品條碼。
+
     </p>
 
   </div>
+
 </div>
+
 
 
 <script>
 
-const $ = id => document.getElementById(id);
+const $ = id =>
+  document.getElementById(id);
+
 
 const state = {
+
   items: [],
+
   client: null
+
 };
+
 
 
 function detectFormat(code) {
 
-  if (/^\d{13}$/.test(code)) return "EAN13";
-  if (/^\d{8}$/.test(code)) return "EAN8";
-  if (/^\d{12}$/.test(code)) return "UPC";
+  if (/^\d{13}$/.test(code))
+    return "EAN13";
+
+  if (/^\d{8}$/.test(code))
+    return "EAN8";
+
+  if (/^\d{12}$/.test(code))
+    return "UPC";
 
   return "CODE128";
+
 }
+
 
 
 function renderItems() {
 
-  const box = $("items");
+  const box =
+    $("items");
+
 
   if (!state.items.length) {
-    box.innerHTML = '<div class="help">目前沒有商品</div>';
+
+    box.innerHTML =
+      '<div class="help">目前沒有商品</div>';
+
     return;
+
   }
 
-  box.innerHTML = state.items.map((item, i) => `
-    <div class="item">
-      <b>${item.name || "未命名商品"}</b><br>
-      <small>${item.code}</small>
 
-      <div class="actions">
-        <button class="danger deleteBtn" data-index="${i}">
-          刪除
-        </button>
+  box.innerHTML =
+    state.items.map(
+
+      (item, i) => `
+
+      <div class="item">
+
+        <b>
+          ${item.name || "未命名商品"}
+        </b>
+
+        <br>
+
+        <small>
+          ${item.code}
+        </small>
+
+
+        <div class="actions">
+
+          <button
+            class="danger deleteBtn"
+            data-index="${i}"
+          >
+            刪除
+          </button>
+
+        </div>
+
       </div>
-    </div>
-  `).join("");
+
+    `
+
+    ).join("");
+
 }
+
 
 
 function addItem() {
 
-  const name = $("name").value.trim();
-  const code = $("code").value.trim();
+  const name =
+    $("name").value.trim();
+
+  const code =
+    $("code").value.trim();
+
 
   if (!code) {
-    alert("請輸入或掃描商品條碼");
+
+    alert(
+      "請輸入或掃描商品條碼"
+    );
+
     return;
+
   }
 
+
   state.items.push({
+
     name,
+
     code
+
   });
 
+
   $("name").value = "";
+
   $("code").value = "";
 
+
   renderItems();
+
   drawPreview();
+
 }
 
 
-$("addBtn").onclick = addItem;
+
+$("addBtn").onclick =
+  addItem;
 
 
-$("clearInputBtn").onclick = () => {
-  $("name").value = "";
-  $("code").value = "";
-};
+
+$("clearInputBtn").onclick =
+  () => {
+
+    $("name").value = "";
+
+    $("code").value = "";
+
+  };
 
 
-$("items").onclick = e => {
 
-  const btn = e.target.closest(".deleteBtn");
+$("items").onclick =
+  e => {
 
-  if (!btn) return;
-
-  const index = Number(btn.dataset.index);
-
-  state.items.splice(index, 1);
-
-  renderItems();
-  drawPreview();
-};
+    const btn =
+      e.target.closest(
+        ".deleteBtn"
+      );
 
 
-$("clearAllBtn").onclick = () => {
+    if (!btn)
+      return;
 
-  state.items = [];
 
-  renderItems();
-  drawPreview();
-};
+    const index =
+      Number(
+        btn.dataset.index
+      );
+
+
+    state.items.splice(
+      index,
+      1
+    );
+
+
+    renderItems();
+
+    drawPreview();
+
+  };
+
+
+
+$("clearAllBtn").onclick =
+  () => {
+
+    state.items = [];
+
+    renderItems();
+
+    drawPreview();
+
+  };
 
 
 
 function mmToPx(mm) {
-  return Math.round(mm * 203 / 25.4);
+
+  return Math.round(
+    mm * 203 / 25.4
+  );
+
 }
 
 
-function makeBarcode(code, width, height) {
 
-  const canvas = document.createElement("canvas");
+function makeBarcode(
+  code,
+  width,
+  height
+) {
+
+  const canvas =
+    document.createElement(
+      "canvas"
+    );
+
 
   try {
 
-    JsBarcode(canvas, code, {
-      format: detectFormat(code),
-      displayValue: true,
-      height,
-      margin: 0,
-      width: 2
-    });
+    JsBarcode(
+      canvas,
+      code,
+      {
+
+        format:
+          detectFormat(code),
+
+        displayValue:
+          true,
+
+        height,
+
+        margin:
+          0,
+
+        width:
+          2
+
+      }
+    );
+
 
   } catch {
 
-    JsBarcode(canvas, code, {
-      format: "CODE128",
-      displayValue: true,
-      height,
-      margin: 0,
-      width: 2
-    });
+
+    JsBarcode(
+      canvas,
+      code,
+      {
+
+        format:
+          "CODE128",
+
+        displayValue:
+          true,
+
+        height,
+
+        margin:
+          0,
+
+        width:
+          2
+
+      }
+    );
 
   }
 
-  if (canvas.width <= width) {
+
+  if (
+    canvas.width <= width
+  ) {
+
     return canvas;
+
   }
 
-  const scaled = document.createElement("canvas");
 
-  scaled.width = width;
-  scaled.height = Math.round(
-    canvas.height * width / canvas.width
-  );
+  const scaled =
+    document.createElement(
+      "canvas"
+    );
 
-  const ctx = scaled.getContext("2d");
 
-  ctx.imageSmoothingEnabled = false;
+  scaled.width =
+    width;
+
+
+  scaled.height =
+    Math.round(
+
+      canvas.height
+      *
+      width
+      /
+      canvas.width
+
+    );
+
+
+  const ctx =
+    scaled.getContext(
+      "2d"
+    );
+
+
+  ctx.imageSmoothingEnabled =
+    false;
+
 
   ctx.drawImage(
+
     canvas,
+
     0,
+
     0,
+
     scaled.width,
+
     scaled.height
+
   );
 
+
   return scaled;
+
 }
+
 
 
 function drawPreview() {
 
-  const paperWidth = mmToPx(
-    Number($("paperWidth").value)
-  );
+  const paperWidth =
+    mmToPx(
+      Number(
+        $("paperWidth").value
+      )
+    );
 
-  const barcodeHeight = mmToPx(
-    Number($("barcodeHeight").value)
-  );
 
-  const margin = mmToPx(2);
+  const barcodeHeight =
+    mmToPx(
+      Number(
+        $("barcodeHeight").value
+      )
+    );
+
+
+  const margin =
+    mmToPx(2);
+
 
   const contentWidth =
-    paperWidth - margin * 2;
+    paperWidth -
+    margin * 2;
 
-  const blocks = state.items.map(item => {
 
-    const barcode =
-      makeBarcode(
-        item.code,
-        contentWidth,
-        barcodeHeight
-      );
+  const blocks =
+    state.items.map(
 
-    return {
-      item,
-      barcode,
-      height:
-        28 +
-        barcode.height +
-        mmToPx(2)
-    };
-  });
+      item => {
+
+        const barcode =
+          makeBarcode(
+
+            item.code,
+
+            contentWidth,
+
+            barcodeHeight
+
+          );
+
+
+        return {
+
+          item,
+
+          barcode,
+
+          height:
+            28
+            +
+            barcode.height
+            +
+            mmToPx(2)
+
+        };
+
+      }
+
+    );
+
 
   const footer =
-    $("footerText").value.trim();
+    $("footerText")
+      .value
+      .trim();
+
 
   const footerHeight =
-    footer ? 45 : 0;
+    footer
+    ? 45
+    : 0;
+
 
   const totalHeight =
     Math.max(
+
       mmToPx(30),
-      mmToPx(2) +
+
+      mmToPx(2)
+
+      +
+
       blocks.reduce(
-        (sum, b) => sum + b.height,
+
+        (sum, b) =>
+          sum + b.height,
+
         0
-      ) +
-      footerHeight +
+
+      )
+
+      +
+
+      footerHeight
+
+      +
+
       mmToPx(3)
+
     );
+
 
   const canvas =
     $("previewCanvas");
 
+
   canvas.width =
     paperWidth;
+
 
   canvas.height =
     totalHeight;
 
-  const ctx =
-    canvas.getContext("2d");
 
-  ctx.fillStyle = "white";
+  const ctx =
+    canvas.getContext(
+      "2d"
+    );
+
+
+  ctx.fillStyle =
+    "white";
+
 
   ctx.fillRect(
+
     0,
+
     0,
+
     canvas.width,
+
     canvas.height
+
   );
 
-  ctx.fillStyle = "black";
 
-  ctx.textAlign = "center";
-
-  ctx.textBaseline = "top";
-
-  let y = mmToPx(2);
+  ctx.fillStyle =
+    "black";
 
 
-  for (const block of blocks) {
+  ctx.textAlign =
+    "center";
+
+
+  ctx.textBaseline =
+    "top";
+
+
+  let y =
+    mmToPx(2);
+
+
+
+  for (
+    const block
+    of blocks
+  ) {
 
     ctx.font =
       '600 18px "PingFang TC","Microsoft JhengHei",sans-serif';
 
+
     ctx.fillText(
+
       block.item.name || "",
+
       paperWidth / 2,
+
       y,
+
       contentWidth
+
     );
+
 
     y += 28;
 
-    ctx.imageSmoothingEnabled = false;
+
+    ctx.imageSmoothingEnabled =
+      false;
+
 
     ctx.drawImage(
+
       block.barcode,
-      (paperWidth - block.barcode.width) / 2,
+
+      (
+        paperWidth
+        -
+        block.barcode.width
+      )
+      /
+      2,
+
       y
+
     );
 
+
     y +=
-      block.barcode.height +
+      block.barcode.height
+      +
       mmToPx(2);
+
   }
+
 
 
   if (footer) {
@@ -609,11 +1108,17 @@ function drawPreview() {
     ctx.font =
       '700 22px "PingFang TC","Microsoft JhengHei",sans-serif';
 
+
     ctx.fillText(
+
       footer,
+
       paperWidth / 2,
+
       y + 10,
+
       contentWidth
+
     );
 
   }
@@ -621,51 +1126,79 @@ function drawPreview() {
 }
 
 
+
 $("refreshBtn").onclick =
   drawPreview;
+
 
 
 $("footerText").oninput =
   drawPreview;
 
 
+
 $("paperWidth").onchange =
   drawPreview;
+
 
 
 $("barcodeHeight").onchange =
   drawPreview;
 
 
-$("browserPrintBtn").onclick = () => {
 
-  drawPreview();
+$("browserPrintBtn").onclick =
+  () => {
 
-  window.print();
-};
+    drawPreview();
+
+    window.print();
+
+  };
 
 
 
 let qrScanner = null;
+
 let scannerRunning = false;
+
 
 
 async function startScanner() {
 
-  if (!window.Html5Qrcode) {
-    alert("條碼掃描程式載入失敗");
+  if (
+    !window.Html5Qrcode
+  ) {
+
+    alert(
+      "條碼掃描程式載入失敗"
+    );
+
     return;
+
   }
 
-  $("scannerModal").style.display =
+
+  $("scannerModal")
+    .style
+    .display =
     "block";
 
-  $("scannerStatus").textContent =
+
+  $("scannerStatus")
+    .className =
+    "status";
+
+
+  $("scannerStatus")
+    .textContent =
     "正在啟動後鏡頭…";
 
 
   qrScanner =
-    new Html5Qrcode("qrReader");
+    new Html5Qrcode(
+      "qrReader"
+    );
 
 
   try {
@@ -673,42 +1206,65 @@ async function startScanner() {
     await qrScanner.start(
 
       {
-        facingMode: "environment"
+
+        facingMode:
+          "environment"
+
       },
 
       {
-        fps: 12,
+
+        fps:
+          12,
 
         qrbox:
           (width, height) => ({
 
             width:
-              Math.floor(width * 0.88),
+              Math.floor(
+                width * 0.88
+              ),
 
             height:
               Math.min(
-                Math.floor(height * 0.35),
+
+                Math.floor(
+                  height * 0.35
+                ),
+
                 170
+
               )
 
           })
+
       },
 
       async decodedText => {
 
+
         $("code").value =
           decodedText;
 
-        $("scannerStatus").className =
+
+        $("scannerStatus")
+          .className =
           "status ok";
 
-        $("scannerStatus").textContent =
-          "掃描成功：" + decodedText;
+
+        $("scannerStatus")
+          .textContent =
+          "掃描成功："
+          +
+          decodedText;
 
 
         setTimeout(
+
           stopScanner,
+
           400
+
         );
 
       },
@@ -718,22 +1274,32 @@ async function startScanner() {
     );
 
 
-    scannerRunning = true;
+    scannerRunning =
+      true;
 
-    $("scannerStatus").className =
+
+    $("scannerStatus")
+      .className =
       "status ok";
 
-    $("scannerStatus").textContent =
+
+    $("scannerStatus")
+      .textContent =
       "相機已啟動，請對準商品條碼";
 
 
   } catch (error) {
 
-    $("scannerStatus").className =
+
+    $("scannerStatus")
+      .className =
       "status err";
 
-    $("scannerStatus").textContent =
-      "相機啟動失敗：" +
+
+    $("scannerStatus")
+      .textContent =
+      "相機啟動失敗："
+      +
       error.message;
 
   }
@@ -741,12 +1307,14 @@ async function startScanner() {
 }
 
 
+
 async function stopScanner() {
 
   try {
 
     if (
-      qrScanner &&
+      qrScanner
+      &&
       scannerRunning
     ) {
 
@@ -760,24 +1328,34 @@ async function stopScanner() {
   try {
 
     if (qrScanner) {
+
       await qrScanner.clear();
+
     }
 
   } catch {}
 
 
-  qrScanner = null;
+  qrScanner =
+    null;
 
-  scannerRunning = false;
 
-  $("scannerModal").style.display =
+  scannerRunning =
+    false;
+
+
+  $("scannerModal")
+    .style
+    .display =
     "none";
 
 }
 
 
+
 $("scanBtn").onclick =
   startScanner;
+
 
 
 $("closeScannerBtn").onclick =
@@ -785,17 +1363,26 @@ $("closeScannerBtn").onclick =
 
 
 
-function setBluetoothStatus(text, type="") {
+function setBluetoothStatus(
+  text,
+  type = ""
+) {
 
   const el =
     $("bleStatus");
 
+
   el.className =
-    "status " + type;
+    "status "
+    +
+    type;
+
 
   el.textContent =
     text;
+
 }
+
 
 
 $("connectBtn").onclick =
@@ -803,17 +1390,22 @@ async () => {
 
   try {
 
-    if (!navigator.bluetooth) {
+    if (
+      !navigator.bluetooth
+    ) {
 
       throw new Error(
+
         "此瀏覽器不支援 Web Bluetooth"
+
       );
 
     }
 
 
     const client =
-      new niimbluelib.NiimbotBluetoothClient();
+      new niimbluelib
+        .NiimbotBluetoothClient();
 
 
     state.client =
@@ -821,21 +1413,38 @@ async () => {
 
 
     client.on(
+
       "connect",
-      () =>
+
+      () => {
+
         setBluetoothStatus(
+
           "已連線",
+
           "ok"
-        )
+
+        );
+
+      }
+
     );
 
 
     client.on(
+
       "disconnect",
-      () =>
+
+      () => {
+
         setBluetoothStatus(
+
           "已中斷"
-        )
+
+        );
+
+      }
+
     );
 
 
@@ -843,17 +1452,25 @@ async () => {
 
 
     setBluetoothStatus(
+
       "已連線",
+
       "ok"
+
     );
 
 
   } catch (error) {
 
+
     setBluetoothStatus(
-      "連線失敗：" +
+
+      "連線失敗："
+      +
       error.message,
+
       "err"
+
     );
 
   }
@@ -867,12 +1484,15 @@ async () => {
 
   try {
 
-    await state.client?.disconnect();
+    await state.client
+      ?.disconnect();
 
   } catch {}
 
 
-  state.client = null;
+  state.client =
+    null;
+
 
   setBluetoothStatus(
     "尚未連線"
@@ -892,6 +1512,7 @@ async () => {
     );
 
     return;
+
   }
 
 
@@ -901,27 +1522,37 @@ async () => {
 
 
     const encoded =
-      niimbluelib.ImageEncoder.encodeCanvas(
-        $("previewCanvas"),
-        $("direction").value
-      );
+      niimbluelib
+        .ImageEncoder
+        .encodeCanvas(
+
+          $("previewCanvas"),
+
+          $("direction").value
+
+        );
 
 
     let type =
       $("taskType").value;
 
 
-    if (type === "auto") {
+    if (
+      type === "auto"
+    ) {
 
       try {
 
         type =
-          state.client.getPrintTaskType()
-          || "B1";
+          state.client
+            .getPrintTaskType()
+          ||
+          "B1";
 
       } catch {
 
-        type = "B1";
+        type =
+          "B1";
 
       }
 
@@ -929,47 +1560,71 @@ async () => {
 
 
     const task =
-      state.client.abstraction.newPrintTask(
+      state.client
+        .abstraction
+        .newPrintTask(
 
-        type,
+          type,
 
-        {
-          totalPages: 1
-        }
+          {
+            totalPages:
+              1
+          }
 
-      );
+        );
 
 
     await task.printInit();
 
+
     await task.printPage(
+
       encoded,
+
       1
+
     );
 
-    await task.waitForPageFinished();
 
-    await task.waitForFinished();
+    await task
+      .waitForPageFinished();
 
-    await task.printEnd();
+
+    await task
+      .waitForFinished();
+
+
+    await task
+      .printEnd();
 
 
     setBluetoothStatus(
+
       "列印完成",
+
       "ok"
+
     );
 
 
   } catch (error) {
 
+
     setBluetoothStatus(
-      "列印失敗：" +
+
+      "列印失敗："
+      +
       error.message,
+
       "err"
+
     );
 
+
     alert(
+
       "B3S 列印失敗，請使用下方診斷功能。"
+
     );
 
   }
@@ -986,155 +1641,283 @@ async () => {
 
 
   output.value =
-    "=== B3S 診斷 ===\n";
+    "=== B3S 診斷 V2 ===\n";
 
 
   output.value +=
-    "Web Bluetooth：" +
-    !!navigator.bluetooth +
+
+    "Web Bluetooth："
+    +
+    !!navigator.bluetooth
+    +
     "\n";
 
 
   output.value +=
-    "HTTPS：" +
-    window.isSecureContext +
+
+    "HTTPS："
+    +
+    window.isSecureContext
+    +
     "\n";
 
 
   output.value +=
-    "Client：" +
-    !!state.client +
+
+    "Client："
+    +
+    !!state.client
+    +
     "\n";
 
 
   if (!state.client) {
 
     output.value +=
+
       "\n請先連接 B3S。";
 
     return;
+
   }
+
 
 
   try {
 
     output.value +=
-      "PrintTaskType：" +
+
+      "PrintTaskType："
+      +
       (
         state.client
           .getPrintTaskType?.()
-        || "無法偵測"
-      ) +
+        ||
+        "無法偵測"
+      )
+      +
       "\n";
 
   } catch {}
 
 
-  let device =
-
-    state.client.device ||
-
-    state.client.bluetoothDevice ||
-
-    state.client._device ||
-
-    state.client.transport?.device;
-
-
-  if (!device) {
-
-    output.value +=
-      "\n找不到 BluetoothDevice 物件\n";
-
-    try {
-
-      output.value +=
-        "Client keys：\n" +
-        Reflect
-          .ownKeys(state.client)
-          .join(", ");
-
-    } catch {}
-
-    return;
-  }
-
 
   output.value +=
-    "\nDevice：" +
-    (device.name || "") +
-    "\n";
-
-
-  output.value +=
-    "ID：" +
-    (device.id || "") +
-    "\n";
+    "\nserviceUuidFilter：\n";
 
 
   try {
 
-    const server =
-      device.gatt.connected
-      ? device.gatt
-      : await device.gatt.connect();
+    output.value +=
+
+      JSON.stringify(
+
+        state.client
+          .serviceUuidFilter,
+
+        null,
+
+        2
+
+      )
+      +
+      "\n";
+
+  } catch (error) {
+
+    output.value +=
+
+      "讀取失敗："
+      +
+      error.message
+      +
+      "\n";
+
+  }
+
+
+
+  output.value +=
+    "\nchannel：\n";
+
+
+  try {
+
+    output.value +=
+
+      JSON.stringify(
+
+        {
+
+          uuid:
+            state.client
+              .channel
+              ?.uuid,
+
+          service:
+            state.client
+              .channel
+              ?.service
+              ?.uuid,
+
+          properties:
+            state.client
+              .channel
+              ?.properties
+
+        },
+
+        null,
+
+        2
+
+      )
+      +
+      "\n";
+
+  } catch (error) {
+
+    output.value +=
+
+      "無法讀取 channel："
+      +
+      error.message
+      +
+      "\n";
+
+  }
+
+
+
+  const server =
+    state.client
+      .gattServer;
+
+
+  if (!server) {
+
+    output.value +=
+
+      "\n找不到 gattServer";
+
+    return;
+
+  }
+
+
+
+  output.value +=
+
+    "\ngattServer.connected："
+    +
+    server.connected
+    +
+    "\n";
+
+
+
+  try {
 
 
     const services =
-      await server.getPrimaryServices();
+      await server
+        .getPrimaryServices();
+
+
+    output.value +=
+
+      "\nPrimary Services："
+      +
+      services.length
+      +
+      "\n";
 
 
     for (
-      const service of services
+      const service
+      of services
     ) {
 
+
       output.value +=
-        "\nSERVICE " +
-        service.uuid +
+
+        "\nSERVICE "
+        +
+        service.uuid
+        +
         "\n";
 
 
-      const chars =
-        await service.getCharacteristics();
+      try {
 
 
-      for (
-        const ch of chars
-      ) {
-
-        const p =
-          ch.properties;
+        const chars =
+          await service
+            .getCharacteristics();
 
 
-        const props = [
+        for (
+          const ch
+          of chars
+        ) {
 
-          p.read && "read",
 
-          p.write && "write",
+          const p =
+            ch.properties;
 
-          p.writeWithoutResponse &&
-          "writeWithoutResponse",
 
-          p.notify && "notify",
+          const props = [
 
-          p.indicate && "indicate"
+            p.read
+            &&
+            "read",
 
-        ]
+            p.write
+            &&
+            "write",
+
+            p.writeWithoutResponse
+            &&
+            "writeWithoutResponse",
+
+            p.notify
+            &&
+            "notify",
+
+            p.indicate
+            &&
+            "indicate"
+
+          ]
           .filter(Boolean)
           .join(",");
 
 
+          output.value +=
+
+            "  CHAR "
+            +
+            ch.uuid
+            +
+            " ["
+            +
+            props
+            +
+            "]\n";
+
+        }
+
+
+      } catch (error) {
+
+
         output.value +=
 
-          "  CHAR " +
-
-          ch.uuid +
-
-          " [" +
-
-          props +
-
-          "]\n";
+          "  characteristics 錯誤："
+          +
+          error.message
+          +
+          "\n";
 
       }
 
@@ -1143,10 +1926,11 @@ async () => {
 
   } catch (error) {
 
+
     output.value +=
 
-      "\nGATT 錯誤：" +
-
+      "\n讀取 Services 失敗："
+      +
       error.message;
 
   }
@@ -1160,18 +1944,36 @@ async () => {
 
   try {
 
-    await navigator.clipboard.writeText(
-      $("diagOutput").value
-    );
+    await navigator
+      .clipboard
+      .writeText(
+
+        $("diagOutput")
+          .value
+
+      );
+
 
     alert(
       "已複製診斷結果"
     );
 
+
   } catch {
 
+
+    $("diagOutput")
+      .focus();
+
+
+    $("diagOutput")
+      .select();
+
+
     alert(
-      "請手動全選診斷結果複製"
+
+      "已選取診斷結果，請手動複製"
+
     );
 
   }
@@ -1179,7 +1981,9 @@ async () => {
 };
 
 
+
 renderItems();
+
 drawPreview();
 
 </script>
