@@ -3,65 +3,333 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>B3S V15｜連續紙停止測試</title>
+<title>商品條碼列印｜B3S V16</title>
+
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 
 <style>
 *{box-sizing:border-box}
+
 body{
   margin:0;
   background:#f4f6f8;
   color:#18202a;
   font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif
 }
+
 .wrap{
-  max-width:700px;
+  max-width:900px;
   margin:auto;
-  padding:18px
+  padding:16px
 }
+
+h1{
+  margin:0 0 4px;
+  font-size:27px
+}
+
+h2{
+  margin:0 0 12px;
+  font-size:20px
+}
+
+.sub,.help,label{
+  color:#667085
+}
+
+.sub{
+  margin-bottom:16px
+}
+
+.help{
+  font-size:13px;
+  line-height:1.6
+}
+
 .card{
   background:#fff;
   border:1px solid #d8dee8;
   border-radius:16px;
-  padding:16px;
-  margin-bottom:15px
+  padding:15px;
+  margin-bottom:14px
 }
-h1{margin:0 0 5px}
-h2{margin-top:0}
-.help{color:#667085;font-size:14px;line-height:1.6}
+
+label{
+  display:block;
+  font-size:14px;
+  margin:8px 0 6px
+}
+
+input,textarea,select{
+  width:100%;
+  min-height:46px;
+  padding:10px 12px;
+  border:1px solid #cfd6e1;
+  border-radius:10px;
+  background:#fff;
+  font-size:16px
+}
+
+textarea{
+  min-height:120px
+}
+
+button{
+  border:0;
+  border-radius:10px;
+  min-height:45px;
+  padding:9px 14px;
+  font-size:15px;
+  font-weight:700;
+  background:#eef2f6;
+  color:#18202a
+}
+
+button:disabled{
+  opacity:.42
+}
+
+.primary{
+  background:#1265f3;
+  color:#fff
+}
+
+.ok{
+  background:#e7f8ef;
+  color:#087443
+}
+
+.danger{
+  background:#fff0ef;
+  color:#d92d20
+}
+
+.stop{
+  background:#d92d20;
+  color:#fff
+}
+
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:11px
+}
+
+.row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px
+}
+
 .status{
-  padding:12px;
+  padding:11px 12px;
   border-radius:10px;
   background:#f2f4f7;
   margin:10px 0
 }
-.ok{background:#ecfdf3;color:#067647}
-.warn{background:#fff8e6;color:#8a5a00}
-.err{background:#fff1f0;color:#d92d20}
-.actions{
+
+.status.ok{
+  background:#ecfdf3;
+  color:#067647
+}
+
+.status.warn{
+  background:#fff8e6;
+  color:#8a5a00
+}
+
+.status.err{
+  background:#fff1f0;
+  color:#d92d20
+}
+
+.item{
+  border:1px solid #d8dee8;
+  border-radius:13px;
+  padding:11px;
+  margin-top:9px;
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:10px
+}
+
+.itemCheck{
+  width:23px;
+  height:23px;
+  margin:2px 0 0
+}
+
+.itemName{
+  font-weight:700;
+  font-size:16px
+}
+
+.itemCode{
+  color:#667085;
+  font-size:14px;
+  margin-top:3px
+}
+
+.itemBottom{
   display:flex;
+  align-items:center;
   flex-wrap:wrap;
-  gap:8px
+  gap:8px;
+  margin-top:9px
 }
-button{
-  border:0;
-  border-radius:10px;
-  min-height:48px;
-  padding:10px 14px;
-  font-size:16px;
-  font-weight:700
+
+.qtyWrap{
+  display:flex;
+  align-items:center;
+  gap:6px
 }
-button:disabled{opacity:.4}
-.connect{background:#e7f8ef;color:#087443}
-.print{background:#1265f3;color:#fff}
-.stop{background:#d92d20;color:#fff}
-textarea{
-  width:100%;
-  min-height:270px;
+
+.qtyInput{
+  width:70px;
+  min-height:38px;
+  padding:5px 8px
+}
+
+.smallBtn{
+  min-height:38px;
+  padding:6px 10px;
+  font-size:14px
+}
+
+.preview{
+  background:#e8eaed;
+  border-radius:12px;
   padding:10px;
-  border:1px solid #d0d5dd;
-  border-radius:10px;
-  font-family:monospace;
-  font-size:12px
+  overflow:auto
+}
+
+#previewCanvas{
+  display:block;
+  margin:auto;
+  max-width:100%;
+  height:auto;
+  background:#fff
+}
+
+.switchRow{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  padding:10px 0
+}
+
+.switch{
+  position:relative;
+  width:54px;
+  height:31px;
+  flex:none
+}
+
+.switch input{
+  display:none
+}
+
+.slider{
+  position:absolute;
+  inset:0;
+  background:#d0d5dd;
+  border-radius:999px;
+  transition:.2s
+}
+
+.slider:before{
+  content:"";
+  position:absolute;
+  width:25px;
+  height:25px;
+  left:3px;
+  top:3px;
+  background:#fff;
+  border-radius:50%;
+  transition:.2s
+}
+
+.switch input:checked + .slider{
+  background:#1265f3
+}
+
+.switch input:checked + .slider:before{
+  transform:translateX(23px)
+}
+
+.progress{
+  height:10px;
+  background:#eaecf0;
+  border-radius:999px;
+  overflow:hidden;
+  margin-top:10px
+}
+
+.progress>div{
+  width:0;
+  height:100%;
+  background:#1265f3;
+  transition:width .15s
+}
+
+.deviceGrid{
+  display:grid;
+  grid-template-columns:110px 1fr;
+  gap:8px 12px;
+  font-size:14px
+}
+
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  background:rgba(0,0,0,.75);
+  padding:16px;
+  overflow:auto
+}
+
+.modalBox{
+  max-width:520px;
+  margin:3vh auto;
+  background:#fff;
+  border-radius:16px;
+  padding:16px
+}
+
+#qrReader{
+  margin-top:12px
+}
+
+.bulkScanCounter{
+  font-size:15px;
+  font-weight:700;
+  color:#067647;
+  margin-top:10px
+}
+
+.modeBadge{
+  display:inline-block;
+  padding:5px 9px;
+  border-radius:999px;
+  background:#ecfdf3;
+  color:#067647;
+  font-size:13px;
+  font-weight:700;
+  margin-top:8px
+}
+
+@media(max-width:700px){
+  .row{
+    grid-template-columns:1fr
+  }
+
+  .deviceGrid{
+    grid-template-columns:1fr
+  }
 }
 </style>
 </head>
@@ -70,12 +338,232 @@ textarea{
 
 <div class="wrap">
 
-<h1>B3S 連續紙測試</h1>
-<div class="help">V15｜只測試「印完立即停止」</div>
+<h1>商品條碼列印</h1>
+
+<div class="sub">
+B3S 工作實用版 V16
+<br>
+<span class="modeBadge">連續紙模式 Continuous</span>
+</div>
+
 
 <div class="card">
 
-<h2>藍牙</h2>
+<h2>新增商品</h2>
+
+<label>商品名稱</label>
+<input id="name" placeholder="例如：鮮乳">
+
+<label>商品條碼</label>
+<input id="code" inputmode="numeric" placeholder="掃描或輸入條碼">
+
+<div class="actions">
+
+<button id="scanBtn" class="ok">
+📷 掃描條碼
+</button>
+
+<button id="addBtn" class="primary">
+＋ 新增商品
+</button>
+
+<button id="clearInputBtn">
+清除
+</button>
+
+</div>
+
+
+<hr style="border:0;border-top:1px solid #eaecf0;margin:18px 0">
+
+
+<h2 style="font-size:18px">
+一次新增多筆
+</h2>
+
+<div class="help">
+每行一筆，可輸入「商品名稱,條碼」，也可以直接貼 Excel 兩欄。
+</div>
+
+<textarea
+id="bulkInput"
+placeholder="鮮乳,4710000000001
+茶飲,4710000000002">
+</textarea>
+
+<div class="actions">
+
+<button id="bulkAddBtn" class="primary">
+＋ 加入全部
+</button>
+
+<button id="bulkScanBtn" class="ok">
+📷 批次連續掃描
+</button>
+
+<button id="bulkClearBtn">
+清除
+</button>
+
+</div>
+
+<div id="bulkStatus" class="help" style="margin-top:8px"></div>
+
+</div>
+
+
+<div class="card">
+
+<h2>待列印商品</h2>
+
+<div class="actions">
+
+<button id="selectAllBtn">
+☑️ 全選
+</button>
+
+<button id="unselectAllBtn">
+取消全選
+</button>
+
+<button id="clearAllBtn" class="danger">
+全部清除
+</button>
+
+</div>
+
+<div id="itemCount" class="help" style="margin-top:10px">
+0 筆商品
+</div>
+
+<div id="items"></div>
+
+</div>
+
+
+<div class="card">
+
+<h2>列印設定</h2>
+
+<div class="row">
+
+<div>
+
+<label>紙寬</label>
+
+<select id="paperWidth">
+<option value="77">77 mm</option>
+<option value="70">70 mm</option>
+<option value="60">60 mm</option>
+<option value="58" selected>58 mm</option>
+<option value="50">50 mm</option>
+<option value="40">40 mm</option>
+<option value="30">30 mm</option>
+<option value="20">20 mm</option>
+</select>
+
+</div>
+
+
+<div>
+
+<label>條碼高度</label>
+
+<select id="barcodeHeight">
+<option value="10">10 mm</option>
+<option value="12">12 mm</option>
+<option value="14" selected>14 mm</option>
+<option value="16">16 mm</option>
+</select>
+
+</div>
+
+</div>
+
+
+<div class="row">
+
+<div>
+
+<label>列印濃度</label>
+
+<select id="density">
+<option value="1">1 淺</option>
+<option value="2" selected>2 標準</option>
+<option value="3">3 深</option>
+</select>
+
+</div>
+
+
+<div>
+
+<label>商品間距</label>
+
+<select id="itemGap">
+<option value="1">1 mm</option>
+<option value="2" selected>2 mm</option>
+<option value="3">3 mm</option>
+<option value="4">4 mm</option>
+</select>
+
+</div>
+
+</div>
+
+
+<label>最下方自訂文字</label>
+<input id="footerText" placeholder="可不填">
+
+
+<div class="switchRow">
+
+<div>
+
+<b>列印完成後自動清除</b>
+
+<div class="help">
+只清除這次成功列印的商品。
+</div>
+
+</div>
+
+<label class="switch">
+
+<input type="checkbox" id="autoClear">
+
+<span class="slider"></span>
+
+</label>
+
+</div>
+
+
+<div class="actions">
+
+<button id="refreshBtn">
+重新預覽
+</button>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>預覽</h2>
+
+<div class="preview">
+<canvas id="previewCanvas"></canvas>
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>B3S 藍牙</h2>
 
 <div id="bleStatus" class="status">
 尚未連線
@@ -83,7 +571,7 @@ textarea{
 
 <div class="actions">
 
-<button id="connectBtn" class="connect">
+<button id="connectBtn" class="ok">
 🔵 連接 B3S
 </button>
 
@@ -93,36 +581,54 @@ textarea{
 
 </div>
 
+<div class="deviceGrid">
+
+<b>裝置</b>
+<span id="deviceName">—</span>
+
+<b>連線</b>
+<span id="gattState">false</span>
+
+<b>列印通道</b>
+<span id="channelState">未就緒</span>
+
+<b>紙張模式</b>
+<span>連續紙 Continuous</span>
+
+</div>
+
 </div>
 
 
 <div class="card">
 
-<h2>連續紙模式</h2>
-
-<div class="status ok">
-固定使用 Label Type = 3（Continuous）
-</div>
-
-<p class="help">
-這次只印 64 dots × 8 dots 的短黑線。目的是確認印完後 B3S 是否立即停住，不會再一直找下一張標籤。
-</p>
+<h2>列印</h2>
 
 <div class="actions">
 
-<button id="testBtn" class="print" disabled>
-🖨 印一條短黑線
+<button id="printSelectedBtn" class="primary" disabled>
+🖨 列印勾選商品
 </button>
 
-<button id="stopBtn" class="stop" disabled>
-⏹ 強制停止送紙
+<button id="printAllBtn" class="ok" disabled>
+🖨 列印全部
+</button>
+
+<button id="stopPrintBtn" class="stop" disabled>
+⏹ 停止送紙
 </button>
 
 </div>
 
-<div id="testStatus" class="status">
-等待測試
+<div id="printStatus" class="status">
+等待列印
 </div>
+
+<div class="progress">
+<div id="progressBar"></div>
+</div>
+
+<div id="printMeta" class="help" style="margin-top:8px"></div>
 
 </div>
 
@@ -131,7 +637,66 @@ textarea{
 
 <h2>通訊紀錄</h2>
 
+<div class="actions">
+
+<button id="copyLogBtn">
+複製
+</button>
+
+<button id="clearLogBtn">
+清除
+</button>
+
+</div>
+
 <textarea id="log" readonly></textarea>
+
+</div>
+
+</div>
+
+
+<div id="scannerModal" class="modal">
+
+<div class="modalBox">
+
+<h2 id="scannerTitle">
+掃描商品條碼
+</h2>
+
+
+<div id="bulkScanNameArea" style="display:none">
+
+<label>這一筆商品名稱</label>
+
+<input
+id="bulkScanName"
+placeholder="先輸入商品名稱，再掃描條碼">
+
+<div class="help">
+掃描成功後會自動加入批次清單，接著可以輸入下一個商品名稱繼續掃。
+</div>
+
+</div>
+
+
+<div id="scannerStatus" class="status">
+準備啟動相機…
+</div>
+
+
+<div id="bulkScanCounter" class="bulkScanCounter"></div>
+
+<div id="qrReader"></div>
+
+
+<div class="actions">
+
+<button id="closeScannerBtn" class="danger">
+完成／關閉
+</button>
+
+</div>
 
 </div>
 
@@ -140,7 +705,14 @@ textarea{
 
 <script>
 
-const $ = id => document.getElementById(id);
+const $ =
+id =>
+document.getElementById(id);
+
+
+/* =========================
+   BLE UUID
+========================= */
 
 const SERVICE =
 "49535343-fe7d-4ae5-8fa9-9fafd205e455";
@@ -154,6 +726,8 @@ const NOTIFY_UUID =
 
 const state = {
 
+  items:[],
+
   device:null,
 
   server:null,
@@ -164,10 +738,16 @@ const state = {
 
   rx:[],
 
-  testing:false
+  printing:false,
+
+  forceStop:false
 
 };
 
+
+/* =========================
+   工具
+========================= */
 
 function delay(ms){
 
@@ -179,13 +759,45 @@ function delay(ms){
 }
 
 
+function mmToPx(mm){
+
+  return Math.round(
+    mm * 203 / 25.4
+  );
+
+}
+
+
+function paperDots(mm){
+
+  return Math.max(
+    8,
+    Math.floor(
+      mmToPx(mm) / 8
+    ) * 8
+  );
+
+}
+
+
+function u16(value){
+
+  return [
+    (value >> 8) & 255,
+    value & 255
+  ];
+
+}
+
+
 function hex(bytes){
 
   return Array
   .from(bytes)
   .map(
-    b =>
-    b.toString(16)
+    value =>
+    value
+    .toString(16)
     .padStart(2,"0")
     .toUpperCase()
   )
@@ -194,18 +806,42 @@ function hex(bytes){
 }
 
 
-function addLog(text){
+function log(text){
 
-  const box = $("log");
+  const box =
+  $("log");
+
 
   box.value +=
   `[${new Date().toLocaleTimeString()}] ${text}\n`;
+
 
   box.scrollTop =
   box.scrollHeight;
 
 }
 
+
+function escapeHtml(text){
+
+  return String(text ?? "")
+  .replace(
+    /[&<>"']/g,
+    char => ({
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#039;"
+    }[char])
+  );
+
+}
+
+
+/* =========================
+   NIIMBOT Frame
+========================= */
 
 function frame(
   command,
@@ -216,18 +852,21 @@ function frame(
   const payload =
   Array.from(data);
 
+
   let checksum =
   command ^
   payload.length;
 
-  for(const b of payload){
 
-    checksum ^= b;
+  for(const value of payload){
+
+    checksum ^=
+    value;
 
   }
 
 
-  const result = [
+  const packet = [
 
     0x55,
     0x55,
@@ -238,7 +877,7 @@ function frame(
 
     ...payload,
 
-    checksum & 0xFF,
+    checksum & 255,
 
     0xAA,
     0xAA
@@ -248,111 +887,90 @@ function frame(
 
   if(prefix){
 
-    result.unshift(0x03);
+    packet.unshift(0x03);
 
   }
 
 
-  return new Uint8Array(result);
+  return new Uint8Array(
+    packet
+  );
 
 }
 
 
-function u16(value){
+/* =========================
+   控制封包
+========================= */
 
-  return [
-
-    (value >> 8) & 255,
-
-    value & 255
-
-  ];
-
-}
-
-
-const P = {
+const CONTROL = {
 
   connect:
+  () =>
   frame(
     0xC1,
     [1],
     true
   ),
 
+
   density:
+  value =>
   frame(
     0x21,
-    [2]
+    [value]
   ),
 
+
   /*
-  V15 關鍵：
+  V16 關鍵：
   3 = Continuous
   */
   labelContinuous:
+  () =>
   frame(
     0x23,
     [3]
   ),
 
+
   printStart:
+  () =>
   frame(
     0x01,
     [1]
   ),
 
+
   pageStart:
+  () =>
   frame(
     0x03,
     [1]
   ),
 
+
   pageSize:
+  (height,width) =>
   frame(
     0x13,
     [
-      ...u16(8),
-      ...u16(64)
+      ...u16(height),
+      ...u16(width)
     ]
   ),
 
-  /*
-  與 V11 成功的黑線資料相同
-  */
-  blackLine:
-  frame(
-    0x85,
-    [
-
-      0x00,
-      0x00,
-
-      0x00,
-      0x40,
-      0x00,
-
-      0x08,
-
-      0xFF,
-      0xFF,
-      0xFF,
-      0xFF,
-      0xFF,
-      0xFF,
-      0xFF,
-      0xFF
-
-    ]
-  ),
 
   pageEnd:
+  () =>
   frame(
     0xE3,
     [1]
   ),
 
+
   printEnd:
+  () =>
   frame(
     0xF3,
     [1]
@@ -361,51 +979,79 @@ const P = {
 };
 
 
-function parse(text){
+/* =========================
+   RX parser
+========================= */
+
+function parsePackets(text){
 
   const bytes =
-  String(text)
+  String(text || "")
   .trim()
   .split(/\s+/)
   .filter(Boolean)
-  .map(x => parseInt(x,16));
+  .map(
+    value =>
+    parseInt(value,16)
+  );
 
 
-  const out = [];
+  const output = [];
+
+  let position = 0;
 
 
-  for(
-    let i=0;
-    i<bytes.length;
-    i++
-  ){
+  while(position < bytes.length){
 
     if(
-      bytes[i] !== 0x55 ||
-      bytes[i+1] !== 0x55
+      bytes[position] !== 0x55
+      ||
+      bytes[position+1] !== 0x55
     ){
+
+      position++;
 
       continue;
 
     }
 
 
-    const cmd =
-    bytes[i+2];
+    const command =
+    bytes[position+2];
 
 
-    const len =
-    bytes[i+3];
+    const length =
+    bytes[position+3];
 
 
     const checksumIndex =
-    i + 4 + len;
+    position +
+    4 +
+    length;
+
+
+    const tail =
+    checksumIndex +
+    1;
 
 
     if(
-      bytes[checksumIndex+1] !== 0xAA ||
-      bytes[checksumIndex+2] !== 0xAA
+      tail + 1 >=
+      bytes.length
     ){
+
+      break;
+
+    }
+
+
+    if(
+      bytes[tail] !== 0xAA
+      ||
+      bytes[tail+1] !== 0xAA
+    ){
+
+      position++;
 
       continue;
 
@@ -414,42 +1060,52 @@ function parse(text){
 
     const payload =
     bytes.slice(
-      i+4,
-      i+4+len
+      position+4,
+      position+4+length
     );
 
 
-    let check =
-    cmd ^ len;
+    let checksum =
+    command ^
+    length;
 
 
-    for(const b of payload){
+    for(const value of payload){
 
-      check ^= b;
+      checksum ^=
+      value;
 
     }
 
 
-    out.push({
+    output.push({
 
-      command:cmd,
+      command,
 
       payload,
 
       checksumOk:
-      (check & 255)
+      (checksum & 255)
       ===
       bytes[checksumIndex]
 
     });
 
+
+    position =
+    tail + 2;
+
   }
 
 
-  return out;
+  return output;
 
 }
 
+
+/* =========================
+   BLE Write
+========================= */
 
 async function writeRaw(bytes){
 
@@ -462,8 +1118,85 @@ async function writeRaw(bytes){
   }
 
 
+  const chunkSize =
+  20;
+
+
+  for(
+    let index=0;
+    index<bytes.length;
+    index+=chunkSize
+  ){
+
+    if(state.forceStop){
+
+      throw new Error(
+        "FORCE_STOP"
+      );
+
+    }
+
+
+    const part =
+    bytes.slice(
+      index,
+      index+chunkSize
+    );
+
+
+    if(
+      state.write.properties.writeWithoutResponse
+      &&
+      state.write.writeValueWithoutResponse
+    ){
+
+      await state.write
+      .writeValueWithoutResponse(part);
+
+    }
+
+    else if(
+      state.write.writeValueWithResponse
+    ){
+
+      await state.write
+      .writeValueWithResponse(part);
+
+    }
+
+    else{
+
+      await state.write
+      .writeValue(part);
+
+    }
+
+
+    if(bytes.length > chunkSize){
+
+      await delay(5);
+
+    }
+
+  }
+
+}
+
+
+async function writeControl(bytes){
+
+  if(!state.write){
+
+    throw new Error(
+      "B3S 尚未連線"
+    );
+
+  }
+
+
   if(
-    state.write.properties.writeWithoutResponse &&
+    state.write.properties.writeWithoutResponse
+    &&
     state.write.writeValueWithoutResponse
   ){
 
@@ -483,72 +1216,84 @@ async function writeRaw(bytes){
 
   else{
 
-    await state.write.writeValue(bytes);
+    await state.write
+    .writeValue(bytes);
 
   }
 
 }
 
 
+/* =========================
+   Send + ACK
+========================= */
+
 async function sendWait(
   packet,
   expected,
-  timeout=2500
+  timeout=3500
 ){
 
   const startIndex =
   state.rx.length;
 
 
-  addLog(
+  log(
     "TX：" +
     hex(packet)
   );
 
 
-  await writeRaw(packet);
+  await writeControl(
+    packet
+  );
 
 
-  const started =
+  const start =
   Date.now();
 
 
   while(
-    Date.now() - started <
+    Date.now() - start <
     timeout
   ){
 
     const incoming =
-    state.rx.slice(startIndex);
+    state.rx.slice(
+      startIndex
+    );
 
 
-    for(const item of incoming){
+    for(const raw of incoming){
 
-      const packets =
-      parse(item);
+      for(
+        const parsed
+        of parsePackets(raw)
+      ){
+
+        if(!parsed.checksumOk){
+
+          continue;
+
+        }
 
 
-      for(const p of packets){
-
-        if(!p.checksumOk)
-        continue;
-
-
-        if(p.command === 0x00){
+        if(parsed.command === 0x00){
 
           return {
             ok:false,
-            unsupported:true
+            unsupported:true,
+            packet:parsed
           };
 
         }
 
 
-        if(p.command === expected){
+        if(parsed.command === expected){
 
           return {
             ok:true,
-            packet:p
+            packet:parsed
           };
 
         }
@@ -558,7 +1303,7 @@ async function sendWait(
     }
 
 
-    await delay(30);
+    await delay(35);
 
   }
 
@@ -571,32 +1316,43 @@ async function sendWait(
 }
 
 
-async function requireAck(
-  name,
+async function ackStep(
+  label,
   packet,
-  ack
+  expected,
+  timeout=3500
 ){
 
-  $("testStatus")
+  if(state.forceStop){
+
+    throw new Error(
+      "FORCE_STOP"
+    );
+
+  }
+
+
+  $("printStatus")
   .className =
   "status warn";
 
 
-  $("testStatus")
+  $("printStatus")
   .textContent =
-  name;
+  label;
 
 
   const result =
   await sendWait(
     packet,
-    ack
+    expected,
+    timeout
   );
 
 
   if(result.ok){
 
-    return;
+    return result;
 
   }
 
@@ -604,20 +1360,1440 @@ async function requireAck(
   if(result.unsupported){
 
     throw new Error(
-      `${name}：CMD 00 NOT_SUPPORTED`
+      `${label}：B3S 回 CMD 00`
     );
 
   }
 
 
   throw new Error(
-    `${name}：等待回應逾時`
+    `${label}：等待回應逾時`
   );
 
 }
 
 
-/* Bluetooth */
+/* =========================
+   條碼
+========================= */
+
+function detectFormat(code){
+
+  if(/^\d{13}$/.test(code))
+  return "EAN13";
+
+  if(/^\d{8}$/.test(code))
+  return "EAN8";
+
+  if(/^\d{12}$/.test(code))
+  return "UPC";
+
+  return "CODE128";
+
+}
+
+
+function makeBarcode(
+  code,
+  maxWidth,
+  height
+){
+
+  const canvas =
+  document.createElement(
+    "canvas"
+  );
+
+
+  try{
+
+    JsBarcode(
+      canvas,
+      code,
+      {
+
+        format:
+        detectFormat(code),
+
+        displayValue:true,
+
+        height,
+
+        margin:0,
+
+        width:2,
+
+        fontSize:20,
+
+        textMargin:4
+
+      }
+    );
+
+  }
+
+  catch{
+
+    JsBarcode(
+      canvas,
+      code,
+      {
+
+        format:"CODE128",
+
+        displayValue:true,
+
+        height,
+
+        margin:0,
+
+        width:2,
+
+        fontSize:20,
+
+        textMargin:4
+
+      }
+    );
+
+  }
+
+
+  if(canvas.width <= maxWidth){
+
+    return canvas;
+
+  }
+
+
+  const scaled =
+  document.createElement(
+    "canvas"
+  );
+
+
+  scaled.width =
+  maxWidth;
+
+
+  scaled.height =
+  Math.round(
+    canvas.height *
+    maxWidth /
+    canvas.width
+  );
+
+
+  const ctx =
+  scaled.getContext(
+    "2d"
+  );
+
+
+  ctx.imageSmoothingEnabled =
+  false;
+
+
+  ctx.drawImage(
+    canvas,
+    0,
+    0,
+    scaled.width,
+    scaled.height
+  );
+
+
+  return scaled;
+
+}
+
+
+/* =========================
+   商品
+========================= */
+
+function renderItems(){
+
+  $("itemCount")
+  .textContent =
+  `${state.items.length} 筆商品`;
+
+
+  if(!state.items.length){
+
+    $("items").innerHTML =
+    '<div class="help" style="margin-top:10px">目前沒有商品</div>';
+
+
+    updateButtons();
+
+    return;
+
+  }
+
+
+  $("items").innerHTML =
+  state.items
+
+  .map(
+    (item,index) => `
+
+    <div class="item">
+
+      <input
+      type="checkbox"
+      class="itemCheck"
+      data-index="${index}"
+      ${item.selected ? "checked" : ""}>
+
+      <div>
+
+        <div class="itemName">
+        ${escapeHtml(
+          item.name ||
+          "未命名商品"
+        )}
+        </div>
+
+        <div class="itemCode">
+        ${escapeHtml(item.code)}
+        </div>
+
+        <div class="itemBottom">
+
+          <div class="qtyWrap">
+
+            <span>份數</span>
+
+            <input
+            type="number"
+            min="1"
+            max="99"
+            value="${item.qty}"
+            class="qtyInput"
+            data-index="${index}">
+
+          </div>
+
+          <button
+          class="danger smallBtn deleteBtn"
+          data-index="${index}">
+          刪除
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    `
+  )
+
+  .join("");
+
+
+  updateButtons();
+
+}
+
+
+$("items")
+.addEventListener(
+  "change",
+  event => {
+
+    const index =
+    Number(
+      event.target.dataset.index
+    );
+
+
+    if(
+      event.target.classList
+      .contains("itemCheck")
+    ){
+
+      state.items[index]
+      .selected =
+      event.target.checked;
+
+    }
+
+
+    if(
+      event.target.classList
+      .contains("qtyInput")
+    ){
+
+      let qty =
+      Number(
+        event.target.value
+      );
+
+
+      if(
+        !Number.isFinite(qty)
+        ||
+        qty < 1
+      ){
+
+        qty = 1;
+
+      }
+
+
+      qty =
+      Math.min(
+        99,
+        Math.floor(qty)
+      );
+
+
+      state.items[index]
+      .qty =
+      qty;
+
+
+      event.target.value =
+      qty;
+
+    }
+
+
+    updateButtons();
+
+    drawPreview();
+
+  }
+);
+
+
+$("items")
+.addEventListener(
+  "click",
+  event => {
+
+    const button =
+    event.target.closest(
+      ".deleteBtn"
+    );
+
+
+    if(!button)
+    return;
+
+
+    state.items.splice(
+      Number(
+        button.dataset.index
+      ),
+      1
+    );
+
+
+    renderItems();
+
+    drawPreview();
+
+  }
+);
+
+
+/* =========================
+   新增商品
+========================= */
+
+function addItem(){
+
+  const name =
+  $("name")
+  .value
+  .trim();
+
+
+  const code =
+  $("code")
+  .value
+  .trim();
+
+
+  if(!code){
+
+    alert(
+      "請輸入商品條碼"
+    );
+
+    return;
+
+  }
+
+
+  state.items.push({
+
+    name,
+
+    code,
+
+    qty:1,
+
+    selected:true
+
+  });
+
+
+  $("name").value = "";
+
+  $("code").value = "";
+
+
+  renderItems();
+
+  drawPreview();
+
+}
+
+
+$("addBtn").onclick =
+addItem;
+
+
+$("clearInputBtn").onclick =
+() => {
+
+  $("name").value = "";
+
+  $("code").value = "";
+
+};
+
+
+/* =========================
+   批次新增
+========================= */
+
+function parseBulk(){
+
+  const text =
+  $("bulkInput")
+  .value
+  .trim();
+
+
+  if(!text){
+
+    return {
+      added:0,
+      skipped:0
+    };
+
+  }
+
+
+  let added = 0;
+
+  let skipped = 0;
+
+
+  for(
+    const raw
+    of text.split(/\r?\n/)
+  ){
+
+    const line =
+    raw.trim();
+
+
+    if(!line)
+    continue;
+
+
+    let name = "";
+
+    let code = "";
+
+
+    if(line.includes("\t")){
+
+      const parts =
+      line.split("\t");
+
+
+      name =
+      (
+        parts[0] || ""
+      ).trim();
+
+
+      code =
+      (
+        parts[1] || ""
+      ).trim();
+
+    }
+
+    else if(line.includes(",")){
+
+      const parts =
+      line.split(",");
+
+
+      code =
+      (
+        parts.pop() || ""
+      ).trim();
+
+
+      name =
+      parts
+      .join(",")
+      .trim();
+
+    }
+
+    else{
+
+      const match =
+      line.match(
+        /^(.*?)[\s]+(\d{6,})$/
+      );
+
+
+      if(match){
+
+        name =
+        match[1]
+        .trim();
+
+
+        code =
+        match[2]
+        .trim();
+
+      }
+
+    }
+
+
+    if(!code){
+
+      skipped++;
+
+      continue;
+
+    }
+
+
+    state.items.push({
+
+      name,
+
+      code,
+
+      qty:1,
+
+      selected:true
+
+    });
+
+
+    added++;
+
+  }
+
+
+  return {
+    added,
+    skipped
+  };
+
+}
+
+
+$("bulkAddBtn").onclick =
+() => {
+
+  const result =
+  parseBulk();
+
+
+  $("bulkStatus")
+  .textContent =
+  `已加入 ${result.added} 筆`
+  +
+  (
+    result.skipped
+    ?
+    `，略過 ${result.skipped} 筆`
+    :
+    ""
+  );
+
+
+  if(result.added){
+
+    $("bulkInput").value = "";
+
+  }
+
+
+  renderItems();
+
+  drawPreview();
+
+};
+
+
+$("bulkClearBtn").onclick =
+() => {
+
+  $("bulkInput").value = "";
+
+  $("bulkStatus").textContent = "";
+
+};
+
+
+/* =========================
+   全選
+========================= */
+
+$("selectAllBtn").onclick =
+() => {
+
+  state.items.forEach(
+    item =>
+    item.selected = true
+  );
+
+
+  renderItems();
+
+  drawPreview();
+
+};
+
+
+$("unselectAllBtn").onclick =
+() => {
+
+  state.items.forEach(
+    item =>
+    item.selected = false
+  );
+
+
+  renderItems();
+
+  drawPreview();
+
+};
+
+
+$("clearAllBtn").onclick =
+() => {
+
+  state.items = [];
+
+  renderItems();
+
+  drawPreview();
+
+};
+
+
+/* =========================
+   列印清單
+========================= */
+
+function expandedItems(
+  mode="selected"
+){
+
+  const source =
+  mode === "all"
+  ?
+  state.items
+  :
+  state.items.filter(
+    item =>
+    item.selected
+  );
+
+
+  const output = [];
+
+
+  for(const item of source){
+
+    const qty =
+    Math.max(
+      1,
+      Number(item.qty) || 1
+    );
+
+
+    for(
+      let index=0;
+      index<qty;
+      index++
+    ){
+
+      output.push(item);
+
+    }
+
+  }
+
+
+  return output;
+
+}
+
+
+/* =========================
+   Canvas
+========================= */
+
+function buildCanvas(
+  printItems
+){
+
+  const width =
+  paperDots(
+    Number(
+      $("paperWidth").value
+    )
+  );
+
+
+  const margin =
+  mmToPx(2);
+
+
+  const contentWidth =
+  width -
+  margin * 2;
+
+
+  const barcodeHeight =
+  mmToPx(
+    Number(
+      $("barcodeHeight").value
+    )
+  );
+
+
+  const gap =
+  mmToPx(
+    Number(
+      $("itemGap").value
+    )
+  );
+
+
+  const blocks =
+  printItems.map(
+    item => {
+
+      const barcode =
+      makeBarcode(
+        item.code,
+        contentWidth,
+        barcodeHeight
+      );
+
+
+      return {
+
+        item,
+
+        barcode,
+
+        height:
+        32 +
+        barcode.height +
+        gap
+
+      };
+
+    }
+  );
+
+
+  const footer =
+  $("footerText")
+  .value
+  .trim();
+
+
+  let height =
+  mmToPx(1);
+
+
+  for(const block of blocks){
+
+    height +=
+    block.height;
+
+  }
+
+
+  if(footer){
+
+    height += 30;
+
+  }
+
+
+  height +=
+  mmToPx(1);
+
+
+  if(height > 65535){
+
+    throw new Error(
+      "列印內容太長，請分批列印"
+    );
+
+  }
+
+
+  const canvas =
+  document.createElement(
+    "canvas"
+  );
+
+
+  canvas.width =
+  width;
+
+
+  canvas.height =
+  Math.max(
+    16,
+    height
+  );
+
+
+  const ctx =
+  canvas.getContext(
+    "2d"
+  );
+
+
+  ctx.fillStyle =
+  "#fff";
+
+
+  ctx.fillRect(
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
+
+
+  ctx.fillStyle =
+  "#000";
+
+
+  ctx.textAlign =
+  "center";
+
+
+  ctx.textBaseline =
+  "top";
+
+
+  let y =
+  mmToPx(1);
+
+
+  for(const block of blocks){
+
+    ctx.font =
+    '700 21px "PingFang TC","Microsoft JhengHei",sans-serif';
+
+
+    ctx.fillText(
+      block.item.name || "",
+      width / 2,
+      y,
+      contentWidth
+    );
+
+
+    y += 32;
+
+
+    ctx.imageSmoothingEnabled =
+    false;
+
+
+    ctx.drawImage(
+      block.barcode,
+      (
+        width -
+        block.barcode.width
+      ) / 2,
+      y
+    );
+
+
+    y +=
+    block.barcode.height +
+    gap;
+
+  }
+
+
+  if(footer){
+
+    ctx.font =
+    '700 18px "PingFang TC","Microsoft JhengHei",sans-serif';
+
+
+    ctx.fillText(
+      footer,
+      width/2,
+      y,
+      contentWidth
+    );
+
+  }
+
+
+  return canvas;
+
+}
+
+
+/* =========================
+   裁底部白邊
+========================= */
+
+function cropBottom(
+  source
+){
+
+  const ctx =
+  source.getContext(
+    "2d"
+  );
+
+
+  const pixels =
+  ctx.getImageData(
+    0,
+    0,
+    source.width,
+    source.height
+  ).data;
+
+
+  let lastRow =
+  -1;
+
+
+  for(
+    let y=
+    source.height - 1;
+    y>=0;
+    y--
+  ){
+
+    let found =
+    false;
+
+
+    for(
+      let x=0;
+      x<source.width;
+      x++
+    ){
+
+      const index =
+      (
+        y *
+        source.width +
+        x
+      ) *
+      4;
+
+
+      const gray =
+      (
+        pixels[index] * 299
+        +
+        pixels[index+1] * 587
+        +
+        pixels[index+2] * 114
+      )
+      /
+      1000;
+
+
+      if(gray < 220){
+
+        found = true;
+
+        break;
+
+      }
+
+    }
+
+
+    if(found){
+
+      lastRow = y;
+
+      break;
+
+    }
+
+  }
+
+
+  if(lastRow < 0){
+
+    lastRow = 7;
+
+  }
+
+
+  /*
+  保留約 1mm 尾端
+  */
+
+  const extra =
+  mmToPx(1);
+
+
+  const height =
+  Math.min(
+    65535,
+    Math.max(
+      8,
+      lastRow +
+      1 +
+      extra
+    )
+  );
+
+
+  const output =
+  document.createElement(
+    "canvas"
+  );
+
+
+  output.width =
+  source.width;
+
+
+  output.height =
+  height;
+
+
+  const outputCtx =
+  output.getContext(
+    "2d"
+  );
+
+
+  outputCtx.fillStyle =
+  "#fff";
+
+
+  outputCtx.fillRect(
+    0,
+    0,
+    output.width,
+    output.height
+  );
+
+
+  outputCtx.drawImage(
+    source,
+    0,
+    0
+  );
+
+
+  return output;
+
+}
+
+
+/* =========================
+   Preview
+========================= */
+
+function drawPreview(){
+
+  const selected =
+  expandedItems(
+    "selected"
+  );
+
+
+  const list =
+  selected.length
+  ?
+  selected
+  :
+  expandedItems(
+    "all"
+  );
+
+
+  try{
+
+    const source =
+    buildCanvas(list);
+
+
+    const target =
+    $("previewCanvas");
+
+
+    target.width =
+    source.width;
+
+
+    target.height =
+    source.height;
+
+
+    target
+    .getContext("2d")
+    .drawImage(
+      source,
+      0,
+      0
+    );
+
+  }
+
+  catch(error){
+
+    alert(
+      error.message
+    );
+
+  }
+
+}
+
+
+/* =========================
+   BW Bitmap
+========================= */
+
+function sameRow(a,b){
+
+  if(a.length !== b.length){
+
+    return false;
+
+  }
+
+
+  for(
+    let i=0;
+    i<a.length;
+    i++
+  ){
+
+    if(a[i] !== b[i]){
+
+      return false;
+
+    }
+
+  }
+
+
+  return true;
+
+}
+
+
+function canvasToRuns(canvas){
+
+  const ctx =
+  canvas.getContext(
+    "2d"
+  );
+
+
+  const pixels =
+  ctx.getImageData(
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  ).data;
+
+
+  const width =
+  canvas.width;
+
+
+  const height =
+  canvas.height;
+
+
+  const bytesPerRow =
+  width / 8;
+
+
+  const rows = [];
+
+
+  for(
+    let y=0;
+    y<height;
+    y++
+  ){
+
+    const row =
+    new Uint8Array(
+      bytesPerRow
+    );
+
+
+    let black = 0;
+
+
+    for(
+      let x=0;
+      x<width;
+      x++
+    ){
+
+      const index =
+      (
+        y *
+        width +
+        x
+      ) *
+      4;
+
+
+      const gray =
+      (
+        pixels[index] * 299
+        +
+        pixels[index+1] * 587
+        +
+        pixels[index+2] * 114
+      )
+      /
+      1000;
+
+
+      if(gray < 170){
+
+        row[x >> 3] |=
+        0x80 >>
+        (x & 7);
+
+
+        black++;
+
+      }
+
+    }
+
+
+    rows.push({
+      data:row,
+      black
+    });
+
+  }
+
+
+  const runs = [];
+
+  let y = 0;
+
+
+  while(y < rows.length){
+
+    const first =
+    rows[y];
+
+
+    let repeat =
+    1;
+
+
+    while(
+      y + repeat <
+      rows.length
+      &&
+      repeat <
+      255
+      &&
+      sameRow(
+        first.data,
+        rows[y+repeat].data
+      )
+    ){
+
+      repeat++;
+
+    }
+
+
+    runs.push({
+
+      row:y,
+
+      repeat,
+
+      data:first.data,
+
+      black:first.black
+
+    });
+
+
+    y += repeat;
+
+  }
+
+
+  return runs;
+
+}
+
+
+function rowPacket(run){
+
+  const count = [
+
+    0x00,
+
+    run.black &
+    0xFF,
+
+    (
+      run.black >>
+      8
+    ) &
+    0xFF
+
+  ];
+
+
+  return frame(
+    0x85,
+    [
+
+      ...u16(
+        run.row
+      ),
+
+      ...count,
+
+      run.repeat,
+
+      ...run.data
+
+    ]
+  );
+
+}
+
+
+/* =========================
+   BLE UI
+========================= */
+
+function connected(){
+
+  return !!(
+    state.server?.connected
+    &&
+    state.write
+    &&
+    state.notify
+  );
+
+}
+
+
+function updateButtons(){
+
+  const isConnected =
+  connected();
+
+
+  const selected =
+  state.items.some(
+    item =>
+    item.selected
+  );
+
+
+  $("disconnectBtn").disabled =
+  !isConnected;
+
+
+  $("printSelectedBtn").disabled =
+  !(
+    isConnected
+    &&
+    selected
+    &&
+    !state.printing
+  );
+
+
+  $("printAllBtn").disabled =
+  !(
+    isConnected
+    &&
+    state.items.length
+    &&
+    !state.printing
+  );
+
+
+  /*
+  V16：
+  只要還連線就永遠可以按停止
+  */
+  $("stopPrintBtn").disabled =
+  !isConnected;
+
+
+  $("gattState")
+  .textContent =
+  String(
+    !!state.server?.connected
+  );
+
+
+  $("channelState")
+  .textContent =
+  isConnected
+  ?
+  "已就緒"
+  :
+  "未就緒";
+
+}
+
+
+/* =========================
+   Bluetooth Connect
+========================= */
 
 $("connectBtn").onclick =
 async () => {
@@ -631,7 +2807,7 @@ async () => {
 
     $("bleStatus")
     .textContent =
-    "正在連線…";
+    "正在連接 B3S…";
 
 
     const device =
@@ -651,8 +2827,15 @@ async () => {
     device;
 
 
+    $("deviceName")
+    .textContent =
+    device.name ||
+    "—";
+
+
     state.server =
-    await device.gatt.connect();
+    await device.gatt
+    .connect();
 
 
     const service =
@@ -678,6 +2861,8 @@ async () => {
 
     state.rx = [];
 
+    state.forceStop = false;
+
 
     state.notify
     .addEventListener(
@@ -691,13 +2876,9 @@ async () => {
 
         const bytes =
         new Uint8Array(
-
           value.buffer,
-
           value.byteOffset,
-
           value.byteLength
-
         );
 
 
@@ -708,14 +2889,14 @@ async () => {
         state.rx.push(data);
 
 
-        if(state.rx.length > 300){
+        if(state.rx.length > 1000){
 
           state.rx.shift();
 
         }
 
 
-        addLog(
+        log(
           "RX：" +
           data
         );
@@ -739,7 +2920,9 @@ async () => {
 
         state.notify = null;
 
-        state.testing = false;
+        state.printing = false;
+
+        state.forceStop = false;
 
 
         $("bleStatus")
@@ -765,11 +2948,11 @@ async () => {
 
     $("bleStatus")
     .textContent =
-    "✅ B3S 已連線";
+    "✅ B3S 已連線｜連續紙模式";
 
 
-    addLog(
-      "V15 BLE ready"
+    log(
+      "V16 B3S READY"
     );
 
 
@@ -788,6 +2971,9 @@ async () => {
     .textContent =
     "連線失敗：" +
     error.message;
+
+
+    updateButtons();
 
   }
 
@@ -808,280 +2994,118 @@ $("disconnectBtn").onclick =
 };
 
 
-function updateButtons(){
+/* =========================
+   進度
+========================= */
 
-  const connected =
-  !!state.server?.connected
-  &&
-  !!state.write
-  &&
-  !!state.notify;
+function progress(
+  percent,
+  text=""
+){
+
+  $("progressBar")
+  .style
+  .width =
+  Math.max(
+    0,
+    Math.min(
+      100,
+      percent
+    )
+  )
+  +
+  "%";
 
 
-  $("disconnectBtn").disabled =
-  !connected;
+  if(text){
 
+    $("printMeta")
+    .textContent =
+    text;
 
-  $("testBtn").disabled =
-  !connected ||
-  state.testing;
-
-
-  /*
-  重要：
-  只要 B3S 還連線，
-  STOP 永遠可以按。
-  */
-  $("stopBtn").disabled =
-  !connected;
+  }
 
 }
 
 
-/* 測試 */
+/* =========================
+   強制停止
+========================= */
 
-$("testBtn").onclick =
-async () => {
+async function forceStopPrinter(){
 
-  if(!state.server?.connected)
-  return;
-
-
-  state.testing =
-  true;
-
-
-  updateButtons();
-
-
-  try{
-
-    await requireAck(
-      "1/6 CONNECT",
-      P.connect,
-      0xC2
-    );
-
-
-    await requireAck(
-      "2/6 SET DENSITY",
-      P.density,
-      0x31
-    );
-
-
-    /*
-    V15 最重要的一步
-    */
-
-    await requireAck(
-      "3/6 SET LABEL TYPE = CONTINUOUS",
-      P.labelContinuous,
-      0x33
-    );
-
-
-    await requireAck(
-      "4/6 PRINT START",
-      P.printStart,
-      0x02
-    );
-
-
-    await requireAck(
-      "5/6 PAGE START",
-      P.pageStart,
-      0x04
-    );
-
-
-    await requireAck(
-      "6/6 PAGE SIZE",
-      P.pageSize,
-      0x14
-    );
-
-
-    $("testStatus")
-    .className =
-    "status warn";
-
-
-    $("testStatus")
-    .textContent =
-    "正在印短黑線…";
-
-
-    addLog(
-      "TX BITMAP：" +
-      hex(P.blackLine)
-    );
-
-
-    await writeRaw(
-      P.blackLine
-    );
-
-
-    /*
-    黑線資料送完後立即結頁
-    */
-
-    await delay(50);
-
-
-    const pageEnd =
-    await sendWait(
-      P.pageEnd,
-      0xE4,
-      4000
-    );
-
-
-    if(!pageEnd.ok){
-
-      throw new Error(
-        "PAGE END 失敗"
-      );
-
-    }
-
-
-    /*
-    立刻 PRINT END
-    */
-
-    await delay(30);
-
-
-    const end =
-    await sendWait(
-      P.printEnd,
-      0xF4,
-      4000
-    );
-
-
-    if(!end.ok){
-
-      throw new Error(
-        "PRINT END 失敗"
-      );
-
-    }
-
-
-    $("testStatus")
-    .className =
-    "status ok";
-
-
-    $("testStatus")
-    .textContent =
-    "✅ 指令完成，請看 B3S 是否在黑線後立即停紙";
-
-  }
-
-  catch(error){
-
-    $("testStatus")
-    .className =
-    "status err";
-
-
-    $("testStatus")
-    .textContent =
-    "❌ " +
-    error.message;
-
-
-    addLog(
-      "ERROR：" +
-      error.message
-    );
-
-  }
-
-  finally{
-
-    state.testing =
-    false;
-
-
-    updateButtons();
-
-  }
-
-};
-
-
-/* 強制停止 */
-
-$("stopBtn").onclick =
-async () => {
-
-  if(
-    !state.server?.connected
-  ){
+  if(!connected()){
 
     return;
 
   }
 
 
-  $("testStatus")
+  state.forceStop =
+  true;
+
+
+  $("printStatus")
   .className =
   "status warn";
 
 
-  $("testStatus")
+  $("printStatus")
   .textContent =
-  "⏹ 正在強制停止…";
+  "⏹ 正在停止送紙…";
 
 
-  addLog(
+  log(
     "USER FORCE STOP"
   );
 
 
   /*
-  第一層：
-  再送一次 PAGE END
+  解除旗標，
+  允許控制封包送出
   */
+
+  state.forceStop =
+  false;
+
 
   try{
 
-    await writeRaw(
-      P.pageEnd
+    log(
+      "TX STOP PAGE END"
+    );
+
+
+    await writeControl(
+      CONTROL.pageEnd()
     );
 
   }catch{}
 
 
-  await delay(50);
+  await delay(60);
 
-
-  /*
-  第二層：
-  PRINT END
-  */
 
   try{
 
-    await writeRaw(
-      P.printEnd
+    log(
+      "TX STOP PRINT END"
+    );
+
+
+    await writeControl(
+      CONTROL.printEnd()
     );
 
   }catch{}
 
 
-  await delay(120);
+  await delay(150);
 
 
   /*
-  第三層：
-  直接中斷 Bluetooth。
-  不讓 STOP 因為網頁已完成而失效。
+  如果印表機仍在跑，
+  直接中斷藍牙
   */
 
   try{
@@ -1093,19 +3117,887 @@ async () => {
   }catch{}
 
 
-  $("testStatus")
+  $("printStatus")
   .className =
   "status warn";
 
 
-  $("testStatus")
+  $("printStatus")
   .textContent =
-  "⏹ 已送停止指令並中斷 B3S";
+  "⏹ 已停止並中斷 B3S";
+
+
+  state.printing =
+  false;
+
+
+  state.forceStop =
+  false;
+
+
+  updateButtons();
+
+}
+
+
+$("stopPrintBtn").onclick =
+forceStopPrinter;
+
+
+/* =========================
+   正式列印
+========================= */
+
+async function printItems(
+  printList,
+  sourceItems
+){
+
+  if(!printList.length){
+
+    alert(
+      "沒有可列印商品"
+    );
+
+    return;
+
+  }
+
+
+  if(!connected()){
+
+    alert(
+      "請先連接 B3S"
+    );
+
+    return;
+
+  }
+
+
+  state.printing =
+  true;
+
+
+  state.forceStop =
+  false;
+
+
+  updateButtons();
+
+
+  progress(
+    0,
+    "建立列印資料…"
+  );
+
+
+  try{
+
+    const original =
+    buildCanvas(
+      printList
+    );
+
+
+    const canvas =
+    cropBottom(
+      original
+    );
+
+
+    const runs =
+    canvasToRuns(
+      canvas
+    );
+
+
+    $("printMeta")
+    .textContent =
+    `${printList.length} 份｜${canvas.width} × ${canvas.height} dots`;
+
+
+    await ackStep(
+      "CONNECT",
+      CONTROL.connect(),
+      0xC2
+    );
+
+
+    progress(5);
+
+
+    await ackStep(
+      "SET DENSITY",
+      CONTROL.density(
+        Number(
+          $("density").value
+        )
+      ),
+      0x31
+    );
+
+
+    progress(10);
+
+
+    /*
+    關鍵：
+    Continuous = 3
+    */
+
+    await ackStep(
+      "SET CONTINUOUS PAPER",
+      CONTROL.labelContinuous(),
+      0x33
+    );
+
+
+    progress(15);
+
+
+    await ackStep(
+      "PRINT START",
+      CONTROL.printStart(),
+      0x02
+    );
+
+
+    progress(20);
+
+
+    await ackStep(
+      "PAGE START",
+      CONTROL.pageStart(),
+      0x04
+    );
+
+
+    progress(25);
+
+
+    await ackStep(
+      "SET PAGE SIZE",
+      CONTROL.pageSize(
+        canvas.height,
+        canvas.width
+      ),
+      0x14,
+      5000
+    );
+
+
+    progress(
+      30,
+      `傳送點陣 0/${runs.length}`
+    );
+
+
+    for(
+      let index=0;
+      index<runs.length;
+      index++
+    ){
+
+      if(state.forceStop){
+
+        throw new Error(
+          "FORCE_STOP"
+        );
+
+      }
+
+
+      await writeRaw(
+        rowPacket(
+          runs[index]
+        )
+      );
+
+
+      if(
+        index % 4 === 0
+        ||
+        index ===
+        runs.length - 1
+      ){
+
+        progress(
+          30
+          +
+          Math.round(
+            (
+              index + 1
+            )
+            /
+            runs.length
+            *
+            55
+          ),
+
+          `傳送點陣 ${index+1}/${runs.length}`
+        );
+
+
+        await delay(5);
+
+      }
+
+    }
+
+
+    progress(
+      88,
+      "內容完成，正在停止走紙…"
+    );
+
+
+    const page =
+    await sendWait(
+      CONTROL.pageEnd(),
+      0xE4,
+      7000
+    );
+
+
+    if(!page.ok){
+
+      throw new Error(
+        "PAGE END 沒有收到 E4"
+      );
+
+    }
+
+
+    progress(94);
+
+
+    await delay(40);
+
+
+    const end =
+    await sendWait(
+      CONTROL.printEnd(),
+      0xF4,
+      7000
+    );
+
+
+    if(!end.ok){
+
+      throw new Error(
+        "PRINT END 沒有收到 F4"
+      );
+
+    }
+
+
+    progress(
+      100,
+      "列印完成，連續紙已停止"
+    );
+
+
+    $("printStatus")
+    .className =
+    "status ok";
+
+
+    $("printStatus")
+    .textContent =
+    "✅ B3S 列印完成";
+
+
+    if(
+      $("autoClear").checked
+    ){
+
+      state.items =
+      state.items.filter(
+        item =>
+        !sourceItems.includes(item)
+      );
+
+
+      renderItems();
+
+      drawPreview();
+
+    }
+
+  }
+
+  catch(error){
+
+    if(
+      error.message ===
+      "FORCE_STOP"
+    ){
+
+      $("printStatus")
+      .className =
+      "status warn";
+
+
+      $("printStatus")
+      .textContent =
+      "⏹ 列印已停止";
+
+    }
+
+    else{
+
+      $("printStatus")
+      .className =
+      "status err";
+
+
+      $("printStatus")
+      .textContent =
+      "❌ " +
+      error.message;
+
+
+      log(
+        "PRINT ERROR：" +
+        error.message
+      );
+
+    }
+
+  }
+
+  finally{
+
+    state.printing =
+    false;
+
+
+    state.forceStop =
+    false;
+
+
+    updateButtons();
+
+  }
+
+}
+
+
+/* =========================
+   列印按鈕
+========================= */
+
+$("printSelectedBtn").onclick =
+async () => {
+
+  const source =
+  state.items.filter(
+    item =>
+    item.selected
+  );
+
+
+  const expanded = [];
+
+
+  for(const item of source){
+
+    for(
+      let index=0;
+      index<item.qty;
+      index++
+    ){
+
+      expanded.push(item);
+
+    }
+
+  }
+
+
+  await printItems(
+    expanded,
+    source
+  );
 
 };
 
 
+$("printAllBtn").onclick =
+async () => {
+
+  const source =
+  [...state.items];
+
+
+  const expanded = [];
+
+
+  for(const item of source){
+
+    for(
+      let index=0;
+      index<item.qty;
+      index++
+    ){
+
+      expanded.push(item);
+
+    }
+
+  }
+
+
+  await printItems(
+    expanded,
+    source
+  );
+
+};
+
+
+/* =========================
+   相機掃描
+========================= */
+
+let scanner =
+null;
+
+
+let scanning =
+false;
+
+
+let scannerMode =
+"single";
+
+
+let bulkScanCount =
+0;
+
+
+let lastScanCode =
+"";
+
+
+let lastScanTime =
+0;
+
+
+async function openScanner(mode){
+
+  scannerMode =
+  mode;
+
+
+  bulkScanCount =
+  0;
+
+
+  lastScanCode =
+  "";
+
+
+  lastScanTime =
+  0;
+
+
+  $("scannerModal")
+  .style.display =
+  "block";
+
+
+  if(mode === "bulk"){
+
+    $("scannerTitle")
+    .textContent =
+    "批次連續掃描";
+
+
+    $("bulkScanNameArea")
+    .style.display =
+    "block";
+
+
+    $("bulkScanCounter")
+    .textContent =
+    "已掃描 0 筆";
+
+
+    $("bulkScanName").value =
+    "";
+
+  }
+
+  else{
+
+    $("scannerTitle")
+    .textContent =
+    "掃描商品條碼";
+
+
+    $("bulkScanNameArea")
+    .style.display =
+    "none";
+
+
+    $("bulkScanCounter")
+    .textContent =
+    "";
+
+  }
+
+
+  $("scannerStatus")
+  .className =
+  "status";
+
+
+  $("scannerStatus")
+  .textContent =
+  "正在啟動相機…";
+
+
+  try{
+
+    scanner =
+    new Html5Qrcode(
+      "qrReader"
+    );
+
+
+    await scanner.start(
+
+      {
+        facingMode:
+        "environment"
+      },
+
+      {
+        fps:12,
+
+        qrbox:
+        (width,height) => ({
+
+          width:
+          Math.floor(
+            width * 0.88
+          ),
+
+          height:
+          Math.min(
+            150,
+            Math.floor(
+              height * 0.3
+            )
+          )
+
+        })
+      },
+
+      decoded => {
+
+        handleScan(
+          decoded
+        );
+
+      },
+
+      () => {}
+
+    );
+
+
+    scanning =
+    true;
+
+
+    $("scannerStatus")
+    .className =
+    "status ok";
+
+
+    $("scannerStatus")
+    .textContent =
+    mode === "bulk"
+    ?
+    "請連續掃描商品條碼"
+    :
+    "請對準商品條碼";
+
+  }
+
+  catch(error){
+
+    $("scannerStatus")
+    .className =
+    "status err";
+
+
+    $("scannerStatus")
+    .textContent =
+    "相機啟動失敗：" +
+    error.message;
+
+  }
+
+}
+
+
+function handleScan(decoded){
+
+  const now =
+  Date.now();
+
+
+  if(
+    decoded === lastScanCode
+    &&
+    now - lastScanTime <
+    1500
+  ){
+
+    return;
+
+  }
+
+
+  lastScanCode =
+  decoded;
+
+
+  lastScanTime =
+  now;
+
+
+  if(scannerMode === "single"){
+
+    $("code").value =
+    decoded;
+
+
+    $("scannerStatus")
+    .className =
+    "status ok";
+
+
+    $("scannerStatus")
+    .textContent =
+    "掃描成功：" +
+    decoded;
+
+
+    setTimeout(
+      closeScanner,
+      350
+    );
+
+
+    return;
+
+  }
+
+
+  const name =
+  $("bulkScanName")
+  .value
+  .trim();
+
+
+  const line =
+  `${name},${decoded}`;
+
+
+  const current =
+  $("bulkInput")
+  .value
+  .trim();
+
+
+  $("bulkInput")
+  .value =
+  current
+  ?
+  current +
+  "\n" +
+  line
+  :
+  line;
+
+
+  bulkScanCount++;
+
+
+  $("bulkScanCounter")
+  .textContent =
+  `已掃描 ${bulkScanCount} 筆`;
+
+
+  $("scannerStatus")
+  .className =
+  "status ok";
+
+
+  $("scannerStatus")
+  .textContent =
+  `已加入：${decoded}`;
+
+
+  $("bulkScanName").value =
+  "";
+
+
+  $("bulkScanName")
+  .focus();
+
+
+  $("bulkStatus")
+  .textContent =
+  `已掃描 ${bulkScanCount} 筆，完成後按「加入全部」。`;
+
+}
+
+
+async function closeScanner(){
+
+  try{
+
+    if(
+      scanner &&
+      scanning
+    ){
+
+      await scanner.stop();
+
+    }
+
+  }catch{}
+
+
+  try{
+
+    if(scanner){
+
+      await scanner.clear();
+
+    }
+
+  }catch{}
+
+
+  scanner =
+  null;
+
+
+  scanning =
+  false;
+
+
+  $("scannerModal")
+  .style.display =
+  "none";
+
+}
+
+
+$("scanBtn").onclick =
+() => {
+
+  openScanner(
+    "single"
+  );
+
+};
+
+
+$("bulkScanBtn").onclick =
+() => {
+
+  openScanner(
+    "bulk"
+  );
+
+};
+
+
+$("closeScannerBtn").onclick =
+closeScanner;
+
+
+/* =========================
+   預覽設定
+========================= */
+
+$("refreshBtn").onclick =
+drawPreview;
+
+
+$("paperWidth").onchange =
+drawPreview;
+
+
+$("barcodeHeight").onchange =
+drawPreview;
+
+
+$("itemGap").onchange =
+drawPreview;
+
+
+$("footerText").oninput =
+drawPreview;
+
+
+/* =========================
+   Log
+========================= */
+
+$("clearLogBtn").onclick =
+() => {
+
+  $("log").value = "";
+
+};
+
+
+$("copyLogBtn").onclick =
+async () => {
+
+  try{
+
+    await navigator.clipboard
+    .writeText(
+      $("log").value
+    );
+
+
+    alert(
+      "已複製"
+    );
+
+  }
+
+  catch{
+
+    $("log").select();
+
+  }
+
+};
+
+
+/* =========================
+   Init
+========================= */
+
+renderItems();
+
+drawPreview();
+
 updateButtons();
+
+progress(0);
 
 </script>
 
