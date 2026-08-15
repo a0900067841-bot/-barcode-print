@@ -1,498 +1,637 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <title>商品條碼列印｜B3S V7</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>商品條碼列印｜B3S V8</title>
 
-  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
-  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 
-  <style>
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      background:#f4f6f8;
-      color:#18202a;
-      font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif
-    }
-    .wrap{max-width:900px;margin:auto;padding:18px}
-    h1{margin:0 0 5px;font-size:28px}
-    h2{margin-top:0}
-    .sub,.help,label{color:#667085}
-    .sub{margin-bottom:18px}
-    .help{font-size:13px;line-height:1.55}
-    .card{
-      background:#fff;
-      border:1px solid #d8dee8;
-      border-radius:16px;
-      padding:16px;
-      margin-bottom:16px
-    }
-    label{
-      display:block;
-      font-size:14px;
-      margin:8px 0 6px
-    }
-    input,textarea,select{
-      width:100%;
-      min-height:46px;
-      padding:10px 12px;
-      border:1px solid #cfd6e1;
-      border-radius:10px;
-      background:#fff;
-      font-size:16px
-    }
-    textarea{
-      min-height:220px;
-      font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-      font-size:13px
-    }
-    .row{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px
-    }
-    .actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-top:12px
-    }
-    button{
-      border:0;
-      border-radius:10px;
-      min-height:46px;
-      padding:10px 14px;
-      font-size:16px;
-      font-weight:700;
-      background:#eef2f6;
-      color:#18202a
-    }
-    button:disabled{opacity:.45}
-    .primary{background:#1265f3;color:#fff}
-    .ok{background:#e7f8ef;color:#087443}
-    .danger{background:#fff0ef;color:#d92d20}
-    .status{
-      padding:11px 12px;
-      border-radius:10px;
-      background:#f2f4f7;
-      margin:10px 0
-    }
-    .status.ok{background:#ecfdf3;color:#067647}
-    .status.err{background:#fff1f0;color:#d92d20}
-    .status.warn{background:#fff8e6;color:#8a5a00}
-    .item{
-      border:1px solid #d8dee8;
-      border-radius:12px;
-      padding:10px;
-      margin-top:8px
-    }
-    .preview{
-      background:#e8eaed;
-      border-radius:12px;
-      padding:12px;
-      overflow:auto
-    }
-    #previewCanvas{
-      display:block;
-      margin:auto;
-      max-width:100%;
-      height:auto;
-      background:#fff
-    }
-    .modal{
-      display:none;
-      position:fixed;
-      inset:0;
-      z-index:9999;
-      background:rgba(0,0,0,.75);
-      padding:16px;
-      overflow:auto
-    }
-    .modalBox{
-      max-width:520px;
-      margin:5vh auto;
-      background:#fff;
-      border-radius:16px;
-      padding:16px
-    }
-    .device-grid{
-      display:grid;
-      grid-template-columns:150px 1fr;
-      gap:8px 12px;
-      font-size:14px;
-      margin-top:12px
-    }
-    .device-grid b{color:#475467}
+<style>
+*{box-sizing:border-box}
 
-    @media(max-width:700px){
-      .row{grid-template-columns:1fr}
-      .device-grid{grid-template-columns:1fr}
-    }
+body{
+  margin:0;
+  background:#f4f6f8;
+  color:#18202a;
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif
+}
 
-    @media print{
-      body *{visibility:hidden!important}
-      #previewCanvas{
-        visibility:visible!important;
-        position:absolute;
-        left:0;
-        top:0;
-        width:58mm;
-        max-width:none
-      }
-    }
-  </style>
+.wrap{
+  max-width:900px;
+  margin:auto;
+  padding:18px
+}
+
+h1{
+  margin:0 0 5px;
+  font-size:28px
+}
+
+h2{
+  margin-top:0
+}
+
+.sub,.help,label{
+  color:#667085
+}
+
+.sub{
+  margin-bottom:18px
+}
+
+.help{
+  font-size:13px;
+  line-height:1.55
+}
+
+.card{
+  background:#fff;
+  border:1px solid #d8dee8;
+  border-radius:16px;
+  padding:16px;
+  margin-bottom:16px
+}
+
+label{
+  display:block;
+  font-size:14px;
+  margin:8px 0 6px
+}
+
+input,textarea,select{
+  width:100%;
+  min-height:46px;
+  padding:10px 12px;
+  border:1px solid #cfd6e1;
+  border-radius:10px;
+  background:#fff;
+  font-size:16px
+}
+
+textarea{
+  min-height:220px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:13px
+}
+
+.row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px
+}
+
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:12px
+}
+
+button{
+  border:0;
+  border-radius:10px;
+  min-height:46px;
+  padding:10px 14px;
+  font-size:16px;
+  font-weight:700;
+  background:#eef2f6;
+  color:#18202a
+}
+
+button:disabled{
+  opacity:.45
+}
+
+.primary{
+  background:#1265f3;
+  color:#fff
+}
+
+.ok{
+  background:#e7f8ef;
+  color:#087443
+}
+
+.danger{
+  background:#fff0ef;
+  color:#d92d20
+}
+
+.status{
+  padding:11px 12px;
+  border-radius:10px;
+  background:#f2f4f7;
+  margin:10px 0
+}
+
+.status.ok{
+  background:#ecfdf3;
+  color:#067647
+}
+
+.status.err{
+  background:#fff1f0;
+  color:#d92d20
+}
+
+.status.warn{
+  background:#fff8e6;
+  color:#8a5a00
+}
+
+.item{
+  border:1px solid #d8dee8;
+  border-radius:12px;
+  padding:10px;
+  margin-top:8px
+}
+
+.preview{
+  background:#e8eaed;
+  border-radius:12px;
+  padding:12px;
+  overflow:auto
+}
+
+#previewCanvas{
+  display:block;
+  margin:auto;
+  max-width:100%;
+  height:auto;
+  background:#fff
+}
+
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  background:rgba(0,0,0,.75);
+  padding:16px;
+  overflow:auto
+}
+
+.modalBox{
+  max-width:520px;
+  margin:5vh auto;
+  background:#fff;
+  border-radius:16px;
+  padding:16px
+}
+
+.device-grid{
+  display:grid;
+  grid-template-columns:150px 1fr;
+  gap:8px 12px;
+  font-size:14px;
+  margin-top:12px
+}
+
+.device-grid b{
+  color:#475467
+}
+
+.step{
+  border:1px solid #d8dee8;
+  border-radius:10px;
+  padding:10px;
+  margin:8px 0;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:13px
+}
+
+.step.ok{
+  background:#ecfdf3;
+  border-color:#abefc6
+}
+
+.step.err{
+  background:#fff1f0;
+  border-color:#fecdca
+}
+
+.step.wait{
+  background:#fff8e6;
+  border-color:#fedf89
+}
+
+@media(max-width:700px){
+
+  .row{
+    grid-template-columns:1fr
+  }
+
+  .device-grid{
+    grid-template-columns:1fr
+  }
+
+}
+
+@media print{
+
+  body *{
+    visibility:hidden!important
+  }
+
+  #previewCanvas{
+    visibility:visible!important;
+    position:absolute;
+    left:0;
+    top:0;
+    width:58mm;
+    max-width:none
+  }
+
+}
+</style>
 </head>
 
 <body>
 
 <div class="wrap">
 
-  <h1>商品條碼列印</h1>
-  <div class="sub">B3S B24 查詢測試 V7</div>
+<h1>商品條碼列印</h1>
+<div class="sub">B3S NIIMBOT 流程測試 V8</div>
 
-  <div class="card">
 
-    <h2>新增商品</h2>
+<div class="card">
 
-    <label>商品名稱</label>
-    <input id="name" placeholder="例如：可口可樂 ZERO">
+<h2>新增商品</h2>
 
-    <label>商品條碼</label>
-    <input id="code" inputmode="numeric" placeholder="掃描或輸入條碼">
+<label>商品名稱</label>
+<input id="name" placeholder="例如：可口可樂 ZERO">
 
-    <div class="actions">
-      <button id="scanBtn" class="ok">📷 相機掃描條碼</button>
-      <button id="addBtn" class="primary">＋ 新增</button>
-      <button id="clearInputBtn">清除輸入</button>
-    </div>
+<label>商品條碼</label>
+<input id="code" inputmode="numeric" placeholder="掃描或輸入條碼">
 
-    <hr style="border:0;border-top:1px solid #d8dee8;margin:18px 0">
+<div class="actions">
 
-    <h2 style="font-size:18px">一次新增多筆</h2>
+<button id="scanBtn" class="ok">
+📷 相機掃描條碼
+</button>
 
-    <p class="help">
-      每行一筆，可用「商品名稱,條碼」，也可以直接從 Excel 複製兩欄貼上。
-    </p>
+<button id="addBtn" class="primary">
+＋ 新增
+</button>
 
-    <textarea
-      id="bulkInput"
-      style="min-height:130px"
-      placeholder="可口可樂 ZERO,4710018028809
+<button id="clearInputBtn">
+清除輸入
+</button>
+
+</div>
+
+<hr style="border:0;border-top:1px solid #d8dee8;margin:18px 0">
+
+<h2 style="font-size:18px">
+一次新增多筆
+</h2>
+
+<p class="help">
+每行一筆，可用「商品名稱,條碼」，也可以直接從 Excel 複製兩欄貼上。
+</p>
+
+<textarea
+id="bulkInput"
+style="min-height:130px"
+placeholder="可口可樂 ZERO,4710018028809
 御茶園金萱烏龍茶,4710421074806"></textarea>
 
-    <div class="actions">
-      <button id="bulkAddBtn" class="primary">＋ 加入全部</button>
-      <button id="bulkClearBtn">清除批次輸入</button>
-    </div>
-
-    <div id="bulkStatus" class="help" style="margin-top:8px"></div>
-
-  </div>
-
-
-  <div class="card">
-
-    <h2>待列印商品</h2>
-
-    <div id="items"></div>
-
-    <div class="actions">
-      <button id="clearAllBtn" class="danger">全部清除</button>
-    </div>
-
-  </div>
-
-
-  <div class="card">
-
-    <h2>版面設定</h2>
-
-    <div class="row">
-
-      <div>
-
-        <label>紙寬</label>
-
-        <select id="paperWidth">
-          <option value="77">77 mm</option>
-          <option value="70">70 mm</option>
-          <option value="60">60 mm</option>
-          <option value="58" selected>58 mm</option>
-          <option value="50">50 mm</option>
-          <option value="40">40 mm</option>
-          <option value="30">30 mm</option>
-          <option value="20">20 mm</option>
-        </select>
-
-      </div>
-
-      <div>
-
-        <label>條碼高度</label>
-
-        <select id="barcodeHeight">
-          <option value="10">10 mm</option>
-          <option value="12" selected>12 mm</option>
-          <option value="14">14 mm</option>
-          <option value="16">16 mm</option>
-        </select>
-
-      </div>
-
-    </div>
-
-    <label>最下方自訂文字</label>
-    <input id="footerText" placeholder="例如：115/08/15-08/18">
-
-    <div class="actions">
-      <button id="refreshBtn">重新產生預覽</button>
-      <button id="browserPrintBtn">瀏覽器列印</button>
-    </div>
-
-  </div>
-
-
-  <div class="card">
-
-    <h2>列印預覽</h2>
-
-    <div class="preview">
-      <canvas id="previewCanvas"></canvas>
-    </div>
-
-  </div>
-
-
-  <div class="card">
-
-    <h2>B3S 藍牙連線</h2>
-
-    <div id="bleStatus" class="status">
-      尚未連線
-    </div>
-
-    <div class="actions">
-
-      <button id="connectBtn" class="ok">
-        🔵 直接連接 B3S
-      </button>
-
-      <button id="disconnectBtn" disabled>
-        中斷連線
-      </button>
-
-      <button id="scanGattBtn" disabled>
-        🔎 掃描 GATT
-      </button>
-
-      <button id="deviceInfoBtn" disabled>
-        📟 讀取裝置資訊
-      </button>
-
-    </div>
-
-    <div class="device-grid">
-
-      <b>裝置名稱</b>
-      <span id="bleName">—</span>
-
-      <b>裝置 ID</b>
-      <span id="bleId">—</span>
-
-      <b>型號 Model</b>
-      <span id="infoModel">—</span>
-
-      <b>序號 Serial</b>
-      <span id="infoSerial">—</span>
-
-      <b>Firmware</b>
-      <span id="infoFirmware">—</span>
-
-      <b>Hardware</b>
-      <span id="infoHardware">—</span>
-
-      <b>Software</b>
-      <span id="infoSoftware">—</span>
-
-      <b>Manufacturer</b>
-      <span id="infoManufacturer">—</span>
-
-    </div>
-
-  </div>
-
-
-  <div class="card">
-
-    <h2>B3S 協定監聽</h2>
-
-    <p class="help">
-      這一區只監聽與讀取，不會自動送未知列印指令。
-    </p>
-
-    <div class="actions">
-
-      <button id="listenBtn" class="ok" disabled>
-        👂 監聽 30 秒
-      </button>
-
-      <button id="readSafeBtn" disabled>
-        🔍 安全讀取可讀通道
-      </button>
-
-      <button id="clearProtoBtn">
-        清除辨識結果
-      </button>
-
-    </div>
-
-    <div id="protoStatus" class="status">
-      尚未開始辨識
-    </div>
-
-    <textarea
-      id="protoOutput"
-      readonly
-      placeholder="協定辨識結果會顯示在這裡"></textarea>
-
-  </div>
-
-
-  <div class="card">
-
-    <h2>B24 / B3S 查詢測試 V7</h2>
-
-    <p class="help">
-      只送已確認的 NIIMBOT「型號 ID 查詢」與「狀態資料查詢」，
-      不送圖片、不啟動列印。會自動依序測試目前找到的 3 組寫入通道。
-    </p>
-
-    <div class="actions">
-
-      <button id="probeModelBtn" class="primary" disabled>
-        🔎 測試型號 ID
-      </button>
-
-      <button id="probeStatusBtn" disabled>
-        📟 測試狀態資料
-      </button>
-
-      <button id="probeAllBtn" class="ok" disabled>
-        🧪 自動測試三通道
-      </button>
-
-      <button id="clearProbeBtn">
-        清除測試
-      </button>
-
-    </div>
-
-    <div id="probeStatus" class="status">
-      尚未測試
-    </div>
-
-    <textarea
-      id="probeOutput"
-      readonly
-      placeholder="V7 查詢測試結果會顯示在這裡"></textarea>
-
-  </div>
-
-
-  <div class="card">
-
-    <h2>原始通訊測試</h2>
-
-    <p class="help">
-      保留診斷用途，請不要自行輸入不明 HEX 指令。
-    </p>
-
-    <label>寫入通道</label>
-
-    <select id="writeChannel">
-      <option value="">尚未掃描</option>
-    </select>
-
-    <label>HEX 資料</label>
-    <input id="hexInput" placeholder="HEX">
-
-    <div class="actions">
-
-      <button id="sendHexBtn" disabled>
-        📤 送出 HEX
-      </button>
-
-      <button id="clearLogBtn">
-        清除通訊紀錄
-      </button>
-
-      <button id="copyLogBtn">
-        複製通訊紀錄
-      </button>
-
-    </div>
-
-    <textarea
-      id="commLog"
-      readonly
-      placeholder="藍牙通訊紀錄會顯示在這裡"></textarea>
-
-  </div>
-
-
-  <div class="card">
-
-    <h2>B3S 藍牙診斷 V7</h2>
-
-    <div class="actions">
-
-      <button id="diagBtn" disabled>
-        📋 產生完整診斷
-      </button>
-
-      <button id="copyDiagBtn">
-        複製診斷結果
-      </button>
-
-    </div>
-
-    <textarea
-      id="diagOutput"
-      readonly
-      placeholder="完整診斷會顯示在這裡"></textarea>
-
-  </div>
+<div class="actions">
+
+<button id="bulkAddBtn" class="primary">
+＋ 加入全部
+</button>
+
+<button id="bulkClearBtn">
+清除批次輸入
+</button>
+
+</div>
+
+<div
+id="bulkStatus"
+class="help"
+style="margin-top:8px">
+</div>
 
 </div>
 
 
-<div id="scannerModal" class="modal">
+<div class="card">
 
-  <div class="modalBox">
+<h2>待列印商品</h2>
 
-    <div
-      class="actions"
-      style="justify-content:space-between;align-items:center">
+<div id="items"></div>
 
-      <h2 style="margin:0">
-        掃描商品條碼
-      </h2>
+<div class="actions">
 
-      <button id="closeScannerBtn" class="danger">
-        關閉
-      </button>
+<button
+id="clearAllBtn"
+class="danger">
+全部清除
+</button>
 
-    </div>
+</div>
 
-    <div id="scannerStatus" class="status">
-      準備啟動相機…
-    </div>
+</div>
 
-    <div id="qrReader"></div>
 
-  </div>
+<div class="card">
+
+<h2>版面設定</h2>
+
+<div class="row">
+
+<div>
+
+<label>紙寬</label>
+
+<select id="paperWidth">
+
+<option value="77">77 mm</option>
+
+<option value="70">70 mm</option>
+
+<option value="60">60 mm</option>
+
+<option value="58" selected>
+58 mm
+</option>
+
+<option value="50">50 mm</option>
+
+<option value="40">40 mm</option>
+
+<option value="30">30 mm</option>
+
+<option value="20">20 mm</option>
+
+</select>
+
+</div>
+
+<div>
+
+<label>條碼高度</label>
+
+<select id="barcodeHeight">
+
+<option value="10">
+10 mm
+</option>
+
+<option value="12" selected>
+12 mm
+</option>
+
+<option value="14">
+14 mm
+</option>
+
+<option value="16">
+16 mm
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+<label>
+最下方自訂文字
+</label>
+
+<input
+id="footerText"
+placeholder="例如：115/08/15-08/18">
+
+<div class="actions">
+
+<button id="refreshBtn">
+重新產生預覽
+</button>
+
+<button id="browserPrintBtn">
+瀏覽器列印
+</button>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>列印預覽</h2>
+
+<div class="preview">
+
+<canvas id="previewCanvas"></canvas>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>B3S 藍牙連線</h2>
+
+<div
+id="bleStatus"
+class="status">
+尚未連線
+</div>
+
+<div class="actions">
+
+<button
+id="connectBtn"
+class="ok">
+🔵 直接連接 B3S
+</button>
+
+<button
+id="disconnectBtn"
+disabled>
+中斷連線
+</button>
+
+<button
+id="scanGattBtn"
+disabled>
+🔎 掃描 GATT
+</button>
+
+<button
+id="deviceInfoBtn"
+disabled>
+📟 讀取裝置資訊
+</button>
+
+</div>
+
+<div class="device-grid">
+
+<b>裝置名稱</b>
+<span id="bleName">—</span>
+
+<b>裝置 ID</b>
+<span id="bleId">—</span>
+
+<b>型號 Model</b>
+<span id="infoModel">—</span>
+
+<b>序號 Serial</b>
+<span id="infoSerial">—</span>
+
+<b>Firmware</b>
+<span id="infoFirmware">—</span>
+
+<b>Hardware</b>
+<span id="infoHardware">—</span>
+
+<b>Software</b>
+<span id="infoSoftware">—</span>
+
+<b>Manufacturer</b>
+<span id="infoManufacturer">—</span>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>B3S 流程測試 V8</h2>
+
+<p class="help">
+這版固定使用已經成功回覆 NIIMBOT 指令的第一組 BLE 通道。
+只測試控制流程，不傳圖片、不傳條碼點陣資料。
+</p>
+
+<div class="actions">
+
+<button
+id="flowTestBtn"
+class="primary"
+disabled>
+🧪 執行 V8 流程測試
+</button>
+
+<button
+id="clearFlowBtn">
+清除結果
+</button>
+
+</div>
+
+<div
+id="flowStatus"
+class="status">
+尚未測試
+</div>
+
+<div id="flowSteps"></div>
+
+<textarea
+id="flowOutput"
+readonly
+placeholder="V8 流程測試結果">
+</textarea>
+
+</div>
+
+
+<div class="card">
+
+<h2>原始通訊紀錄</h2>
+
+<div class="actions">
+
+<button id="clearLogBtn">
+清除通訊紀錄
+</button>
+
+<button id="copyLogBtn">
+複製通訊紀錄
+</button>
+
+</div>
+
+<textarea
+id="commLog"
+readonly
+placeholder="Bluetooth TX / RX 會顯示在這裡">
+</textarea>
+
+</div>
+
+
+<div class="card">
+
+<h2>B3S 藍牙診斷 V8</h2>
+
+<div class="actions">
+
+<button
+id="diagBtn"
+disabled>
+📋 產生完整診斷
+</button>
+
+<button id="copyDiagBtn">
+複製診斷結果
+</button>
+
+</div>
+
+<textarea
+id="diagOutput"
+readonly
+placeholder="完整診斷結果">
+</textarea>
+
+</div>
+
+</div>
+
+
+<div
+id="scannerModal"
+class="modal">
+
+<div class="modalBox">
+
+<div
+class="actions"
+style="justify-content:space-between;align-items:center">
+
+<h2 style="margin:0">
+掃描商品條碼
+</h2>
+
+<button
+id="closeScannerBtn"
+class="danger">
+關閉
+</button>
+
+</div>
+
+<div
+id="scannerStatus"
+class="status">
+準備啟動相機…
+</div>
+
+<div id="qrReader"></div>
+
+</div>
 
 </div>
 
@@ -520,9 +659,11 @@ const state = {
 
   notifyChars:new Map(),
 
-  rxStats:new Map(),
+  rxPackets:[],
 
-  rxPackets:[]
+  primaryWrite:null,
+
+  primaryNotify:null
 
 };
 
@@ -540,13 +681,40 @@ const OPTIONAL_SERVICES = [
 ];
 
 
+const PRIMARY_SERVICE =
+"49535343-fe7d-4ae5-8fa9-9fafd205e455";
+
+
+const PRIMARY_WRITE =
+"49535343-8841-43f4-a8d4-ecbe34729bb3";
+
+
+const PRIMARY_NOTIFY =
+"49535343-1e4d-4bd9-ba61-23c647249616";
+
+
+function delay(ms){
+
+  return new Promise(
+    resolve =>
+    setTimeout(
+      resolve,
+      ms
+    )
+  );
+
+}
+
+
 function appendLog(text){
 
   const box =
   $("commLog");
 
+
   box.value +=
   `[${new Date().toLocaleTimeString()}] ${text}\n`;
+
 
   box.scrollTop =
   box.scrollHeight;
@@ -561,6 +729,7 @@ function bytesToHex(value){
 
 
   const bytes =
+
   value instanceof DataView
 
   ?
@@ -574,7 +743,8 @@ function bytesToHex(value){
   :
 
   new Uint8Array(
-    value.buffer ?? value
+    value.buffer ??
+    value
   );
 
 
@@ -594,76 +764,25 @@ function bytesToHex(value){
 }
 
 
-function hexToBytes(text){
-
-  const cleaned =
-  String(text || "")
-
-  .replace(/0x/gi,"")
-
-  .replace(/[^0-9a-fA-F]/g,"");
-
-
-  if(
-    !cleaned ||
-    cleaned.length % 2 !== 0
-  ){
-
-    throw new Error(
-      "HEX 格式錯誤"
-    );
-
-  }
-
-
-  const bytes =
-  new Uint8Array(
-    cleaned.length / 2
-  );
-
-
-  for(
-    let i=0;
-    i<cleaned.length;
-    i+=2
-  ){
-
-    bytes[i/2] =
-    parseInt(
-      cleaned.slice(i,i+2),
-      16
-    );
-
-  }
-
-
-  return bytes;
-
-}
-
-
 function decodeText(value){
 
   try{
-
-    const bytes =
-    new Uint8Array(
-      value.buffer,
-      value.byteOffset,
-      value.byteLength
-    );
-
 
     return new TextDecoder(
       "utf-8"
     )
 
-    .decode(bytes)
+    .decode(
+      new Uint8Array(
+        value.buffer,
+        value.byteOffset,
+        value.byteLength
+      )
+    )
 
     .replace(/\0+$/g,"")
 
     .trim();
-
 
   }catch{
 
@@ -674,18 +793,23 @@ function decodeText(value){
 }
 
 
-/* 商品 */
+/* =========================
+   商品
+========================= */
 
 function detectFormat(code){
 
   if(/^\d{13}$/.test(code))
   return "EAN13";
 
+
   if(/^\d{8}$/.test(code))
   return "EAN8";
 
+
   if(/^\d{12}$/.test(code))
   return "UPC";
+
 
   return "CODE128";
 
@@ -694,7 +818,9 @@ function detectFormat(code){
 
 function escapeHtml(text){
 
-  return String(text ?? "")
+  return String(
+    text ?? ""
+  )
 
   .replace(
     /[&<>"']/g,
@@ -744,26 +870,26 @@ function renderItems(){
     <div class="item">
 
       <b>
-        ${escapeHtml(
-          item.name ||
-          "未命名商品"
-        )}
+      ${escapeHtml(
+        item.name ||
+        "未命名商品"
+      )}
       </b>
 
       <br>
 
       <small>
-        ${escapeHtml(
-          item.code
-        )}
+      ${escapeHtml(
+        item.code
+      )}
       </small>
 
       <div class="actions">
 
         <button
-          class="danger deleteBtn"
-          data-index="${index}">
-          刪除
+        class="danger deleteBtn"
+        data-index="${index}">
+        刪除
         </button>
 
       </div>
@@ -781,11 +907,15 @@ function renderItems(){
 function addItem(){
 
   const name =
-  $("name").value.trim();
+  $("name")
+  .value
+  .trim();
 
 
   const code =
-  $("code").value.trim();
+  $("code")
+  .value
+  .trim();
 
 
   if(!code){
@@ -870,6 +1000,7 @@ $("clearAllBtn").onclick =
   state.items =
   [];
 
+
   renderItems();
 
   drawPreview();
@@ -877,7 +1008,9 @@ $("clearAllBtn").onclick =
 };
 
 
-/* 批次新增 */
+/* =========================
+   批次新增
+========================= */
 
 $("bulkAddBtn").onclick =
 () => {
@@ -905,7 +1038,8 @@ $("bulkAddBtn").onclick =
   .split(/\r?\n/)
 
   .map(
-    x => x.trim()
+    x =>
+    x.trim()
   )
 
   .filter(Boolean);
@@ -942,7 +1076,8 @@ $("bulkAddBtn").onclick =
       .split("\t")
 
       .map(
-        x => x.trim()
+        x =>
+        x.trim()
       )
 
       .filter(Boolean);
@@ -954,6 +1089,7 @@ $("bulkAddBtn").onclick =
 
         name =
         parts[0];
+
 
         code =
         parts[1];
@@ -989,21 +1125,21 @@ $("bulkAddBtn").onclick =
 
     else{
 
-      const result =
+      const match =
       line.match(
         /^(.*?)[\s]+(\d{6,})$/
       );
 
 
-      if(result){
+      if(match){
 
         name =
-        result[1]
+        match[1]
         .trim();
 
 
         code =
-        result[2]
+        match[2]
         .trim();
 
       }
@@ -1070,13 +1206,16 @@ $("bulkClearBtn").onclick =
   $("bulkInput").value =
   "";
 
+
   $("bulkStatus").textContent =
   "";
 
 };
 
 
-/* 預覽 */
+/* =========================
+   預覽
+========================= */
 
 function mmToPx(mm){
 
@@ -1105,6 +1244,7 @@ function makeBarcode(
       canvas,
       code,
       {
+
         format:
         detectFormat(code),
 
@@ -1115,15 +1255,19 @@ function makeBarcode(
         margin:0,
 
         width:2
+
       }
     );
 
-  }catch{
+  }
+
+  catch{
 
     JsBarcode(
       canvas,
       code,
       {
+
         format:"CODE128",
 
         displayValue:true,
@@ -1133,6 +1277,7 @@ function makeBarcode(
         margin:0,
 
         width:2
+
       }
     );
 
@@ -1263,7 +1408,8 @@ function drawPreview(){
 
     blocks.reduce(
       (sum,b) =>
-      sum + b.height,
+      sum +
+      b.height,
       0
     )
 
@@ -1336,14 +1482,16 @@ function drawPreview(){
 
 
     ctx.fillText(
-      block.item.name || "",
+      block.item.name ||
+      "",
       paperWidth / 2,
       y,
       contentWidth
     );
 
 
-    y += 28;
+    y +=
+    28;
 
 
     ctx.imageSmoothingEnabled =
@@ -1412,7 +1560,9 @@ $("browserPrintBtn").onclick =
 };
 
 
-/* 相機掃描 */
+/* =========================
+   相機掃描
+========================= */
 
 let qrScanner =
 null;
@@ -1502,8 +1652,9 @@ async function startScanner(){
     .textContent =
     "請對準商品條碼";
 
+  }
 
-  }catch(error){
+  catch(error){
 
     $("scannerStatus")
     .className =
@@ -1572,7 +1723,9 @@ $("closeScannerBtn").onclick =
 stopScanner;
 
 
-/* Bluetooth */
+/* =========================
+   Bluetooth
+========================= */
 
 function setBleStatus(
   text,
@@ -1611,24 +1764,36 @@ function setConnectedButtons(
   !connected;
 
 
-  $("listenBtn").disabled =
+  $("flowTestBtn").disabled =
   !connected;
 
-
-  $("readSafeBtn").disabled =
-  !connected;
+}
 
 
-  $("probeModelBtn").disabled =
-  !connected;
+function shortUuid(uuid){
+
+  const value =
+  String(uuid || "")
+  .toLowerCase();
 
 
-  $("probeStatusBtn").disabled =
-  !connected;
+  if(
+    value.startsWith("0000")
+    &&
+    value.endsWith(
+      "-0000-1000-8000-00805f9b34fb"
+    )
+  ){
+
+    return value
+    .slice(4,8)
+    .toUpperCase();
+
+  }
 
 
-  $("probeAllBtn").disabled =
-  !connected;
+  return value
+  .toUpperCase();
 
 }
 
@@ -1690,6 +1855,14 @@ async function connectB3S(){
         null;
 
 
+        state.primaryWrite =
+        null;
+
+
+        state.primaryNotify =
+        null;
+
+
         setBleStatus(
           "已中斷",
           "warn"
@@ -1741,8 +1914,9 @@ async function connectB3S(){
 
     await scanGatt();
 
+  }
 
-  }catch(error){
+  catch(error){
 
     setBleStatus(
       "連線失敗："
@@ -1776,6 +1950,14 @@ $("disconnectBtn").onclick =
   null;
 
 
+  state.primaryWrite =
+  null;
+
+
+  state.primaryNotify =
+  null;
+
+
   setConnectedButtons(
     false
   );
@@ -1786,34 +1968,6 @@ $("disconnectBtn").onclick =
   );
 
 };
-
-
-function shortUuid(uuid){
-
-  const value =
-  String(uuid || "")
-  .toLowerCase();
-
-
-  if(
-    value.startsWith("0000")
-    &&
-    value.endsWith(
-      "-0000-1000-8000-00805f9b34fb"
-    )
-  ){
-
-    return value
-    .slice(4,8)
-    .toUpperCase();
-
-  }
-
-
-  return value
-  .toUpperCase();
-
-}
 
 
 async function scanGatt(){
@@ -1841,12 +1995,16 @@ async function scanGatt(){
 
   state.writeChars.clear();
 
+
   state.notifyChars.clear();
 
 
-  $("writeChannel")
-  .innerHTML =
-  "";
+  state.primaryWrite =
+  null;
+
+
+  state.primaryNotify =
+  null;
 
 
   appendLog(
@@ -1890,8 +2048,9 @@ async function scanGatt(){
         await service
         .getCharacteristics();
 
+      }
 
-      }catch(error){
+      catch(error){
 
         appendLog(
           "無法讀取 characteristic："
@@ -1972,24 +2131,6 @@ async function scanGatt(){
             ch
           );
 
-
-          const option =
-          document.createElement(
-            "option"
-          );
-
-
-          option.value =
-          key;
-
-
-          option.textContent =
-          `${shortUuid(service.uuid)} → ${shortUuid(ch.uuid)}`;
-
-
-          $("writeChannel")
-          .appendChild(option);
-
         }
 
 
@@ -2011,28 +2152,9 @@ async function scanGatt(){
 
               event => {
 
-                const rxHex =
+                const hex =
                 bytesToHex(
                   event.target.value
-                );
-
-
-                const rxKey =
-                `${service.uuid}|${ch.uuid}`;
-
-
-                state.rxStats.set(
-
-                  rxKey,
-
-                  (
-                    state.rxStats.get(rxKey)
-                    ||
-                    0
-                  )
-                  +
-                  1
-
                 );
 
 
@@ -2048,15 +2170,14 @@ async function scanGatt(){
                   characteristic:
                   ch.uuid,
 
-                  hex:
-                  rxHex
+                  hex
 
                 });
 
 
                 if(
                   state.rxPackets.length >
-                  200
+                  300
                 ){
 
                   state.rxPackets.shift();
@@ -2065,11 +2186,8 @@ async function scanGatt(){
 
 
                 appendLog(
-                  `RX ${shortUuid(service.uuid)} / ${shortUuid(ch.uuid)}：${rxHex}`
+                  `RX ${shortUuid(service.uuid)} / ${shortUuid(ch.uuid)}：${hex}`
                 );
-
-
-                updateProtocolView();
 
               }
             );
@@ -2083,8 +2201,9 @@ async function scanGatt(){
               `已訂閱通知：${shortUuid(ch.uuid)}`
             );
 
+          }
 
-          }catch(error){
+          catch(error){
 
             appendLog(
               "訂閱通知失敗："
@@ -2096,13 +2215,45 @@ async function scanGatt(){
 
         }
 
+
+        if(
+          service.uuid
+          .toLowerCase()
+          ===
+          PRIMARY_SERVICE
+          &&
+          ch.uuid
+          .toLowerCase()
+          ===
+          PRIMARY_WRITE
+        ){
+
+          state.primaryWrite =
+          ch;
+
+        }
+
+
+        if(
+          service.uuid
+          .toLowerCase()
+          ===
+          PRIMARY_SERVICE
+          &&
+          ch.uuid
+          .toLowerCase()
+          ===
+          PRIMARY_NOTIFY
+        ){
+
+          state.primaryNotify =
+          ch;
+
+        }
+
       }
 
     }
-
-
-    $("sendHexBtn").disabled =
-    state.writeChars.size === 0;
 
 
     appendLog(
@@ -2110,7 +2261,43 @@ async function scanGatt(){
     );
 
 
-  }catch(error){
+    if(
+      state.primaryWrite &&
+      state.primaryNotify
+    ){
+
+      appendLog(
+        "V8 第一組 NIIMBOT 通道已鎖定成功"
+      );
+
+
+      $("flowStatus")
+      .className =
+      "status ok";
+
+
+      $("flowStatus")
+      .textContent =
+      "第一組 NIIMBOT 通道已就緒";
+
+    }
+
+    else{
+
+      $("flowStatus")
+      .className =
+      "status err";
+
+
+      $("flowStatus")
+      .textContent =
+      "找不到 V8 指定的第一組通道";
+
+    }
+
+  }
+
+  catch(error){
 
     appendLog(
       "掃描失敗："
@@ -2127,7 +2314,9 @@ $("scanGattBtn").onclick =
 scanGatt;
 
 
-/* Device Information */
+/* =========================
+   Device Information
+========================= */
 
 const INFO_MAP = [
 
@@ -2232,8 +2421,9 @@ async function readDeviceInfo(){
           `${label}：${text}`
         );
 
+      }
 
-      }catch{
+      catch{
 
         $(target)
         .textContent =
@@ -2243,8 +2433,9 @@ async function readDeviceInfo(){
 
     }
 
+  }
 
-  }catch(error){
+  catch(error){
 
     appendLog(
       "讀取裝置資訊失敗："
@@ -2261,572 +2452,122 @@ $("deviceInfoBtn").onclick =
 readDeviceInfo;
 
 
-/* 原始 HEX */
+/* =========================
+   NIIMBOT 封包
+========================= */
 
-$("sendHexBtn").onclick =
-async () => {
+function niimbotFrame(
+  command,
+  data=[0x01],
+  connectPrefix=false
+){
 
-  const key =
-  $("writeChannel").value;
+  const payload =
+  Array.from(data);
 
 
-  if(
-    !key ||
-    !state.writeChars.has(key)
+  let checksum =
+  command ^
+  payload.length;
+
+
+  for(
+    const value
+    of payload
   ){
 
-    alert(
-      "沒有可寫入通道"
-    );
-
-    return;
+    checksum ^=
+    value;
 
   }
 
 
-  let bytes;
+  const packet = [
+
+    0x55,
+
+    0x55,
+
+    command,
+
+    payload.length,
+
+    ...payload,
+
+    checksum & 0xFF,
+
+    0xAA,
+
+    0xAA
+
+  ];
 
 
-  try{
+  if(connectPrefix){
 
-    bytes =
-    hexToBytes(
-      $("hexInput").value
-    );
-
-
-  }catch(error){
-
-    alert(
-      error.message
-    );
-
-    return;
-
-  }
-
-
-  const ch =
-  state.writeChars.get(key);
-
-
-  try{
-
-    appendLog(
-      `TX ${key}：${bytesToHex(bytes)}`
-    );
-
-
-    if(
-      ch.properties.writeWithoutResponse
-      &&
-      ch.writeValueWithoutResponse
-    ){
-
-      await ch
-      .writeValueWithoutResponse(
-        bytes
-      );
-
-    }
-
-
-    else if(
-      ch.writeValueWithResponse
-    ){
-
-      await ch
-      .writeValueWithResponse(
-        bytes
-      );
-
-    }
-
-
-    else{
-
-      await ch
-      .writeValue(
-        bytes
-      );
-
-    }
-
-
-    appendLog(
-      "TX 完成"
-    );
-
-
-  }catch(error){
-
-    appendLog(
-      "TX 失敗："
-      +
-      error.message
+    packet.unshift(
+      0x03
     );
 
   }
+
+
+  return new Uint8Array(
+    packet
+  );
+
+}
+
+
+const V8_PACKETS = {
+
+  connect:
+  niimbotFrame(
+    0xC1,
+    [0x01],
+    true
+  ),
+
+  density:
+  niimbotFrame(
+    0x21,
+    [0x02]
+  ),
+
+  labelType:
+  niimbotFrame(
+    0x23,
+    [0x01]
+  ),
+
+  printStart:
+  niimbotFrame(
+    0x01,
+    [0x01]
+  ),
+
+  printEnd:
+  niimbotFrame(
+    0xF3,
+    [0x01]
+  )
 
 };
 
 
-$("clearLogBtn").onclick =
-() => {
-
-  $("commLog").value =
-  "";
-
-};
-
-
-$("copyLogBtn").onclick =
-async () => {
-
-  try{
-
-    await navigator.clipboard
-    .writeText(
-      $("commLog").value
-    );
-
-
-    alert(
-      "已複製"
-    );
-
-
-  }catch{
-
-    $("commLog")
-    .select();
-
-  }
-
-};
-
-
-/* 協定監聽 */
-
-function looksLikeNiimbotPacket(hex){
+function parseNiimbotFrames(
+  hex
+){
 
   const clean =
   String(hex || "")
 
-  .replace(/\s+/g,"")
-
-  .toUpperCase();
-
-
-  return (
-
-    clean.startsWith("5555")
-
-    &&
-
-    clean.endsWith("AAAA")
-
-    &&
-
-    clean.length >= 12
-
-  );
-
-}
-
-
-function updateProtocolView(){
-
-  const out =
-  $("protoOutput");
-
-
-  let text =
-  "=== B3S 協定監聽 V7 ===\n";
-
-
-  text +=
-  `收到封包總數：${state.rxPackets.length}\n\n`;
-
-
-  const grouped =
-  new Map();
-
-
-  for(
-    const p
-    of state.rxPackets
-  ){
-
-    const key =
-    `${String(p.service).toUpperCase()}|${String(p.characteristic).toUpperCase()}`;
-
-
-    if(
-      !grouped.has(key)
-    ){
-
-      grouped.set(
-        key,
-        []
-      );
-
-    }
-
-
-    grouped.get(key)
-    .push(p);
-
-  }
-
-
-  if(
-    !grouped.size
-  ){
-
-    text +=
-    "目前還沒有收到有效 RX 資料。\n";
-
-  }
-
-
-  for(
-    const [
-      key,
-      packets
-    ]
-    of grouped
-  ){
-
-    text +=
-    `\n[${key}]\n`;
-
-
-    text +=
-    `通知／讀取筆數：${packets.length}\n`;
-
-
-    for(
-      const p
-      of packets.slice(-10)
-    ){
-
-      const hex =
-      p.hex ||
-      "(空資料)";
-
-
-      const match =
-      looksLikeNiimbotPacket(
-        p.hex
-      );
-
-
-      text +=
-
-      `${p.time}  ${hex}`
-
-      +
-
-      (
-        match
-        ?
-        "  ← NIIMBOT 格式候選"
-        :
-        ""
-      )
-
-      +
-
-      "\n";
-
-    }
-
-  }
-
-
-  out.value =
-  text;
-
-}
-
-
-$("listenBtn").onclick =
-async () => {
-
-  if(
-    !state.server?.connected
-  ){
-
-    alert(
-      "請先連接 B3S"
-    );
-
-    return;
-
-  }
-
-
-  $("protoStatus")
-  .className =
-  "status ok";
-
-
-  $("protoStatus")
-  .textContent =
-  "正在監聽 30 秒…";
-
-
-  const btn =
-  $("listenBtn");
-
-
-  btn.disabled =
-  true;
-
-
-  let sec =
-  30;
-
-
-  const timer =
-  setInterval(
-    () => {
-
-      sec--;
-
-
-      $("protoStatus")
-      .textContent =
-      `正在監聽…剩 ${sec} 秒`;
-
-    },
-    1000
-  );
-
-
-  await new Promise(
-    resolve =>
-    setTimeout(
-      resolve,
-      30000
-    )
-  );
-
-
-  clearInterval(
-    timer
-  );
-
-
-  $("protoStatus")
-  .className =
-  "status";
-
-
-  $("protoStatus")
-  .textContent =
-  "監聽完成";
-
-
-  btn.disabled =
-  false;
-
-
-  updateProtocolView();
-
-};
-
-
-$("readSafeBtn").onclick =
-async () => {
-
-  if(
-    !state.server?.connected
-  ){
-
-    alert(
-      "請先連接 B3S"
-    );
-
-    return;
-
-  }
-
-
-  $("protoStatus")
-  .textContent =
-  "正在安全讀取…";
-
-
-  let count =
-  0;
-
-
-  for(
-    const item
-    of state.characteristics
-  ){
-
-    const ch =
-    item.characteristic;
-
-
-    if(
-      !ch?.properties?.read
-    ){
-
-      continue;
-
-    }
-
-
-    try{
-
-      const value =
-      await ch
-      .readValue();
-
-
-      const hex =
-      bytesToHex(value);
-
-
-      appendLog(
-        `READ ${shortUuid(item.serviceUuid)} / ${shortUuid(item.uuid)}：${hex}`
-      );
-
-
-      state.rxPackets.push({
-
-        time:
-        new Date()
-        .toLocaleTimeString(),
-
-        service:
-        item.serviceUuid,
-
-        characteristic:
-        item.uuid,
-
-        hex
-
-      });
-
-
-      if(
-        state.rxPackets.length >
-        200
-      ){
-
-        state.rxPackets.shift();
-
-      }
-
-
-      count++;
-
-
-    }catch(error){
-
-      appendLog(
-        "READ 失敗："
-        +
-        error.message
-      );
-
-    }
-
-  }
-
-
-  $("protoStatus")
-  .className =
-  "status ok";
-
-
-  $("protoStatus")
-  .textContent =
-  `安全讀取完成，共讀取 ${count} 個可讀通道`;
-
-
-  updateProtocolView();
-
-};
-
-
-$("clearProtoBtn").onclick =
-() => {
-
-  state.rxStats.clear();
-
-
-  state.rxPackets =
-  [];
-
-
-  $("protoOutput").value =
-  "";
-
-
-  $("protoStatus")
-  .className =
-  "status";
-
-
-  $("protoStatus")
-  .textContent =
-  "尚未開始辨識";
-
-};
-
-
-/* B24 / B3S 查詢測試 V7 */
-
-const V7_MODEL_QUERY =
-new Uint8Array([
-  0x55,
-  0x55,
-  0x40,
-  0x01,
-  0x08,
-  0x49,
-  0xAA,
-  0xAA
-]);
-
-
-const V7_STATUS_QUERY =
-new Uint8Array([
-  0x55,
-  0x55,
-  0xA5,
-  0x01,
-  0x01,
-  0xA5,
-  0xAA,
-  0xAA
-]);
-
-
-function normalizeHex(hex){
-
-  return String(hex || "")
-
   .replace(
-    /[^0-9A-Fa-f]/g,
+    /[^0-9a-fA-F]/g,
     ""
   )
 
   .toUpperCase();
-
-}
-
-
-function parseNiimbotFramesFromHex(hex){
-
-  const clean =
-  normalizeHex(hex);
 
 
   const bytes =
@@ -2849,50 +2590,61 @@ function parseNiimbotFramesFromHex(hex){
   }
 
 
-  const frames =
+  const result =
   [];
 
 
-  let i =
+  let pos =
   0;
 
 
   while(
-    i + 7 <= bytes.length
+    pos <
+    bytes.length
   ){
 
     if(
-      bytes[i] !== 0x55
+      bytes[pos] !== 0x55
       ||
-      bytes[i+1] !== 0x55
+      bytes[pos+1] !== 0x55
     ){
 
-      i++;
+      pos++;
 
       continue;
 
     }
 
 
+    if(
+      pos + 6 >
+      bytes.length
+    ){
+
+      break;
+
+    }
+
+
     const command =
-    bytes[i+2];
+    bytes[pos+2];
 
 
-    const len =
-    bytes[i+3];
+    const length =
+    bytes[pos+3];
 
 
     const total =
     2 +
     1 +
     1 +
-    len +
+    length +
     1 +
     2;
 
 
     if(
-      i + total >
+      pos + total >
       bytes.length
     ){
 
@@ -2902,12 +2654,12 @@ function parseNiimbotFramesFromHex(hex){
 
 
     if(
-      bytes[i+total-2] !== 0xAA
+      bytes[pos+total-2] !== 0xAA
       ||
-      bytes[i+total-1] !== 0xAA
+      bytes[pos+total-1] !== 0xAA
     ){
 
-      i++;
+      pos++;
 
       continue;
 
@@ -2916,25 +2668,31 @@ function parseNiimbotFramesFromHex(hex){
 
     const payload =
     bytes.slice(
-      i+4,
-      i+4+len
+      pos+4,
+      pos+4+length
     );
 
 
     const checksum =
-    bytes[i+4+len];
+    bytes[
+      pos +
+      4 +
+      length
+    ];
 
 
     let expected =
-    command ^ len;
+    command ^
+    length;
 
 
     for(
-      const b
+      const value
       of payload
     ){
 
-      expected ^= b;
+      expected ^=
+      value;
 
     }
 
@@ -2943,7 +2701,7 @@ function parseNiimbotFramesFromHex(hex){
     0xFF;
 
 
-    frames.push({
+    result.push({
 
       command,
 
@@ -2957,64 +2715,33 @@ function parseNiimbotFramesFromHex(hex){
     });
 
 
-    i +=
+    pos +=
     total;
 
   }
 
 
-  return frames;
+  return result;
 
 }
 
 
-function v7FrameText(frame){
-
-  const cmd =
-  frame.command
-
-  .toString(16)
-
-  .padStart(2,"0")
-
-  .toUpperCase();
-
-
-  const payload =
-  frame.payload
-
-  .map(
-    b =>
-    b
-    .toString(16)
-    .padStart(2,"0")
-    .toUpperCase()
-  )
-
-  .join(" ");
-
-
-  return (
-
-    `CMD ${cmd}`
-
-    +
-
-    ` | DATA ${payload || "(空)"}`
-
-    +
-
-    ` | checksum ${frame.checksumOk ? "OK" : "錯誤"}`
-
-  );
-
-}
-
-
-async function v7WriteCharacteristic(
-  ch,
+async function writePrimary(
   bytes
 ){
+
+  const ch =
+  state.primaryWrite;
+
+
+  if(!ch){
+
+    throw new Error(
+      "第一組寫入通道尚未就緒"
+    );
+
+  }
+
 
   if(
     ch.properties.writeWithoutResponse
@@ -3054,269 +2781,201 @@ async function v7WriteCharacteristic(
 }
 
 
-async function probeOneChannel(
-  key,
-  bytes,
+async function sendAndWait(
+  label,
+  packet,
   expectedCommand,
-  label
+  timeout=1600
 ){
-
-  const ch =
-  state.writeChars.get(key);
-
-
-  if(!ch){
-
-    return {
-
-      key,
-
-      ok:false,
-
-      error:
-      "找不到 characteristic",
-
-      received:[],
-
-      parsed:[]
-
-    };
-
-  }
-
 
   const before =
   state.rxPackets.length;
 
 
   appendLog(
-    `V7 TX ${label} → ${key}：${bytesToHex(bytes)}`
+    `V8 TX ${label}：${bytesToHex(packet)}`
   );
 
 
-  try{
-
-    await v7WriteCharacteristic(
-      ch,
-      bytes
-    );
-
-
-  }catch(error){
-
-    appendLog(
-      `V7 TX 失敗：${error.message}`
-    );
-
-
-    return {
-
-      key,
-
-      ok:false,
-
-      error:
-      error.message,
-
-      received:[],
-
-      parsed:[]
-
-    };
-
-  }
-
-
-  await new Promise(
-    resolve =>
-    setTimeout(
-      resolve,
-      1200
-    )
+  await writePrimary(
+    packet
   );
 
 
-  const received =
-  state.rxPackets.slice(
-    before
-  );
+  const started =
+  Date.now();
 
 
-  const parsed =
-  [];
-
-
-  for(
-    const packet
-    of received
+  while(
+    Date.now() -
+    started <
+    timeout
   ){
 
-    const frames =
-    parseNiimbotFramesFromHex(
-      packet.hex
+    const packets =
+    state.rxPackets.slice(
+      before
     );
 
 
     for(
-      const frame
-      of frames
+      const rx
+      of packets
     ){
 
-      parsed.push({
-        packet,
-        frame
-      });
+      const frames =
+      parseNiimbotFrames(
+        rx.hex
+      );
+
+
+      for(
+        const frame
+        of frames
+      ){
+
+        if(
+          !frame.checksumOk
+        ){
+
+          continue;
+
+        }
+
+
+        if(
+          frame.command === 0x00
+        ){
+
+          return {
+
+            ok:false,
+
+            unsupported:true,
+
+            frame,
+
+            rx
+
+          };
+
+        }
+
+
+        if(
+          frame.command ===
+          expectedCommand
+        ){
+
+          return {
+
+            ok:true,
+
+            frame,
+
+            rx
+
+          };
+
+        }
+
+      }
 
     }
+
+
+    await delay(
+      50
+    );
 
   }
 
 
-  const matched =
-  parsed.find(
-    item =>
-    item.frame.command === expectedCommand
-    &&
-    item.frame.checksumOk
-  );
-
-
   return {
 
-    key,
+    ok:false,
 
-    ok:
-    !!matched,
-
-    received,
-
-    parsed,
-
-    matched
+    timeout:true
 
   };
 
 }
 
 
-function appendProbeResult(
-  result,
-  label
-){
+function commandHex(command){
 
-  let text =
-  `\n=== ${label} ===\n`;
-
-
-  text +=
-  `TX 通道：${result.key}\n`;
-
-
-  if(
-    result.error
-  ){
-
-    text +=
-    "結果：寫入失敗\n";
-
-
-    text +=
-    `錯誤：${result.error}\n`;
-
-
-    return text;
-
-  }
-
-
-  text +=
-  `收到通知：${result.received.length} 筆\n`;
-
-
-  if(
-    !result.received.length
-  ){
-
-    text +=
-    "結果：沒有收到通知\n";
-
-
-    return text;
-
-  }
-
-
-  for(
-    const p
-    of result.received
-  ){
-
-    text +=
-
-    `RX ${shortUuid(p.service)}`
-
-    +
-
-    ` / ${shortUuid(p.characteristic)}`
-
-    +
-
-    `：${p.hex || "(空資料)"}\n`;
-
-  }
-
-
-  if(
-    result.parsed.length
-  ){
-
-    text +=
-    "解析到的 NIIMBOT 格式封包：\n";
-
-
-    for(
-      const item
-      of result.parsed
-    ){
-
-      text +=
-      `  ${v7FrameText(item.frame)}\n`;
-
-    }
-
-  }
-
-  else{
-
-    text +=
-    "未解析到完整 55 55 ... AA AA 封包。\n";
-
-  }
-
-
-  text +=
-
-  result.ok
-
-  ?
-
-  "✅ 找到符合預期的回應。\n"
-
-  :
-
-  "⚠️ 有通知，但沒有符合預期的回應。\n";
-
-
-  return text;
+  return command
+  .toString(16)
+  .padStart(2,"0")
+  .toUpperCase();
 
 }
 
 
-async function runProbe(
-  packetBytes,
-  expectedCommand,
-  label
+function payloadHex(payload){
+
+  if(
+    !payload ||
+    !payload.length
+  ){
+
+    return "(空)";
+
+  }
+
+
+  return payload
+
+  .map(
+    value =>
+    value
+    .toString(16)
+    .padStart(2,"0")
+    .toUpperCase()
+  )
+
+  .join(" ");
+
+}
+
+
+function drawFlowSteps(
+  rows
 ){
+
+  $("flowSteps")
+  .innerHTML =
+  rows
+
+  .map(
+    row => `
+
+    <div class="step ${row.className}">
+
+      <b>
+      ${escapeHtml(row.title)}
+      </b>
+
+      <br>
+
+      ${escapeHtml(row.detail)}
+
+    </div>
+
+    `
+  )
+
+  .join("");
+
+}
+
+
+/* =========================
+   V8 流程測試
+========================= */
+
+$("flowTestBtn").onclick =
+async () => {
 
   if(
     !state.server?.connected
@@ -3326,311 +2985,541 @@ async function runProbe(
       "請先連接 B3S"
     );
 
-    return null;
+    return;
 
   }
 
 
   if(
-    !state.writeChars.size
+    !state.primaryWrite ||
+    !state.primaryNotify
   ){
 
     alert(
-      "目前沒有可寫入通道"
+      "找不到第一組 NIIMBOT 通道"
     );
 
-    return null;
+    return;
 
   }
 
 
-  $("probeStatus")
+  $("flowTestBtn").disabled =
+  true;
+
+
+  $("flowOutput").value =
+  "";
+
+
+  const visualRows =
+  [];
+
+
+  const output =
+  [];
+
+
+  $("flowStatus")
   .className =
   "status ok";
 
 
-  $("probeStatus")
+  $("flowStatus")
   .textContent =
-  `正在測試：${label}`;
+  "V8 流程測試進行中…";
 
 
-  let output =
+  const steps = [
 
-  `=== B3S V7 ${label} ===\n`
+    {
+      key:"CONNECT",
+      packet:
+      V8_PACKETS.connect,
+      expected:0xC2,
+      title:"1. CONNECT"
+    },
 
-  +
+    {
+      key:"SET_DENSITY",
+      packet:
+      V8_PACKETS.density,
+      expected:0x31,
+      title:"2. SET DENSITY = 2"
+    },
 
-  `送出封包：${bytesToHex(packetBytes)}\n`
+    {
+      key:"SET_LABEL_TYPE",
+      packet:
+      V8_PACKETS.labelType,
+      expected:0x33,
+      title:"3. SET LABEL TYPE = 1"
+    },
 
-  +
+    {
+      key:"PRINT_START",
+      packet:
+      V8_PACKETS.printStart,
+      expected:0x02,
+      title:"4. PRINT START"
+    }
 
-  `預期回應 CMD：${expectedCommand.toString(16).padStart(2,"0").toUpperCase()}\n`;
+  ];
 
 
-  let found =
-  null;
+  let printStarted =
+  false;
+
+
+  let failed =
+  false;
 
 
   for(
-    const key
-    of state.writeChars.keys()
+    const step
+    of steps
   ){
 
-    const result =
-    await probeOneChannel(
+    visualRows.push({
 
-      key,
+      title:
+      step.title,
 
-      packetBytes,
+      detail:
+      "等待回應…",
 
-      expectedCommand,
+      className:
+      "wait"
 
-      label
+    });
 
+
+    drawFlowSteps(
+      visualRows
     );
 
 
-    output +=
-    appendProbeResult(
-      result,
-      label
+    output.push(
+      `\n=== ${step.title} ===`
     );
 
 
-    if(
-      result.ok &&
-      !found
-    ){
+    output.push(
+      `TX：${bytesToHex(step.packet)}`
+    );
 
-      found =
-      result;
+
+    output.push(
+      `預期 CMD：${commandHex(step.expected)}`
+    );
+
+
+    let result;
+
+
+    try{
+
+      result =
+      await sendAndWait(
+        step.key,
+        step.packet,
+        step.expected
+      );
+
+    }
+
+    catch(error){
+
+      result = {
+        ok:false,
+        error:error.message
+      };
 
     }
 
 
-    await new Promise(
-      resolve =>
-      setTimeout(
-        resolve,
-        350
-      )
-    );
-
-  }
-
-
-  if(found){
-
-    output +=
-    "\n✅ V7 判定：有通道成功回覆 NIIMBOT 格式。\n";
-
-
-    output +=
-    `候選寫入通道：${found.key}\n`;
+    const current =
+    visualRows[
+      visualRows.length - 1
+    ];
 
 
     if(
-      found.matched
+      result.ok
     ){
 
-      output +=
-      `回應：${v7FrameText(found.matched.frame)}\n`;
+      current.className =
+      "ok";
+
+
+      current.detail =
+      `✅ CMD ${commandHex(result.frame.command)} / DATA ${payloadHex(result.frame.payload)} / checksum OK`;
+
+
+      output.push(
+        `RX：CMD ${commandHex(result.frame.command)}`
+      );
+
+
+      output.push(
+        `DATA：${payloadHex(result.frame.payload)}`
+      );
+
+
+      output.push(
+        "checksum：OK"
+      );
+
+
+      if(
+        step.key ===
+        "PRINT_START"
+      ){
+
+        printStarted =
+        true;
+
+      }
 
     }
 
 
-    $("probeStatus")
-    .className =
-    "status ok";
+    else if(
+      result.unsupported
+    ){
+
+      current.className =
+      "err";
 
 
-    $("probeStatus")
-    .textContent =
-    `成功：${label} 找到有效回應`;
+      current.detail =
+      "❌ CMD 00 NOT_SUPPORTED";
+
+
+      output.push(
+        "RX：CMD 00 NOT_SUPPORTED"
+      );
+
+
+      failed =
+      true;
+
+    }
+
+
+    else if(
+      result.timeout
+    ){
+
+      current.className =
+      "err";
+
+
+      current.detail =
+      "❌ 等待回應逾時";
+
+
+      output.push(
+        "結果：TIMEOUT"
+      );
+
+
+      failed =
+      true;
+
+    }
+
+
+    else{
+
+      current.className =
+      "err";
+
+
+      current.detail =
+      "❌ " +
+      (
+        result.error ||
+        "未知錯誤"
+      );
+
+
+      output.push(
+        "錯誤："
+        +
+        (
+          result.error ||
+          "未知錯誤"
+        )
+      );
+
+
+      failed =
+      true;
+
+    }
+
+
+    drawFlowSteps(
+      visualRows
+    );
+
+
+    $("flowOutput")
+    .value =
+    output.join("\n");
+
+
+    if(failed){
+
+      break;
+
+    }
+
+
+    await delay(
+      250
+    );
 
   }
-
-  else{
-
-    output +=
-    "\n目前三組通道都沒有出現符合預期的 NIIMBOT 回應。\n";
-
-
-    $("probeStatus")
-    .className =
-    "status warn";
-
-
-    $("probeStatus")
-    .textContent =
-    `${label}：尚未找到有效回應`;
-
-  }
-
-
-  $("probeOutput").value =
-  output;
-
-
-  return {
-    found,
-    output
-  };
-
-}
-
-
-$("probeModelBtn").onclick =
-async () => {
-
-  await runProbe(
-
-    V7_MODEL_QUERY,
-
-    0x48,
-
-    "型號 ID 查詢"
-
-  );
-
-};
-
-
-$("probeStatusBtn").onclick =
-async () => {
-
-  await runProbe(
-
-    V7_STATUS_QUERY,
-
-    0xB5,
-
-    "狀態資料查詢"
-
-  );
-
-};
-
-
-$("probeAllBtn").onclick =
-async () => {
-
-  $("probeAllBtn").disabled =
-  true;
-
-
-  const first =
-  await runProbe(
-
-    V7_MODEL_QUERY,
-
-    0x48,
-
-    "型號 ID 查詢"
-
-  );
-
-
-  await new Promise(
-    resolve =>
-    setTimeout(
-      resolve,
-      600
-    )
-  );
-
-
-  const second =
-  await runProbe(
-
-    V7_STATUS_QUERY,
-
-    0xB5,
-
-    "狀態資料查詢"
-
-  );
-
-
-  $("probeOutput").value =
-
-  "=== B3S V7 自動測試三通道 ===\n\n"
-
-  +
-
-  (
-    first?.output ||
-    ""
-  )
-
-  +
-
-  "\n\n"
-
-  +
-
-  (
-    second?.output ||
-    ""
-  );
 
 
   if(
-    first?.found ||
-    second?.found
+    printStarted
   ){
 
-    $("probeStatus")
+    visualRows.push({
+
+      title:
+      "5. PRINT END",
+
+      detail:
+      "清理列印狀態…",
+
+      className:
+      "wait"
+
+    });
+
+
+    drawFlowSteps(
+      visualRows
+    );
+
+
+    output.push(
+      "\n=== 5. PRINT END ==="
+    );
+
+
+    output.push(
+      `TX：${bytesToHex(V8_PACKETS.printEnd)}`
+    );
+
+
+    const endResult =
+    await sendAndWait(
+      "PRINT_END",
+      V8_PACKETS.printEnd,
+      0xF4,
+      1800
+    );
+
+
+    const row =
+    visualRows[
+      visualRows.length - 1
+    ];
+
+
+    if(
+      endResult.ok
+    ){
+
+      row.className =
+      "ok";
+
+
+      row.detail =
+      `✅ CMD F4 / DATA ${payloadHex(endResult.frame.payload)}`;
+
+
+      output.push(
+        `RX：CMD F4 / DATA ${payloadHex(endResult.frame.payload)}`
+      );
+
+    }
+
+
+    else if(
+      endResult.unsupported
+    ){
+
+      row.className =
+      "err";
+
+
+      row.detail =
+      "⚠️ PRINT END 回 CMD 00";
+
+
+      output.push(
+        "PRINT END：CMD 00"
+      );
+
+    }
+
+
+    else{
+
+      row.className =
+      "err";
+
+
+      row.detail =
+      "⚠️ PRINT END 沒有收到 F4";
+
+
+      output.push(
+        "PRINT END：未收到 F4"
+      );
+
+    }
+
+
+    drawFlowSteps(
+      visualRows
+    );
+
+  }
+
+
+  if(
+    !failed
+    &&
+    printStarted
+  ){
+
+    $("flowStatus")
     .className =
     "status ok";
 
 
-    $("probeStatus")
+    $("flowStatus")
     .textContent =
-    "自動測試完成：找到至少一組有效 NIIMBOT 回應";
+    "✅ V8 前置列印流程全部通過";
+
+
+    output.push(
+      "\n✅ V8 判定：B3S 已通過 CONNECT、濃度、標籤類型、PRINT START。"
+    );
+
+
+    output.push(
+      "下一步可以進入 V9 最小點陣測試列印。"
+    );
 
   }
 
   else{
 
-    $("probeStatus")
+    $("flowStatus")
     .className =
     "status warn";
 
 
-    $("probeStatus")
+    $("flowStatus")
     .textContent =
-    "自動測試完成：目前沒有找到有效 NIIMBOT 回應";
+    "V8 流程在其中一步停止";
+
+
+    output.push(
+      "\n⚠️ V8 已停止，不會繼續送後續列印資料。"
+    );
 
   }
 
 
-  $("probeAllBtn").disabled =
+  $("flowOutput")
+  .value =
+  output.join("\n");
+
+
+  $("flowTestBtn").disabled =
   false;
 
 };
 
 
-$("clearProbeBtn").onclick =
+$("clearFlowBtn").onclick =
 () => {
 
-  $("probeOutput").value =
+  $("flowSteps")
+  .innerHTML =
   "";
 
 
-  $("probeStatus")
+  $("flowOutput")
+  .value =
+  "";
+
+
+  $("flowStatus")
   .className =
   "status";
 
 
-  $("probeStatus")
+  $("flowStatus")
   .textContent =
   "尚未測試";
 
 };
 
 
-/* 診斷 */
+/* =========================
+   Log
+========================= */
+
+$("clearLogBtn").onclick =
+() => {
+
+  $("commLog")
+  .value =
+  "";
+
+};
+
+
+$("copyLogBtn").onclick =
+async () => {
+
+  try{
+
+    await navigator.clipboard
+    .writeText(
+      $("commLog").value
+    );
+
+
+    alert(
+      "已複製"
+    );
+
+  }
+
+  catch{
+
+    $("commLog")
+    .select();
+
+  }
+
+};
+
+
+/* =========================
+   診斷
+========================= */
 
 $("diagBtn").onclick =
 () => {
@@ -3640,7 +3529,7 @@ $("diagBtn").onclick =
 
 
   out.value =
-  "=== B3S 診斷 V7 ===\n";
+  "=== B3S 診斷 V8 ===\n";
 
 
   out.value +=
@@ -3661,6 +3550,14 @@ $("diagBtn").onclick =
 
   out.value +=
   `GATT connected：${!!state.server?.connected}\n`;
+
+
+  out.value +=
+  `V8 primary write：${!!state.primaryWrite}\n`;
+
+
+  out.value +=
+  `V8 primary notify：${!!state.primaryNotify}\n`;
 
 
   out.value +=
@@ -3708,18 +3605,19 @@ $("diagBtn").onclick =
     state.characteristics
 
     .filter(
-      c =>
-      c.serviceUuid === service.uuid
+      item =>
+      item.serviceUuid ===
+      service.uuid
     );
 
 
     for(
-      const c
+      const item
       of chars
     ){
 
       out.value +=
-      `  CHAR ${c.uuid} [${c.properties.join(",")}]\n`;
+      `  CHAR ${item.uuid} [${item.properties.join(",")}]\n`;
 
     }
 
@@ -3781,8 +3679,9 @@ async () => {
       "已複製診斷結果"
     );
 
+  }
 
-  }catch{
+  catch{
 
     $("diagOutput")
     .select();
@@ -3792,7 +3691,9 @@ async () => {
 };
 
 
-/* 初始化 */
+/* =========================
+   初始化
+========================= */
 
 renderItems();
 
