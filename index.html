@@ -3,19 +3,29 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>商品條碼列印｜B3S V17</title>
+
+<title>商品條碼／QR Code 列印｜B3S V18</title>
 
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <style>
-*{box-sizing:border-box}
+
+*{
+  box-sizing:border-box
+}
 
 body{
   margin:0;
   background:#f4f6f8;
   color:#18202a;
-  font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif
+  font-family:
+  -apple-system,
+  BlinkMacSystemFont,
+  "PingFang TC",
+  "Microsoft JhengHei",
+  sans-serif
 }
 
 .wrap{
@@ -34,7 +44,9 @@ h2{
   font-size:20px
 }
 
-.sub,.help,label{
+.sub,
+.help,
+label{
   color:#667085
 }
 
@@ -61,7 +73,9 @@ label{
   margin:8px 0 6px
 }
 
-input,textarea,select{
+input,
+textarea,
+select{
   width:100%;
   min-height:46px;
   padding:10px 12px;
@@ -171,6 +185,13 @@ button:disabled{
   color:#667085;
   font-size:14px;
   margin-top:3px
+}
+
+.itemQr{
+  color:#475467;
+  font-size:13px;
+  margin-top:4px;
+  overflow-wrap:anywhere
 }
 
 .itemBottom{
@@ -327,7 +348,14 @@ button:disabled{
   display:none
 }
 
+#qrGenerator{
+  position:fixed;
+  left:-9999px;
+  top:-9999px
+}
+
 @media(max-width:700px){
+
   .row{
     grid-template-columns:1fr
   }
@@ -335,40 +363,72 @@ button:disabled{
   .deviceGrid{
     grid-template-columns:1fr
   }
+
 }
+
 </style>
 </head>
 
 <body>
 
+<div id="qrGenerator"></div>
+
 <div class="wrap">
 
-<h1>商品條碼列印</h1>
+<h1>商品條碼／QR Code 列印</h1>
 
 <div class="sub">
-B3S 工作實用版 V17
+B3S 工作實用版 V18
 <br>
-<span class="modeBadge">可切換紙張模式／列印模式</span>
+<span class="modeBadge">
+條碼＋QR Code
+</span>
 </div>
 
+
+<!-- 新增商品 -->
 
 <div class="card">
 
 <h2>新增商品</h2>
 
 <label>商品名稱</label>
-<input id="name" placeholder="例如：鮮乳">
+
+<input
+id="name"
+placeholder="例如：可口可樂 ZERO">
+
 
 <label>商品條碼</label>
-<input id="code" inputmode="numeric" placeholder="掃描或輸入條碼">
+
+<input
+id="code"
+inputmode="numeric"
+placeholder="沒有條碼也可以留空">
+
+
+<label>QR Code 內容</label>
+
+<textarea
+id="qrContent"
+placeholder="例如：
+https://example.com
+商品編號-A001
+或任何文字">
+</textarea>
+
 
 <div class="actions">
 
-<button id="scanBtn" class="ok">
-📷 掃描條碼
+<button
+id="scanBtn"
+class="ok">
+📷 掃描商品條碼
 </button>
 
-<button id="addBtn" class="primary">
+<button
+id="addBtn"
+class="primary">
 ＋ 新增商品
 </button>
 
@@ -379,7 +439,10 @@ B3S 工作實用版 V17
 </div>
 
 
-<hr style="border:0;border-top:1px solid #eaecf0;margin:18px 0">
+<hr style="
+border:0;
+border-top:1px solid #eaecf0;
+margin:18px 0">
 
 
 <h2 style="font-size:18px">
@@ -387,22 +450,38 @@ B3S 工作實用版 V17
 </h2>
 
 <div class="help">
-每行一筆，可輸入「商品名稱,條碼」，也可以直接貼 Excel 兩欄。
+
+格式：
+
+商品名稱,條碼,QR Code內容
+
+<br>
+
+沒有條碼時也可以：
+
+商品名稱,,QR Code內容
+
 </div>
+
 
 <textarea
 id="bulkInput"
-placeholder="鮮乳,4710000000001
-茶飲,4710000000002">
+placeholder="可口可樂,4710000000001,https://example.com/coke
+活動資訊,,https://example.com/event">
 </textarea>
+
 
 <div class="actions">
 
-<button id="bulkAddBtn" class="primary">
+<button
+id="bulkAddBtn"
+class="primary">
 ＋ 加入全部
 </button>
 
-<button id="bulkScanBtn" class="ok">
+<button
+id="bulkScanBtn"
+class="ok">
 📷 批次連續掃描
 </button>
 
@@ -412,10 +491,17 @@ placeholder="鮮乳,4710000000001
 
 </div>
 
-<div id="bulkStatus" class="help" style="margin-top:8px"></div>
+
+<div
+id="bulkStatus"
+class="help"
+style="margin-top:8px">
+</div>
 
 </div>
 
+
+<!-- 商品 -->
 
 <div class="card">
 
@@ -431,20 +517,29 @@ placeholder="鮮乳,4710000000001
 取消全選
 </button>
 
-<button id="clearAllBtn" class="danger">
+<button
+id="clearAllBtn"
+class="danger">
 全部清除
 </button>
 
 </div>
 
-<div id="itemCount" class="help" style="margin-top:10px">
+
+<div
+id="itemCount"
+class="help"
+style="margin-top:10px">
 0 筆商品
 </div>
+
 
 <div id="items"></div>
 
 </div>
 
+
+<!-- 設定 -->
 
 <div class="card">
 
@@ -455,7 +550,9 @@ placeholder="鮮乳,4710000000001
 
 <select id="printMode">
 
-<option value="name_barcode_number" selected>
+<option
+value="name_barcode_number"
+selected>
 商品名稱＋條碼＋條碼號碼
 </option>
 
@@ -464,7 +561,7 @@ placeholder="鮮乳,4710000000001
 </option>
 
 <option value="barcode_number">
-只有條碼＋條碼號碼
+條碼＋條碼號碼
 </option>
 
 <option value="barcode">
@@ -473,6 +570,30 @@ placeholder="鮮乳,4710000000001
 
 <option value="name">
 只有商品名稱
+</option>
+
+<option value="name_qr">
+商品名稱＋QR Code
+</option>
+
+<option value="qr">
+只有 QR Code
+</option>
+
+<option value="qr_text">
+QR Code＋內容文字
+</option>
+
+<option value="name_qr_text">
+商品名稱＋QR Code＋內容文字
+</option>
+
+<option value="name_barcode_qr">
+商品名稱＋條碼＋QR Code
+</option>
+
+<option value="name_barcode_number_qr">
+商品名稱＋條碼＋條碼號碼＋QR Code
 </option>
 
 <option value="name_custom">
@@ -486,14 +607,15 @@ placeholder="鮮乳,4710000000001
 </select>
 
 
-<div id="customTextArea" class="hidden">
+<div
+id="customTextArea"
+class="hidden">
 
 <label>自訂列印文字</label>
 
 <textarea
 id="customText"
-placeholder="可以輸入多行文字
-每一行都會照原本分段列印">
+placeholder="可以輸入多行文字">
 </textarea>
 
 </div>
@@ -515,7 +637,9 @@ placeholder="可以輸入多行文字
 黑標紙
 </option>
 
-<option value="3" selected>
+<option
+value="3"
+selected>
 連續紙
 </option>
 
@@ -541,7 +665,13 @@ placeholder="可以輸入多行文字
 <option value="77">77 mm</option>
 <option value="70">70 mm</option>
 <option value="60">60 mm</option>
-<option value="58" selected>58 mm</option>
+
+<option
+value="58"
+selected>
+58 mm
+</option>
+
 <option value="50">50 mm</option>
 <option value="40">40 mm</option>
 <option value="30">30 mm</option>
@@ -567,12 +697,31 @@ placeholder="可以輸入多行文字
 
 <div>
 
+<label>QR Code 尺寸</label>
+
+<select id="qrSize"></select>
+
+</div>
+
+</div>
+
+
+<div class="row">
+
+<div>
+
 <label>列印濃度</label>
 
 <select id="density">
 
 <option value="1">1</option>
-<option value="2" selected>2</option>
+
+<option
+value="2"
+selected>
+2
+</option>
+
 <option value="3">3</option>
 <option value="4">4</option>
 <option value="5">5</option>
@@ -581,17 +730,22 @@ placeholder="可以輸入多行文字
 
 </div>
 
-</div>
 
+<div>
 
 <label>商品間距</label>
+
 <select id="itemGap"></select>
+
+</div>
+
+</div>
 
 
 <label>最下方文字／備註</label>
 
 <div class="help">
-可自行換行分段，會照你輸入的段落列印在全部內容最下方。
+可輸入多行，會照換行分段列印。
 </div>
 
 <textarea
@@ -610,14 +764,17 @@ placeholder="例如：
 <b>列印完成後自動清除</b>
 
 <div class="help">
-成功列印後自動移除這次列印的商品。
+成功列印後自動移除這次商品。
 </div>
 
 </div>
+
 
 <label class="switch">
 
-<input type="checkbox" id="autoClear">
+<input
+type="checkbox"
+id="autoClear">
 
 <span class="slider"></span>
 
@@ -637,36 +794,50 @@ placeholder="例如：
 </div>
 
 
+<!-- 預覽 -->
+
 <div class="card">
 
 <h2>預覽</h2>
 
 <div class="preview">
+
 <canvas id="previewCanvas"></canvas>
-</div>
 
 </div>
 
+</div>
+
+
+<!-- Bluetooth -->
 
 <div class="card">
 
 <h2>B3S 藍牙</h2>
 
-<div id="bleStatus" class="status">
+<div
+id="bleStatus"
+class="status">
 尚未連線
 </div>
 
+
 <div class="actions">
 
-<button id="connectBtn" class="ok">
+<button
+id="connectBtn"
+class="ok">
 🔵 連接 B3S
 </button>
 
-<button id="disconnectBtn" disabled>
+<button
+id="disconnectBtn"
+disabled>
 中斷連線
 </button>
 
 </div>
+
 
 <div class="deviceGrid">
 
@@ -677,15 +848,21 @@ placeholder="例如：
 <span id="gattState">false</span>
 
 <b>列印通道</b>
-<span id="channelState">未就緒</span>
+<span id="channelState">
+未就緒
+</span>
 
 <b>紙張模式</b>
-<span id="paperModeDisplay">連續紙</span>
+<span id="paperModeDisplay">
+連續紙
+</span>
 
 </div>
 
 </div>
 
+
+<!-- Print -->
 
 <div class="card">
 
@@ -693,36 +870,61 @@ placeholder="例如：
 
 <div class="actions">
 
-<button id="printSelectedBtn" class="primary" disabled>
+<button
+id="printSelectedBtn"
+class="primary"
+disabled>
 🖨 列印勾選商品
 </button>
 
-<button id="printAllBtn" class="ok" disabled>
+<button
+id="printAllBtn"
+class="ok"
+disabled>
 🖨 列印全部
 </button>
 
-<button id="printCustomBtn" class="primary" disabled>
+<button
+id="printCustomBtn"
+class="primary"
+disabled>
 📝 列印純文字
 </button>
 
-<button id="stopPrintBtn" class="stop" disabled>
+<button
+id="stopPrintBtn"
+class="stop"
+disabled>
 ⏹ 停止送紙
 </button>
 
 </div>
 
-<div id="printStatus" class="status">
+
+<div
+id="printStatus"
+class="status">
 等待列印
 </div>
 
+
 <div class="progress">
+
 <div id="progressBar"></div>
-</div>
-
-<div id="printMeta" class="help" style="margin-top:8px"></div>
 
 </div>
 
+
+<div
+id="printMeta"
+class="help"
+style="margin-top:8px">
+</div>
+
+</div>
+
+
+<!-- LOG -->
 
 <div class="card">
 
@@ -740,14 +942,22 @@ placeholder="例如：
 
 </div>
 
-<textarea id="log" readonly></textarea>
+
+<textarea
+id="log"
+readonly>
+</textarea>
 
 </div>
 
 </div>
 
 
-<div id="scannerModal" class="modal">
+<!-- Scanner -->
+
+<div
+id="scannerModal"
+class="modal">
 
 <div class="modalBox">
 
@@ -756,33 +966,56 @@ placeholder="例如：
 </h2>
 
 
-<div id="bulkScanNameArea" style="display:none">
+<div
+id="bulkScanNameArea"
+style="display:none">
 
-<label>這一筆商品名稱</label>
+<label>
+商品名稱
+</label>
 
 <input
 id="bulkScanName"
-placeholder="先輸入商品名稱，再掃描條碼">
+placeholder="先輸入商品名稱">
+
+
+<label>
+QR Code 內容
+</label>
+
+<textarea
+id="bulkScanQr"
+placeholder="可選填">
+</textarea>
 
 <div class="help">
-掃描成功後會自動加入批次清單。
+掃描條碼成功後會自動加入批次欄。
 </div>
 
 </div>
 
 
-<div id="scannerStatus" class="status">
+<div
+id="scannerStatus"
+class="status">
 準備啟動相機…
 </div>
 
-<div id="bulkScanCounter" class="bulkScanCounter"></div>
+
+<div
+id="bulkScanCounter"
+class="bulkScanCounter">
+</div>
+
 
 <div id="qrReader"></div>
 
 
 <div class="actions">
 
-<button id="closeScannerBtn" class="danger">
+<button
+id="closeScannerBtn"
+class="danger">
 完成／關閉
 </button>
 
@@ -801,7 +1034,7 @@ document.getElementById(id);
 
 
 /* =========================
-   初始化選單
+   選單
 ========================= */
 
 for(
@@ -810,32 +1043,64 @@ for(
   cm++
 ){
 
-  const option =
+  const o =
   document.createElement(
     "option"
   );
 
 
-  option.value =
-  String(cm);
+  o.value =
+  cm;
 
 
-  option.textContent =
+  o.textContent =
   `${cm} cm`;
 
 
   if(cm === 2){
 
-    option.selected =
+    o.selected =
     true;
 
   }
 
 
   $("barcodeHeight")
-  .appendChild(
-    option
+  .appendChild(o);
+
+}
+
+
+for(
+  let cm=1;
+  cm<=10;
+  cm++
+){
+
+  const o =
+  document.createElement(
+    "option"
   );
+
+
+  o.value =
+  cm;
+
+
+  o.textContent =
+  `${cm} cm`;
+
+
+  if(cm === 3){
+
+    o.selected =
+    true;
+
+  }
+
+
+  $("qrSize")
+  .appendChild(o);
 
 }
 
@@ -846,38 +1111,36 @@ for(
   mm++
 ){
 
-  const option =
+  const o =
   document.createElement(
     "option"
   );
 
 
-  option.value =
-  String(mm);
+  o.value =
+  mm;
 
 
-  option.textContent =
+  o.textContent =
   `${mm} mm`;
 
 
   if(mm === 2){
 
-    option.selected =
+    o.selected =
     true;
 
   }
 
 
   $("itemGap")
-  .appendChild(
-    option
-  );
+  .appendChild(o);
 
 }
 
 
 /* =========================
-   BLE UUID
+   BLE
 ========================= */
 
 const SERVICE =
@@ -912,7 +1175,7 @@ const state = {
 
 
 /* =========================
-   工具
+   UTILS
 ========================= */
 
 function delay(ms){
@@ -928,7 +1191,9 @@ function delay(ms){
 function mmToPx(mm){
 
   return Math.round(
-    mm * 203 / 25.4
+    mm *
+    203 /
+    25.4
   );
 
 }
@@ -946,10 +1211,15 @@ function cmToPx(cm){
 function paperDots(mm){
 
   return Math.max(
+
     8,
+
     Math.floor(
-      mmToPx(mm) / 8
-    ) * 8
+      mmToPx(mm) /
+      8
+    ) *
+    8
+
   );
 
 }
@@ -958,8 +1228,13 @@ function paperDots(mm){
 function u16(value){
 
   return [
-    (value >> 8) & 255,
-    value & 255
+
+    (value >> 8)
+    & 255,
+
+    value
+    & 255
+
   ];
 
 }
@@ -969,6 +1244,7 @@ function hex(bytes){
 
   return Array
   .from(bytes)
+
   .map(
     value =>
     value
@@ -976,6 +1252,7 @@ function hex(bytes){
     .padStart(2,"0")
     .toUpperCase()
   )
+
   .join(" ");
 
 }
@@ -1001,21 +1278,30 @@ function escapeHtml(text){
 
   return String(text ?? "")
   .replace(
+
     /[&<>"']/g,
+
     char => ({
+
       "&":"&amp;",
+
       "<":"&lt;",
+
       ">":"&gt;",
+
       '"':"&quot;",
+
       "'":"&#039;"
+
     }[char])
+
   );
 
 }
 
 
 /* =========================
-   NIIMBOT Frame
+   PACKETS
 ========================= */
 
 function frame(
@@ -1033,7 +1319,10 @@ function frame(
   payload.length;
 
 
-  for(const value of payload){
+  for(
+    const value
+    of payload
+  ){
 
     checksum ^=
     value;
@@ -1062,7 +1351,9 @@ function frame(
 
   if(prefix){
 
-    packet.unshift(0x03);
+    packet.unshift(
+      0x03
+    );
 
   }
 
@@ -1073,10 +1364,6 @@ function frame(
 
 }
 
-
-/* =========================
-   控制封包
-========================= */
 
 const CONTROL = {
 
@@ -1162,43 +1449,47 @@ function parsePackets(text){
   .split(/\s+/)
   .filter(Boolean)
   .map(
-    value =>
-    parseInt(value,16)
+    v =>
+    parseInt(v,16)
   );
 
 
-  const output = [];
+  const result = [];
 
-  let position = 0;
+  let pos =
+  0;
 
 
-  while(position < bytes.length){
+  while(
+    pos <
+    bytes.length
+  ){
 
     if(
-      bytes[position] !== 0x55
+      bytes[pos] !== 0x55
       ||
-      bytes[position+1] !== 0x55
+      bytes[pos+1] !== 0x55
     ){
 
-      position++;
+      pos++;
 
       continue;
 
     }
 
 
-    const command =
-    bytes[position+2];
+    const cmd =
+    bytes[pos+2];
 
 
-    const length =
-    bytes[position+3];
+    const len =
+    bytes[pos+3];
 
 
     const checksumIndex =
-    position +
+    pos +
     4 +
-    length;
+    len;
 
 
     const tail =
@@ -1207,7 +1498,7 @@ function parsePackets(text){
 
 
     if(
-      tail + 1 >=
+      tail+1 >=
       bytes.length
     ){
 
@@ -1222,7 +1513,7 @@ function parsePackets(text){
       bytes[tail+1] !== 0xAA
     ){
 
-      position++;
+      pos++;
 
       continue;
 
@@ -1231,27 +1522,30 @@ function parsePackets(text){
 
     const payload =
     bytes.slice(
-      position+4,
-      position+4+length
+      pos+4,
+      pos+4+len
     );
 
 
     let checksum =
-    command ^
-    length;
+    cmd ^
+    len;
 
 
-    for(const value of payload){
+    for(
+      const v
+      of payload
+    ){
 
       checksum ^=
-      value;
+      v;
 
     }
 
 
-    output.push({
+    result.push({
 
-      command,
+      command:cmd,
 
       payload,
 
@@ -1263,19 +1557,20 @@ function parsePackets(text){
     });
 
 
-    position =
-    tail + 2;
+    pos =
+    tail +
+    2;
 
   }
 
 
-  return output;
+  return result;
 
 }
 
 
 /* =========================
-   BLE Write
+   BLE WRITE
 ========================= */
 
 async function writeRaw(bytes){
@@ -1294,12 +1589,14 @@ async function writeRaw(bytes){
 
 
   for(
-    let index=0;
-    index<bytes.length;
-    index+=chunkSize
+    let i=0;
+    i<bytes.length;
+    i+=chunkSize
   ){
 
-    if(state.forceStop){
+    if(
+      state.forceStop
+    ){
 
       throw new Error(
         "FORCE_STOP"
@@ -1310,40 +1607,55 @@ async function writeRaw(bytes){
 
     const part =
     bytes.slice(
-      index,
-      index+chunkSize
+      i,
+      i+chunkSize
     );
 
 
     if(
-      state.write.properties.writeWithoutResponse
+      state.write
+      .properties
+      .writeWithoutResponse
+
       &&
-      state.write.writeValueWithoutResponse
+
+      state.write
+      .writeValueWithoutResponse
     ){
 
       await state.write
-      .writeValueWithoutResponse(part);
+      .writeValueWithoutResponse(
+        part
+      );
 
     }
 
     else if(
-      state.write.writeValueWithResponse
+      state.write
+      .writeValueWithResponse
     ){
 
       await state.write
-      .writeValueWithResponse(part);
+      .writeValueWithResponse(
+        part
+      );
 
     }
 
     else{
 
       await state.write
-      .writeValue(part);
+      .writeValue(
+        part
+      );
 
     }
 
 
-    if(bytes.length > chunkSize){
+    if(
+      bytes.length >
+      chunkSize
+    ){
 
       await delay(5);
 
@@ -1366,29 +1678,41 @@ async function writeControl(bytes){
 
 
   if(
-    state.write.properties.writeWithoutResponse
+    state.write
+    .properties
+    .writeWithoutResponse
+
     &&
-    state.write.writeValueWithoutResponse
+
+    state.write
+    .writeValueWithoutResponse
   ){
 
     await state.write
-    .writeValueWithoutResponse(bytes);
+    .writeValueWithoutResponse(
+      bytes
+    );
 
   }
 
   else if(
-    state.write.writeValueWithResponse
+    state.write
+    .writeValueWithResponse
   ){
 
     await state.write
-    .writeValueWithResponse(bytes);
+    .writeValueWithResponse(
+      bytes
+    );
 
   }
 
   else{
 
     await state.write
-    .writeValue(bytes);
+    .writeValue(
+      bytes
+    );
 
   }
 
@@ -1425,7 +1749,8 @@ async function sendWait(
 
 
   while(
-    Date.now() - start <
+    Date.now() -
+    start <
     timeout
   ){
 
@@ -1435,36 +1760,52 @@ async function sendWait(
     );
 
 
-    for(const raw of incoming){
+    for(
+      const raw
+      of incoming
+    ){
 
       for(
-        const parsed
+        const p
         of parsePackets(raw)
       ){
 
-        if(!parsed.checksumOk){
+        if(
+          !p.checksumOk
+        ){
 
           continue;
 
         }
 
 
-        if(parsed.command === 0x00){
+        if(
+          p.command ===
+          0x00
+        ){
 
           return {
+
             ok:false,
-            unsupported:true,
-            packet:parsed
+
+            unsupported:true
+
           };
 
         }
 
 
-        if(parsed.command === expected){
+        if(
+          p.command ===
+          expected
+        ){
 
           return {
+
             ok:true,
-            packet:parsed
+
+            packet:p
+
           };
 
         }
@@ -1480,8 +1821,11 @@ async function sendWait(
 
 
   return {
+
     ok:false,
+
     timeout:true
+
   };
 
 }
@@ -1494,7 +1838,9 @@ async function ackStep(
   timeout=3500
 ){
 
-  if(state.forceStop){
+  if(
+    state.forceStop
+  ){
 
     throw new Error(
       "FORCE_STOP"
@@ -1521,17 +1867,21 @@ async function ackStep(
   );
 
 
-  if(result.ok){
+  if(
+    result.ok
+  ){
 
-    return result;
+    return;
 
   }
 
 
-  if(result.unsupported){
+  if(
+    result.unsupported
+  ){
 
     throw new Error(
-      `${label}：B3S 不支援此設定`
+      `${label}：B3S 不支援`
     );
 
   }
@@ -1545,19 +1895,37 @@ async function ackStep(
 
 
 /* =========================
-   條碼
+   BARCODE
 ========================= */
 
 function detectFormat(code){
 
-  if(/^\d{13}$/.test(code))
-  return "EAN13";
+  if(
+    /^\d{13}$/.test(code)
+  ){
 
-  if(/^\d{8}$/.test(code))
-  return "EAN8";
+    return "EAN13";
 
-  if(/^\d{12}$/.test(code))
-  return "UPC";
+  }
+
+
+  if(
+    /^\d{8}$/.test(code)
+  ){
+
+    return "EAN8";
+
+  }
+
+
+  if(
+    /^\d{12}$/.test(code)
+  ){
+
+    return "UPC";
+
+  }
+
 
   return "CODE128";
 
@@ -1621,7 +1989,10 @@ function makeBarcode(
   }
 
 
-  if(canvas.width <= maxWidth){
+  if(
+    canvas.width <=
+    maxWidth
+  ){
 
     return canvas;
 
@@ -1640,9 +2011,11 @@ function makeBarcode(
 
   scaled.height =
   Math.round(
+
     canvas.height *
     maxWidth /
     canvas.width
+
   );
 
 
@@ -1657,11 +2030,15 @@ function makeBarcode(
 
 
   ctx.drawImage(
+
     canvas,
+
     0,
     0,
+
     scaled.width,
     scaled.height
+
   );
 
 
@@ -1671,7 +2048,123 @@ function makeBarcode(
 
 
 /* =========================
-   商品 UI
+   QR CODE
+========================= */
+
+function makeQrCanvas(
+  text,
+  requestedSize,
+  maxWidth
+){
+
+  if(
+    !text
+  ){
+
+    return null;
+
+  }
+
+
+  const size =
+  Math.min(
+    requestedSize,
+    maxWidth
+  );
+
+
+  const holder =
+  $("qrGenerator");
+
+
+  holder.innerHTML =
+  "";
+
+
+  new QRCode(
+    holder,
+    {
+
+      text,
+
+      width:size,
+
+      height:size,
+
+      colorDark:"#000000",
+
+      colorLight:"#ffffff",
+
+      correctLevel:
+      QRCode.CorrectLevel.M
+
+    }
+  );
+
+
+  const generated =
+  holder.querySelector(
+    "canvas"
+  );
+
+
+  if(
+    !generated
+  ){
+
+    return null;
+
+  }
+
+
+  const output =
+  document.createElement(
+    "canvas"
+  );
+
+
+  output.width =
+  size;
+
+
+  output.height =
+  size;
+
+
+  const ctx =
+  output.getContext(
+    "2d"
+  );
+
+
+  ctx.fillStyle =
+  "#fff";
+
+
+  ctx.fillRect(
+    0,
+    0,
+    size,
+    size
+  );
+
+
+  ctx.drawImage(
+    generated,
+    0,
+    0,
+    size,
+    size
+  );
+
+
+  return output;
+
+}
+
+
+/* =========================
+   ITEMS
 ========================= */
 
 function renderItems(){
@@ -1681,9 +2174,12 @@ function renderItems(){
   `${state.items.length} 筆商品`;
 
 
-  if(!state.items.length){
+  if(
+    !state.items.length
+  ){
 
-    $("items").innerHTML =
+    $("items")
+    .innerHTML =
     '<div class="help" style="margin-top:10px">目前沒有商品</div>';
 
 
@@ -1694,7 +2190,8 @@ function renderItems(){
   }
 
 
-  $("items").innerHTML =
+  $("items")
+  .innerHTML =
   state.items
 
   .map(
@@ -1711,24 +2208,41 @@ function renderItems(){
       <div>
 
         <div class="itemName">
+
         ${escapeHtml(
           item.name ||
           "未命名商品"
         )}
+
         </div>
 
         <div class="itemCode">
+
+        條碼：
         ${escapeHtml(
           item.code ||
-          "無條碼"
+          "無"
         )}
+
+        </div>
+
+        <div class="itemQr">
+
+        QR：
+        ${escapeHtml(
+          item.qr ||
+          "無"
+        )}
+
         </div>
 
         <div class="itemBottom">
 
           <div class="qtyWrap">
 
-            <span>份數</span>
+            <span>
+            份數
+            </span>
 
             <input
             type="number"
@@ -1770,25 +2284,34 @@ $("items")
 
     const index =
     Number(
-      event.target.dataset.index
+      event.target
+      .dataset
+      .index
     );
 
 
     if(
-      event.target.classList
-      .contains("itemCheck")
+      event.target
+      .classList
+      .contains(
+        "itemCheck"
+      )
     ){
 
       state.items[index]
       .selected =
-      event.target.checked;
+      event.target
+      .checked;
 
     }
 
 
     if(
-      event.target.classList
-      .contains("qtyInput")
+      event.target
+      .classList
+      .contains(
+        "qtyInput"
+      )
     ){
 
       let qty =
@@ -1803,7 +2326,8 @@ $("items")
         qty < 1
       ){
 
-        qty = 1;
+        qty =
+        1;
 
       }
 
@@ -1840,20 +2364,29 @@ $("items")
   event => {
 
     const button =
-    event.target.closest(
+    event.target
+    .closest(
       ".deleteBtn"
     );
 
 
-    if(!button)
-    return;
+    if(
+      !button
+    ){
+
+      return;
+
+    }
 
 
     state.items.splice(
+
       Number(
         button.dataset.index
       ),
+
       1
+
     );
 
 
@@ -1866,10 +2399,12 @@ $("items")
 
 
 /* =========================
-   新增商品
+   ADD
 ========================= */
 
-function addItem(){
+$("addBtn")
+.onclick =
+() => {
 
   const name =
   $("name")
@@ -1883,42 +2418,22 @@ function addItem(){
   .trim();
 
 
-  const mode =
-  $("printMode")
-  .value;
-
-
-  const needsBarcode =
-  [
-    "name_barcode_number",
-    "name_barcode",
-    "barcode_number",
-    "barcode"
-  ]
-  .includes(mode);
+  const qr =
+  $("qrContent")
+  .value
+  .trim();
 
 
   if(
-    needsBarcode &&
+    !name
+    &&
     !code
+    &&
+    !qr
   ){
 
     alert(
-      "目前列印模式需要商品條碼"
-    );
-
-    return;
-
-  }
-
-
-  if(
-    !name &&
-    !code
-  ){
-
-    alert(
-      "請輸入商品名稱或條碼"
+      "請輸入商品名稱、條碼或 QR Code 內容"
     );
 
     return;
@@ -1932,6 +2447,8 @@ function addItem(){
 
     code,
 
+    qr,
+
     qty:1,
 
     selected:true
@@ -1939,37 +2456,50 @@ function addItem(){
   });
 
 
-  $("name").value = "";
+  $("name").value =
+  "";
 
-  $("code").value = "";
+
+  $("code").value =
+  "";
+
+
+  $("qrContent").value =
+  "";
 
 
   renderItems();
 
   drawPreview();
 
-}
+};
 
 
-$("addBtn").onclick =
-addItem;
-
-
-$("clearInputBtn").onclick =
+$("clearInputBtn")
+.onclick =
 () => {
 
-  $("name").value = "";
+  $("name").value =
+  "";
 
-  $("code").value = "";
+
+  $("code").value =
+  "";
+
+
+  $("qrContent").value =
+  "";
 
 };
 
 
 /* =========================
-   批次
+   BULK
 ========================= */
 
-function parseBulk(){
+$("bulkAddBtn")
+.onclick =
+() => {
 
   const text =
   $("bulkInput")
@@ -1977,114 +2507,89 @@ function parseBulk(){
   .trim();
 
 
-  if(!text){
+  if(
+    !text
+  ){
 
-    return {
-      added:0,
-      skipped:0
-    };
+    return;
 
   }
 
 
-  let added = 0;
-
-  let skipped = 0;
+  let added =
+  0;
 
 
   for(
     const raw
-    of text.split(/\r?\n/)
+    of text.split(
+      /\r?\n/
+    )
   ){
 
     const line =
     raw.trim();
 
 
-    if(!line)
-    continue;
+    if(
+      !line
+    ){
 
-
-    let name = "";
-
-    let code = "";
-
-
-    if(line.includes("\t")){
-
-      const parts =
-      line.split("\t");
-
-
-      name =
-      (
-        parts[0] || ""
-      ).trim();
-
-
-      code =
-      (
-        parts[1] || ""
-      ).trim();
+      continue;
 
     }
 
-    else if(line.includes(",")){
 
-      const parts =
-      line.split(",");
+    let parts;
 
 
-      code =
-      (
-        parts.pop() || ""
-      ).trim();
+    if(
+      line.includes("\t")
+    ){
 
-
-      name =
-      parts
-      .join(",")
-      .trim();
+      parts =
+      line.split("\t");
 
     }
 
     else{
 
-      const match =
-      line.match(
-        /^(.*?)[\s]+(\d{6,})$/
-      );
-
-
-      if(match){
-
-        name =
-        match[1]
-        .trim();
-
-
-        code =
-        match[2]
-        .trim();
-
-      }
-
-      else{
-
-        name =
-        line;
-
-      }
+      parts =
+      line.split(",");
 
     }
 
 
-    if(
-      !name &&
-      !code
-    ){
+    const name =
+    (
+      parts[0] ||
+      ""
+    )
+    .trim();
 
-      skipped++;
+
+    const code =
+    (
+      parts[1] ||
+      ""
+    )
+    .trim();
+
+
+    const qr =
+    parts
+    .slice(2)
+    .join(",")
+    .trim();
+
+
+    if(
+      !name
+      &&
+      !code
+      &&
+      !qr
+    ){
 
       continue;
 
@@ -2096,6 +2601,8 @@ function parseBulk(){
       name,
 
       code,
+
+      qr,
 
       qty:1,
 
@@ -2109,37 +2616,18 @@ function parseBulk(){
   }
 
 
-  return {
-    added,
-    skipped
-  };
-
-}
-
-
-$("bulkAddBtn").onclick =
-() => {
-
-  const result =
-  parseBulk();
-
-
   $("bulkStatus")
   .textContent =
-  `已加入 ${result.added} 筆`
-  +
-  (
-    result.skipped
-    ?
-    `，略過 ${result.skipped} 筆`
-    :
-    ""
-  );
+  `已加入 ${added} 筆`;
 
 
-  if(result.added){
+  if(
+    added
+  ){
 
-    $("bulkInput").value = "";
+    $("bulkInput")
+    .value =
+    "";
 
   }
 
@@ -2151,26 +2639,35 @@ $("bulkAddBtn").onclick =
 };
 
 
-$("bulkClearBtn").onclick =
+$("bulkClearBtn")
+.onclick =
 () => {
 
-  $("bulkInput").value = "";
+  $("bulkInput")
+  .value =
+  "";
 
-  $("bulkStatus").textContent = "";
+
+  $("bulkStatus")
+  .textContent =
+  "";
 
 };
 
 
 /* =========================
-   全選
+   SELECT
 ========================= */
 
-$("selectAllBtn").onclick =
+$("selectAllBtn")
+.onclick =
 () => {
 
-  state.items.forEach(
+  state.items
+  .forEach(
     item =>
-    item.selected = true
+    item.selected =
+    true
   );
 
 
@@ -2181,12 +2678,15 @@ $("selectAllBtn").onclick =
 };
 
 
-$("unselectAllBtn").onclick =
+$("unselectAllBtn")
+.onclick =
 () => {
 
-  state.items.forEach(
+  state.items
+  .forEach(
     item =>
-    item.selected = false
+    item.selected =
+    false
   );
 
 
@@ -2197,10 +2697,12 @@ $("unselectAllBtn").onclick =
 };
 
 
-$("clearAllBtn").onclick =
+$("clearAllBtn")
+.onclick =
 () => {
 
-  state.items = [];
+  state.items =
+  [];
 
 
   renderItems();
@@ -2211,7 +2713,7 @@ $("clearAllBtn").onclick =
 
 
 /* =========================
-   列印清單
+   EXPAND
 ========================= */
 
 function expandedItems(
@@ -2220,34 +2722,47 @@ function expandedItems(
 
   const source =
   mode === "all"
+
   ?
+
   state.items
+
   :
+
   state.items.filter(
     item =>
     item.selected
   );
 
 
-  const output = [];
+  const output =
+  [];
 
 
-  for(const item of source){
+  for(
+    const item
+    of source
+  ){
 
     const qty =
     Math.max(
       1,
-      Number(item.qty) || 1
+      Number(
+        item.qty
+      ) ||
+      1
     );
 
 
     for(
-      let index=0;
-      index<qty;
-      index++
+      let i=0;
+      i<qty;
+      i++
     ){
 
-      output.push(item);
+      output.push(
+        item
+      );
 
     }
 
@@ -2260,7 +2775,7 @@ function expandedItems(
 
 
 /* =========================
-   多行文字
+   TEXT
 ========================= */
 
 function drawMultilineText(
@@ -2274,8 +2789,13 @@ function drawMultilineText(
 ){
 
   const lines =
-  String(text || "")
-  .split(/\r?\n/);
+  String(
+    text ||
+    ""
+  )
+  .split(
+    /\r?\n/
+  );
 
 
   ctx.font =
@@ -2298,13 +2818,21 @@ function drawMultilineText(
   y;
 
 
-  for(const line of lines){
+  for(
+    const line
+    of lines
+  ){
 
     ctx.fillText(
+
       line,
+
       x,
+
       currentY,
+
       maxWidth
+
     );
 
 
@@ -2320,7 +2848,7 @@ function drawMultilineText(
 
 
 /* =========================
-   Canvas
+   CANVAS
 ========================= */
 
 function buildCanvas(
@@ -2352,6 +2880,14 @@ function buildCanvas(
   );
 
 
+  const qrSize =
+  cmToPx(
+    Number(
+      $("qrSize").value
+    )
+  );
+
+
   const gap =
   mmToPx(
     Number(
@@ -2365,120 +2901,120 @@ function buildCanvas(
   .value;
 
 
-  const customText =
-  $("customText")
-  .value
-  .trim();
-
-
   const footer =
   $("footerText")
   .value
   .trim();
 
 
-  const blocks = [];
+  const customText =
+  $("customText")
+  .value
+  .trim();
 
 
-  for(const item of printItems){
+  const blocks =
+  [];
+
+
+  for(
+    const item
+    of printItems
+  ){
+
+    const usesBarcode = [
+
+      "name_barcode_number",
+
+      "name_barcode",
+
+      "barcode_number",
+
+      "barcode",
+
+      "name_barcode_qr",
+
+      "name_barcode_number_qr"
+
+    ]
+    .includes(mode);
+
+
+    const showsBarcodeNumber = [
+
+      "name_barcode_number",
+
+      "barcode_number",
+
+      "name_barcode_number_qr"
+
+    ]
+    .includes(mode);
+
+
+    const usesQr = [
+
+      "name_qr",
+
+      "qr",
+
+      "qr_text",
+
+      "name_qr_text",
+
+      "name_barcode_qr",
+
+      "name_barcode_number_qr"
+
+    ]
+    .includes(mode);
+
 
     let barcode =
     null;
 
 
-    let displayValue =
-    false;
+    let qr =
+    null;
 
 
     if(
-      mode ===
-      "name_barcode_number"
-      ||
-      mode ===
-      "barcode_number"
-    ){
-
-      displayValue =
-      true;
-
-    }
-
-
-    if(
-      mode ===
-      "name_barcode_number"
-      ||
-      mode ===
-      "name_barcode"
-      ||
-      mode ===
-      "barcode_number"
-      ||
-      mode ===
-      "barcode"
-    ){
-
-      if(item.code){
-
-        barcode =
-        makeBarcode(
-          item.code,
-          contentWidth,
-          barcodeHeight,
-          displayValue
-        );
-
-      }
-
-    }
-
-
-    let estimated =
-    gap;
-
-
-    if(
-      mode ===
-      "name_barcode_number"
-      ||
-      mode ===
-      "name_barcode"
-      ||
-      mode ===
-      "name"
-      ||
-      mode ===
-      "name_custom"
-    ){
-
-      estimated +=
-      34;
-
-    }
-
-
-    if(barcode){
-
-      estimated +=
-      barcode.height;
-
-    }
-
-
-    if(
-      mode ===
-      "name_custom"
+      usesBarcode
       &&
-      customText
+      item.code
     ){
 
-      estimated +=
-      (
-        customText
-        .split(/\r?\n/)
-        .length
-        *
-        26
+      barcode =
+      makeBarcode(
+
+        item.code,
+
+        contentWidth,
+
+        barcodeHeight,
+
+        showsBarcodeNumber
+
+      );
+
+    }
+
+
+    if(
+      usesQr
+      &&
+      item.qr
+    ){
+
+      qr =
+      makeQrCanvas(
+
+        item.qr,
+
+        qrSize,
+
+        contentWidth
+
       );
 
     }
@@ -2490,8 +3026,7 @@ function buildCanvas(
 
       barcode,
 
-      height:
-      estimated
+      qr
 
     });
 
@@ -2502,46 +3037,141 @@ function buildCanvas(
   mmToPx(1);
 
 
-  if(mode === "custom"){
-
-    const lines =
-    customText
-    ?
-    customText
-    .split(/\r?\n/)
-    .length
-    :
-    1;
-
+  if(
+    mode ===
+    "custom"
+  ){
 
     height +=
-    lines *
+
+    Math.max(
+      1,
+      customText
+      .split(
+        /\r?\n/
+      )
+      .length
+    )
+
+    *
+
     30;
 
   }
 
   else{
 
-    for(const block of blocks){
+    for(
+      const block
+      of blocks
+    ){
+
+      const item =
+      block.item;
+
+
+      if(
+        mode.startsWith(
+          "name_"
+        )
+        ||
+        mode === "name"
+      ){
+
+        height +=
+        34;
+
+      }
+
+
+      if(
+        block.barcode
+      ){
+
+        height +=
+        block.barcode.height;
+
+      }
+
+
+      if(
+        block.qr
+      ){
+
+        height +=
+        block.qr.height +
+        mmToPx(1);
+
+      }
+
+
+      if(
+        [
+          "qr_text",
+          "name_qr_text"
+        ]
+        .includes(mode)
+        &&
+        item.qr
+      ){
+
+        height +=
+        Math.max(
+          1,
+          item.qr
+          .split(
+            /\r?\n/
+          )
+          .length
+        )
+        *
+        25;
+
+      }
+
+
+      if(
+        mode ===
+        "name_custom"
+        &&
+        customText
+      ){
+
+        height +=
+        customText
+        .split(
+          /\r?\n/
+        )
+        .length
+        *
+        26;
+
+      }
+
 
       height +=
-      block.height;
+      gap;
 
     }
 
   }
 
 
-  if(footer){
+  if(
+    footer
+  ){
 
     height +=
-    (
-      footer
-      .split(/\r?\n/)
-      .length
-      *
-      27
-    );
+
+    footer
+    .split(
+      /\r?\n/
+    )
+    .length
+
+    *
+
+    27;
 
   }
 
@@ -2550,10 +3180,13 @@ function buildCanvas(
   mmToPx(1);
 
 
-  if(height > 65535){
+  if(
+    height >
+    65535
+  ){
 
     throw new Error(
-      "內容太長，請縮短條碼高度或分批列印"
+      "內容太長，請分批列印或縮小 QR／條碼"
     );
 
   }
@@ -2587,10 +3220,13 @@ function buildCanvas(
 
 
   ctx.fillRect(
+
     0,
     0,
+
     canvas.width,
     canvas.height
+
   );
 
 
@@ -2610,42 +3246,68 @@ function buildCanvas(
   mmToPx(1);
 
 
-  if(mode === "custom"){
+  if(
+    mode ===
+    "custom"
+  ){
 
     y =
     drawMultilineText(
+
       ctx,
+
       customText ||
       " ",
+
       width/2,
+
       y,
+
       contentWidth,
+
       30,
+
       '700 22px "PingFang TC","Microsoft JhengHei",sans-serif'
+
     );
 
   }
 
   else{
 
-    for(const block of blocks){
+    for(
+      const block
+      of blocks
+    ){
 
       const item =
       block.item;
 
 
-      if(
-        mode ===
-        "name_barcode_number"
-        ||
-        mode ===
-        "name_barcode"
-        ||
-        mode ===
-        "name"
-        ||
-        mode ===
+      const showName = [
+
+        "name_barcode_number",
+
+        "name_barcode",
+
+        "name",
+
+        "name_qr",
+
+        "name_qr_text",
+
+        "name_barcode_qr",
+
+        "name_barcode_number_qr",
+
         "name_custom"
+
+      ]
+      .includes(mode);
+
+
+      if(
+        showName
       ){
 
         ctx.font =
@@ -2653,10 +3315,16 @@ function buildCanvas(
 
 
         ctx.fillText(
-          item.name || "",
+
+          item.name ||
+          "",
+
           width/2,
+
           y,
+
           contentWidth
+
         );
 
 
@@ -2666,24 +3334,102 @@ function buildCanvas(
       }
 
 
-      if(block.barcode){
+      if(
+        block.barcode
+      ){
 
         ctx.imageSmoothingEnabled =
         false;
 
 
         ctx.drawImage(
+
           block.barcode,
+
           (
             width -
             block.barcode.width
-          ) / 2,
+          )
+          /
+          2,
+
           y
+
         );
 
 
         y +=
         block.barcode.height;
+
+      }
+
+
+      if(
+        block.qr
+      ){
+
+        y +=
+        mmToPx(1);
+
+
+        ctx.imageSmoothingEnabled =
+        false;
+
+
+        ctx.drawImage(
+
+          block.qr,
+
+          (
+            width -
+            block.qr.width
+          )
+          /
+          2,
+
+          y
+
+        );
+
+
+        y +=
+        block.qr.height;
+
+      }
+
+
+      if(
+        [
+          "qr_text",
+          "name_qr_text"
+        ]
+        .includes(mode)
+        &&
+        item.qr
+      ){
+
+        y +=
+        5;
+
+
+        y =
+        drawMultilineText(
+
+          ctx,
+
+          item.qr,
+
+          width/2,
+
+          y,
+
+          contentWidth,
+
+          25,
+
+          '600 16px "PingFang TC","Microsoft JhengHei",sans-serif'
+
+        );
 
       }
 
@@ -2697,13 +3443,21 @@ function buildCanvas(
 
         y =
         drawMultilineText(
+
           ctx,
+
           customText,
+
           width/2,
+
           y,
+
           contentWidth,
+
           26,
+
           '600 18px "PingFang TC","Microsoft JhengHei",sans-serif'
+
         );
 
       }
@@ -2717,17 +3471,27 @@ function buildCanvas(
   }
 
 
-  if(footer){
+  if(
+    footer
+  ){
 
     y =
     drawMultilineText(
+
       ctx,
+
       footer,
+
       width/2,
+
       y,
+
       contentWidth,
+
       27,
+
       '700 18px "PingFang TC","Microsoft JhengHei",sans-serif'
+
     );
 
   }
@@ -2739,7 +3503,7 @@ function buildCanvas(
 
 
 /* =========================
-   裁白邊
+   CROP
 ========================= */
 
 function cropBottom(
@@ -2754,11 +3518,15 @@ function cropBottom(
 
   const pixels =
   ctx.getImageData(
+
     0,
     0,
+
     source.width,
     source.height
-  ).data;
+
+  )
+  .data;
 
 
   let lastRow =
@@ -2787,25 +3555,43 @@ function cropBottom(
         y *
         source.width +
         x
-      ) *
+      )
+      *
       4;
 
 
       const gray =
+
       (
-        pixels[index] * 299
+        pixels[index]
+        *
+        299
+
         +
-        pixels[index+1] * 587
+
+        pixels[index+1]
+        *
+        587
+
         +
-        pixels[index+2] * 114
+
+        pixels[index+2]
+        *
+        114
       )
+
       /
+
       1000;
 
 
-      if(gray < 220){
+      if(
+        gray <
+        220
+      ){
 
-        found = true;
+        found =
+        true;
 
         break;
 
@@ -2814,9 +3600,12 @@ function cropBottom(
     }
 
 
-    if(found){
+    if(
+      found
+    ){
 
-      lastRow = y;
+      lastRow =
+      y;
 
       break;
 
@@ -2825,22 +3614,34 @@ function cropBottom(
   }
 
 
-  if(lastRow < 0){
+  if(
+    lastRow <
+    0
+  ){
 
-    lastRow = 7;
+    lastRow =
+    7;
 
   }
 
 
   const height =
   Math.min(
+
     65535,
+
     Math.max(
+
       8,
-      lastRow +
-      1 +
+
+      lastRow
+      +
+      1
+      +
       mmToPx(1)
+
     )
+
   );
 
 
@@ -2858,28 +3659,34 @@ function cropBottom(
   height;
 
 
-  const outputCtx =
+  const out =
   output.getContext(
     "2d"
   );
 
 
-  outputCtx.fillStyle =
+  out.fillStyle =
   "#fff";
 
 
-  outputCtx.fillRect(
+  out.fillRect(
+
     0,
     0,
+
     output.width,
     output.height
+
   );
 
 
-  outputCtx.drawImage(
+  out.drawImage(
+
     source,
+
     0,
     0
+
   );
 
 
@@ -2889,7 +3696,7 @@ function cropBottom(
 
 
 /* =========================
-   Preview
+   PREVIEW
 ========================= */
 
 function drawPreview(){
@@ -2905,7 +3712,9 @@ function drawPreview(){
   );
 
 
-  if(!list.length){
+  if(
+    !list.length
+  ){
 
     list =
     expandedItems(
@@ -2916,8 +3725,11 @@ function drawPreview(){
 
 
   if(
-    mode !== "custom"
+    mode !==
+    "custom"
+
     &&
+
     !list.length
   ){
 
@@ -2948,10 +3760,13 @@ function drawPreview(){
 
 
     ctx.fillRect(
+
       0,
       0,
+
       target.width,
       target.height
+
     );
 
 
@@ -2963,7 +3778,9 @@ function drawPreview(){
   try{
 
     const source =
-    buildCanvas(list);
+    buildCanvas(
+      list
+    );
 
 
     const target =
@@ -2981,9 +3798,12 @@ function drawPreview(){
     target
     .getContext("2d")
     .drawImage(
+
       source,
+
       0,
       0
+
     );
 
   }
@@ -3000,12 +3820,15 @@ function drawPreview(){
 
 
 /* =========================
-   Bitmap
+   BITMAP
 ========================= */
 
 function sameRow(a,b){
 
-  if(a.length !== b.length){
+  if(
+    a.length !==
+    b.length
+  ){
 
     return false;
 
@@ -3018,7 +3841,10 @@ function sameRow(a,b){
     i++
   ){
 
-    if(a[i] !== b[i]){
+    if(
+      a[i] !==
+      b[i]
+    ){
 
       return false;
 
@@ -3042,41 +3868,39 @@ function canvasToRuns(canvas){
 
   const pixels =
   ctx.getImageData(
+
     0,
     0,
+
     canvas.width,
     canvas.height
-  ).data;
+
+  )
+  .data;
 
 
   const width =
   canvas.width;
 
 
-  const height =
-  canvas.height;
-
-
-  const bytesPerRow =
-  width / 8;
-
-
-  const rows = [];
+  const rows =
+  [];
 
 
   for(
     let y=0;
-    y<height;
+    y<canvas.height;
     y++
   ){
 
     const row =
     new Uint8Array(
-      bytesPerRow
+      width / 8
     );
 
 
-    let black = 0;
+    let black =
+    0;
 
 
     for(
@@ -3090,25 +3914,43 @@ function canvasToRuns(canvas){
         y *
         width +
         x
-      ) *
+      )
+      *
       4;
 
 
       const gray =
+
       (
-        pixels[index] * 299
+        pixels[index]
+        *
+        299
+
         +
-        pixels[index+1] * 587
+
+        pixels[index+1]
+        *
+        587
+
         +
-        pixels[index+2] * 114
+
+        pixels[index+2]
+        *
+        114
       )
+
       /
+
       1000;
 
 
-      if(gray < 170){
+      if(
+        gray <
+        170
+      ){
 
         row[x >> 3] |=
+
         0x80 >>
         (x & 7);
 
@@ -3121,19 +3963,28 @@ function canvasToRuns(canvas){
 
 
     rows.push({
+
       data:row,
+
       black
+
     });
 
   }
 
 
-  const runs = [];
+  const runs =
+  [];
 
-  let y = 0;
+
+  let y =
+  0;
 
 
-  while(y < rows.length){
+  while(
+    y <
+    rows.length
+  ){
 
     const first =
     rows[y];
@@ -3144,16 +3995,25 @@ function canvasToRuns(canvas){
 
 
     while(
+
       y + repeat <
       rows.length
+
       &&
+
       repeat <
       255
+
       &&
+
       sameRow(
+
         first.data,
+
         rows[y+repeat].data
+
       )
+
     ){
 
       repeat++;
@@ -3187,54 +4047,57 @@ function canvasToRuns(canvas){
 
 function rowPacket(run){
 
-  const count = [
-
-    0x00,
-
-    run.black &
-    0xFF,
-
-    (
-      run.black >>
-      8
-    ) &
-    0xFF
-
-  ];
-
-
   return frame(
+
     0x85,
+
     [
 
       ...u16(
         run.row
       ),
 
-      ...count,
+      0x00,
+
+      run.black &
+      0xFF,
+
+      (
+        run.black >>
+        8
+      )
+      &
+      0xFF,
 
       run.repeat,
 
       ...run.data
 
     ]
+
   );
 
 }
 
 
 /* =========================
-   BLE 狀態
+   UI
 ========================= */
 
 function connected(){
 
   return !!(
+
     state.server?.connected
+
     &&
+
     state.write
+
     &&
+
     state.notify
+
   );
 
 }
@@ -3242,7 +4105,7 @@ function connected(){
 
 function updateButtons(){
 
-  const isConnected =
+  const c =
   connected();
 
 
@@ -3258,48 +4121,79 @@ function updateButtons(){
   .value;
 
 
-  $("disconnectBtn").disabled =
-  !isConnected;
+  $("disconnectBtn")
+  .disabled =
+  !c;
 
 
-  $("printSelectedBtn").disabled =
+  $("printSelectedBtn")
+  .disabled =
+
   !(
-    isConnected
+    c
+
     &&
+
     selected
+
     &&
-    mode !== "custom"
+
+    mode !==
+    "custom"
+
     &&
+
     !state.printing
   );
 
 
-  $("printAllBtn").disabled =
+  $("printAllBtn")
+  .disabled =
+
   !(
-    isConnected
+    c
+
     &&
+
     state.items.length
+
     &&
-    mode !== "custom"
+
+    mode !==
+    "custom"
+
     &&
+
     !state.printing
   );
 
 
-  $("printCustomBtn").disabled =
+  $("printCustomBtn")
+  .disabled =
+
   !(
-    isConnected
+    c
+
     &&
-    mode === "custom"
+
+    mode ===
+    "custom"
+
     &&
-    $("customText").value.trim()
+
+    $("customText")
+    .value
+    .trim()
+
     &&
+
     !state.printing
   );
 
 
-  $("stopPrintBtn").disabled =
-  !isConnected;
+  $("stopPrintBtn")
+  .disabled =
+  !c;
 
 
   $("gattState")
@@ -3311,7 +4205,7 @@ function updateButtons(){
 
   $("channelState")
   .textContent =
-  isConnected
+  c
   ?
   "已就緒"
   :
@@ -3320,13 +4214,7 @@ function updateButtons(){
 }
 
 
-/* =========================
-   紙張模式顯示
-========================= */
-
-function paperModeName(
-  value
-){
+function paperModeName(value){
 
   const names = {
 
@@ -3343,13 +4231,15 @@ function paperModeName(
   };
 
 
-  return names[value] ||
+  return names[value]
+  ||
   "未知";
 
 }
 
 
-$("paperMode").onchange =
+$("paperMode")
+.onchange =
 () => {
 
   $("paperModeDisplay")
@@ -3362,10 +4252,11 @@ $("paperMode").onchange =
 
 
 /* =========================
-   Bluetooth Connect
+   CONNECT
 ========================= */
 
-$("connectBtn").onclick =
+$("connectBtn")
+.onclick =
 async () => {
 
   try{
@@ -3429,14 +4320,13 @@ async () => {
     );
 
 
-    state.rx = [];
-
-    state.forceStop =
-    false;
+    state.rx =
+    [];
 
 
     state.notify
     .addEventListener(
+
       "characteristicvaluechanged",
 
       event => {
@@ -3447,9 +4337,13 @@ async () => {
 
         const bytes =
         new Uint8Array(
+
           value.buffer,
+
           value.byteOffset,
+
           value.byteLength
+
         );
 
 
@@ -3457,10 +4351,15 @@ async () => {
         hex(bytes);
 
 
-        state.rx.push(data);
+        state.rx.push(
+          data
+        );
 
 
-        if(state.rx.length > 1000){
+        if(
+          state.rx.length >
+          1000
+        ){
 
           state.rx.shift();
 
@@ -3473,6 +4372,7 @@ async () => {
         );
 
       }
+
     );
 
 
@@ -3480,20 +4380,27 @@ async () => {
     .startNotifications();
 
 
-    device.addEventListener(
+    device
+    .addEventListener(
+
       "gattserverdisconnected",
 
       () => {
 
-        state.server = null;
+        state.server =
+        null;
 
-        state.write = null;
 
-        state.notify = null;
+        state.write =
+        null;
 
-        state.printing = false;
 
-        state.forceStop = false;
+        state.notify =
+        null;
+
+
+        state.printing =
+        false;
 
 
         $("bleStatus")
@@ -3509,6 +4416,7 @@ async () => {
         updateButtons();
 
       }
+
     );
 
 
@@ -3520,11 +4428,6 @@ async () => {
     $("bleStatus")
     .textContent =
     "✅ B3S 已連線";
-
-
-    log(
-      "V17 B3S READY"
-    );
 
 
     updateButtons();
@@ -3543,15 +4446,13 @@ async () => {
     "連線失敗：" +
     error.message;
 
-
-    updateButtons();
-
   }
 
 };
 
 
-$("disconnectBtn").onclick =
+$("disconnectBtn")
+.onclick =
 () => {
 
   try{
@@ -3560,13 +4461,14 @@ $("disconnectBtn").onclick =
     ?.gatt
     ?.disconnect();
 
-  }catch{}
+  }
+  catch{}
 
 };
 
 
 /* =========================
-   進度
+   PROGRESS
 ========================= */
 
 function progress(
@@ -3577,6 +4479,7 @@ function progress(
   $("progressBar")
   .style
   .width =
+
   Math.max(
     0,
     Math.min(
@@ -3600,12 +4503,16 @@ function progress(
 
 
 /* =========================
-   停止
+   STOP
 ========================= */
 
-async function forceStopPrinter(){
+$("stopPrintBtn")
+.onclick =
+async () => {
 
-  if(!connected()){
+  if(
+    !connected()
+  ){
 
     return;
 
@@ -3619,12 +4526,7 @@ async function forceStopPrinter(){
 
   $("printStatus")
   .textContent =
-  "⏹ 正在停止送紙…";
-
-
-  log(
-    "USER FORCE STOP"
-  );
+  "⏹ 正在停止…";
 
 
   state.forceStop =
@@ -3637,7 +4539,8 @@ async function forceStopPrinter(){
       CONTROL.pageEnd()
     );
 
-  }catch{}
+  }
+  catch{}
 
 
   await delay(60);
@@ -3649,7 +4552,8 @@ async function forceStopPrinter(){
       CONTROL.printEnd()
     );
 
-  }catch{}
+  }
+  catch{}
 
 
   await delay(150);
@@ -3661,12 +4565,12 @@ async function forceStopPrinter(){
     ?.gatt
     ?.disconnect();
 
-  }catch{}
+  }
+  catch{}
 
 
-  $("printStatus")
-  .className =
-  "status warn";
+  state.printing =
+  false;
 
 
   $("printStatus")
@@ -3674,29 +4578,17 @@ async function forceStopPrinter(){
   "⏹ 已停止並中斷 B3S";
 
 
-  state.printing =
-  false;
-
-
-  state.forceStop =
-  false;
-
-
   updateButtons();
 
-}
-
-
-$("stopPrintBtn").onclick =
-forceStopPrinter;
+};
 
 
 /* =========================
-   正式列印
+   PRINT
 ========================= */
 
 async function printItems(
-  printList,
+  list,
   sourceItems=[]
 ){
 
@@ -3708,7 +4600,7 @@ async function printItems(
   if(
     mode !== "custom"
     &&
-    !printList.length
+    !list.length
   ){
 
     alert(
@@ -3721,21 +4613,8 @@ async function printItems(
 
 
   if(
-    mode === "custom"
-    &&
-    !$("customText").value.trim()
+    !connected()
   ){
-
-    alert(
-      "請輸入自訂文字"
-    );
-
-    return;
-
-  }
-
-
-  if(!connected()){
 
     alert(
       "請先連接 B3S"
@@ -3757,17 +4636,11 @@ async function printItems(
   updateButtons();
 
 
-  progress(
-    0,
-    "建立列印資料…"
-  );
-
-
   try{
 
     const original =
     buildCanvas(
-      printList
+      list
     );
 
 
@@ -3783,11 +4656,6 @@ async function printItems(
     );
 
 
-    $("printMeta")
-    .textContent =
-    `${canvas.width} × ${canvas.height} dots｜${paperModeName($("paperMode").value)}`;
-
-
     await ackStep(
       "CONNECT",
       CONTROL.connect(),
@@ -3795,35 +4663,34 @@ async function printItems(
     );
 
 
-    progress(5);
-
-
     await ackStep(
+
       "SET DENSITY",
+
       CONTROL.density(
         Number(
           $("density").value
         )
       ),
+
       0x31
+
     );
 
 
-    progress(10);
-
-
     await ackStep(
+
       "SET PAPER MODE",
+
       CONTROL.labelType(
         Number(
           $("paperMode").value
         )
       ),
+
       0x33
+
     );
-
-
-    progress(15);
 
 
     await ackStep(
@@ -3833,9 +4700,6 @@ async function printItems(
     );
 
 
-    progress(20);
-
-
     await ackStep(
       "PAGE START",
       CONTROL.pageStart(),
@@ -3843,68 +4707,57 @@ async function printItems(
     );
 
 
-    progress(25);
-
-
     await ackStep(
+
       "SET PAGE SIZE",
+
       CONTROL.pageSize(
+
         canvas.height,
+
         canvas.width
+
       ),
+
       0x14,
+
       5000
-    );
 
-
-    progress(
-      30,
-      `傳送點陣 0/${runs.length}`
     );
 
 
     for(
-      let index=0;
-      index<runs.length;
-      index++
+      let i=0;
+      i<runs.length;
+      i++
     ){
-
-      if(state.forceStop){
-
-        throw new Error(
-          "FORCE_STOP"
-        );
-
-      }
-
 
       await writeRaw(
         rowPacket(
-          runs[index]
+          runs[i]
         )
       );
 
 
       if(
-        index % 4 === 0
-        ||
-        index === runs.length - 1
+        i % 4 === 0
       ){
 
         progress(
+
           30
           +
           Math.round(
             (
-              index + 1
+              i /
+              runs.length
             )
-            /
-            runs.length
             *
             55
           ),
 
-          `傳送點陣 ${index+1}/${runs.length}`
+          `傳送點陣 ${i+1}/${runs.length}`
+
         );
 
 
@@ -3915,30 +4768,27 @@ async function printItems(
     }
 
 
-    progress(
-      88,
-      "內容完成，正在結束列印…"
-    );
-
-
     const page =
     await sendWait(
+
       CONTROL.pageEnd(),
+
       0xE4,
+
       7000
+
     );
 
 
-    if(!page.ok){
+    if(
+      !page.ok
+    ){
 
       throw new Error(
-        "PAGE END 沒有收到 E4"
+        "PAGE END 失敗"
       );
 
     }
-
-
-    progress(94);
 
 
     await delay(40);
@@ -3946,16 +4796,22 @@ async function printItems(
 
     const end =
     await sendWait(
+
       CONTROL.printEnd(),
+
       0xF4,
+
       7000
+
     );
 
 
-    if(!end.ok){
+    if(
+      !end.ok
+    ){
 
       throw new Error(
-        "PRINT END 沒有收到 F4"
+        "PRINT END 失敗"
       );
 
     }
@@ -3978,15 +4834,19 @@ async function printItems(
 
 
     if(
-      $("autoClear").checked
+      $("autoClear")
+      .checked
       &&
-      mode !== "custom"
+      mode !==
+      "custom"
     ){
 
       state.items =
       state.items.filter(
         item =>
-        !sourceItems.includes(item)
+        !sourceItems.includes(
+          item
+        )
       );
 
 
@@ -4000,41 +4860,15 @@ async function printItems(
 
   catch(error){
 
-    if(
-      error.message ===
-      "FORCE_STOP"
-    ){
-
-      $("printStatus")
-      .className =
-      "status warn";
+    $("printStatus")
+    .className =
+    "status err";
 
 
-      $("printStatus")
-      .textContent =
-      "⏹ 列印已停止";
-
-    }
-
-    else{
-
-      $("printStatus")
-      .className =
-      "status err";
-
-
-      $("printStatus")
-      .textContent =
-      "❌ " +
-      error.message;
-
-
-      log(
-        "PRINT ERROR：" +
-        error.message
-      );
-
-    }
+    $("printStatus")
+    .textContent =
+    "❌ " +
+    error.message;
 
   }
 
@@ -4056,10 +4890,11 @@ async function printItems(
 
 
 /* =========================
-   列印按鈕
+   PRINT BUTTONS
 ========================= */
 
-$("printSelectedBtn").onclick =
+$("printSelectedBtn")
+.onclick =
 async () => {
 
   const source =
@@ -4069,18 +4904,24 @@ async () => {
   );
 
 
-  const expanded = [];
+  const expanded =
+  [];
 
 
-  for(const item of source){
+  for(
+    const item
+    of source
+  ){
 
     for(
-      let index=0;
-      index<item.qty;
-      index++
+      let i=0;
+      i<item.qty;
+      i++
     ){
 
-      expanded.push(item);
+      expanded.push(
+        item
+      );
 
     }
 
@@ -4095,25 +4936,32 @@ async () => {
 };
 
 
-$("printAllBtn").onclick =
+$("printAllBtn")
+.onclick =
 async () => {
 
   const source =
   [...state.items];
 
 
-  const expanded = [];
+  const expanded =
+  [];
 
 
-  for(const item of source){
+  for(
+    const item
+    of source
+  ){
 
     for(
-      let index=0;
-      index<item.qty;
-      index++
+      let i=0;
+      i<item.qty;
+      i++
     ){
 
-      expanded.push(item);
+      expanded.push(
+        item
+      );
 
     }
 
@@ -4128,7 +4976,8 @@ async () => {
 };
 
 
-$("printCustomBtn").onclick =
+$("printCustomBtn")
+.onclick =
 async () => {
 
   await printItems(
@@ -4140,27 +4989,30 @@ async () => {
 
 
 /* =========================
-   列印模式
+   MODE
 ========================= */
 
-function updatePrintModeUi(){
+function updateMode(){
 
   const mode =
   $("printMode")
   .value;
 
 
-  const showCustom =
-  mode === "custom"
-  ||
-  mode === "name_custom";
-
-
   $("customTextArea")
   .classList
   .toggle(
+
     "hidden",
-    !showCustom
+
+    !(
+      mode ===
+      "custom"
+      ||
+      mode ===
+      "name_custom"
+    )
+
   );
 
 
@@ -4171,11 +5023,13 @@ function updatePrintModeUi(){
 }
 
 
-$("printMode").onchange =
-updatePrintModeUi;
+$("printMode")
+.onchange =
+updateMode;
 
 
-$("customText").oninput =
+$("customText")
+.oninput =
 () => {
 
   updateButtons();
@@ -4186,30 +5040,25 @@ $("customText").oninput =
 
 
 /* =========================
-   相機
+   SCANNER
 ========================= */
 
 let scanner =
 null;
 
-
 let scanning =
 false;
-
 
 let scannerMode =
 "single";
 
-
 let bulkScanCount =
 0;
 
-
-let lastScanCode =
+let lastCode =
 "";
 
-
-let lastScanTime =
+let lastTime =
 0;
 
 
@@ -4223,20 +5072,16 @@ async function openScanner(mode){
   0;
 
 
-  lastScanCode =
-  "";
-
-
-  lastScanTime =
-  0;
-
-
   $("scannerModal")
-  .style.display =
+  .style
+  .display =
   "block";
 
 
-  if(mode === "bulk"){
+  if(
+    mode ===
+    "bulk"
+  ){
 
     $("scannerTitle")
     .textContent =
@@ -4244,17 +5089,9 @@ async function openScanner(mode){
 
 
     $("bulkScanNameArea")
-    .style.display =
+    .style
+    .display =
     "block";
-
-
-    $("bulkScanCounter")
-    .textContent =
-    "已掃描 0 筆";
-
-
-    $("bulkScanName").value =
-    "";
 
   }
 
@@ -4266,25 +5103,11 @@ async function openScanner(mode){
 
 
     $("bulkScanNameArea")
-    .style.display =
+    .style
+    .display =
     "none";
 
-
-    $("bulkScanCounter")
-    .textContent =
-    "";
-
   }
-
-
-  $("scannerStatus")
-  .className =
-  "status";
-
-
-  $("scannerStatus")
-  .textContent =
-  "正在啟動相機…";
 
 
   try{
@@ -4305,54 +5128,124 @@ async function openScanner(mode){
       {
         fps:12,
 
-        qrbox:
-        (width,height) => ({
-
-          width:
-          Math.floor(
-            width * 0.88
-          ),
-
-          height:
-          Math.min(
-            150,
-            Math.floor(
-              height * 0.3
-            )
-          )
-
-        })
+        qrbox:{
+          width:280,
+          height:130
+        }
       },
 
       decoded => {
 
-        handleScan(
-          decoded
-        );
+        const now =
+        Date.now();
 
-      },
 
-      () => {}
+        if(
+          decoded ===
+          lastCode
+
+          &&
+
+          now -
+          lastTime <
+          1500
+        ){
+
+          return;
+
+        }
+
+
+        lastCode =
+        decoded;
+
+
+        lastTime =
+        now;
+
+
+        if(
+          scannerMode ===
+          "single"
+        ){
+
+          $("code").value =
+          decoded;
+
+
+          setTimeout(
+            closeScanner,
+            300
+          );
+
+
+          return;
+
+        }
+
+
+        const name =
+        $("bulkScanName")
+        .value
+        .trim();
+
+
+        const qr =
+        $("bulkScanQr")
+        .value
+        .trim();
+
+
+        const line =
+        `${name},${decoded},${qr}`;
+
+
+        const current =
+        $("bulkInput")
+        .value
+        .trim();
+
+
+        $("bulkInput")
+        .value =
+
+        current
+
+        ?
+
+        current +
+        "\n" +
+        line
+
+        :
+
+        line;
+
+
+        bulkScanCount++;
+
+
+        $("bulkScanCounter")
+        .textContent =
+        `已掃描 ${bulkScanCount} 筆`;
+
+
+        $("bulkScanName")
+        .value =
+        "";
+
+
+        $("bulkScanQr")
+        .value =
+        "";
+
+      }
 
     );
 
 
     scanning =
     true;
-
-
-    $("scannerStatus")
-    .className =
-    "status ok";
-
-
-    $("scannerStatus")
-    .textContent =
-    mode === "bulk"
-    ?
-    "請連續掃描商品條碼"
-    :
-    "請對準商品條碼";
 
   }
 
@@ -4365,124 +5258,9 @@ async function openScanner(mode){
 
     $("scannerStatus")
     .textContent =
-    "相機啟動失敗：" +
     error.message;
 
   }
-
-}
-
-
-function handleScan(decoded){
-
-  const now =
-  Date.now();
-
-
-  if(
-    decoded === lastScanCode
-    &&
-    now - lastScanTime <
-    1500
-  ){
-
-    return;
-
-  }
-
-
-  lastScanCode =
-  decoded;
-
-
-  lastScanTime =
-  now;
-
-
-  if(scannerMode === "single"){
-
-    $("code").value =
-    decoded;
-
-
-    $("scannerStatus")
-    .className =
-    "status ok";
-
-
-    $("scannerStatus")
-    .textContent =
-    "掃描成功：" +
-    decoded;
-
-
-    setTimeout(
-      closeScanner,
-      350
-    );
-
-
-    return;
-
-  }
-
-
-  const name =
-  $("bulkScanName")
-  .value
-  .trim();
-
-
-  const line =
-  `${name},${decoded}`;
-
-
-  const current =
-  $("bulkInput")
-  .value
-  .trim();
-
-
-  $("bulkInput")
-  .value =
-  current
-  ?
-  current +
-  "\n" +
-  line
-  :
-  line;
-
-
-  bulkScanCount++;
-
-
-  $("bulkScanCounter")
-  .textContent =
-  `已掃描 ${bulkScanCount} 筆`;
-
-
-  $("scannerStatus")
-  .className =
-  "status ok";
-
-
-  $("scannerStatus")
-  .textContent =
-  `已加入：${decoded}`;
-
-
-  $("bulkScanName").value =
-  "";
-
-
-  $("bulkScanName")
-  .focus();
-
-
-  $("bulkStatus")
-  .textContent =
-  `已掃描 ${bulkScanCount} 筆，完成後按「加入全部」。`;
 
 }
 
@@ -4500,18 +5278,22 @@ async function closeScanner(){
 
     }
 
-  }catch{}
+  }
+  catch{}
 
 
   try{
 
-    if(scanner){
+    if(
+      scanner
+    ){
 
       await scanner.clear();
 
     }
 
-  }catch{}
+  }
+  catch{}
 
 
   scanner =
@@ -4523,65 +5305,76 @@ async function closeScanner(){
 
 
   $("scannerModal")
-  .style.display =
+  .style
+  .display =
   "none";
 
 }
 
 
-$("scanBtn").onclick =
-() => {
-
-  openScanner(
-    "single"
-  );
-
-};
+$("scanBtn")
+.onclick =
+() =>
+openScanner(
+  "single"
+);
 
 
-$("bulkScanBtn").onclick =
-() => {
-
-  openScanner(
-    "bulk"
-  );
-
-};
+$("bulkScanBtn")
+.onclick =
+() =>
+openScanner(
+  "bulk"
+);
 
 
-$("closeScannerBtn").onclick =
+$("closeScannerBtn")
+.onclick =
 closeScanner;
 
 
 /* =========================
-   預覽設定
+   SETTINGS
 ========================= */
 
-$("refreshBtn").onclick =
-drawPreview;
+[
+  "paperWidth",
+  "barcodeHeight",
+  "qrSize",
+  "itemGap",
+  "footerText"
+]
+.forEach(
+  id => {
+
+    $(id)
+    .addEventListener(
+      "change",
+      drawPreview
+    );
 
 
-$("paperWidth").onchange =
-drawPreview;
+    $(id)
+    .addEventListener(
+      "input",
+      drawPreview
+    );
+
+  }
+);
 
 
-$("barcodeHeight").onchange =
-drawPreview;
-
-
-$("itemGap").onchange =
-drawPreview;
-
-
-$("footerText").oninput =
+$("refreshBtn")
+.onclick =
 drawPreview;
 
 
 /* =========================
-   Log
+   LOG
 ========================= */
 
-$("clearLogBtn").onclick =
+$("clearLogBtn")
+.onclick =
 () => {
 
   $("log").value =
@@ -4590,7 +5383,8 @@ $("clearLogBtn").onclick =
 };
 
 
-$("copyLogBtn").onclick =
+$("copyLogBtn")
+.onclick =
 async () => {
 
   try{
@@ -4600,31 +5394,21 @@ async () => {
       $("log").value
     );
 
-
-    alert(
-      "已複製"
-    );
-
   }
-
-  catch{
-
-    $("log").select();
-
-  }
+  catch{}
 
 };
 
 
 /* =========================
-   Init
+   INIT
 ========================= */
 
 renderItems();
 
-drawPreview();
+updateMode();
 
-updatePrintModeUi();
+drawPreview();
 
 updateButtons();
 
