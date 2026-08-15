@@ -1,0 +1,935 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>商品條碼列印｜B3S V4</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+
+  <style>
+    *{box-sizing:border-box}
+    body{
+      margin:0;background:#f4f6f8;color:#18202a;
+      font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif
+    }
+    .wrap{max-width:900px;margin:auto;padding:18px}
+    h1{margin:0 0 5px;font-size:28px}
+    h2{margin-top:0}
+    .sub,.help,label{color:#667085}
+    .sub{margin-bottom:18px}
+    .help{font-size:13px;line-height:1.55}
+    .card{
+      background:#fff;border:1px solid #d8dee8;border-radius:16px;
+      padding:16px;margin-bottom:16px
+    }
+    label{display:block;font-size:14px;margin:8px 0 6px}
+    input,textarea,select{
+      width:100%;min-height:46px;padding:10px 12px;border:1px solid #cfd6e1;
+      border-radius:10px;background:#fff;font-size:16px
+    }
+    textarea{min-height:220px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    button{
+      border:0;border-radius:10px;min-height:46px;padding:10px 14px;
+      font-size:16px;font-weight:700;background:#eef2f6;color:#18202a
+    }
+    button:disabled{opacity:.45}
+    .primary{background:#1265f3;color:#fff}
+    .ok{background:#e7f8ef;color:#087443}
+    .danger{background:#fff0ef;color:#d92d20}
+    .status{padding:11px 12px;border-radius:10px;background:#f2f4f7;margin:10px 0}
+    .status.ok{background:#ecfdf3;color:#067647}
+    .status.err{background:#fff1f0;color:#d92d20}
+    .status.warn{background:#fff8e6;color:#8a5a00}
+    .item{border:1px solid #d8dee8;border-radius:12px;padding:10px;margin-top:8px}
+    .preview{background:#e8eaed;border-radius:12px;padding:12px;overflow:auto}
+    #previewCanvas{display:block;margin:auto;max-width:100%;height:auto;background:#fff}
+    .modal{
+      display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.75);
+      padding:16px;overflow:auto
+    }
+    .modalBox{max-width:520px;margin:5vh auto;background:#fff;border-radius:16px;padding:16px}
+    .device-grid{
+      display:grid;grid-template-columns:150px 1fr;gap:8px 12px;
+      font-size:14px;margin-top:12px
+    }
+    .device-grid b{color:#475467}
+    code{
+      background:#f2f4f7;border-radius:6px;padding:2px 5px;
+      word-break:break-all
+    }
+    @media(max-width:700px){
+      .row{grid-template-columns:1fr}
+      .device-grid{grid-template-columns:1fr}
+    }
+    @media print{
+      body *{visibility:hidden!important}
+      #previewCanvas{
+        visibility:visible!important;position:absolute;left:0;top:0;width:58mm;max-width:none
+      }
+    }
+  </style>
+</head>
+
+<body>
+<div class="wrap">
+
+  <h1>商品條碼列印</h1>
+  <div class="sub">B3S Web Bluetooth 直連測試 V4｜不再依賴 NIIMBOT B1 協定</div>
+
+  <div class="card">
+    <h2>新增商品</h2>
+
+    <label>商品名稱</label>
+    <input id="name" placeholder="例如：可口可樂 ZERO">
+
+    <label>商品條碼</label>
+    <input id="code" inputmode="numeric" placeholder="掃描或輸入條碼">
+
+    <div class="actions">
+      <button id="scanBtn" class="ok">📷 相機掃描條碼</button>
+      <button id="addBtn" class="primary">＋ 新增</button>
+      <button id="clearInputBtn">清除輸入</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>待列印商品</h2>
+    <div id="items"></div>
+    <div class="actions">
+      <button id="clearAllBtn" class="danger">全部清除</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>版面設定</h2>
+
+    <div class="row">
+      <div>
+        <label>紙寬</label>
+        <select id="paperWidth">
+          <option value="77">77 mm</option>
+          <option value="70">70 mm</option>
+          <option value="60">60 mm</option>
+          <option value="58" selected>58 mm</option>
+          <option value="50">50 mm</option>
+          <option value="40">40 mm</option>
+          <option value="30">30 mm</option>
+          <option value="20">20 mm</option>
+        </select>
+      </div>
+
+      <div>
+        <label>條碼高度</label>
+        <select id="barcodeHeight">
+          <option value="10">10 mm</option>
+          <option value="12" selected>12 mm</option>
+          <option value="14">14 mm</option>
+          <option value="16">16 mm</option>
+        </select>
+      </div>
+    </div>
+
+    <label>最下方自訂文字</label>
+    <input id="footerText" placeholder="例如：115/08/15-08/18">
+
+    <div class="actions">
+      <button id="refreshBtn">重新產生預覽</button>
+      <button id="browserPrintBtn">瀏覽器列印</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>列印預覽</h2>
+    <div class="preview">
+      <canvas id="previewCanvas"></canvas>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>B3S Web Bluetooth 直連 V4</h2>
+    <p class="help">
+      這版直接使用 Web Bluetooth 連 B3S，不經過 niimbluelib。
+      連線後會掃描所有已授權的 Service / Characteristic，並自動訂閱可通知的通道。
+    </p>
+
+    <div id="bleStatus" class="status">尚未連線</div>
+
+    <div class="actions">
+      <button id="connectBtn" class="ok">🔵 直接連接 B3S</button>
+      <button id="disconnectBtn" disabled>中斷連線</button>
+      <button id="scanGattBtn" disabled>🔎 掃描 GATT</button>
+      <button id="deviceInfoBtn" disabled>📟 讀取裝置資訊</button>
+    </div>
+
+    <div class="device-grid">
+      <b>裝置名稱</b><span id="bleName">—</span>
+      <b>裝置 ID</b><span id="bleId">—</span>
+      <b>型號 Model</b><span id="infoModel">—</span>
+      <b>序號 Serial</b><span id="infoSerial">—</span>
+      <b>Firmware</b><span id="infoFirmware">—</span>
+      <b>Hardware</b><span id="infoHardware">—</span>
+      <b>Software</b><span id="infoSoftware">—</span>
+      <b>Manufacturer</b><span id="infoManufacturer">—</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>原始通訊測試</h2>
+    <p class="help">
+      這裡先用來確認 B3S 真正的資料通道。V4 不會自動送未知列印指令。
+      你可以把診斷結果傳給我，再做下一版正式列印協定。
+    </p>
+
+    <label>寫入通道</label>
+    <select id="writeChannel">
+      <option value="">尚未掃描</option>
+    </select>
+
+    <label>HEX 資料（手動測試用）</label>
+    <input id="hexInput" placeholder="例如：55 55 01 01 ...">
+
+    <div class="actions">
+      <button id="sendHexBtn" disabled>📤 送出 HEX</button>
+      <button id="clearLogBtn">清除通訊紀錄</button>
+      <button id="copyLogBtn">複製通訊紀錄</button>
+    </div>
+
+    <textarea id="commLog" readonly placeholder="連線、通知與回傳 HEX 會顯示在這裡"></textarea>
+  </div>
+
+  <div class="card">
+    <h2>B3S 藍牙診斷 V4</h2>
+
+    <div class="actions">
+      <button id="diagBtn" disabled>📋 產生完整診斷</button>
+      <button id="copyDiagBtn">複製診斷結果</button>
+    </div>
+
+    <textarea id="diagOutput" readonly placeholder="完整診斷會顯示在這裡"></textarea>
+  </div>
+
+</div>
+
+<div id="scannerModal" class="modal">
+  <div class="modalBox">
+    <div class="actions" style="justify-content:space-between;align-items:center">
+      <h2 style="margin:0">掃描商品條碼</h2>
+      <button id="closeScannerBtn" class="danger">關閉</button>
+    </div>
+
+    <div id="scannerStatus" class="status">準備啟動相機…</div>
+    <div id="qrReader"></div>
+    <p class="help">把商品條碼放到畫面中央，掃描成功後會自動填入商品條碼。</p>
+  </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+const state = {
+  items: [],
+  device: null,
+  server: null,
+  services: [],
+  characteristics: [],
+  writeChars: new Map(),
+  notifyChars: new Map()
+};
+
+const OPTIONAL_SERVICES = [
+  "0000180a-0000-1000-8000-00805f9b34fb",
+  "000018f0-0000-1000-8000-00805f9b34fb",
+  "e7810a71-73ae-499d-8c15-faa9aef0c3f2",
+  "49535343-fe7d-4ae5-8fa9-9fafd205e455"
+];
+
+function nowText() {
+  return new Date().toLocaleTimeString();
+}
+
+function appendLog(text) {
+  const out = $("commLog");
+  out.value += `[${nowText()}] ${text}\n`;
+  out.scrollTop = out.scrollHeight;
+}
+
+function bytesToHex(value) {
+  if (!value) return "";
+  const bytes = value instanceof DataView
+    ? new Uint8Array(value.buffer, value.byteOffset, value.byteLength)
+    : new Uint8Array(value.buffer ?? value);
+
+  return Array.from(bytes)
+    .map(b => b.toString(16).padStart(2, "0").toUpperCase())
+    .join(" ");
+}
+
+function hexToBytes(text) {
+  const cleaned = String(text || "")
+    .replace(/0x/gi, "")
+    .replace(/[^0-9a-fA-F]/g, "");
+
+  if (!cleaned || cleaned.length % 2 !== 0) {
+    throw new Error("HEX 格式錯誤，請輸入偶數個十六進位字元");
+  }
+
+  const arr = new Uint8Array(cleaned.length / 2);
+
+  for (let i = 0; i < cleaned.length; i += 2) {
+    arr[i / 2] = parseInt(cleaned.slice(i, i + 2), 16);
+  }
+
+  return arr;
+}
+
+function decodeText(value) {
+  try {
+    const bytes = new Uint8Array(
+      value.buffer,
+      value.byteOffset,
+      value.byteLength
+    );
+
+    return new TextDecoder("utf-8")
+      .decode(bytes)
+      .replace(/\0+$/g, "")
+      .trim();
+  } catch {
+    return "";
+  }
+}
+
+function normalizeUuid(uuid) {
+  return String(uuid || "").toLowerCase();
+}
+
+/* =========================
+   商品 / 預覽
+========================= */
+
+function detectFormat(code) {
+  if (/^\d{13}$/.test(code)) return "EAN13";
+  if (/^\d{8}$/.test(code)) return "EAN8";
+  if (/^\d{12}$/.test(code)) return "UPC";
+  return "CODE128";
+}
+
+function escapeHtml(text) {
+  return String(text ?? "").replace(/[&<>"']/g, ch => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[ch]));
+}
+
+function renderItems() {
+  const box = $("items");
+
+  if (!state.items.length) {
+    box.innerHTML = '<div class="help">目前沒有商品</div>';
+    return;
+  }
+
+  box.innerHTML = state.items.map((item, i) => `
+    <div class="item">
+      <b>${escapeHtml(item.name || "未命名商品")}</b><br>
+      <small>${escapeHtml(item.code)}</small>
+      <div class="actions">
+        <button class="danger deleteBtn" data-index="${i}">刪除</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+function addItem() {
+  const name = $("name").value.trim();
+  const code = $("code").value.trim();
+
+  if (!code) {
+    alert("請輸入或掃描商品條碼");
+    return;
+  }
+
+  state.items.push({ name, code });
+
+  $("name").value = "";
+  $("code").value = "";
+
+  renderItems();
+  drawPreview();
+}
+
+$("addBtn").onclick = addItem;
+
+$("clearInputBtn").onclick = () => {
+  $("name").value = "";
+  $("code").value = "";
+};
+
+$("items").onclick = e => {
+  const btn = e.target.closest(".deleteBtn");
+  if (!btn) return;
+
+  state.items.splice(Number(btn.dataset.index), 1);
+  renderItems();
+  drawPreview();
+};
+
+$("clearAllBtn").onclick = () => {
+  state.items = [];
+  renderItems();
+  drawPreview();
+};
+
+function mmToPx(mm) {
+  return Math.round(mm * 203 / 25.4);
+}
+
+function makeBarcode(code, width, height) {
+  const canvas = document.createElement("canvas");
+
+  try {
+    JsBarcode(canvas, code, {
+      format: detectFormat(code),
+      displayValue: true,
+      height,
+      margin: 0,
+      width: 2
+    });
+  } catch {
+    JsBarcode(canvas, code, {
+      format: "CODE128",
+      displayValue: true,
+      height,
+      margin: 0,
+      width: 2
+    });
+  }
+
+  if (canvas.width <= width) return canvas;
+
+  const scaled = document.createElement("canvas");
+  scaled.width = width;
+  scaled.height = Math.round(canvas.height * width / canvas.width);
+
+  const ctx = scaled.getContext("2d");
+  ctx.imageSmoothingEnabled = false;
+  ctx.drawImage(canvas, 0, 0, scaled.width, scaled.height);
+
+  return scaled;
+}
+
+function drawPreview() {
+  const paperWidth = mmToPx(Number($("paperWidth").value));
+  const barcodeHeight = mmToPx(Number($("barcodeHeight").value));
+  const margin = mmToPx(2);
+  const contentWidth = Math.max(80, paperWidth - margin * 2);
+
+  const blocks = state.items.map(item => {
+    const barcode = makeBarcode(item.code, contentWidth, barcodeHeight);
+
+    return {
+      item,
+      barcode,
+      height: 28 + barcode.height + mmToPx(2)
+    };
+  });
+
+  const footer = $("footerText").value.trim();
+
+  const totalHeight = Math.max(
+    mmToPx(30),
+    mmToPx(2)
+    + blocks.reduce((sum, block) => sum + block.height, 0)
+    + (footer ? 45 : 0)
+    + mmToPx(3)
+  );
+
+  const canvas = $("previewCanvas");
+  canvas.width = paperWidth;
+  canvas.height = totalHeight;
+
+  const ctx = canvas.getContext("2d");
+
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = "#000";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "top";
+
+  let y = mmToPx(2);
+
+  for (const block of blocks) {
+    ctx.font = '600 18px "PingFang TC","Microsoft JhengHei",sans-serif';
+
+    ctx.fillText(
+      block.item.name || "",
+      paperWidth / 2,
+      y,
+      contentWidth
+    );
+
+    y += 28;
+
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(
+      block.barcode,
+      (paperWidth - block.barcode.width) / 2,
+      y
+    );
+
+    y += block.barcode.height + mmToPx(2);
+  }
+
+  if (footer) {
+    ctx.font = '700 22px "PingFang TC","Microsoft JhengHei",sans-serif';
+
+    ctx.fillText(
+      footer,
+      paperWidth / 2,
+      y + 10,
+      contentWidth
+    );
+  }
+}
+
+$("refreshBtn").onclick = drawPreview;
+$("footerText").oninput = drawPreview;
+$("paperWidth").onchange = drawPreview;
+$("barcodeHeight").onchange = drawPreview;
+$("browserPrintBtn").onclick = () => {
+  drawPreview();
+  window.print();
+};
+
+/* =========================
+   相機
+========================= */
+
+let qrScanner = null;
+let scannerRunning = false;
+
+async function startScanner() {
+  if (!window.Html5Qrcode) {
+    alert("條碼掃描程式載入失敗");
+    return;
+  }
+
+  $("scannerModal").style.display = "block";
+  $("scannerStatus").className = "status";
+  $("scannerStatus").textContent = "正在啟動後鏡頭…";
+
+  qrScanner = new Html5Qrcode("qrReader");
+
+  try {
+    await qrScanner.start(
+      { facingMode: "environment" },
+      {
+        fps: 12,
+        qrbox: (width, height) => ({
+          width: Math.floor(width * 0.88),
+          height: Math.min(Math.floor(height * 0.35), 170)
+        })
+      },
+      decodedText => {
+        $("code").value = decodedText;
+        $("scannerStatus").className = "status ok";
+        $("scannerStatus").textContent = "掃描成功：" + decodedText;
+        setTimeout(stopScanner, 400);
+      },
+      () => {}
+    );
+
+    scannerRunning = true;
+    $("scannerStatus").className = "status ok";
+    $("scannerStatus").textContent = "相機已啟動，請對準商品條碼";
+
+  } catch (error) {
+    $("scannerStatus").className = "status err";
+    $("scannerStatus").textContent = "相機啟動失敗：" + error.message;
+  }
+}
+
+async function stopScanner() {
+  try {
+    if (qrScanner && scannerRunning) await qrScanner.stop();
+  } catch {}
+
+  try {
+    if (qrScanner) await qrScanner.clear();
+  } catch {}
+
+  qrScanner = null;
+  scannerRunning = false;
+  $("scannerModal").style.display = "none";
+}
+
+$("scanBtn").onclick = startScanner;
+$("closeScannerBtn").onclick = stopScanner;
+
+/* =========================
+   Web Bluetooth V4
+========================= */
+
+function setBleStatus(text, type = "") {
+  $("bleStatus").className = "status " + type;
+  $("bleStatus").textContent = text;
+}
+
+function setConnectedButtons(connected) {
+  $("disconnectBtn").disabled = !connected;
+  $("scanGattBtn").disabled = !connected;
+  $("deviceInfoBtn").disabled = !connected;
+  $("diagBtn").disabled = !connected;
+}
+
+async function connectB3S() {
+  try {
+    if (!navigator.bluetooth) {
+      throw new Error("此瀏覽器不支援 Web Bluetooth");
+    }
+
+    setBleStatus("正在選擇 B3S…");
+
+    const device = await navigator.bluetooth.requestDevice({
+      acceptAllDevices: true,
+      optionalServices: OPTIONAL_SERVICES
+    });
+
+    state.device = device;
+
+    $("bleName").textContent = device.name || "（未提供名稱）";
+    $("bleId").textContent = device.id || "—";
+
+    device.addEventListener("gattserverdisconnected", () => {
+      appendLog("裝置已中斷");
+      state.server = null;
+      setBleStatus("已中斷", "warn");
+      setConnectedButtons(false);
+      $("sendHexBtn").disabled = true;
+    });
+
+    setBleStatus("正在建立 GATT 連線…");
+
+    state.server = await device.gatt.connect();
+
+    setBleStatus("已連線", "ok");
+    appendLog(`已連線：${device.name || "(無名稱)"}`);
+
+    setConnectedButtons(true);
+
+    await scanGatt();
+
+  } catch (error) {
+    console.error(error);
+    setBleStatus("連線失敗：" + error.message, "err");
+  }
+}
+
+async function disconnectB3S() {
+  try {
+    state.device?.gatt?.disconnect();
+  } catch {}
+
+  state.server = null;
+  state.services = [];
+  state.characteristics = [];
+  state.writeChars.clear();
+  state.notifyChars.clear();
+
+  $("writeChannel").innerHTML = '<option value="">尚未掃描</option>';
+  $("sendHexBtn").disabled = true;
+
+  setConnectedButtons(false);
+  setBleStatus("尚未連線");
+}
+
+$("connectBtn").onclick = connectB3S;
+$("disconnectBtn").onclick = disconnectB3S;
+
+async function scanGatt() {
+  if (!state.server?.connected) {
+    alert("請先連接 B3S");
+    return;
+  }
+
+  state.services = [];
+  state.characteristics = [];
+  state.writeChars.clear();
+  state.notifyChars.clear();
+
+  $("writeChannel").innerHTML = "";
+
+  appendLog("開始掃描 Primary Services…");
+
+  try {
+    const services = await state.server.getPrimaryServices();
+    state.services = services;
+
+    appendLog(`Primary Services：${services.length}`);
+
+    for (const service of services) {
+      appendLog(`SERVICE ${service.uuid}`);
+
+      let chars = [];
+
+      try {
+        chars = await service.getCharacteristics();
+      } catch (error) {
+        appendLog(`  無法讀取 characteristics：${error.message}`);
+        continue;
+      }
+
+      for (const ch of chars) {
+        const p = ch.properties || {};
+
+        const props = [
+          p.read && "read",
+          p.write && "write",
+          p.writeWithoutResponse && "writeWithoutResponse",
+          p.notify && "notify",
+          p.indicate && "indicate"
+        ].filter(Boolean);
+
+        const key = `${service.uuid}|${ch.uuid}`;
+
+        state.characteristics.push({
+          key,
+          serviceUuid: service.uuid,
+          uuid: ch.uuid,
+          characteristic: ch,
+          properties: props
+        });
+
+        appendLog(`  CHAR ${ch.uuid} [${props.join(",")}]`);
+
+        if (p.write || p.writeWithoutResponse) {
+          state.writeChars.set(key, ch);
+
+          const option = document.createElement("option");
+          option.value = key;
+          option.textContent = `${shortUuid(service.uuid)} → ${shortUuid(ch.uuid)} [${p.writeWithoutResponse ? "writeWithoutResponse" : "write"}]`;
+          $("writeChannel").appendChild(option);
+        }
+
+        if (p.notify || p.indicate) {
+          state.notifyChars.set(key, ch);
+
+          try {
+            ch.addEventListener("characteristicvaluechanged", event => {
+              const value = event.target.value;
+              appendLog(`RX ${shortUuid(service.uuid)} / ${shortUuid(ch.uuid)}：${bytesToHex(value)}`);
+            });
+
+            await ch.startNotifications();
+            appendLog(`  已訂閱通知：${shortUuid(ch.uuid)}`);
+          } catch (error) {
+            appendLog(`  訂閱通知失敗 ${shortUuid(ch.uuid)}：${error.message}`);
+          }
+        }
+      }
+    }
+
+    if (state.writeChars.size) {
+      $("sendHexBtn").disabled = false;
+    } else {
+      $("writeChannel").innerHTML = '<option value="">沒有可寫入通道</option>';
+      $("sendHexBtn").disabled = true;
+    }
+
+    appendLog(`掃描完成。可寫入通道 ${state.writeChars.size} 個，可通知通道 ${state.notifyChars.size} 個。`);
+
+  } catch (error) {
+    appendLog("掃描 GATT 失敗：" + error.message);
+  }
+}
+
+$("scanGattBtn").onclick = scanGatt;
+
+function shortUuid(uuid) {
+  const s = String(uuid || "");
+  const low = s.toLowerCase();
+
+  if (low.startsWith("0000") && low.endsWith("-0000-1000-8000-00805f9b34fb")) {
+    return low.slice(4, 8).toUpperCase();
+  }
+
+  return s.toUpperCase();
+}
+
+/* =========================
+   Device Information
+========================= */
+
+const INFO_MAP = [
+  ["Model", "2a24", "infoModel"],
+  ["Serial", "2a25", "infoSerial"],
+  ["Firmware", "2a26", "infoFirmware"],
+  ["Hardware", "2a27", "infoHardware"],
+  ["Software", "2a28", "infoSoftware"],
+  ["Manufacturer", "2a29", "infoManufacturer"]
+];
+
+async function readDeviceInfo() {
+  if (!state.server?.connected) {
+    alert("請先連接 B3S");
+    return;
+  }
+
+  try {
+    const service = await state.server.getPrimaryService("180a");
+
+    for (const [label, uuid, targetId] of INFO_MAP) {
+      try {
+        const ch = await service.getCharacteristic(uuid);
+        const value = await ch.readValue();
+        const text = decodeText(value) || "（空白）";
+
+        $(targetId).textContent = text;
+        appendLog(`${label}：${text}`);
+      } catch {
+        $(targetId).textContent = "（未提供）";
+      }
+    }
+  } catch (error) {
+    appendLog("讀取 180A 失敗：" + error.message);
+  }
+}
+
+$("deviceInfoBtn").onclick = readDeviceInfo;
+
+/* =========================
+   Raw HEX
+========================= */
+
+async function sendHex() {
+  const key = $("writeChannel").value;
+
+  if (!key || !state.writeChars.has(key)) {
+    alert("請先選擇寫入通道");
+    return;
+  }
+
+  let bytes;
+
+  try {
+    bytes = hexToBytes($("hexInput").value);
+  } catch (error) {
+    alert(error.message);
+    return;
+  }
+
+  const ch = state.writeChars.get(key);
+
+  try {
+    appendLog(`TX ${key}：${bytesToHex(bytes)}`);
+
+    if (ch.properties.writeWithoutResponse && ch.writeValueWithoutResponse) {
+      await ch.writeValueWithoutResponse(bytes);
+    } else if (ch.writeValueWithResponse) {
+      await ch.writeValueWithResponse(bytes);
+    } else {
+      await ch.writeValue(bytes);
+    }
+
+    appendLog("TX 完成");
+
+  } catch (error) {
+    appendLog("TX 失敗：" + error.message);
+  }
+}
+
+$("sendHexBtn").onclick = sendHex;
+
+$("clearLogBtn").onclick = () => {
+  $("commLog").value = "";
+};
+
+$("copyLogBtn").onclick = async () => {
+  try {
+    await navigator.clipboard.writeText($("commLog").value);
+    alert("已複製通訊紀錄");
+  } catch {
+    $("commLog").focus();
+    $("commLog").select();
+    alert("已選取，請手動複製");
+  }
+};
+
+/* =========================
+   完整診斷 V4
+========================= */
+
+$("diagBtn").onclick = async () => {
+  const out = $("diagOutput");
+
+  out.value = "=== B3S 診斷 V4 ===\n";
+  out.value += `Web Bluetooth：${!!navigator.bluetooth}\n`;
+  out.value += `HTTPS：${window.isSecureContext}\n`;
+  out.value += `Device：${state.device?.name || ""}\n`;
+  out.value += `Device ID：${state.device?.id || ""}\n`;
+  out.value += `GATT connected：${!!state.server?.connected}\n`;
+
+  out.value += "\n=== Device Information ===\n";
+  out.value += `Model：${$("infoModel").textContent}\n`;
+  out.value += `Serial：${$("infoSerial").textContent}\n`;
+  out.value += `Firmware：${$("infoFirmware").textContent}\n`;
+  out.value += `Hardware：${$("infoHardware").textContent}\n`;
+  out.value += `Software：${$("infoSoftware").textContent}\n`;
+  out.value += `Manufacturer：${$("infoManufacturer").textContent}\n`;
+
+  out.value += `\nPrimary Services：${state.services.length}\n`;
+
+  for (const service of state.services) {
+    out.value += `\nSERVICE ${service.uuid}\n`;
+
+    const chars = state.characteristics.filter(
+      item => item.serviceUuid === service.uuid
+    );
+
+    for (const item of chars) {
+      out.value += `  CHAR ${item.uuid} [${item.properties.join(",")}]\n`;
+    }
+  }
+
+  out.value += `\n可寫入通道：${state.writeChars.size}\n`;
+
+  for (const key of state.writeChars.keys()) {
+    out.value += `  ${key}\n`;
+  }
+
+  out.value += `\n通知通道：${state.notifyChars.size}\n`;
+
+  for (const key of state.notifyChars.keys()) {
+    out.value += `  ${key}\n`;
+  }
+
+  out.value += "\n=== 最近通訊紀錄 ===\n";
+  out.value += $("commLog").value;
+};
+
+$("copyDiagBtn").onclick = async () => {
+  try {
+    await navigator.clipboard.writeText($("diagOutput").value);
+    alert("已複製診斷結果");
+  } catch {
+    $("diagOutput").focus();
+    $("diagOutput").select();
+    alert("已選取，請手動複製");
+  }
+};
+
+/* =========================
+   初始化
+========================= */
+
+renderItems();
+drawPreview();
+setConnectedButtons(false);
+</script>
+
+</body>
+</html>
