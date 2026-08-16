@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 
-<title>商品條碼／QR Code 列印｜B3S V18.8</title>
+<title>商品條碼／QR Code 列印｜B3S V18.9</title>
 
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
@@ -17,13 +17,13 @@ body{
   margin:0;
   background:#f4f6f8;
   color:#18202a;
-  font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif;
 }
 
 .wrap{
   max-width:900px;
   margin:auto;
-  padding:14px
+  padding:14px;
 }
 
 .card{
@@ -31,40 +31,40 @@ body{
   border:1px solid #d8dee8;
   border-radius:16px;
   padding:15px;
-  margin-bottom:14px
+  margin-bottom:14px;
 }
 
 h1{
   margin:0 0 4px;
-  font-size:25px
+  font-size:25px;
 }
 
 h2{
   margin:0 0 12px;
-  font-size:20px
+  font-size:20px;
 }
 
 .help{
   color:#667085;
   font-size:13px;
-  line-height:1.55
+  line-height:1.6;
 }
 
 .grid{
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:10px
+  gap:10px;
 }
 
 .grid3{
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:10px
+  gap:10px;
 }
 
 @media(max-width:650px){
   .grid,.grid3{
-    grid-template-columns:1fr
+    grid-template-columns:1fr;
   }
 }
 
@@ -73,7 +73,7 @@ label{
   font-size:13px;
   color:#475467;
   margin-bottom:5px;
-  font-weight:700
+  font-weight:700;
 }
 
 input,select,textarea{
@@ -83,12 +83,12 @@ input,select,textarea{
   border-radius:10px;
   padding:9px 10px;
   font-size:16px;
-  background:#fff
+  background:#fff;
 }
 
 textarea{
   min-height:90px;
-  resize:vertical
+  resize:vertical;
 }
 
 button{
@@ -98,48 +98,48 @@ button{
   padding:9px 14px;
   margin:3px;
   font-size:15px;
-  font-weight:700
+  font-weight:700;
 }
 
 button:disabled{
-  opacity:.38
+  opacity:.38;
 }
 
 .primary{
   background:#1265f3;
-  color:#fff
+  color:#fff;
 }
 
 .success{
   background:#e7f8ef;
-  color:#087443
+  color:#087443;
 }
 
 .orange{
   background:#fff1dc;
-  color:#9a5000
+  color:#9a5000;
 }
 
 .danger{
   background:#d92d20;
-  color:#fff
+  color:#fff;
 }
 
 .gray{
   background:#e9edf3;
-  color:#344054
+  color:#344054;
 }
 
 .purple{
   background:#eee8ff;
-  color:#5b37b7
+  color:#5b37b7;
 }
 
 .row{
   display:flex;
   flex-wrap:wrap;
   gap:6px;
-  align-items:center
+  align-items:center;
 }
 
 .status{
@@ -147,22 +147,22 @@ button:disabled{
   border-radius:10px;
   background:#f2f4f7;
   margin-top:9px;
-  line-height:1.5
+  line-height:1.5;
 }
 
 .ok{
   background:#ecfdf3;
-  color:#067647
+  color:#067647;
 }
 
 .warn{
   background:#fff8e6;
-  color:#8a5a00
+  color:#8a5a00;
 }
 
 .err{
   background:#fff1f0;
-  color:#d92d20
+  color:#d92d20;
 }
 
 .item{
@@ -170,7 +170,7 @@ button:disabled{
   border-radius:13px;
   padding:11px;
   margin:8px 0;
-  background:#fafbfc
+  background:#fafbfc;
 }
 
 .previewBox{
@@ -178,7 +178,7 @@ button:disabled{
   padding:12px;
   overflow:auto;
   border-radius:12px;
-  margin-top:10px
+  margin-top:10px;
 }
 
 .previewPage{
@@ -187,34 +187,44 @@ button:disabled{
   margin:5px;
   background:#fff;
   box-shadow:0 1px 4px #999;
-  max-width:100%
+  max-width:100%;
 }
 
 .previewPage canvas{
   display:block;
   max-width:100%;
-  height:auto
+  height:auto;
 }
 
 .hidden{
-  display:none!important
+  display:none!important;
 }
 
 hr{
   border:0;
   border-top:1px solid #e5e7eb;
-  margin:14px 0
+  margin:14px 0;
 }
 
 .log{
   min-height:230px;
   font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-  font-size:12px
+  font-size:12px;
+}
+
+.verified{
+  background:#ecfdf3;
+  border:1px solid #abefc6;
+  color:#067647;
+  border-radius:10px;
+  padding:10px;
+  font-weight:700;
+  margin-top:10px;
 }
 
 #reader{
   width:100%;
-  margin-top:10px
+  margin-top:10px;
 }
 </style>
 </head>
@@ -224,9 +234,13 @@ hr{
 <div class="wrap">
 
 <h1>商品條碼／QR Code 列印</h1>
+
 <div class="help">
-B3S V18.8｜單機版｜Bluefy / Web Bluetooth
+B3S V18.9｜Bluefy / Web Bluetooth
 </div>
+
+
+<!-- B3S -->
 
 <div class="card">
 
@@ -237,45 +251,111 @@ B3S V18.8｜單機版｜Bluefy / Web Bluetooth
 </div>
 
 <div class="row">
-<button id="connectBtn" class="success">🔵 連接 B3S</button>
-<button id="disconnectBtn" class="gray" disabled>中斷連線</button>
-<button id="stopBtn" class="danger" disabled>⏹ 停止列印</button>
+
+<button id="connectBtn" class="success">
+🔵 連接 B3S
+</button>
+
+<button id="disconnectBtn" class="gray" disabled>
+中斷連線
+</button>
+
+<button id="stopBtn" class="danger" disabled>
+⏹ 停止列印
+</button>
+
 </div>
 
 <div class="help" style="margin-top:8px">
-裝置：<span id="deviceName">—</span><br>
-GATT：<span id="gattState">false</span><br>
-列印通道：<span id="channelState">未就緒</span>
+
+裝置：
+<span id="deviceName">—</span>
+
+<br>
+
+GATT：
+<span id="gattState">false</span>
+
+<br>
+
+列印通道：
+<span id="channelState">未就緒</span>
+
 </div>
 
 </div>
+
+
+<!-- MODE -->
 
 <div class="card">
 
 <h2>列印模式</h2>
 
 <select id="mode">
-<option value="name_barcode_number">商品名稱＋條碼＋條碼號碼</option>
-<option value="name_barcode">商品名稱＋條碼</option>
-<option value="barcode_number">條碼＋條碼號碼</option>
-<option value="barcode">只有條碼</option>
-<option value="name">只有商品名稱</option>
 
-<option value="name_qr">商品名稱＋QR Code</option>
-<option value="qr">只有 QR Code</option>
-<option value="qr_text">QR Code＋文字</option>
-<option value="name_qr_text">商品名稱＋QR Code＋文字</option>
+<option value="name_barcode_number">
+商品名稱＋條碼＋條碼號碼
+</option>
 
-<option value="name_barcode_qr">商品名稱＋條碼＋QR Code</option>
-<option value="name_barcode_number_qr">商品名稱＋條碼＋號碼＋QR Code</option>
+<option value="name_barcode">
+商品名稱＋條碼
+</option>
 
-<option value="name_text">商品名稱＋自訂文字</option>
-<option value="text">只有自訂文字</option>
+<option value="barcode_number">
+條碼＋條碼號碼
+</option>
 
-<option value="big_sign">🔢 大字號碼牌 75×148mm</option>
+<option value="barcode">
+只有條碼
+</option>
+
+<option value="name">
+只有商品名稱
+</option>
+
+<option value="name_qr">
+商品名稱＋QR Code
+</option>
+
+<option value="qr">
+只有 QR Code
+</option>
+
+<option value="qr_text">
+QR Code＋文字
+</option>
+
+<option value="name_qr_text">
+商品名稱＋QR Code＋文字
+</option>
+
+<option value="name_barcode_qr">
+商品名稱＋條碼＋QR Code
+</option>
+
+<option value="name_barcode_number_qr">
+商品名稱＋條碼＋號碼＋QR Code
+</option>
+
+<option value="name_text">
+商品名稱＋自訂文字
+</option>
+
+<option value="text">
+只有自訂文字
+</option>
+
+<option value="big_sign">
+🔢 大字號碼牌 75×148mm
+</option>
+
 </select>
 
 </div>
+
+
+<!-- GENERAL -->
 
 <div id="generalPanel">
 
@@ -308,9 +388,19 @@ GATT：<span id="gattState">false</span><br>
 </div>
 
 <div class="row" style="margin-top:10px">
-<button id="addBtn" class="primary">＋ 加入商品</button>
-<button id="scanBtn" class="purple">📷 掃描條碼 / QR</button>
-<button id="clearProductsBtn" class="gray">清空商品</button>
+
+<button id="addBtn" class="primary">
+＋ 加入商品
+</button>
+
+<button id="scanBtn" class="purple">
+📷 掃描條碼 / QR
+</button>
+
+<button id="clearProductsBtn" class="gray">
+清空商品
+</button>
+
 </div>
 
 <div id="reader" class="hidden"></div>
@@ -318,6 +408,7 @@ GATT：<span id="gattState">false</span><br>
 <div id="products"></div>
 
 </div>
+
 
 <div class="card">
 
@@ -327,6 +418,7 @@ GATT：<span id="gattState">false</span><br>
 
 <div>
 <label>紙張寬度</label>
+
 <select id="paperWidth">
 <option value="30">30 mm</option>
 <option value="40">40 mm</option>
@@ -340,8 +432,10 @@ GATT：<span id="gattState">false</span><br>
 </select>
 </div>
 
+
 <div>
 <label>紙張模式</label>
+
 <select id="paperMode">
 <option value="3" selected>連續紙</option>
 <option value="1">間隙紙</option>
@@ -351,8 +445,10 @@ GATT：<span id="gattState">false</span><br>
 </select>
 </div>
 
+
 <div>
 <label>列印濃度</label>
+
 <select id="density">
 <option value="1">1</option>
 <option value="2" selected>2</option>
@@ -362,33 +458,66 @@ GATT：<span id="gattState">false</span><br>
 </select>
 </div>
 
+
 <div>
 <label>商品間距</label>
-<input id="itemGap" type="number" min="1" max="20" value="2">
+
+<input id="itemGap"
+type="number"
+min="1"
+max="20"
+value="2">
 </div>
+
 
 <div>
 <label>商品名稱字體</label>
-<input id="nameFont" type="number" min="12" max="100" value="30">
+
+<input id="nameFont"
+type="number"
+min="12"
+max="100"
+value="30">
 </div>
+
 
 <div>
 <label>條碼號碼字體</label>
-<input id="numberFont" type="number" min="10" max="100" value="24">
+
+<input id="numberFont"
+type="number"
+min="10"
+max="100"
+value="24">
 </div>
+
 
 <div>
 <label>自訂文字字體</label>
-<input id="textFont" type="number" min="12" max="100" value="36">
+
+<input id="textFont"
+type="number"
+min="12"
+max="100"
+value="36">
 </div>
+
 
 <div>
 <label>條碼高度（cm）</label>
-<input id="barcodeHeight" type="number" min=".5" max="20" step=".1" value="2">
+
+<input id="barcodeHeight"
+type="number"
+min=".5"
+max="20"
+step=".1"
+value="2">
 </div>
+
 
 <div>
 <label>條碼寬度</label>
+
 <select id="barcodeWidth">
 <option value="40">40%</option>
 <option value="50">50%</option>
@@ -400,8 +529,10 @@ GATT：<span id="gattState">false</span><br>
 </select>
 </div>
 
+
 <div>
 <label>條碼位置</label>
+
 <select id="barcodeAlign">
 <option value="left">靠左</option>
 <option value="center" selected>置中</option>
@@ -409,14 +540,26 @@ GATT：<span id="gattState">false</span><br>
 </select>
 </div>
 
+
 <div>
 <label>條碼 X 位移（mm）</label>
-<input id="barcodeX" type="number" step=".5" value="0">
+
+<input id="barcodeX"
+type="number"
+step=".5"
+value="0">
 </div>
+
 
 <div>
 <label>QR Code 大小（cm）</label>
-<input id="qrSize" type="number" min="1" max="10" step=".1" value="3">
+
+<input id="qrSize"
+type="number"
+min="1"
+max="10"
+step=".1"
+value="3">
 </div>
 
 </div>
@@ -424,24 +567,40 @@ GATT：<span id="gattState">false</span><br>
 <hr>
 
 <label>底部文字（可多行）</label>
+
 <textarea id="footer"></textarea>
 
 <div class="row" style="margin-top:8px">
+
 <label style="margin:0">
-<input id="autoClear" type="checkbox" style="width:auto;min-height:auto">
+
+<input id="autoClear"
+type="checkbox"
+style="width:auto;min-height:auto">
+
 列印成功後自動清空商品
+
 </label>
+
 </div>
 
 </div>
+
 
 <div class="card">
 
 <h2>預覽</h2>
 
 <div class="row">
-<button id="previewBtn" class="gray">更新預覽</button>
-<button id="printAllBtn" class="primary" disabled>🖨 列印全部商品</button>
+
+<button id="previewBtn" class="gray">
+更新預覽
+</button>
+
+<button id="printAllBtn" class="primary" disabled>
+🖨 列印全部商品
+</button>
+
 </div>
 
 <div id="generalPreview" class="previewBox"></div>
@@ -454,23 +613,36 @@ GATT：<span id="gattState">false</span><br>
 
 </div>
 
+
+<!-- BIG SIGN -->
+
 <div id="bigPanel" class="hidden">
 
 <div class="card">
 
 <h2>🔢 大字號碼牌</h2>
 
-<div class="help">
-實體紙張 75 × 148 mm。
+<div class="verified">
+✅ B3S 已驗證：72 mm 有效列印寬度 × 148 mm 高度｜黑標模式 2
 </div>
 
-<label style="margin-top:10px">要列印的內容</label>
-<textarea id="bigText" placeholder="例如：1234567890"></textarea>
+<div class="help" style="margin-top:10px">
+實體紙張仍然是 75 × 148 mm；程式只使用中央 72 mm 有效列印區。
+</div>
+
+<label style="margin-top:12px">
+要列印的內容
+</label>
+
+<textarea id="bigText"
+placeholder="例如：1234567890"></textarea>
+
 
 <div class="grid3" style="margin-top:10px">
 
 <div>
 <label>分頁方式</label>
+
 <select id="splitMode">
 <option value="char" selected>依每個字分頁</option>
 <option value="space">依空格分頁</option>
@@ -478,8 +650,10 @@ GATT：<span id="gattState">false</span><br>
 </select>
 </div>
 
+
 <div>
 <label>每張幾個字</label>
+
 <select id="charsPerPage">
 <option value="1" selected>1 字 / 張</option>
 <option value="2">2 字 / 張</option>
@@ -488,49 +662,54 @@ GATT：<span id="gattState">false</span><br>
 </select>
 </div>
 
-<div>
-<label>列印有效寬度</label>
-<select id="bigPrintWidth">
-<option value="72" selected>72 mm</option>
-<option value="75">75 mm</option>
-<option value="58">58 mm</option>
-</select>
-</div>
 
 <div>
 <label>紙張模式</label>
+
 <select id="bigPaperMode">
 <option value="2" selected>黑標紙</option>
 <option value="3">連續紙</option>
 <option value="1">間隙紙</option>
-<option value="10">黑標＋間隙</option>
 </select>
 </div>
 
+
 <div>
 <label>字體大小</label>
+
 <select id="bigFontMode">
 <option value="auto" selected>自動最大</option>
 <option value="manual">手動</option>
 </select>
 </div>
 
+
 <div>
 <label>手動字體 px</label>
-<input id="bigFontSize" type="number" min="30" max="1000" value="430">
+
+<input id="bigFontSize"
+type="number"
+min="30"
+max="1000"
+value="430">
 </div>
+
 
 <div>
 <label>粗體</label>
+
 <select id="bigBold">
-<option value="900" selected>粗體</option>
-<option value="700">中粗</option>
+<option value="900" selected>超粗</option>
+<option value="700">粗體</option>
+<option value="500">中等</option>
 <option value="400">一般</option>
 </select>
 </div>
 
+
 <div>
 <label>水平位置</label>
+
 <select id="bigAlign">
 <option value="left">靠左</option>
 <option value="center" selected>置中</option>
@@ -538,8 +717,10 @@ GATT：<span id="gattState">false</span><br>
 </select>
 </div>
 
+
 <div>
 <label>垂直位置</label>
+
 <select id="bigVAlign">
 <option value="top">靠上</option>
 <option value="center" selected>置中</option>
@@ -547,37 +728,62 @@ GATT：<span id="gattState">false</span><br>
 </select>
 </div>
 
+
 <div>
 <label>邊界（mm）</label>
-<input id="bigMargin" type="number" min="0" max="30" step=".5" value="5">
+
+<input id="bigMargin"
+type="number"
+min="0"
+max="30"
+step=".5"
+value="5">
 </div>
+
 
 <div>
 <label>X 位移（mm）</label>
-<input id="bigX" type="number" step=".5" value="0">
+
+<input id="bigX"
+type="number"
+step=".5"
+value="0">
 </div>
+
 
 <div>
 <label>Y 位移（mm）</label>
-<input id="bigY" type="number" step=".5" value="0">
+
+<input id="bigY"
+type="number"
+step=".5"
+value="0">
 </div>
+
 
 <div>
 <label>列印濃度</label>
+
 <select id="bigDensity">
 <option value="1">1</option>
 <option value="2" selected>2</option>
 <option value="3">3</option>
-<option value="4">4</option>
-<option value="5">5</option>
 </select>
 </div>
 
 </div>
 
+
 <div class="row" style="margin-top:10px">
-<button id="bigPreviewBtn" class="gray">更新大字預覽</button>
-<button id="bigPrintBtn" class="primary" disabled>🖨 列印全部號碼牌</button>
+
+<button id="bigPreviewBtn" class="gray">
+更新大字預覽
+</button>
+
+<button id="bigPrintBtn" class="primary" disabled>
+🖨 列印全部號碼牌
+</button>
+
 </div>
 
 <div id="bigStatus" class="status">
@@ -586,39 +792,36 @@ GATT：<span id="gattState">false</span><br>
 
 </div>
 
+
 <div class="card">
 
 <h2>大字預覽</h2>
+
 <div id="bigPreview" class="previewBox"></div>
 
 </div>
 
 </div>
 
+
+<!-- DIAG -->
+
 <div class="card">
 
-<h2>🧪 B3S 三段診斷 V18.8</h2>
+<h2>🧪 B3S 診斷</h2>
 
-<div class="help">
-請一次只測一個。<br><br>
-① 72 × 148 mm｜黑標紙 2<br>
-② 58 × 148 mm｜黑標紙 2<br>
-③ 72 × 148 mm｜黑標＋間隙 10<br><br>
-測試內容固定：上黑線＋中央大字「1」＋下黑線。
+<div class="verified">
+✅ 72 × 148 mm｜黑標模式 2｜PAGE END / PRINT END 已驗證成功
+</div>
+
+<div class="help" style="margin-top:10px">
+如果之後大字列印又出現異常，可以重新執行這個測試。
 </div>
 
 <div class="row" style="margin-top:10px">
 
-<button id="diag72Btn" class="orange" disabled>
-① 72×148 黑標2
-</button>
-
-<button id="diag58Btn" class="orange" disabled>
-② 58×148 黑標2
-</button>
-
-<button id="diag10Btn" class="orange" disabled>
-③ 72×148 黑標10
+<button id="diagBtn" class="orange" disabled>
+🧪 72×148 驗證測試
 </button>
 
 </div>
@@ -629,64 +832,152 @@ GATT：<span id="gattState">false</span><br>
 
 </div>
 
+
+<!-- LOG -->
+
 <div class="card">
 
 <h2>通訊紀錄</h2>
 
 <div class="row">
-<button id="copyLogBtn" class="gray">複製紀錄</button>
-<button id="clearLogBtn" class="gray">清除紀錄</button>
+
+<button id="copyLogBtn" class="gray">
+複製紀錄
+</button>
+
+<button id="clearLogBtn" class="gray">
+清除紀錄
+</button>
+
 </div>
 
-<textarea id="log" class="log" readonly></textarea>
+<textarea id="log"
+class="log"
+readonly></textarea>
 
 </div>
 
 </div>
+
 
 <script>
 
-const $=id=>document.getElementById(id);
+/* ======================================================
+BASIC
+====================================================== */
+
+const $=
+id=>
+document.getElementById(id);
+
 
 function delay(ms){
-  return new Promise(resolve=>setTimeout(resolve,ms));
+
+  return new Promise(
+    resolve=>
+    setTimeout(resolve,ms)
+  );
+
 }
+
 
 function errorText(error){
-  if(error?.message)return error.message;
-  if(typeof error==="string")return error;
-  return String(error||"未知錯誤");
+
+  if(error?.message){
+    return error.message;
+  }
+
+  if(typeof error==="string"){
+    return error;
+  }
+
+  return String(
+    error||
+    "未知錯誤"
+  );
+
 }
+
 
 function mmToDots(mm){
-  return Math.round(Number(mm)*203/25.4);
+
+  return Math.round(
+    Number(mm)*
+    203/
+    25.4
+  );
+
 }
+
 
 function paperDots(mm){
-  return Math.floor(mmToDots(mm)/8)*8;
+
+  return Math.floor(
+    mmToDots(mm)/8
+  )*8;
+
 }
 
-function u16(v){
-  return[(v>>8)&255,v&255];
+
+function u16(value){
+
+  return[
+    (value>>8)&255,
+    value&255
+  ];
+
 }
+
 
 function hex(bytes){
+
   return Array.from(bytes)
-  .map(v=>v.toString(16).padStart(2,"0").toUpperCase())
+  .map(
+    value=>
+    value
+    .toString(16)
+    .padStart(2,"0")
+    .toUpperCase()
+  )
   .join(" ");
+
 }
+
 
 function log(text){
-  const box=$("log");
-  box.value+=`[${new Date().toLocaleTimeString()}] ${text}\n`;
-  box.scrollTop=box.scrollHeight;
+
+  const box=
+  $("log");
+
+  box.value+=
+  `[${new Date().toLocaleTimeString()}] ${text}\n`;
+
+  box.scrollTop=
+  box.scrollHeight;
+
 }
 
-function clamp(v,min,max){
-  return Math.max(min,Math.min(max,v));
+
+function clamp(
+  value,
+  min,
+  max
+){
+
+  return Math.max(
+    min,
+    Math.min(
+      max,
+      value
+    )
+  );
+
 }
 
-/* BLE */
+
+/* ======================================================
+BLE
+====================================================== */
 
 const SERVICE=
 "49535343-fe7d-4ae5-8fa9-9fafd205e455";
@@ -697,93 +988,168 @@ const WRITE_UUID=
 const NOTIFY_UUID=
 "49535343-1e4d-4bd9-ba61-23c647249616";
 
+
 const state={
+
   device:null,
   server:null,
   write:null,
   notify:null,
+
   rx:[],
+
   running:false,
   stop:false
+
 };
 
+
 function connected(){
+
   return !!(
     state.server?.connected &&
     state.write &&
     state.notify
   );
+
 }
+
 
 function updateButtons(){
 
-  const ready=connected();
+  const ready=
+  connected();
 
-  $("disconnectBtn").disabled=!ready;
-  $("stopBtn").disabled=!ready;
+  $("disconnectBtn").disabled=
+  !ready;
 
-  $("printAllBtn").disabled=!ready||state.running;
-  $("bigPrintBtn").disabled=!ready||state.running;
+  $("stopBtn").disabled=
+  !ready;
 
-  $("diag72Btn").disabled=!ready||state.running;
-  $("diag58Btn").disabled=!ready||state.running;
-  $("diag10Btn").disabled=!ready||state.running;
+  $("printAllBtn").disabled=
+  !ready||
+  state.running;
+
+  $("bigPrintBtn").disabled=
+  !ready||
+  state.running;
+
+  $("diagBtn").disabled=
+  !ready||
+  state.running;
 
   $("gattState").textContent=
-  String(!!state.server?.connected);
+  String(
+    !!state.server?.connected
+  );
 
   $("channelState").textContent=
-  ready?"已就緒":"未就緒";
+  ready
+  ?
+  "已就緒"
+  :
+  "未就緒";
+
 }
 
-/* PACKET */
 
-function frame(command,data=[1],prefix=false){
+/* ======================================================
+PACKET
+====================================================== */
 
-  const payload=Array.from(data);
+function frame(
+  command,
+  data=[1],
+  prefix=false
+){
+
+  const payload=
+  Array.from(data);
 
   let checksum=
-  command^payload.length;
+  command^
+  payload.length;
 
-  for(const value of payload){
-    checksum^=value;
+  for(
+    const value
+    of payload
+  ){
+
+    checksum^=
+    value;
   }
 
   const packet=[
-    0x55,0x55,
+
+    0x55,
+    0x55,
+
     command,
+
     payload.length,
+
     ...payload,
+
     checksum&255,
-    0xAA,0xAA
+
+    0xAA,
+    0xAA
+
   ];
 
   if(prefix){
-    packet.unshift(0x03);
+
+    packet.unshift(
+      0x03
+    );
+
   }
 
-  return new Uint8Array(packet);
+  return new Uint8Array(
+    packet
+  );
+
 }
+
 
 const CONTROL={
 
   connect:
-  ()=>frame(0xC1,[1],true),
+  ()=>frame(
+    0xC1,
+    [1],
+    true
+  ),
 
   density:
-  value=>frame(0x21,[value]),
+  value=>frame(
+    0x21,
+    [value]
+  ),
 
   labelType:
-  value=>frame(0x23,[value]),
+  value=>frame(
+    0x23,
+    [value]
+  ),
 
   printStart:
-  ()=>frame(0x01,[1]),
+  ()=>frame(
+    0x01,
+    [1]
+  ),
 
   pageStart:
-  ()=>frame(0x03,[1]),
+  ()=>frame(
+    0x03,
+    [1]
+  ),
 
   pageSize:
-  (height,width)=>frame(
+  (
+    height,
+    width
+  )=>frame(
     0x13,
     [
       ...u16(height),
@@ -792,121 +1158,237 @@ const CONTROL={
   ),
 
   pageEnd:
-  ()=>frame(0xE3,[1]),
+  ()=>frame(
+    0xE3,
+    [1]
+  ),
 
   printEnd:
-  ()=>frame(0xF3,[1])
+  ()=>frame(
+    0xF3,
+    [1]
+  )
+
 };
 
-/* RX */
+
+/* ======================================================
+RX
+====================================================== */
 
 function parsePackets(text){
 
   const bytes=
-  String(text||"")
+  String(
+    text||
+    ""
+  )
   .trim()
   .split(/\s+/)
   .filter(Boolean)
-  .map(v=>parseInt(v,16));
+  .map(
+    value=>
+    parseInt(
+      value,
+      16
+    )
+  );
+
 
   const result=[];
 
   let pos=0;
 
-  while(pos<bytes.length){
+
+  while(
+    pos<
+    bytes.length
+  ){
 
     if(
       bytes[pos]!==0x55 ||
       bytes[pos+1]!==0x55
     ){
+
       pos++;
+
       continue;
     }
 
-    const command=bytes[pos+2];
-    const length=bytes[pos+3];
+
+    const command=
+    bytes[pos+2];
+
+    const length=
+    bytes[pos+3];
 
     const checksumIndex=
-    pos+4+length;
+    pos+
+    4+
+    length;
 
     const tail=
-    checksumIndex+1;
+    checksumIndex+
+    1;
 
-    if(tail+1>=bytes.length){
+
+    if(
+      tail+1>=
+      bytes.length
+    ){
+
       break;
     }
+
 
     if(
       bytes[tail]!==0xAA ||
       bytes[tail+1]!==0xAA
     ){
+
       pos++;
+
       continue;
     }
+
 
     let checksum=
     command^length;
 
-    for(let i=0;i<length;i++){
-      checksum^=bytes[pos+4+i];
+
+    for(
+      let i=0;
+      i<length;
+      i++
+    ){
+
+      checksum^=
+      bytes[
+        pos+
+        4+
+        i
+      ];
+
     }
+
 
     if(
       (checksum&255)!==
-      bytes[checksumIndex]
+      bytes[
+        checksumIndex
+      ]
     ){
+
       pos++;
+
       continue;
     }
 
+
     result.push({
+
       command,
-      payload:bytes.slice(
+
+      payload:
+      bytes.slice(
         pos+4,
         pos+4+length
       )
+
     });
 
-    pos=tail+2;
+
+    pos=
+    tail+
+    2;
+
   }
 
+
   return result;
+
 }
 
-/* WRITE */
+
+/* ======================================================
+WRITE
+====================================================== */
 
 async function rawGattWrite(bytes){
 
   if(
-    state.write.properties.writeWithoutResponse &&
-    state.write.writeValueWithoutResponse
+    state.write
+    .properties
+    .writeWithoutResponse &&
+    state.write
+    .writeValueWithoutResponse
   ){
-    await state.write.writeValueWithoutResponse(bytes);
+
+    await state.write
+    .writeValueWithoutResponse(
+      bytes
+    );
+
   }
 
-  else if(state.write.writeValueWithResponse){
-    await state.write.writeValueWithResponse(bytes);
+  else if(
+    state.write
+    .writeValueWithResponse
+  ){
+
+    await state.write
+    .writeValueWithResponse(
+      bytes
+    );
+
   }
 
   else{
-    await state.write.writeValue(bytes);
+
+    await state.write
+    .writeValue(
+      bytes
+    );
+
   }
+
 }
+
 
 async function writeControl(bytes){
 
-  if(!connected()){
-    throw new Error("B3S 尚未連線");
+  if(
+    !connected()
+  ){
+
+    throw new Error(
+      "B3S 尚未連線"
+    );
+
   }
 
-  log("TX："+hex(bytes));
 
-  await rawGattWrite(bytes);
+  log(
+    "TX："+
+    hex(bytes)
+  );
+
+
+  await rawGattWrite(
+    bytes
+  );
+
 }
 
-async function writeRaw(bytes){
 
-  const size=20;
+async function writeRaw(
+  bytes,
+  chunkDelay=5
+){
+
+  const size=
+  20;
+
 
   for(
     let i=0;
@@ -914,17 +1396,37 @@ async function writeRaw(bytes){
     i+=size
   ){
 
-    if(state.stop){
-      throw new Error("使用者停止");
+    if(
+      state.stop
+    ){
+
+      throw new Error(
+        "使用者停止"
+      );
+
     }
 
+
     await rawGattWrite(
-      bytes.slice(i,i+size)
+      bytes.slice(
+        i,
+        i+size
+      )
     );
 
-    await delay(5);
+
+    await delay(
+      chunkDelay
+    );
+
   }
+
 }
+
+
+/* ======================================================
+WAIT ACK
+====================================================== */
 
 async function sendWait(
   name,
@@ -936,14 +1438,20 @@ async function sendWait(
   const startIndex=
   state.rx.length;
 
+
   log(
     `${name} → ${hex(packet)}`
   );
 
-  await rawGattWrite(packet);
+
+  await rawGattWrite(
+    packet
+  );
+
 
   const start=
   Date.now();
+
 
   while(
     Date.now()-start<
@@ -951,11 +1459,20 @@ async function sendWait(
   ){
 
     const incoming=
-    state.rx.slice(startIndex);
+    state.rx.slice(
+      startIndex
+    );
 
-    for(const raw of incoming){
 
-      for(const parsed of parsePackets(raw)){
+    for(
+      const raw
+      of incoming
+    ){
+
+      for(
+        const parsed
+        of parsePackets(raw)
+      ){
 
         if(
           parsed.command===
@@ -967,157 +1484,77 @@ async function sendWait(
           );
 
           return true;
+
         }
+
       }
+
     }
 
-    await delay(30);
+
+    await delay(
+      30
+    );
+
   }
+
 
   log(
     `${name} ACK ❌ TIMEOUT`
   );
 
+
   return false;
+
 }
 
-/* BITMAP */
 
-function sameRow(a,b){
+/* ======================================================
+CANVAS
+====================================================== */
 
-  if(a.length!==b.length)return false;
-
-  for(let i=0;i<a.length;i++){
-    if(a[i]!==b[i])return false;
-  }
-
-  return true;
-}
-
-function canvasToRuns(canvas){
-
-  const ctx=
-  canvas.getContext("2d");
-
-  const data=
-  ctx.getImageData(
-    0,0,
-    canvas.width,
-    canvas.height
-  ).data;
-
-  const rows=[];
-
-  for(let y=0;y<canvas.height;y++){
-
-    const row=
-    new Uint8Array(
-      canvas.width/8
-    );
-
-    let black=0;
-
-    for(let x=0;x<canvas.width;x++){
-
-      const i=
-      (y*canvas.width+x)*4;
-
-      const gray=
-      (
-        data[i]*299+
-        data[i+1]*587+
-        data[i+2]*114
-      )/1000;
-
-      if(gray<170){
-
-        row[x>>3]|=
-        0x80>>(x&7);
-
-        black++;
-      }
-    }
-
-    rows.push({
-      data:row,
-      black
-    });
-  }
-
-  const runs=[];
-
-  let y=0;
-
-  while(y<rows.length){
-
-    const first=
-    rows[y];
-
-    let repeat=1;
-
-    while(
-      y+repeat<rows.length &&
-      repeat<255 &&
-      sameRow(
-        first.data,
-        rows[y+repeat].data
-      )
-    ){
-      repeat++;
-    }
-
-    runs.push({
-      row:y,
-      repeat,
-      data:first.data,
-      black:first.black
-    });
-
-    y+=repeat;
-  }
-
-  return runs;
-}
-
-function rowPacket(run){
-
-  return frame(
-    0x85,
-    [
-      ...u16(run.row),
-      0,
-      run.black&255,
-      (run.black>>8)&255,
-      run.repeat,
-      ...run.data
-    ]
-  );
-}
-
-/* CANVAS HELPERS */
-
-function whiteCanvas(width,height){
+function whiteCanvas(
+  width,
+  height
+){
 
   const canvas=
-  document.createElement("canvas");
-
-  canvas.width=width;
-  canvas.height=height;
-
-  const ctx=
-  canvas.getContext("2d");
-
-  ctx.fillStyle="#fff";
-
-  ctx.fillRect(
-    0,0,
-    width,height
+  document.createElement(
+    "canvas"
   );
 
-  ctx.fillStyle="#000";
+  canvas.width=
+  width;
+
+  canvas.height=
+  height;
+
+
+  const ctx=
+  canvas.getContext(
+    "2d"
+  );
+
+
+  ctx.fillStyle=
+  "#fff";
+
+  ctx.fillRect(
+    0,
+    0,
+    width,
+    height
+  );
+
+
+  ctx.fillStyle=
+  "#000";
+
 
   return canvas;
+
 }
+
 
 function wrapText(
   ctx,
@@ -1126,15 +1563,25 @@ function wrapText(
 ){
 
   const chars=
-  Array.from(text||"");
+  Array.from(
+    text||
+    ""
+  );
 
   const lines=[];
 
   let line="";
 
-  for(const c of chars){
 
-    const test=line+c;
+  for(
+    const char
+    of chars
+  ){
+
+    const test=
+    line+
+    char;
+
 
     if(
       ctx.measureText(test).width>
@@ -1142,45 +1589,405 @@ function wrapText(
       line
     ){
 
-      lines.push(line);
-      line=c;
+      lines.push(
+        line
+      );
+
+      line=
+      char;
+
     }
 
     else{
-      line=test;
+
+      line=
+      test;
+
     }
+
   }
+
 
   if(line){
-    lines.push(line);
+
+    lines.push(
+      line
+    );
+
   }
 
+
   return lines;
+
 }
 
-/* BARCODE */
+
+/* ======================================================
+BITMAP — NORMAL COMPRESSED MODE
+====================================================== */
+
+function sameRow(
+  a,
+  b
+){
+
+  if(
+    a.length!==
+    b.length
+  ){
+
+    return false;
+
+  }
+
+
+  for(
+    let i=0;
+    i<a.length;
+    i++
+  ){
+
+    if(
+      a[i]!==
+      b[i]
+    ){
+
+      return false;
+
+    }
+
+  }
+
+
+  return true;
+
+}
+
+
+function canvasToRuns(
+  canvas
+){
+
+  const ctx=
+  canvas.getContext(
+    "2d"
+  );
+
+
+  const data=
+  ctx.getImageData(
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  ).data;
+
+
+  const rows=[];
+
+
+  for(
+    let y=0;
+    y<canvas.height;
+    y++
+  ){
+
+    const row=
+    new Uint8Array(
+      canvas.width/8
+    );
+
+
+    let black=0;
+
+
+    for(
+      let x=0;
+      x<canvas.width;
+      x++
+    ){
+
+      const i=
+      (
+        y*
+        canvas.width+
+        x
+      )*4;
+
+
+      const gray=
+      (
+        data[i]*299+
+        data[i+1]*587+
+        data[i+2]*114
+      )/1000;
+
+
+      if(
+        gray<
+        170
+      ){
+
+        row[x>>3]|=
+        0x80>>
+        (x&7);
+
+        black++;
+
+      }
+
+    }
+
+
+    rows.push({
+
+      data:row,
+
+      black
+
+    });
+
+  }
+
+
+  const runs=[];
+
+  let y=0;
+
+
+  while(
+    y<
+    rows.length
+  ){
+
+    const first=
+    rows[y];
+
+    let repeat=
+    1;
+
+
+    while(
+      y+repeat<
+      rows.length &&
+      repeat<
+      255 &&
+      sameRow(
+        first.data,
+        rows[y+repeat].data
+      )
+    ){
+
+      repeat++;
+
+    }
+
+
+    runs.push({
+
+      row:y,
+
+      repeat,
+
+      data:first.data,
+
+      black:first.black
+
+    });
+
+
+    y+=
+    repeat;
+
+  }
+
+
+  return runs;
+
+}
+
+
+/* ======================================================
+BITMAP — SAFE ROW MODE
+大字模式每一列都送，不壓縮
+====================================================== */
+
+function canvasToSafeRows(
+  canvas
+){
+
+  const ctx=
+  canvas.getContext(
+    "2d"
+  );
+
+
+  const image=
+  ctx.getImageData(
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
+
+
+  const data=
+  image.data;
+
+  const rows=[];
+
+
+  for(
+    let y=0;
+    y<canvas.height;
+    y++
+  ){
+
+    const row=
+    new Uint8Array(
+      canvas.width/8
+    );
+
+
+    let black=
+    0;
+
+
+    for(
+      let x=0;
+      x<canvas.width;
+      x++
+    ){
+
+      const i=
+      (
+        y*
+        canvas.width+
+        x
+      )*4;
+
+
+      const gray=
+      (
+        data[i]*299+
+        data[i+1]*587+
+        data[i+2]*114
+      )/1000;
+
+
+      if(
+        gray<
+        170
+      ){
+
+        row[x>>3]|=
+        0x80>>
+        (x&7);
+
+        black++;
+
+      }
+
+    }
+
+
+    rows.push({
+
+      row:y,
+
+      repeat:1,
+
+      data:row,
+
+      black
+
+    });
+
+  }
+
+
+  return rows;
+
+}
+
+
+function rowPacket(run){
+
+  return frame(
+    0x85,
+    [
+
+      ...u16(
+        run.row
+      ),
+
+      0,
+
+      run.black&
+      255,
+
+      (
+        run.black>>
+        8
+      )&
+      255,
+
+      run.repeat,
+
+      ...run.data
+
+    ]
+  );
+
+}
+
+
+/* ======================================================
+BARCODE
+====================================================== */
 
 function createBarcodeCanvas(value){
 
   const raw=
-  document.createElement("canvas");
+  document.createElement(
+    "canvas"
+  );
+
 
   JsBarcode(
     raw,
     String(value),
     {
-      format:"CODE128",
-      displayValue:false,
-      margin:0,
-      width:2,
-      height:100,
-      background:"#ffffff",
-      lineColor:"#000000"
+
+      format:
+      "CODE128",
+
+      displayValue:
+      false,
+
+      margin:
+      0,
+
+      width:
+      2,
+
+      height:
+      100,
+
+      background:
+      "#ffffff",
+
+      lineColor:
+      "#000000"
+
     }
   );
 
+
   return raw;
+
 }
+
 
 function stretchBarcode(
   raw,
@@ -1189,13 +1996,21 @@ function stretchBarcode(
 ){
 
   const canvas=
-  document.createElement("canvas");
+  document.createElement(
+    "canvas"
+  );
+
 
   canvas.width=
   Math.max(
     8,
-    Math.floor(targetWidth/8)*8
+    Math.floor(
+      targetWidth/
+      8
+    )*
+    8
   );
+
 
   canvas.height=
   Math.max(
@@ -1203,32 +2018,52 @@ function stretchBarcode(
     targetHeight
   );
 
-  const ctx=
-  canvas.getContext("2d");
 
-  ctx.fillStyle="#fff";
+  const ctx=
+  canvas.getContext(
+    "2d"
+  );
+
+
+  ctx.fillStyle=
+  "#fff";
+
 
   ctx.fillRect(
-    0,0,
+    0,
+    0,
     canvas.width,
     canvas.height
   );
 
-  ctx.imageSmoothingEnabled=false;
+
+  ctx.imageSmoothingEnabled=
+  false;
+
 
   ctx.drawImage(
     raw,
-    0,0,
-    raw.width,raw.height,
-    0,0,
+
+    0,
+    0,
+    raw.width,
+    raw.height,
+
+    0,
+    0,
     canvas.width,
     canvas.height
   );
 
+
   return canvas;
+
 }
 
-/* QR */
+
+/* ======================================================
+QR
+====================================================== */
 
 async function createQRCanvas(
   value,
@@ -1236,161 +2071,306 @@ async function createQRCanvas(
 ){
 
   return new Promise(
-    (resolve,reject)=>{
+    (
+      resolve,
+      reject
+    )=>{
 
       try{
 
         const holder=
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
-        holder.style.position="fixed";
-        holder.style.left="-9999px";
-        holder.style.top="-9999px";
 
-        document.body.appendChild(holder);
+        holder.style.position=
+        "fixed";
+
+        holder.style.left=
+        "-9999px";
+
+        holder.style.top=
+        "-9999px";
+
+
+        document.body
+        .appendChild(
+          holder
+        );
+
 
         new QRCode(
           holder,
           {
-            text:String(value),
-            width:dots,
-            height:dots,
+
+            text:
+            String(value),
+
+            width:
+            dots,
+
+            height:
+            dots,
+
             correctLevel:
             QRCode.CorrectLevel.M
+
           }
         );
 
-        setTimeout(()=>{
 
-          try{
+        setTimeout(
+          ()=>{
 
-            const source=
-            holder.querySelector("canvas");
+            try{
 
-            if(!source){
-              throw new Error(
-                "QR Code 產生失敗"
+              const source=
+              holder.querySelector(
+                "canvas"
               );
+
+
+              if(
+                !source
+              ){
+
+                throw new Error(
+                  "QR Code 產生失敗"
+                );
+
+              }
+
+
+              const canvas=
+              document.createElement(
+                "canvas"
+              );
+
+
+              canvas.width=
+              dots;
+
+              canvas.height=
+              dots;
+
+
+              canvas
+              .getContext("2d")
+              .drawImage(
+                source,
+                0,
+                0,
+                dots,
+                dots
+              );
+
+
+              holder.remove();
+
+
+              resolve(
+                canvas
+              );
+
             }
 
-            const canvas=
-            document.createElement("canvas");
+            catch(error){
 
-            canvas.width=dots;
-            canvas.height=dots;
+              holder.remove();
 
-            canvas
-            .getContext("2d")
-            .drawImage(
-              source,
-              0,0,
-              dots,dots
-            );
+              reject(
+                error
+              );
 
-            holder.remove();
+            }
 
-            resolve(canvas);
-
-          }
-
-          catch(error){
-
-            holder.remove();
-
-            reject(error);
-          }
-
-        },30);
+          },
+          30
+        );
 
       }
 
       catch(error){
-        reject(error);
+
+        reject(
+          error
+        );
+
       }
+
     }
   );
+
 }
 
-/* PRODUCTS */
+
+/* ======================================================
+PRODUCTS
+====================================================== */
 
 let products=[];
 
+
 function escapeHtml(value){
 
-  return String(value||"")
-  .replaceAll("&","&amp;")
-  .replaceAll("<","&lt;")
-  .replaceAll(">","&gt;")
-  .replaceAll('"',"&quot;");
+  return String(
+    value||
+    ""
+  )
+  .replaceAll(
+    "&",
+    "&amp;"
+  )
+  .replaceAll(
+    "<",
+    "&lt;"
+  )
+  .replaceAll(
+    ">",
+    "&gt;"
+  )
+  .replaceAll(
+    '"',
+    "&quot;"
+  );
+
 }
+
 
 function renderProducts(){
 
-  const box=$("products");
+  const box=
+  $("products");
 
-  box.innerHTML="";
 
-  if(!products.length){
+  box.innerHTML=
+  "";
+
+
+  if(
+    !products.length
+  ){
 
     box.innerHTML=
     '<div class="help" style="margin-top:12px">尚未加入商品</div>';
 
     return;
+
   }
 
+
   products.forEach(
-    (item,index)=>{
+    (
+      item,
+      index
+    )=>{
 
       const div=
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
 
-      div.className="item";
+
+      div.className=
+      "item";
+
 
       div.innerHTML=`
-        <b>${index+1}. ${escapeHtml(item.name||"未命名")}</b>
+
+        <b>
+        ${index+1}.
+        ${escapeHtml(item.name||"未命名")}
+        </b>
 
         <div class="help">
-        條碼：${escapeHtml(item.barcode||"—")}<br>
-        QR：${escapeHtml(item.qr||"—")}<br>
-        文字：${escapeHtml(item.text||"—")}
+
+        條碼：
+        ${escapeHtml(item.barcode||"—")}
+        <br>
+
+        QR：
+        ${escapeHtml(item.qr||"—")}
+        <br>
+
+        文字：
+        ${escapeHtml(item.text||"—")}
+
         </div>
 
-        <button class="danger removeProduct" data-i="${index}">
+        <button
+        class="danger removeProduct"
+        data-i="${index}">
         刪除
         </button>
+
       `;
 
-      box.appendChild(div);
+
+      box.appendChild(
+        div
+      );
+
     }
   );
 
+
   document
-  .querySelectorAll(".removeProduct")
+  .querySelectorAll(
+    ".removeProduct"
+  )
   .forEach(
     button=>{
 
-      button.onclick=()=>{
+      button.onclick=
+      ()=>{
 
         products.splice(
-          Number(button.dataset.i),
+          Number(
+            button.dataset.i
+          ),
           1
         );
 
         renderProducts();
+
         renderGeneralPreview();
+
       };
+
     }
   );
+
 }
 
-$("addBtn").onclick=()=>{
+
+$("addBtn").onclick=
+()=>{
 
   const item={
-    name:$("productName").value.trim(),
-    barcode:$("barcode").value.trim(),
-    qr:$("qrValue").value.trim(),
-    text:$("customText").value.trim()
+
+    name:
+    $("productName")
+    .value
+    .trim(),
+
+    barcode:
+    $("barcode")
+    .value
+    .trim(),
+
+    qr:
+    $("qrValue")
+    .value
+    .trim(),
+
+    text:
+    $("customText")
+    .value
+    .trim()
+
   };
+
 
   if(
     !item.name &&
@@ -1399,36 +2379,56 @@ $("addBtn").onclick=()=>{
     !item.text
   ){
 
-    alert("請先輸入商品資料");
+    alert(
+      "請先輸入商品資料"
+    );
 
     return;
+
   }
 
-  products.push(item);
+
+  products.push(
+    item
+  );
+
 
   renderProducts();
+
   renderGeneralPreview();
+
 };
 
-$("clearProductsBtn").onclick=()=>{
+
+$("clearProductsBtn").onclick=
+()=>{
 
   products=[];
 
   renderProducts();
+
   renderGeneralPreview();
+
 };
 
-/* GENERAL LABEL */
+
+/* ======================================================
+GENERAL LABEL
+====================================================== */
 
 async function buildProductCanvas(item){
 
   const mode=
   $("mode").value;
 
+
   const width=
   paperDots(
-    Number($("paperWidth").value)
+    Number(
+      $("paperWidth").value
+    )
   );
+
 
   const margin=
   Math.max(
@@ -1436,47 +2436,88 @@ async function buildProductCanvas(item){
     mmToDots(2)
   );
 
+
   const gap=
   Math.max(
     2,
     mmToDots(
-      Number($("itemGap").value)
+      Number(
+        $("itemGap").value
+      )
     )
   );
 
+
   const nameFont=
-  Number($("nameFont").value)||30;
+  Number(
+    $("nameFont").value
+  )||
+  30;
+
 
   const numberFont=
-  Number($("numberFont").value)||24;
+  Number(
+    $("numberFont").value
+  )||
+  24;
+
 
   const textFont=
-  Number($("textFont").value)||36;
+  Number(
+    $("textFont").value
+  )||
+  36;
+
 
   const barcodeHeight=
   mmToDots(
-    Number($("barcodeHeight").value)*10
+    Number(
+      $("barcodeHeight").value
+    )*
+    10
   );
 
+
   const barcodePercent=
-  Number($("barcodeWidth").value)/100;
+  Number(
+    $("barcodeWidth").value
+  )/
+  100;
+
 
   const qrDots=
   mmToDots(
-    Number($("qrSize").value)*10
+    Number(
+      $("qrSize").value
+    )*
+    10
   );
 
+
   const footer=
-  $("footer").value.trim();
+  $("footer")
+  .value
+  .trim();
+
 
   const layers=[];
 
-  function spacer(h=gap){
+
+  function spacer(
+    height=gap
+  ){
+
     layers.push({
-      type:"space",
-      height:h
+
+      type:
+      "space",
+
+      height
+
     });
+
   }
+
 
   const needName=[
     "name_barcode_number",
@@ -1487,7 +2528,11 @@ async function buildProductCanvas(item){
     "name_barcode_qr",
     "name_barcode_number_qr",
     "name_text"
-  ].includes(mode);
+  ]
+  .includes(
+    mode
+  );
+
 
   const needBarcode=[
     "name_barcode_number",
@@ -1496,13 +2541,21 @@ async function buildProductCanvas(item){
     "barcode",
     "name_barcode_qr",
     "name_barcode_number_qr"
-  ].includes(mode);
+  ]
+  .includes(
+    mode
+  );
+
 
   const needNumber=[
     "name_barcode_number",
     "barcode_number",
     "name_barcode_number_qr"
-  ].includes(mode);
+  ]
+  .includes(
+    mode
+  );
+
 
   const needQR=[
     "name_qr",
@@ -1511,26 +2564,49 @@ async function buildProductCanvas(item){
     "name_qr_text",
     "name_barcode_qr",
     "name_barcode_number_qr"
-  ].includes(mode);
+  ]
+  .includes(
+    mode
+  );
+
 
   const needText=[
     "qr_text",
     "name_qr_text",
     "name_text",
     "text"
-  ].includes(mode);
+  ]
+  .includes(
+    mode
+  );
 
-  if(needName && item.name){
+
+  if(
+    needName &&
+    item.name
+  ){
 
     layers.push({
-      type:"text",
-      text:item.name,
-      font:nameFont,
-      weight:"700"
+
+      type:
+      "text",
+
+      text:
+      item.name,
+
+      font:
+      nameFont,
+
+      weight:
+      "700"
+
     });
 
+
     spacer();
+
   }
+
 
   if(
     needBarcode &&
@@ -1539,11 +2615,14 @@ async function buildProductCanvas(item){
 
     let raw;
 
+
     try{
+
       raw=
       createBarcodeCanvas(
         item.barcode
       );
+
     }
 
     catch(error){
@@ -1552,10 +2631,14 @@ async function buildProductCanvas(item){
         "條碼產生失敗："+
         errorText(error)
       );
+
     }
 
+
     const available=
-    width-margin*2;
+    width-
+    margin*2;
+
 
     const target=
     Math.max(
@@ -1566,6 +2649,7 @@ async function buildProductCanvas(item){
       )
     );
 
+
     const barcodeCanvas=
     stretchBarcode(
       raw,
@@ -1573,17 +2657,33 @@ async function buildProductCanvas(item){
       barcodeHeight
     );
 
+
     layers.push({
-      type:"image",
-      canvas:barcodeCanvas,
-      align:$("barcodeAlign").value,
-      xOffset:mmToDots(
-        Number($("barcodeX").value)||0
+
+      type:
+      "image",
+
+      canvas:
+      barcodeCanvas,
+
+      align:
+      $("barcodeAlign").value,
+
+      xOffset:
+      mmToDots(
+        Number(
+          $("barcodeX").value
+        )||
+        0
       )
+
     });
 
+
     spacer();
+
   }
+
 
   if(
     needNumber &&
@@ -1591,35 +2691,64 @@ async function buildProductCanvas(item){
   ){
 
     layers.push({
-      type:"text",
-      text:item.barcode,
-      font:numberFont,
-      weight:"500"
+
+      type:
+      "text",
+
+      text:
+      item.barcode,
+
+      font:
+      numberFont,
+
+      weight:
+      "500"
+
     });
 
+
     spacer();
+
   }
+
 
   if(
     needQR &&
-    (item.qr||item.barcode)
+    (
+      item.qr||
+      item.barcode
+    )
   ){
 
     const qrCanvas=
     await createQRCanvas(
-      item.qr||item.barcode,
+      item.qr||
+      item.barcode,
       qrDots
     );
 
+
     layers.push({
-      type:"image",
-      canvas:qrCanvas,
-      align:"center",
-      xOffset:0
+
+      type:
+      "image",
+
+      canvas:
+      qrCanvas,
+
+      align:
+      "center",
+
+      xOffset:
+      0
+
     });
 
+
     spacer();
+
   }
+
 
   if(
     needText &&
@@ -1627,30 +2756,67 @@ async function buildProductCanvas(item){
   ){
 
     layers.push({
-      type:"text",
-      text:item.text,
-      font:textFont,
-      weight:"700"
+
+      type:
+      "text",
+
+      text:
+      item.text,
+
+      font:
+      textFont,
+
+      weight:
+      "700"
+
     });
 
+
     spacer();
+
   }
 
-  if(footer){
+
+  if(
+    footer
+  ){
 
     const footerLines=
-    footer.split(/\r?\n/);
+    footer.split(
+      /\r?\n/
+    );
 
-    for(const line of footerLines){
 
-      if(!line)continue;
+    for(
+      const line
+      of footerLines
+    ){
+
+      if(
+        !line
+      ){
+
+        continue;
+
+      }
+
 
       layers.push({
-        type:"text",
-        text:line,
-        font:20,
-        weight:"500"
+
+        type:
+        "text",
+
+        text:
+        line,
+
+        font:
+        20,
+
+        weight:
+        "500"
+
       });
+
 
       spacer(
         Math.max(
@@ -1658,67 +2824,112 @@ async function buildProductCanvas(item){
           gap/2
         )
       );
+
     }
+
   }
+
 
   if(
     layers.length &&
     layers[
-      layers.length-1
-    ].type==="space"
+      layers.length-
+      1
+    ].type===
+    "space"
   ){
+
     layers.pop();
+
   }
 
+
   let height=
-  margin*2;
+  margin*
+  2;
+
 
   const measure=
-  document.createElement("canvas")
-  .getContext("2d");
+  document
+  .createElement(
+    "canvas"
+  )
+  .getContext(
+    "2d"
+  );
 
-  for(const layer of layers){
 
-    if(layer.type==="space"){
+  for(
+    const layer
+    of layers
+  ){
 
-      height+=layer.height;
+    if(
+      layer.type===
+      "space"
+    ){
+
+      height+=
+      layer.height;
 
     }
 
-    else if(layer.type==="image"){
+    else if(
+      layer.type===
+      "image"
+    ){
 
-      height+=layer.canvas.height;
+      height+=
+      layer.canvas.height;
 
     }
 
-    else if(layer.type==="text"){
+    else if(
+      layer.type===
+      "text"
+    ){
 
       measure.font=
       `${layer.weight} ${layer.font}px "PingFang TC",sans-serif`;
+
 
       const lines=
       wrapText(
         measure,
         layer.text,
-        width-margin*2
+        width-
+        margin*2
       );
 
-      layer.lines=lines;
+
+      layer.lines=
+      lines;
+
 
       layer.lineHeight=
-      Math.ceil(layer.font*1.25);
+      Math.ceil(
+        layer.font*
+        1.25
+      );
+
 
       height+=
       layer.lineHeight*
       lines.length;
+
     }
+
   }
+
 
   height=
   Math.max(
     80,
-    Math.ceil(height)
+    Math.ceil(
+      height
+    )
   );
+
 
   const canvas=
   whiteCanvas(
@@ -1726,42 +2937,75 @@ async function buildProductCanvas(item){
     height
   );
 
+
   const ctx=
-  canvas.getContext("2d");
+  canvas.getContext(
+    "2d"
+  );
 
-  let y=margin;
 
-  for(const layer of layers){
+  let y=
+  margin;
 
-    if(layer.type==="space"){
 
-      y+=layer.height;
+  for(
+    const layer
+    of layers
+  ){
+
+    if(
+      layer.type===
+      "space"
+    ){
+
+      y+=
+      layer.height;
+
       continue;
+
     }
 
-    if(layer.type==="image"){
 
-      let x=margin;
+    if(
+      layer.type===
+      "image"
+    ){
 
-      if(layer.align==="center"){
+      let x=
+      margin;
+
+
+      if(
+        layer.align===
+        "center"
+      ){
 
         x=
         (
           width-
           layer.canvas.width
-        )/2;
+        )/
+        2;
 
       }
 
-      else if(layer.align==="right"){
+      else if(
+        layer.align===
+        "right"
+      ){
 
         x=
         width-
         margin-
         layer.canvas.width;
+
       }
 
-      x+=layer.xOffset||0;
+
+      x+=
+      layer.xOffset||
+      0;
+
 
       x=
       clamp(
@@ -1771,28 +3015,48 @@ async function buildProductCanvas(item){
         layer.canvas.width
       );
 
+
       ctx.drawImage(
         layer.canvas,
         Math.round(x),
         Math.round(y)
       );
 
-      y+=layer.canvas.height;
+
+      y+=
+      layer.canvas.height;
+
 
       continue;
+
     }
 
-    if(layer.type==="text"){
 
-      ctx.fillStyle="#000";
+    if(
+      layer.type===
+      "text"
+    ){
+
+      ctx.fillStyle=
+      "#000";
+
 
       ctx.font=
       `${layer.weight} ${layer.font}px -apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif`;
 
-      ctx.textAlign="center";
-      ctx.textBaseline="top";
 
-      for(const line of layer.lines){
+      ctx.textAlign=
+      "center";
+
+
+      ctx.textBaseline=
+      "top";
+
+
+      for(
+        const line
+        of layer.lines
+      ){
 
         ctx.fillText(
           line,
@@ -1800,30 +3064,47 @@ async function buildProductCanvas(item){
           y
         );
 
-        y+=layer.lineHeight;
+
+        y+=
+        layer.lineHeight;
+
       }
+
     }
+
   }
 
+
   return canvas;
+
 }
 
-/* GENERAL PREVIEW */
+
+/* ======================================================
+GENERAL PREVIEW
+====================================================== */
 
 async function renderGeneralPreview(){
 
   const box=
   $("generalPreview");
 
-  box.innerHTML="";
 
-  if(!products.length){
+  box.innerHTML=
+  "";
+
+
+  if(
+    !products.length
+  ){
 
     box.innerHTML=
     '<div class="help">加入商品後會顯示預覽</div>';
 
     return;
+
   }
+
 
   try{
 
@@ -1838,102 +3119,161 @@ async function renderGeneralPreview(){
         products[i]
       );
 
+
       const holder=
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
+
 
       holder.className=
       "previewPage";
 
-      holder.appendChild(canvas);
 
-      box.appendChild(holder);
+      holder.appendChild(
+        canvas
+      );
+
+
+      box.appendChild(
+        holder
+      );
+
     }
+
   }
 
   catch(error){
 
     box.innerHTML=
     `<div class="status err">${escapeHtml(errorText(error))}</div>`;
+
   }
+
 }
+
 
 $("previewBtn").onclick=
 renderGeneralPreview;
 
-/* BIG TEXT SPLIT */
+
+/* ======================================================
+BIG SPLIT
+====================================================== */
 
 function splitBigText(){
 
   const raw=
-  $("bigText").value;
+  $("bigText")
+  .value;
+
 
   const splitMode=
-  $("splitMode").value;
+  $("splitMode")
+  .value;
+
 
   const charsPer=
-  $("charsPerPage").value;
+  $("charsPerPage")
+  .value;
+
 
   let tokens=[];
 
-  if(splitMode==="space"){
+
+  if(
+    splitMode===
+    "space"
+  ){
 
     tokens=
     raw
     .trim()
     .split(/\s+/)
     .filter(Boolean);
+
   }
 
-  else if(splitMode==="line"){
+  else if(
+    splitMode===
+    "line"
+  ){
 
     tokens=
     raw
     .split(/\r?\n/)
-    .map(v=>v.trim())
+    .map(
+      value=>
+      value.trim()
+    )
     .filter(Boolean);
+
   }
 
   else{
 
     tokens=
     Array.from(
-      raw.replace(/\s+/g,"")
+      raw.replace(
+        /\s+/g,
+        ""
+      )
     );
+
   }
 
+
   if(
-    splitMode!=="char" ||
-    charsPer==="auto"
+    splitMode!==
+    "char" ||
+    charsPer===
+    "auto"
   ){
 
     return tokens;
+
   }
 
-  const n=
+
+  const count=
   Math.max(
     1,
-    Number(charsPer)||1
+    Number(
+      charsPer
+    )||
+    1
   );
 
+
   const pages=[];
+
 
   for(
     let i=0;
     i<tokens.length;
-    i+=n
+    i+=count
   ){
 
     pages.push(
       tokens
-      .slice(i,i+n)
+      .slice(
+        i,
+        i+count
+      )
       .join("")
     );
+
   }
 
+
   return pages;
+
 }
 
-/* BIG CANVAS */
+
+/* ======================================================
+BIG FONT FIT
+====================================================== */
 
 function fitFont(
   ctx,
@@ -1943,25 +3283,43 @@ function fitFont(
   weight
 ){
 
-  let low=20;
-  let high=1000;
-  let best=20;
+  let low=
+  20;
 
-  while(low<=high){
+  let high=
+  1000;
+
+  let best=
+  20;
+
+
+  while(
+    low<=high
+  ){
 
     const mid=
     Math.floor(
-      (low+high)/2
+      (
+        low+
+        high
+      )/
+      2
     );
 
+
     ctx.font=
-    `${weight} ${mid}px -apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif`;
+    `${weight} ${mid}px Arial,-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif`;
+
 
     const metrics=
-    ctx.measureText(text);
+    ctx.measureText(
+      text
+    );
+
 
     const width=
     metrics.width;
+
 
     const height=
     (
@@ -1973,35 +3331,55 @@ function fitFont(
       mid*.2
     );
 
+
     if(
       width<=maxWidth &&
       height<=maxHeight
     ){
 
-      best=mid;
-      low=mid+1;
+      best=
+      mid;
+
+      low=
+      mid+
+      1;
+
     }
 
     else{
-      high=mid-1;
+
+      high=
+      mid-
+      1;
+
     }
+
   }
 
+
   return best;
+
 }
+
+
+/* ======================================================
+BIG CANVAS
+72 × 148 mm 固定
+====================================================== */
 
 function buildBigCanvas(text){
 
-  const widthMM=
-  Number(
-    $("bigPrintWidth").value
-  )||72;
-
   const width=
-  paperDots(widthMM);
+  paperDots(
+    72
+  );
+
 
   const height=
-  mmToDots(148);
+  mmToDots(
+    148
+  );
+
 
   const canvas=
   whiteCanvas(
@@ -2009,26 +3387,44 @@ function buildBigCanvas(text){
     height
   );
 
+
   const ctx=
-  canvas.getContext("2d");
+  canvas.getContext(
+    "2d"
+  );
+
 
   const margin=
   mmToDots(
-    Number($("bigMargin").value)||0
+    Number(
+      $("bigMargin").value
+    )||
+    0
   );
+
 
   const xOffset=
   mmToDots(
-    Number($("bigX").value)||0
+    Number(
+      $("bigX").value
+    )||
+    0
   );
+
 
   const yOffset=
   mmToDots(
-    Number($("bigY").value)||0
+    Number(
+      $("bigY").value
+    )||
+    0
   );
 
+
   const weight=
-  $("bigBold").value;
+  $("bigBold")
+  .value;
+
 
   const maxWidth=
   Math.max(
@@ -2037,6 +3433,7 @@ function buildBigCanvas(text){
     margin*2
   );
 
+
   const maxHeight=
   Math.max(
     20,
@@ -2044,7 +3441,9 @@ function buildBigCanvas(text){
     margin*2
   );
 
+
   let fontSize;
+
 
   if(
     $("bigFontMode").value===
@@ -2067,128 +3466,225 @@ function buildBigCanvas(text){
     fontSize=
     Number(
       $("bigFontSize").value
-    )||430;
+    )||
+    430;
+
   }
 
-  ctx.font=
-  `${weight} ${fontSize}px -apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif`;
 
-  ctx.fillStyle="#000";
+  ctx.font=
+  `${weight} ${fontSize}px Arial,-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif`;
+
+
+  ctx.fillStyle=
+  "#000";
+
 
   const align=
-  $("bigAlign").value;
+  $("bigAlign")
+  .value;
+
 
   const valign=
-  $("bigVAlign").value;
+  $("bigVAlign")
+  .value;
+
 
   let x;
 
-  if(align==="left"){
 
-    ctx.textAlign="left";
-    x=margin;
+  if(
+    align===
+    "left"
+  ){
+
+    ctx.textAlign=
+    "left";
+
+    x=
+    margin;
 
   }
 
-  else if(align==="right"){
+  else if(
+    align===
+    "right"
+  ){
 
-    ctx.textAlign="right";
-    x=width-margin;
+    ctx.textAlign=
+    "right";
+
+    x=
+    width-
+    margin;
 
   }
 
   else{
 
-    ctx.textAlign="center";
-    x=width/2;
+    ctx.textAlign=
+    "center";
+
+    x=
+    width/
+    2;
+
   }
+
 
   let y;
 
-  if(valign==="top"){
 
-    ctx.textBaseline="top";
-    y=margin;
+  if(
+    valign===
+    "top"
+  ){
+
+    ctx.textBaseline=
+    "top";
+
+    y=
+    margin;
 
   }
 
-  else if(valign==="bottom"){
+  else if(
+    valign===
+    "bottom"
+  ){
 
-    ctx.textBaseline="bottom";
-    y=height-margin;
+    ctx.textBaseline=
+    "bottom";
+
+    y=
+    height-
+    margin;
 
   }
 
   else{
 
-    ctx.textBaseline="middle";
-    y=height/2;
+    ctx.textBaseline=
+    "middle";
+
+    y=
+    height/
+    2;
+
   }
+
 
   ctx.fillText(
     text,
-    x+xOffset,
-    y+yOffset
+    x+
+    xOffset,
+    y+
+    yOffset
   );
 
+
   return canvas;
+
 }
 
-/* BIG PREVIEW */
+
+/* ======================================================
+BIG PREVIEW
+====================================================== */
 
 function renderBigPreview(){
 
   const pages=
   splitBigText();
 
+
   const box=
   $("bigPreview");
 
-  box.innerHTML="";
 
-  if(!pages.length){
+  box.innerHTML=
+  "";
+
+
+  if(
+    !pages.length
+  ){
 
     box.innerHTML=
     '<div class="help">請輸入要列印的大字內容</div>';
 
     return;
+
   }
 
+
   pages.forEach(
-    (text,index)=>{
+    (
+      text,
+      index
+    )=>{
 
       const canvas=
-      buildBigCanvas(text);
+      buildBigCanvas(
+        text
+      );
+
 
       const holder=
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
+
 
       holder.className=
       "previewPage";
 
+
       const label=
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
+
 
       label.className=
       "help";
 
-      label.style.padding="5px";
+
+      label.style.padding=
+      "5px";
+
 
       label.textContent=
       `第 ${index+1} 張：${text}`;
 
-      holder.appendChild(label);
-      holder.appendChild(canvas);
 
-      box.appendChild(holder);
+      holder.appendChild(
+        label
+      );
+
+
+      holder.appendChild(
+        canvas
+      );
+
+
+      box.appendChild(
+        holder
+      );
+
     }
   );
+
 }
+
 
 $("bigPreviewBtn").onclick=
 renderBigPreview;
 
-/* PRINT */
+
+/* ======================================================
+PRINT START
+====================================================== */
 
 async function beginPrint(
   density,
@@ -2207,12 +3703,16 @@ async function beginPrint(
     throw new Error(
       "CONNECT 沒有 ACK"
     );
+
   }
+
 
   if(
     !await sendWait(
       "DENSITY",
-      CONTROL.density(density),
+      CONTROL.density(
+        density
+      ),
       0x31,
       5000
     )
@@ -2221,12 +3721,16 @@ async function beginPrint(
     throw new Error(
       "DENSITY 沒有 ACK"
     );
+
   }
+
 
   if(
     !await sendWait(
       "LABEL TYPE",
-      CONTROL.labelType(labelType),
+      CONTROL.labelType(
+        labelType
+      ),
       0x33,
       5000
     )
@@ -2235,7 +3739,9 @@ async function beginPrint(
     throw new Error(
       "紙張模式沒有 ACK"
     );
+
   }
+
 
   if(
     !await sendWait(
@@ -2249,15 +3755,21 @@ async function beginPrint(
     throw new Error(
       "PRINT START 沒有 ACK"
     );
+
   }
+
 }
 
-async function sendPage(
+
+/* ======================================================
+NORMAL PAGE
+====================================================== */
+
+async function sendNormalPage(
   canvas,
   pageIndex,
   total,
-  statusElement,
-  pageEndTimeout=15000
+  statusElement
 ){
 
   if(
@@ -2272,7 +3784,9 @@ async function sendPage(
     throw new Error(
       `第 ${pageIndex+1} 張 PAGE START 失敗`
     );
+
   }
+
 
   if(
     !await sendWait(
@@ -2289,14 +3803,20 @@ async function sendPage(
     throw new Error(
       `第 ${pageIndex+1} 張 PAGE SIZE 失敗`
     );
+
   }
 
+
   const runs=
-  canvasToRuns(canvas);
+  canvasToRuns(
+    canvas
+  );
+
 
   log(
     `第 ${pageIndex+1} 張：${canvas.width}×${canvas.height}｜RUNS ${runs.length}`
   );
+
 
   for(
     let i=0;
@@ -2310,41 +3830,177 @@ async function sendPage(
       )
     );
 
+
     if(
-      i%20===0 ||
-      i===runs.length-1
+      i%20===
+      0 ||
+      i===
+      runs.length-
+      1
     ){
 
       statusElement.textContent=
       `第 ${pageIndex+1}/${total} 張｜傳送 ${i+1}/${runs.length}`;
+
     }
+
   }
 
-  statusElement.textContent=
-  `第 ${pageIndex+1}/${total} 張｜等待 PAGE END`;
 
   const pageEnd=
   await sendWait(
     `PAGE END ${pageIndex+1}`,
     CONTROL.pageEnd(),
     0xE4,
-    pageEndTimeout
+    15000
   );
 
-  if(!pageEnd){
+
+  if(
+    !pageEnd
+  ){
+
+    throw new Error(
+      `第 ${pageIndex+1} 張 PAGE END 逾時`
+    );
+
+  }
+
+}
+
+
+/* ======================================================
+SAFE BIG PAGE
+====================================================== */
+
+async function sendBigSafePage(
+  canvas,
+  pageIndex,
+  total,
+  statusElement
+){
+
+  if(
+    !await sendWait(
+      `BIG PAGE START ${pageIndex+1}`,
+      CONTROL.pageStart(),
+      0x04,
+      5000
+    )
+  ){
+
+    throw new Error(
+      `第 ${pageIndex+1} 張 PAGE START 失敗`
+    );
+
+  }
+
+
+  if(
+    !await sendWait(
+      `BIG PAGE SIZE ${pageIndex+1}`,
+      CONTROL.pageSize(
+        canvas.height,
+        canvas.width
+      ),
+      0x14,
+      5000
+    )
+  ){
+
+    throw new Error(
+      `第 ${pageIndex+1} 張 PAGE SIZE 失敗`
+    );
+
+  }
+
+
+  const rows=
+  canvasToSafeRows(
+    canvas
+  );
+
+
+  log(
+    `BIG SAFE：${canvas.width}×${canvas.height}｜ROWS ${rows.length}`
+  );
+
+
+  for(
+    let i=0;
+    i<rows.length;
+    i++
+  ){
+
+    await writeRaw(
+      rowPacket(
+        rows[i]
+      ),
+      7
+    );
+
+
+    if(
+      i%25===
+      0 ||
+      i===
+      rows.length-
+      1
+    ){
+
+      statusElement.textContent=
+      `第 ${pageIndex+1}/${total} 張｜逐列傳送 ${i+1}/${rows.length}`;
+
+    }
+
+  }
+
+
+  log(
+    `第 ${pageIndex+1} 張 BITMAP SAFE DATA ✅`
+  );
+
+
+  statusElement.textContent=
+  `第 ${pageIndex+1}/${total} 張｜等待黑標定位…`;
+
+
+  const pageEnd=
+  await sendWait(
+    `BIG PAGE END ${pageIndex+1}`,
+    CONTROL.pageEnd(),
+    0xE4,
+    20000
+  );
+
+
+  if(
+    !pageEnd
+  ){
 
     try{
+
       await writeControl(
         CONTROL.printEnd()
       );
+
     }
+
     catch{}
 
+
     throw new Error(
-      `第 ${pageIndex+1} 張 PAGE END／定位逾時`
+      `第 ${pageIndex+1} 張 PAGE END／黑標定位逾時`
     );
+
   }
+
 }
+
+
+/* ======================================================
+PRINT END
+====================================================== */
 
 async function finishPrint(){
 
@@ -2356,59 +4012,99 @@ async function finishPrint(){
     15000
   );
 
-  if(!ok){
+
+  if(
+    !ok
+  ){
 
     throw new Error(
       "PRINT END 沒有 ACK"
     );
+
   }
+
 }
 
-/* GENERAL PRINT */
+
+/* ======================================================
+GENERAL PRINT
+====================================================== */
 
 $("printAllBtn").onclick=
 async()=>{
 
-  if(!products.length){
+  if(
+    !products.length
+  ){
 
-    alert("尚未加入商品");
+    alert(
+      "尚未加入商品"
+    );
 
     return;
+
   }
 
-  if(!connected())return;
 
-  state.running=true;
-  state.stop=false;
+  if(
+    !connected()
+  ){
+
+    return;
+
+  }
+
+
+  state.running=
+  true;
+
+  state.stop=
+  false;
+
 
   updateButtons();
+
 
   const status=
   $("generalStatus");
 
+
   status.className=
   "status warn";
 
+
   status.textContent=
   "準備列印…";
+
 
   try{
 
     const canvases=[];
 
-    for(const product of products){
+
+    for(
+      const product
+      of products
+    ){
 
       canvases.push(
         await buildProductCanvas(
           product
         )
       );
+
     }
 
+
     await beginPrint(
-      Number($("density").value),
-      Number($("paperMode").value)
+      Number(
+        $("density").value
+      ),
+      Number(
+        $("paperMode").value
+      )
     );
+
 
     for(
       let i=0;
@@ -2416,30 +4112,37 @@ async()=>{
       i++
     ){
 
-      await sendPage(
+      await sendNormalPage(
         canvases[i],
         i,
         canvases.length,
-        status,
-        15000
+        status
       );
+
     }
 
+
     await finishPrint();
+
 
     status.className=
     "status ok";
 
+
     status.textContent=
     `✅ 完成 ${canvases.length} 張`;
 
-    if($("autoClear").checked){
+
+    if(
+      $("autoClear").checked
+    ){
 
       products=[];
 
       renderProducts();
 
       renderGeneralPreview();
+
     }
 
   }
@@ -2447,29 +4150,43 @@ async()=>{
   catch(error){
 
     const message=
-    errorText(error);
+    errorText(
+      error
+    );
+
 
     status.className=
     "status err";
 
+
     status.textContent=
-    "❌ "+message;
+    "❌ "+
+    message;
+
 
     log(
       "GENERAL ERROR："+
       message
     );
+
   }
 
   finally{
 
-    state.running=false;
+    state.running=
+    false;
+
 
     updateButtons();
+
   }
+
 };
 
-/* BIG PRINT */
+
+/* ======================================================
+BIG PRINT
+====================================================== */
 
 $("bigPrintBtn").onclick=
 async()=>{
@@ -2477,41 +4194,86 @@ async()=>{
   const pages=
   splitBigText();
 
-  if(!pages.length){
 
-    alert("請輸入號碼牌內容");
+  if(
+    !pages.length
+  ){
+
+    alert(
+      "請輸入號碼牌內容"
+    );
 
     return;
+
   }
 
-  if(!connected())return;
 
-  state.running=true;
-  state.stop=false;
+  if(
+    !connected()
+  ){
+
+    return;
+
+  }
+
+
+  state.running=
+  true;
+
+  state.stop=
+  false;
+
 
   updateButtons();
+
 
   const status=
   $("bigStatus");
 
+
   status.className=
   "status warn";
 
+
   status.textContent=
   "準備大字列印…";
+
 
   try{
 
     const canvases=
     pages.map(
-      value=>
-      buildBigCanvas(value)
+      text=>
+      buildBigCanvas(
+        text
+      )
     );
 
-    await beginPrint(
-      Number($("bigDensity").value),
-      Number($("bigPaperMode").value)
+
+    log(
+      "========== BIG V18.9 =========="
     );
+
+
+    log(
+      "固定有效列印區：72 × 148 mm"
+    );
+
+
+    log(
+      "BITMAP MODE：SAFE ROW / repeat=1"
+    );
+
+
+    await beginPrint(
+      Number(
+        $("bigDensity").value
+      ),
+      Number(
+        $("bigPaperMode").value
+      )
+    );
+
 
     for(
       let i=0;
@@ -2519,62 +4281,87 @@ async()=>{
       i++
     ){
 
-      await sendPage(
+      await sendBigSafePage(
         canvases[i],
         i,
         canvases.length,
-        status,
-        20000
+        status
       );
+
     }
 
+
     await finishPrint();
+
 
     status.className=
     "status ok";
 
+
     status.textContent=
     `✅ 大字列印完成，共 ${canvases.length} 張`;
+
+
+    log(
+      "BIG V18.9 ✅ COMPLETE"
+    );
 
   }
 
   catch(error){
 
     const message=
-    errorText(error);
+    errorText(
+      error
+    );
+
 
     status.className=
     "status err";
 
+
     status.textContent=
-    "❌ "+message;
+    "❌ "+
+    message;
+
 
     log(
-      "BIG SIGN ERROR："+
+      "BIG V18.9 ERROR："+
       message
     );
+
   }
 
   finally{
 
-    state.running=false;
+    state.running=
+    false;
+
 
     updateButtons();
+
   }
+
 };
 
-/* DIAG */
 
-function buildDiagnosticCanvas(
-  widthMM,
-  heightMM=148
-){
+/* ======================================================
+DIAGNOSTIC
+====================================================== */
+
+function buildDiagnosticCanvas(){
 
   const width=
-  paperDots(widthMM);
+  paperDots(
+    72
+  );
+
 
   const height=
-  mmToDots(heightMM);
+  mmToDots(
+    148
+  );
+
 
   const canvas=
   whiteCanvas(
@@ -2582,319 +4369,134 @@ function buildDiagnosticCanvas(
     height
   );
 
-  const ctx=
-  canvas.getContext("2d");
 
-  ctx.fillStyle="#000";
+  const ctx=
+  canvas.getContext(
+    "2d"
+  );
+
+
+  ctx.fillStyle=
+  "#000";
+
 
   ctx.fillRect(
-    24,
     30,
-    width-48,
+    30,
+    width-
+    60,
     8
   );
 
-  const fontSize=
-  widthMM<=58
-  ?350
-  :420;
 
   ctx.font=
-  `900 ${fontSize}px Arial,"PingFang TC",sans-serif`;
+  '900 420px Arial,"PingFang TC",sans-serif';
 
-  ctx.textAlign="center";
-  ctx.textBaseline="middle";
+
+  ctx.textAlign=
+  "center";
+
+
+  ctx.textBaseline=
+  "middle";
+
 
   ctx.fillText(
     "1",
-    width/2,
-    height/2
+    width/
+    2,
+    height/
+    2
   );
 
+
   ctx.fillRect(
-    24,
-    height-38,
-    width-48,
+    30,
+    height-
+    38,
+    width-
+    60,
     8
   );
 
+
   return canvas;
+
 }
 
-async function runDiagnostic(
-  title,
-  widthMM,
-  heightMM,
-  labelType
-){
 
-  if(!connected()){
+$("diagBtn").onclick=
+async()=>{
 
-    alert("請先連接 B3S");
+  if(
+    !connected()
+  ){
 
     return;
+
   }
 
-  if(state.running)return;
 
-  state.running=true;
-  state.stop=false;
+  state.running=
+  true;
+
+  state.stop=
+  false;
+
 
   updateButtons();
+
 
   const status=
   $("diagStatus");
 
+
   status.className=
   "status warn";
 
-  status.textContent=
-  `${title}｜準備中…`;
 
-  let printStarted=false;
+  status.textContent=
+  "V18.9 72×148 診斷中…";
+
 
   try{
 
     const canvas=
-    buildDiagnosticCanvas(
-      widthMM,
-      heightMM
-    );
+    buildDiagnosticCanvas();
 
-    const runs=
-    canvasToRuns(canvas);
 
     log(
-      "================================"
+      "========== DIAG V18.9 =========="
     );
 
-    log(
-      `DIAG V18.8 START：${title}`
+
+    await beginPrint(
+      2,
+      2
     );
 
-    log(
-      `紙張設定：${widthMM} × ${heightMM} mm`
+
+    await sendBigSafePage(
+      canvas,
+      0,
+      1,
+      status
     );
 
-    log(
-      `CANVAS：${canvas.width} × ${canvas.height}`
-    );
 
-    log(
-      `LABEL TYPE：${labelType}`
-    );
+    await finishPrint();
 
-    log(
-      `RUNS：${runs.length}`
-    );
 
-    if(
-      !await sendWait(
-        "DIAG CONNECT",
-        CONTROL.connect(),
-        0xC2,
-        5000
-      )
-    ){
+    status.className=
+    "status ok";
 
-      throw new Error(
-        "CONNECT 沒有 ACK"
-      );
-    }
-
-    if(
-      !await sendWait(
-        "DIAG DENSITY",
-        CONTROL.density(2),
-        0x31,
-        5000
-      )
-    ){
-
-      throw new Error(
-        "DENSITY 沒有 ACK"
-      );
-    }
-
-    if(
-      !await sendWait(
-        `DIAG LABEL TYPE ${labelType}`,
-        CONTROL.labelType(
-          labelType
-        ),
-        0x33,
-        5000
-      )
-    ){
-
-      throw new Error(
-        `LABEL TYPE ${labelType} 沒有 ACK`
-      );
-    }
-
-    if(
-      !await sendWait(
-        "DIAG PRINT START",
-        CONTROL.printStart(),
-        0x02,
-        5000
-      )
-    ){
-
-      throw new Error(
-        "PRINT START 沒有 ACK"
-      );
-    }
-
-    printStarted=true;
-
-    if(
-      !await sendWait(
-        "DIAG PAGE START",
-        CONTROL.pageStart(),
-        0x04,
-        5000
-      )
-    ){
-
-      throw new Error(
-        "PAGE START 沒有 ACK"
-      );
-    }
-
-    if(
-      !await sendWait(
-        "DIAG PAGE SIZE",
-        CONTROL.pageSize(
-          canvas.height,
-          canvas.width
-        ),
-        0x14,
-        5000
-      )
-    ){
-
-      throw new Error(
-        "PAGE SIZE 沒有 ACK"
-      );
-    }
 
     status.textContent=
-    `${title}｜資料 0/${runs.length}`;
+    "✅ 72×148 診斷成功";
 
-    for(
-      let i=0;
-      i<runs.length;
-      i++
-    ){
-
-      await writeRaw(
-        rowPacket(
-          runs[i]
-        )
-      );
-
-      if(
-        i%20===0 ||
-        i===runs.length-1
-      ){
-
-        status.textContent=
-        `${title}｜資料 ${i+1}/${runs.length}`;
-      }
-    }
 
     log(
-      "BITMAP DATA ✅ 全部送完"
-    );
-
-    status.textContent=
-    `${title}｜等待 PAGE END…`;
-
-    const pageEnd=
-    await sendWait(
-      "DIAG PAGE END",
-      CONTROL.pageEnd(),
-      0xE4,
-      20000
-    );
-
-    if(pageEnd){
-
-      status.className=
-      "status ok";
-
-      status.textContent=
-      `${title}｜✅ PAGE END E4`;
-
-    }
-
-    else{
-
-      status.className=
-      "status warn";
-
-      status.textContent=
-      `${title}｜⚠️ PAGE END 沒有 E4，嘗試 PRINT END 清場`;
-
-      log(
-        "PAGE END ❌ 無 E4"
-      );
-    }
-
-    await delay(500);
-
-    const printEnd=
-    await sendWait(
-      "DIAG PRINT END",
-      CONTROL.printEnd(),
-      0xF4,
-      10000
-    );
-
-    if(printEnd){
-
-      log(
-        "PRINT END ACK ✅"
-      );
-
-    }
-
-    else{
-
-      log(
-        "PRINT END ACK ❌"
-      );
-    }
-
-    if(
-      pageEnd &&
-      printEnd
-    ){
-
-      status.className=
-      "status ok";
-
-      status.textContent=
-      `${title}｜✅ 全流程完成`;
-
-    }
-
-    else{
-
-      status.className=
-      "status warn";
-
-      status.textContent=
-      `${title}｜⚠️ 測試結束，請確認機器有沒有出紙`;
-    }
-
-    log(
-      `DIAG V18.8 END：${title}`
-    );
-
-    log(
-      "================================"
+      "DIAG V18.9 ✅ COMPLETE"
     );
 
   }
@@ -2902,87 +4504,43 @@ async function runDiagnostic(
   catch(error){
 
     const message=
-    errorText(error);
+    errorText(
+      error
+    );
+
 
     status.className=
     "status err";
 
+
     status.textContent=
-    `❌ ${title}｜${message}`;
+    "❌ "+
+    message;
+
 
     log(
-      `DIAG ERROR：${message}`
+      "DIAG V18.9 ERROR："+
+      message
     );
 
-    if(
-      printStarted &&
-      connected()
-    ){
-
-      log(
-        "嘗試緊急 PRINT END 清場…"
-      );
-
-      try{
-
-        await writeControl(
-          CONTROL.printEnd()
-        );
-
-      }
-
-      catch(cleanError){
-
-        log(
-          "清場失敗："+
-          errorText(cleanError)
-        );
-      }
-    }
   }
 
   finally{
 
-    state.running=false;
+    state.running=
+    false;
+
 
     updateButtons();
+
   }
-}
 
-$("diag72Btn").onclick=
-async()=>{
-
-  await runDiagnostic(
-    "① 72×148｜黑標2",
-    72,
-    148,
-    2
-  );
 };
 
-$("diag58Btn").onclick=
-async()=>{
 
-  await runDiagnostic(
-    "② 58×148｜黑標2",
-    58,
-    148,
-    2
-  );
-};
-
-$("diag10Btn").onclick=
-async()=>{
-
-  await runDiagnostic(
-    "③ 72×148｜黑標10",
-    72,
-    148,
-    10
-  );
-};
-
-/* CONNECT */
+/* ======================================================
+CONNECT
+====================================================== */
 
 $("connectBtn").onclick=
 async()=>{
@@ -2992,25 +4550,38 @@ async()=>{
     $("bleStatus").className=
     "status warn";
 
+
     $("bleStatus").textContent=
     "正在連線…";
+
 
     const device=
     await navigator.bluetooth
     .requestDevice({
-      acceptAllDevices:true,
+
+      acceptAllDevices:
+      true,
+
       optionalServices:[
         SERVICE
       ]
+
     });
 
-    state.device=device;
+
+    state.device=
+    device;
+
 
     $("deviceName").textContent=
-    device.name||"—";
+    device.name||
+    "—";
+
 
     state.server=
-    await device.gatt.connect();
+    await device.gatt
+    .connect();
+
 
     const service=
     await state.server
@@ -3018,11 +4589,13 @@ async()=>{
       SERVICE
     );
 
+
     state.write=
     await service
     .getCharacteristic(
       WRITE_UUID
     );
+
 
     state.notify=
     await service
@@ -3030,7 +4603,9 @@ async()=>{
       NOTIFY_UUID
     );
 
+
     state.rx=[];
+
 
     state.notify
     .addEventListener(
@@ -3040,6 +4615,7 @@ async()=>{
         const value=
         event.target.value;
 
+
         const bytes=
         new Uint8Array(
           value.buffer,
@@ -3047,44 +4623,67 @@ async()=>{
           value.byteLength
         );
 
-        const text=
-        hex(bytes);
 
-        state.rx.push(text);
+        const text=
+        hex(
+          bytes
+        );
+
+
+        state.rx.push(
+          text
+        );
+
 
         log(
-          "RX："+text
+          "RX："+
+          text
         );
+
       }
     );
 
+
     await state.notify
     .startNotifications();
+
 
     state.device
     .addEventListener(
       "gattserverdisconnected",
       ()=>{
 
-        state.server=null;
-        state.write=null;
-        state.notify=null;
+        state.server=
+        null;
+
+        state.write=
+        null;
+
+        state.notify=
+        null;
+
 
         $("bleStatus").className=
         "status warn";
 
+
         $("bleStatus").textContent=
         "B3S 已中斷";
 
+
         updateButtons();
+
       }
     );
+
 
     $("bleStatus").className=
     "status ok";
 
+
     $("bleStatus").textContent=
     "✅ B3S 已連線";
+
 
     updateButtons();
 
@@ -3093,55 +4692,89 @@ async()=>{
   catch(error){
 
     const message=
-    errorText(error);
+    errorText(
+      error
+    );
+
 
     $("bleStatus").className=
     "status err";
 
+
     $("bleStatus").textContent=
-    "❌ "+message;
+    "❌ "+
+    message;
+
 
     log(
       "CONNECT ERROR："+
       message
     );
 
+
     updateButtons();
+
   }
+
 };
+
+
+/* ======================================================
+DISCONNECT
+====================================================== */
 
 $("disconnectBtn").onclick=
 ()=>{
 
   try{
-    state.device?.gatt?.disconnect();
+
+    state.device
+    ?.gatt
+    ?.disconnect();
+
   }
 
   catch{}
 
-  state.server=null;
-  state.write=null;
-  state.notify=null;
+
+  state.server=
+  null;
+
+  state.write=
+  null;
+
+  state.notify=
+  null;
+
 
   $("bleStatus").className=
   "status";
 
+
   $("bleStatus").textContent=
   "已中斷";
 
+
   updateButtons();
+
 };
 
-/* STOP */
+
+/* ======================================================
+STOP
+====================================================== */
 
 $("stopBtn").onclick=
 async()=>{
 
-  state.stop=true;
+  state.stop=
+  true;
+
 
   log(
     "使用者按下停止"
   );
+
 
   try{
 
@@ -3153,7 +4786,11 @@ async()=>{
 
   catch{}
 
-  await delay(100);
+
+  await delay(
+    100
+  );
+
 
   try{
 
@@ -3165,28 +4802,40 @@ async()=>{
 
   catch{}
 
+
   $("generalStatus").className=
   "status warn";
+
 
   $("generalStatus").textContent=
   "⏹ 已送出停止";
 
+
   $("bigStatus").className=
   "status warn";
+
 
   $("bigStatus").textContent=
   "⏹ 已送出停止";
 
+
   $("diagStatus").className=
   "status warn";
 
+
   $("diagStatus").textContent=
   "⏹ 已送出停止";
+
 };
 
-/* SCANNER */
 
-let html5QrCode=null;
+/* ======================================================
+SCANNER
+====================================================== */
+
+let html5QrCode=
+null;
+
 
 $("scanBtn").onclick=
 async()=>{
@@ -3194,60 +4843,107 @@ async()=>{
   const reader=
   $("reader");
 
+
   try{
 
-    if(html5QrCode){
+    if(
+      html5QrCode
+    ){
 
-      await html5QrCode.stop()
-      .catch(()=>{});
+      await html5QrCode
+      .stop()
+      .catch(
+        ()=>{}
+      );
 
-      html5QrCode.clear();
 
-      html5QrCode=null;
+      html5QrCode
+      .clear();
 
-      reader.classList.add(
+
+      html5QrCode=
+      null;
+
+
+      reader
+      .classList
+      .add(
         "hidden"
       );
+
 
       $("scanBtn").textContent=
       "📷 掃描條碼 / QR";
 
+
       return;
+
     }
 
-    reader.classList.remove(
+
+    reader
+    .classList
+    .remove(
       "hidden"
     );
+
 
     html5QrCode=
     new Html5Qrcode(
       "reader"
     );
 
+
     $("scanBtn").textContent=
     "停止掃描";
 
-    await html5QrCode.start(
+
+    await html5QrCode
+    .start(
+
       {
         facingMode:
         "environment"
       },
+
       {
-        fps:10,
+        fps:
+        10,
+
         qrbox:{
-          width:260,
-          height:180
+          width:
+          260,
+
+          height:
+          180
         }
       },
+
       async decodedText=>{
 
         const value=
-        String(decodedText||"")
+        String(
+          decodedText||
+          ""
+        )
         .trim();
 
-        if(!value)return;
 
-        if(/^\d+$/.test(value)){
+        if(
+          !value
+        ){
+
+          return;
+
+        }
+
+
+        if(
+          /^\d+$/
+          .test(
+            value
+          )
+        ){
 
           $("barcode").value=
           value;
@@ -3258,25 +4954,40 @@ async()=>{
 
           $("qrValue").value=
           value;
+
         }
 
+
         try{
-          await html5QrCode.stop();
+
+          await html5QrCode
+          .stop();
+
         }
 
         catch{}
 
-        html5QrCode.clear();
 
-        html5QrCode=null;
+        html5QrCode
+        .clear();
 
-        reader.classList.add(
+
+        html5QrCode=
+        null;
+
+
+        reader
+        .classList
+        .add(
           "hidden"
         );
 
+
         $("scanBtn").textContent=
         "📷 掃描條碼 / QR";
+
       }
+
     );
 
   }
@@ -3288,30 +4999,46 @@ async()=>{
       errorText(error)
     );
 
+
     try{
-      html5QrCode?.clear();
+
+      html5QrCode
+      ?.clear();
+
     }
 
     catch{}
 
-    html5QrCode=null;
 
-    reader.classList.add(
+    html5QrCode=
+    null;
+
+
+    reader
+    .classList
+    .add(
       "hidden"
     );
 
+
     $("scanBtn").textContent=
     "📷 掃描條碼 / QR";
+
   }
+
 };
 
-/* MODE */
+
+/* ======================================================
+MODE
+====================================================== */
 
 function updateMode(){
 
   const big=
   $("mode").value===
   "big_sign";
+
 
   $("generalPanel")
   .classList
@@ -3320,6 +5047,7 @@ function updateMode(){
     big
   );
 
+
   $("bigPanel")
   .classList
   .toggle(
@@ -3327,7 +5055,10 @@ function updateMode(){
     !big
   );
 
-  if(big){
+
+  if(
+    big
+  ){
 
     renderBigPreview();
 
@@ -3336,13 +5067,19 @@ function updateMode(){
   else{
 
     renderGeneralPreview();
+
   }
+
 }
+
 
 $("mode").onchange=
 updateMode;
 
-/* PREVIEW EVENTS */
+
+/* ======================================================
+AUTO PREVIEW
+====================================================== */
 
 [
   "paperWidth",
@@ -3361,18 +5098,20 @@ updateMode;
 .forEach(
   id=>{
 
-    $(id).addEventListener(
+    $(id)
+    .addEventListener(
       "change",
       renderGeneralPreview
     );
+
   }
 );
+
 
 [
   "bigText",
   "splitMode",
   "charsPerPage",
-  "bigPrintWidth",
   "bigFontMode",
   "bigFontSize",
   "bigBold",
@@ -3385,20 +5124,28 @@ updateMode;
 .forEach(
   id=>{
 
-    $(id).addEventListener(
+    $(id)
+    .addEventListener(
       "change",
       renderBigPreview
     );
+
   }
 );
 
-/* LOG */
+
+/* ======================================================
+LOG
+====================================================== */
 
 $("clearLogBtn").onclick=
 ()=>{
 
-  $("log").value="";
+  $("log").value=
+  "";
+
 };
+
 
 $("copyLogBtn").onclick=
 async()=>{
@@ -3410,17 +5157,26 @@ async()=>{
       $("log").value
     );
 
-    alert("已複製");
+
+    alert(
+      "已複製"
+    );
 
   }
 
   catch{
 
-    $("log").select();
+    $("log")
+    .select();
+
   }
+
 };
 
-/* INIT */
+
+/* ======================================================
+INIT
+====================================================== */
 
 renderProducts();
 
