@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 
-<title>商品條碼／QR Code 列印｜B3S V18</title>
+<title>商品條碼／QR Code 列印｜B3S V18.1</title>
 
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
@@ -378,13 +378,12 @@ button:disabled{
 <h1>商品條碼／QR Code 列印</h1>
 
 <div class="sub">
-B3S 工作實用版 V18
+B3S 工作實用版 V18.1
 <br>
 <span class="modeBadge">
 條碼＋QR Code
 </span>
 </div>
-
 
 <div class="card">
 
@@ -396,14 +395,12 @@ B3S 工作實用版 V18
 id="name"
 placeholder="例如：可口可樂 ZERO">
 
-
 <label>商品條碼</label>
 
 <input
 id="code"
 inputmode="numeric"
 placeholder="沒有條碼也可以留空">
-
 
 <label>QR Code 內容</label>
 
@@ -414,7 +411,6 @@ https://example.com
 商品編號-A001
 或任何文字">
 </textarea>
-
 
 <div class="actions">
 
@@ -436,12 +432,10 @@ class="primary">
 
 </div>
 
-
 <hr style="
 border:0;
 border-top:1px solid #eaecf0;
 margin:18px 0">
-
 
 <h2 style="font-size:18px">
 一次新增多筆
@@ -461,13 +455,11 @@ margin:18px 0">
 
 </div>
 
-
 <textarea
 id="bulkInput"
 placeholder="可口可樂,4710000000001,https://example.com/coke
 活動資訊,,https://example.com/event">
 </textarea>
-
 
 <div class="actions">
 
@@ -489,7 +481,6 @@ class="ok">
 
 </div>
 
-
 <div
 id="bulkStatus"
 class="help"
@@ -497,7 +488,6 @@ style="margin-top:8px">
 </div>
 
 </div>
-
 
 <div class="card">
 
@@ -521,7 +511,6 @@ class="danger">
 
 </div>
 
-
 <div
 id="itemCount"
 class="help"
@@ -529,16 +518,13 @@ style="margin-top:10px">
 0 筆商品
 </div>
 
-
 <div id="items"></div>
 
 </div>
 
-
 <div class="card">
 
 <h2>列印設定</h2>
-
 
 <label>列印模式</label>
 
@@ -600,7 +586,6 @@ QR Code＋內容文字
 
 </select>
 
-
 <div
 id="customTextArea"
 class="hidden">
@@ -613,7 +598,6 @@ placeholder="可以輸入多行文字">
 </textarea>
 
 </div>
-
 
 <div class="row">
 
@@ -649,7 +633,6 @@ selected>
 
 </div>
 
-
 <div>
 
 <label>紙寬</label>
@@ -677,7 +660,6 @@ selected>
 
 </div>
 
-
 <div class="row">
 
 <div>
@@ -688,7 +670,6 @@ selected>
 
 </div>
 
-
 <div>
 
 <label>QR Code 尺寸</label>
@@ -698,7 +679,6 @@ selected>
 </div>
 
 </div>
-
 
 <div class="row">
 
@@ -724,7 +704,6 @@ selected>
 
 </div>
 
-
 <div>
 
 <label>商品間距</label>
@@ -734,7 +713,6 @@ selected>
 </div>
 
 </div>
-
 
 <label>最下方文字／備註</label>
 
@@ -750,7 +728,6 @@ placeholder="例如：
 售完為止">
 </textarea>
 
-
 <div class="switchRow">
 
 <div>
@@ -762,7 +739,6 @@ placeholder="例如：
 </div>
 
 </div>
-
 
 <label class="switch">
 
@@ -776,7 +752,6 @@ id="autoClear">
 
 </div>
 
-
 <div class="actions">
 
 <button id="refreshBtn">
@@ -786,7 +761,6 @@ id="autoClear">
 </div>
 
 </div>
-
 
 <div class="card">
 
@@ -800,7 +774,6 @@ id="autoClear">
 
 </div>
 
-
 <div class="card">
 
 <h2>B3S 藍牙</h2>
@@ -810,7 +783,6 @@ id="bleStatus"
 class="status">
 尚未連線
 </div>
-
 
 <div class="actions">
 
@@ -827,7 +799,6 @@ disabled>
 </button>
 
 </div>
-
 
 <div class="deviceGrid">
 
@@ -850,7 +821,6 @@ disabled>
 </div>
 
 </div>
-
 
 <div class="card">
 
@@ -888,20 +858,17 @@ disabled>
 
 </div>
 
-
 <div
 id="printStatus"
 class="status">
 等待列印
 </div>
 
-
 <div class="progress">
 
 <div id="progressBar"></div>
 
 </div>
-
 
 <div
 id="printMeta"
@@ -910,7 +877,6 @@ style="margin-top:8px">
 </div>
 
 </div>
-
 
 <div class="card">
 
@@ -928,7 +894,6 @@ style="margin-top:8px">
 
 </div>
 
-
 <textarea
 id="log"
 readonly>
@@ -937,7 +902,6 @@ readonly>
 </div>
 
 </div>
-
 
 <div
 id="scannerModal"
@@ -948,7 +912,6 @@ class="modal">
 <h2 id="scannerTitle">
 掃描商品條碼
 </h2>
-
 
 <div
 id="bulkScanNameArea"
@@ -961,7 +924,6 @@ style="display:none">
 <input
 id="bulkScanName"
 placeholder="先輸入商品名稱">
-
 
 <label>
 QR Code 內容
@@ -978,22 +940,18 @@ placeholder="可選填">
 
 </div>
 
-
 <div
 id="scannerStatus"
 class="status">
 準備啟動相機…
 </div>
 
-
 <div
 id="bulkScanCounter"
 class="bulkScanCounter">
 </div>
 
-
 <div id="qrReader"></div>
-
 
 <div class="actions">
 
@@ -1008,7 +966,6 @@ class="danger">
 </div>
 
 </div>
-
 
 <script>
 
@@ -1032,14 +989,11 @@ for(
     "option"
   );
 
-
   o.value =
   cm;
 
-
   o.textContent =
   `${cm} cm`;
-
 
   if(cm === 2){
 
@@ -1047,7 +1001,6 @@ for(
     true;
 
   }
-
 
   $("barcodeHeight")
   .appendChild(o);
@@ -1066,14 +1019,11 @@ for(
     "option"
   );
 
-
   o.value =
   cm;
 
-
   o.textContent =
   `${cm} cm`;
-
 
   if(cm === 3){
 
@@ -1081,7 +1031,6 @@ for(
     true;
 
   }
-
 
   $("qrSize")
   .appendChild(o);
@@ -1100,14 +1049,11 @@ for(
     "option"
   );
 
-
   o.value =
   mm;
 
-
   o.textContent =
   `${mm} mm`;
-
 
   if(mm === 2){
 
@@ -1115,7 +1061,6 @@ for(
     true;
 
   }
-
 
   $("itemGap")
   .appendChild(o);
@@ -1254,6 +1199,58 @@ function log(text){
 
   box.scrollTop =
   box.scrollHeight;
+
+}
+
+
+function errorText(
+  error,
+  fallback="未知錯誤"
+){
+
+  if(
+    error &&
+    typeof error.message ===
+    "string" &&
+    error.message.trim()
+  ){
+
+    return error.message;
+
+  }
+
+
+  if(
+    typeof error ===
+    "string" &&
+    error.trim()
+  ){
+
+    return error;
+
+  }
+
+
+  try{
+
+    const text =
+    String(error);
+
+    if(
+      text &&
+      text !== "undefined" &&
+      text !== "[object Object]"
+    ){
+
+      return text;
+
+    }
+
+  }
+  catch{}
+
+
+  return fallback;
 
 }
 
@@ -2096,7 +2093,9 @@ function makeQrCanvas(
     !generated
   ){
 
-    return null;
+    throw new Error(
+      "QR Code 產生失敗"
+    );
 
   }
 
@@ -3794,8 +3793,79 @@ function drawPreview(){
 
   catch(error){
 
-    alert(
-      error.message
+    const message =
+    errorText(
+      error,
+      "預覽發生錯誤"
+    );
+
+
+    console.error(
+      "PREVIEW ERROR:",
+      error
+    );
+
+
+    log(
+      "PREVIEW ERROR：" +
+      message
+    );
+
+
+    const target =
+    $("previewCanvas");
+
+
+    target.width =
+    paperDots(
+      Number(
+        $("paperWidth").value
+      )
+    );
+
+
+    target.height =
+    70;
+
+
+    const ctx =
+    target.getContext(
+      "2d"
+    );
+
+
+    ctx.fillStyle =
+    "#fff";
+
+
+    ctx.fillRect(
+      0,
+      0,
+      target.width,
+      target.height
+    );
+
+
+    ctx.fillStyle =
+    "#d92d20";
+
+
+    ctx.textAlign =
+    "center";
+
+
+    ctx.textBaseline =
+    "middle";
+
+
+    ctx.font =
+    '16px "PingFang TC","Microsoft JhengHei",sans-serif';
+
+
+    ctx.fillText(
+      "預覽暫時無法顯示",
+      target.width / 2,
+      target.height / 2
     );
 
   }
@@ -4420,6 +4490,13 @@ async () => {
 
   catch(error){
 
+    const message =
+    errorText(
+      error,
+      "藍牙連線失敗"
+    );
+
+
     $("bleStatus")
     .className =
     "status err";
@@ -4428,7 +4505,13 @@ async () => {
     $("bleStatus")
     .textContent =
     "連線失敗：" +
-    error.message;
+    message;
+
+
+    log(
+      "BLE ERROR：" +
+      message
+    );
 
   }
 
@@ -4558,6 +4641,11 @@ async () => {
 
 
   $("printStatus")
+  .className =
+  "status warn";
+
+
+  $("printStatus")
   .textContent =
   "⏹ 已停止並中斷 B3S";
 
@@ -4597,6 +4685,23 @@ async function printItems(
 
 
   if(
+    mode === "custom"
+    &&
+    !$("customText")
+    .value
+    .trim()
+  ){
+
+    alert(
+      "請輸入自訂文字"
+    );
+
+    return;
+
+  }
+
+
+  if(
     !connected()
   ){
 
@@ -4620,6 +4725,12 @@ async function printItems(
   updateButtons();
 
 
+  progress(
+    0,
+    "建立列印資料…"
+  );
+
+
   try{
 
     const original =
@@ -4640,11 +4751,19 @@ async function printItems(
     );
 
 
+    $("printMeta")
+    .textContent =
+    `${canvas.width} × ${canvas.height} dots｜${paperModeName($("paperMode").value)}`;
+
+
     await ackStep(
       "CONNECT",
       CONTROL.connect(),
       0xC2
     );
+
+
+    progress(5);
 
 
     await ackStep(
@@ -4662,6 +4781,9 @@ async function printItems(
     );
 
 
+    progress(10);
+
+
     await ackStep(
 
       "SET PAPER MODE",
@@ -4677,6 +4799,9 @@ async function printItems(
     );
 
 
+    progress(15);
+
+
     await ackStep(
       "PRINT START",
       CONTROL.printStart(),
@@ -4684,11 +4809,17 @@ async function printItems(
     );
 
 
+    progress(20);
+
+
     await ackStep(
       "PAGE START",
       CONTROL.pageStart(),
       0x04
     );
+
+
+    progress(25);
 
 
     await ackStep(
@@ -4710,6 +4841,12 @@ async function printItems(
     );
 
 
+    progress(
+      30,
+      `傳送點陣 0/${runs.length}`
+    );
+
+
     for(
       let i=0;
       i<runs.length;
@@ -4725,6 +4862,8 @@ async function printItems(
 
       if(
         i % 4 === 0
+        ||
+        i === runs.length - 1
       ){
 
         progress(
@@ -4733,9 +4872,10 @@ async function printItems(
           +
           Math.round(
             (
-              i /
-              runs.length
+              i + 1
             )
+            /
+            runs.length
             *
             55
           ),
@@ -4750,6 +4890,12 @@ async function printItems(
       }
 
     }
+
+
+    progress(
+      88,
+      "內容完成，正在結束列印…"
+    );
 
 
     const page =
@@ -4773,6 +4919,9 @@ async function printItems(
       );
 
     }
+
+
+    progress(94);
 
 
     await delay(40);
@@ -4844,6 +4993,13 @@ async function printItems(
 
   catch(error){
 
+    const message =
+    errorText(
+      error,
+      "列印發生未知錯誤"
+    );
+
+
     $("printStatus")
     .className =
     "status err";
@@ -4852,7 +5008,13 @@ async function printItems(
     $("printStatus")
     .textContent =
     "❌ " +
-    error.message;
+    message;
+
+
+    log(
+      "PRINT ERROR：" +
+      message
+    );
 
   }
 
@@ -5056,6 +5218,14 @@ async function openScanner(mode){
   0;
 
 
+  lastCode =
+  "";
+
+
+  lastTime =
+  0;
+
+
   $("scannerModal")
   .style
   .display =
@@ -5077,6 +5247,11 @@ async function openScanner(mode){
     .display =
     "block";
 
+
+    $("bulkScanCounter")
+    .textContent =
+    "已掃描 0 筆";
+
   }
 
   else{
@@ -5091,7 +5266,22 @@ async function openScanner(mode){
     .display =
     "none";
 
+
+    $("bulkScanCounter")
+    .textContent =
+    "";
+
   }
+
+
+  $("scannerStatus")
+  .className =
+  "status";
+
+
+  $("scannerStatus")
+  .textContent =
+  "正在啟動相機…";
 
 
   try{
@@ -5157,6 +5347,17 @@ async function openScanner(mode){
           decoded;
 
 
+          $("scannerStatus")
+          .className =
+          "status ok";
+
+
+          $("scannerStatus")
+          .textContent =
+          "掃描成功：" +
+          decoded;
+
+
           setTimeout(
             closeScanner,
             300
@@ -5214,6 +5415,16 @@ async function openScanner(mode){
         `已掃描 ${bulkScanCount} 筆`;
 
 
+        $("scannerStatus")
+        .className =
+        "status ok";
+
+
+        $("scannerStatus")
+        .textContent =
+        `已加入：${decoded}`;
+
+
         $("bulkScanName")
         .value =
         "";
@@ -5223,7 +5434,9 @@ async function openScanner(mode){
         .value =
         "";
 
-      }
+      },
+
+      () => {}
 
     );
 
@@ -5231,9 +5444,31 @@ async function openScanner(mode){
     scanning =
     true;
 
+
+    $("scannerStatus")
+    .className =
+    "status ok";
+
+
+    $("scannerStatus")
+    .textContent =
+
+    mode === "bulk"
+    ?
+    "請連續掃描商品條碼"
+    :
+    "請對準商品條碼";
+
   }
 
   catch(error){
+
+    const message =
+    errorText(
+      error,
+      "相機啟動失敗"
+    );
+
 
     $("scannerStatus")
     .className =
@@ -5242,7 +5477,13 @@ async function openScanner(mode){
 
     $("scannerStatus")
     .textContent =
-    error.message;
+    message;
+
+
+    log(
+      "SCANNER ERROR：" +
+      message
+    );
 
   }
 
@@ -5378,8 +5619,18 @@ async () => {
       $("log").value
     );
 
+
+    alert(
+      "已複製"
+    );
+
   }
-  catch{}
+
+  catch{
+
+    $("log").select();
+
+  }
 
 };
 
