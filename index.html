@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 
-<title>商品條碼／QR Code 列印｜B3S V18.2</title>
+<title>商品條碼／QR Code 列印｜B3S V18.3</title>
 
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
@@ -345,7 +345,7 @@ button:disabled{opacity:.42}
 <h1>商品條碼／QR Code 列印</h1>
 
 <div class="sub">
-B3S 工作實用版 V18.2
+B3S 工作實用版 V18.3
 <br>
 <span class="modeBadge">條碼＋QR Code＋掃描</span>
 </div>
@@ -1634,10 +1634,12 @@ function makeBarcode(
     "canvas"
   );
 
+
   const numberFontSize=
   Number(
     $("barcodeFontSize").value
   );
+
 
   const options={
 
@@ -1688,7 +1690,7 @@ function makeBarcode(
   )/100;
 
 
-  const targetMax=
+  const targetWidth=
   Math.max(
     40,
     Math.round(
@@ -1698,11 +1700,6 @@ function makeBarcode(
   );
 
 
-  if(raw.width<=targetMax){
-    return raw;
-  }
-
-
   const output=
   document.createElement(
     "canvas"
@@ -1710,15 +1707,11 @@ function makeBarcode(
 
 
   output.width=
-  targetMax;
+  targetWidth;
 
 
   output.height=
-  Math.round(
-    raw.height*
-    targetMax/
-    raw.width
-  );
+  raw.height;
 
 
   const ctx=
@@ -1740,6 +1733,9 @@ function makeBarcode(
 
   ctx.drawImage(
     raw,
+    0,0,
+    raw.width,
+    raw.height,
     0,0,
     output.width,
     output.height
