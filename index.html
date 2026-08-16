@@ -1,4 +1,923 @@
-<!doctype html>
+<!doctype html><!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>B3S 大字牌 V19.2</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:#f4f6f8;
+  color:#18202a;
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif
+}
+.wrap{
+  max-width:860px;
+  margin:auto;
+  padding:16px;
+}
+.card{
+  background:#fff;
+  border:1px solid #d8dee8;
+  border-radius:16px;
+  padding:16px;
+  margin-bottom:14px;
+}
+h1{
+  margin:0 0 6px;
+  font-size:28px;
+}
+h2{
+  margin:0 0 12px;
+  font-size:22px;
+}
+.help{
+  color:#667085;
+  font-size:14px;
+  line-height:1.65;
+}
+.row{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:12px;
+}
+label{
+  display:block;
+  font-weight:700;
+  margin-bottom:6px;
+}
+input,select,textarea{
+  width:100%;
+  border:1px solid #cfd7e3;
+  border-radius:12px;
+  padding:12px 14px;
+  font-size:18px;
+  background:#fff;
+}
+textarea{
+  min-height:140px;
+  resize:vertical;
+}
+button{
+  min-height:48px;
+  border:0;
+  border-radius:12px;
+  padding:12px 18px;
+  font-size:18px;
+  font-weight:700;
+  cursor:pointer;
+}
+button:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+.btn-green{background:#e7f8ef;color:#087443}
+.btn-blue{background:#1265f3;color:#fff}
+.btn-red{background:#d92d20;color:#fff}
+.btn-gray{background:#eef2f6;color:#344054}
+.btn-orange{background:#fdb022;color:#fff}
+.status{
+  padding:12px 14px;
+  border-radius:12px;
+  background:#f2f4f7;
+  margin-top:10px;
+  font-weight:700;
+}
+.ok{background:#ecfdf3;color:#067647}
+.warn{background:#fff8e6;color:#8a5a00}
+.err{background:#fff1f0;color:#d92d20}
+.preview{
+  background:#eef2f6;
+  padding:12px;
+  border-radius:12px;
+  overflow:auto;
+}
+canvas{
+  display:block;
+  margin:auto;
+  max-width:100%;
+  height:auto;
+  background:#fff;
+  border:1px solid #d8dee8;
+}
+.small{
+  font-size:13px;
+  color:#667085;
+}
+hr{
+  border:0;
+  border-top:1px solid #e4e7ec;
+  margin:14px 0;
+}
+.badge{
+  display:inline-block;
+  padding:4px 10px;
+  border-radius:999px;
+  background:#eef2f6;
+  font-size:13px;
+  font-weight:700;
+  margin-right:6px;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>🪧 B3S 大字牌 V19.2</h1>
+  <div class="help">
+    這版專門優化 <b>大字列印</b>。<br>
+    重點：黑色區分小批傳送、空白列壓縮、減少大字裡面的橫向白線。<br>
+    建議先用你的粉紅黑標紙測試。
+  </div>
+
+  <div class="card">
+    <h2>連線</h2>
+
+    <div id="bleStatus" class="status">尚未連線</div>
+
+    <div class="row" style="margin-top:12px">
+      <button id="connectBtn" class="btn-green">🔵 連接 B3S</button>
+      <button id="disconnectBtn" class="btn-gray" disabled>中斷連線</button>
+      <button id="stopBtn" class="btn-red" disabled>⏹ 停止送紙</button>
+    </div>
+
+    <div class="help" style="margin-top:10px">
+      裝置：<span id="deviceName">—</span><br>
+      GATT：<span id="gattState">false</span><br>
+      通道：<span id="channelState">未就緒</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>紙張設定</h2>
+
+    <div class="grid">
+      <div>
+        <label for="paperWidth">有效列印寬度（mm）</label>
+        <select id="paperWidth">
+          <option value="58">58</option>
+          <option value="72" selected>72</option>
+          <option value="75">75</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="paperHeight">紙張高度（mm）</label>
+        <select id="paperHeight">
+          <option value="148" selected>148</option>
+          <option value="120">120</option>
+          <option value="100">100</option>
+          <option value="80">80</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="paperType">紙張模式</label>
+        <select id="paperType">
+          <option value="2" selected>黑標紙</option>
+          <option value="1">連續紙</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="density">大字濃度</label>
+        <select id="density">
+          <option value="1" selected>1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>大字內容</h2>
+
+    <div class="grid">
+      <div>
+        <label for="bigText">大字文字</label>
+        <input id="bigText" value="1" maxlength="4" placeholder="例如：1 或 2">
+        <div class="small" style="margin-top:6px">建議 1～2 個字。要 1字1張 就輸入 1 個字；要 2字1張 就輸入 2 個字。</div>
+      </div>
+
+      <div>
+        <label for="fontMode">字體大小</label>
+        <select id="fontMode">
+          <option value="auto" selected>自動最大</option>
+          <option value="manual">手動</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="fontPx">手動字體 px</label>
+        <input id="fontPx" type="number" value="430" min="60" max="1200">
+      </div>
+
+      <div>
+        <label for="fontWeight">粗體</label>
+        <select id="fontWeight">
+          <option value="700" selected>粗體</option>
+          <option value="900">超粗</option>
+          <option value="600">中粗</option>
+          <option value="400">一般</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="alignX">水平位置</label>
+        <select id="alignX">
+          <option value="left">靠左</option>
+          <option value="center" selected>置中</option>
+          <option value="right">靠右</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="alignY">垂直位置</label>
+        <select id="alignY">
+          <option value="top">靠上</option>
+          <option value="center" selected>置中</option>
+          <option value="bottom">靠下</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="marginMm">邊界（mm）</label>
+        <input id="marginMm" type="number" value="7" min="0" max="30" step="1">
+      </div>
+
+      <div>
+        <label for="offsetX">X 位移（mm）</label>
+        <input id="offsetX" type="number" value="0" min="-20" max="20" step="1">
+      </div>
+
+      <div>
+        <label for="offsetY">Y 位移（mm）</label>
+        <input id="offsetY" type="number" value="0" min="-20" max="20" step="1">
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+      <button id="refreshPreviewBtn" class="btn-gray">🔄 更新預覽</button>
+      <button id="printBigBtn" class="btn-blue" disabled>🖨️ 列印大字牌</button>
+    </div>
+
+    <div id="printStatus" class="status">等待列印</div>
+
+    <div class="preview" style="margin-top:12px">
+      <canvas id="previewCanvas"></canvas>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>目前設定摘要</h2>
+    <div id="summary" class="help"></div>
+  </div>
+
+  <div class="card">
+    <h2>通訊紀錄</h2>
+
+    <div class="row">
+      <button id="copyBtn" class="btn-gray">複製紀錄</button>
+      <button id="clearBtn" class="btn-gray">清除紀錄</button>
+    </div>
+
+    <textarea id="log" readonly style="margin-top:10px;min-height:250px"></textarea>
+  </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+/* =========================
+   UUID
+========================= */
+const SERVICE_UUID = "49535343-fe7d-4ae5-8fa9-9fafd205e455";
+const WRITE_UUID   = "49535343-8841-43f4-a8d4-ecbe34729bb3";
+const NOTIFY_UUID  = "49535343-1e4d-4bd9-ba61-23c647249616";
+
+/* =========================
+   STATE
+========================= */
+const state = {
+  device:null,
+  server:null,
+  write:null,
+  notify:null,
+  rx:[],
+  running:false,
+  stop:false
+};
+
+/* =========================
+   UTIL
+========================= */
+function delay(ms){
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+function mmToDots(mm){
+  return Math.round(mm * 203 / 25.4);
+}
+function widthDotsAligned(mm){
+  return Math.floor(mmToDots(mm) / 8) * 8;
+}
+function u16(value){
+  return [(value >> 8) & 255, value & 255];
+}
+function hex(bytes){
+  return Array.from(bytes).map(v => v.toString(16).padStart(2, "0").toUpperCase()).join(" ");
+}
+function log(text){
+  const box = $("log");
+  box.value += `[${new Date().toLocaleTimeString()}] ${text}\n`;
+  box.scrollTop = box.scrollHeight;
+}
+function errorText(err){
+  if(err && err.message) return err.message;
+  if(typeof err === "string") return err;
+  return String(err || "未知錯誤");
+}
+function connected(){
+  return !!(state.server?.connected && state.write && state.notify);
+}
+function setStatus(el, cls, text){
+  el.className = "status " + cls;
+  el.textContent = text;
+}
+function updateButtons(){
+  const ready = connected();
+  $("disconnectBtn").disabled = !ready;
+  $("stopBtn").disabled = !ready;
+  $("printBigBtn").disabled = !ready || state.running;
+  $("gattState").textContent = String(!!state.server?.connected);
+  $("channelState").textContent = ready ? "已就緒" : "未就緒";
+}
+function settings(){
+  return {
+    paperWidth: Number($("paperWidth").value),
+    paperHeight: Number($("paperHeight").value),
+    paperType: Number($("paperType").value),
+    density: Number($("density").value),
+    bigText: ($("bigText").value || "1").trim(),
+    fontMode: $("fontMode").value,
+    fontPx: Number($("fontPx").value || 430),
+    fontWeight: String($("fontWeight").value),
+    alignX: $("alignX").value,
+    alignY: $("alignY").value,
+    marginMm: Number($("marginMm").value || 7),
+    offsetX: Number($("offsetX").value || 0),
+    offsetY: Number($("offsetY").value || 0)
+  };
+}
+function refreshSummary(){
+  const s = settings();
+  $("summary").innerHTML =
+    `<span class="badge">版本 V19.2</span>` +
+    `<span class="badge">${s.paperWidth} × ${s.paperHeight} mm</span>` +
+    `<span class="badge">${s.paperType === 2 ? "黑標紙" : "連續紙"}</span>` +
+    `<span class="badge">濃度 ${s.density}</span>` +
+    `<span class="badge">文字：${escapeHtml(s.bigText || "1")}</span>`;
+}
+function escapeHtml(text){
+  return String(text).replace(/[&<>"']/g, m => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[m]);
+}
+
+/* =========================
+   PACKET
+========================= */
+function frame(command, data=[1], prefix=false){
+  const payload = Array.from(data);
+  let checksum = command ^ payload.length;
+  for(const v of payload) checksum ^= v;
+
+  const packet = [
+    0x55,0x55,
+    command,
+    payload.length,
+    ...payload,
+    checksum & 255,
+    0xAA,0xAA
+  ];
+  if(prefix) packet.unshift(0x03);
+  return new Uint8Array(packet);
+}
+const CONTROL = {
+  connect:    () => frame(0xC1,[1],true),
+  density:    v  => frame(0x21,[v]),
+  labelType:  v  => frame(0x23,[v]),
+  printStart: () => frame(0x01,[1]),
+  pageStart:  () => frame(0x03,[1]),
+  pageSize:   (h,w) => frame(0x13,[...u16(h), ...u16(w)]),
+  pageEnd:    () => frame(0xE3,[1]),
+  printEnd:   () => frame(0xF3,[1])
+};
+
+/* =========================
+   PARSE RX
+========================= */
+function parsePackets(text){
+  const bytes = String(text || "")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .map(v => parseInt(v, 16));
+
+  const result = [];
+  let pos = 0;
+
+  while(pos < bytes.length){
+    if(bytes[pos] !== 0x55 || bytes[pos+1] !== 0x55){
+      pos++;
+      continue;
+    }
+    const command = bytes[pos+2];
+    const length = bytes[pos+3];
+    const checksumIndex = pos + 4 + length;
+    const tail = checksumIndex + 1;
+
+    if(tail + 1 >= bytes.length) break;
+    if(bytes[tail] !== 0xAA || bytes[tail+1] !== 0xAA){
+      pos++;
+      continue;
+    }
+
+    result.push({
+      command,
+      payload: bytes.slice(pos+4, pos+4+length)
+    });
+
+    pos = tail + 2;
+  }
+
+  return result;
+}
+
+/* =========================
+   WRITE
+========================= */
+async function writeControl(bytes){
+  log("TX：" + hex(bytes));
+  if(state.write.properties.writeWithoutResponse && state.write.writeValueWithoutResponse){
+    await state.write.writeValueWithoutResponse(bytes);
+  }else if(state.write.writeValueWithResponse){
+    await state.write.writeValueWithResponse(bytes);
+  }else{
+    await state.write.writeValue(bytes);
+  }
+}
+async function writeRaw(bytes){
+  const size = 20;
+  for(let i=0;i<bytes.length;i+=size){
+    if(state.stop) throw new Error("使用者停止");
+    const part = bytes.slice(i, i+size);
+
+    if(state.write.properties.writeWithoutResponse && state.write.writeValueWithoutResponse){
+      await state.write.writeValueWithoutResponse(part);
+    }else if(state.write.writeValueWithResponse){
+      await state.write.writeValueWithResponse(part);
+    }else{
+      await state.write.writeValue(part);
+    }
+    await delay(2);
+  }
+}
+
+/* =========================
+   WAIT ACK
+========================= */
+async function sendWait(name, packet, expected, timeout=5000){
+  const startIndex = state.rx.length;
+  log(`${name} → ${hex(packet)}`);
+  await writeControl(packet);
+
+  const start = Date.now();
+  while(Date.now() - start < timeout){
+    const incoming = state.rx.slice(startIndex);
+    for(const raw of incoming){
+      for(const parsed of parsePackets(raw)){
+        if(parsed.command === expected){
+          log(`${name} ACK ✅ 0x${expected.toString(16).toUpperCase()}`);
+          return true;
+        }
+      }
+    }
+    await delay(25);
+  }
+
+  log(`${name} ACK ❌ TIMEOUT`);
+  return false;
+}
+
+/* =========================
+   CANVAS / PREVIEW
+========================= */
+function fitFontSize(ctx, text, maxWidth, maxHeight, weight){
+  let size = Math.min(Math.floor(maxHeight * 0.88), Math.floor(maxWidth * 0.92));
+  size = Math.max(size, 50);
+
+  while(size > 40){
+    ctx.font = `${weight} ${size}px Arial,"PingFang TC","Microsoft JhengHei",sans-serif`;
+    const m = ctx.measureText(text);
+    const w = m.width;
+    const h = (m.actualBoundingBoxAscent || size * 0.75) + (m.actualBoundingBoxDescent || size * 0.2);
+
+    if(w <= maxWidth && h <= maxHeight){
+      return size;
+    }
+    size -= 4;
+  }
+  return 40;
+}
+function buildBigSignCanvas(){
+  const s = settings();
+  const width = widthDotsAligned(s.paperWidth);
+  const height = mmToDots(s.paperHeight);
+  const margin = mmToDots(s.marginMm);
+  const xOffset = mmToDots(s.offsetX);
+  const yOffset = mmToDots(s.offsetY);
+
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+
+  const ctx = canvas.getContext("2d");
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(0,0,width,height);
+
+  const text = (s.bigText || "1").replace(/\s+/g, "");
+  const safeText = text || "1";
+
+  const innerWidth = Math.max(40, width - margin * 2);
+  const innerHeight = Math.max(40, height - margin * 2);
+
+  let fontSize = s.fontMode === "manual"
+    ? Math.max(40, Math.min(1200, s.fontPx))
+    : fitFontSize(ctx, safeText, innerWidth, innerHeight, s.fontWeight);
+
+  ctx.font = `${s.fontWeight} ${fontSize}px Arial,"PingFang TC","Microsoft JhengHei",sans-serif`;
+  ctx.fillStyle = "#000";
+  ctx.textBaseline = "alphabetic";
+
+  const metrics = ctx.measureText(safeText);
+  const textWidth = metrics.width;
+  const ascent = metrics.actualBoundingBoxAscent || fontSize * 0.76;
+  const descent = metrics.actualBoundingBoxDescent || fontSize * 0.18;
+  const textHeight = ascent + descent;
+
+  let x;
+  if(s.alignX === "left"){
+    x = margin + xOffset;
+    ctx.textAlign = "left";
+  }else if(s.alignX === "right"){
+    x = width - margin + xOffset;
+    ctx.textAlign = "right";
+  }else{
+    x = width / 2 + xOffset;
+    ctx.textAlign = "center";
+  }
+
+  let y;
+  if(s.alignY === "top"){
+    y = margin + ascent + yOffset;
+  }else if(s.alignY === "bottom"){
+    y = height - margin - descent + yOffset;
+  }else{
+    y = (height / 2) + (ascent - descent) / 2 + yOffset;
+  }
+
+  ctx.fillText(safeText, x, y);
+
+  return canvas;
+}
+function refreshPreview(){
+  refreshSummary();
+  const source = buildBigSignCanvas();
+  const target = $("previewCanvas");
+  target.width = source.width;
+  target.height = source.height;
+  target.getContext("2d").drawImage(source, 0, 0);
+}
+
+/* =========================
+   BITMAP
+========================= */
+function sameRow(a,b){
+  if(a.length !== b.length) return false;
+  for(let i=0;i<a.length;i++){
+    if(a[i] !== b[i]) return false;
+  }
+  return true;
+}
+function canvasToRows(canvas){
+  const ctx = canvas.getContext("2d");
+  const data = ctx.getImageData(0,0,canvas.width,canvas.height).data;
+  const rows = [];
+
+  for(let y=0;y<canvas.height;y++){
+    const row = new Uint8Array(canvas.width / 8);
+    let black = 0;
+
+    for(let x=0;x<canvas.width;x++){
+      const i = (y * canvas.width + x) * 4;
+      const gray = (data[i]*299 + data[i+1]*587 + data[i+2]*114) / 1000;
+
+      if(gray < 170){
+        row[x >> 3] |= 0x80 >> (x & 7);
+        black++;
+      }
+    }
+
+    rows.push({ data:row, black });
+  }
+
+  return rows;
+}
+function rowsToRunsOptimized(rows){
+  const runs = [];
+  let y = 0;
+
+  while(y < rows.length){
+    const current = rows[y];
+
+    // 空白列大量壓縮
+    if(current.black === 0){
+      let repeat = 1;
+      while(
+        y + repeat < rows.length &&
+        rows[y + repeat].black === 0 &&
+        repeat < 40
+      ){
+        repeat++;
+      }
+      runs.push({
+        row:y,
+        repeat,
+        data:current.data,
+        black:0
+      });
+      y += repeat;
+      continue;
+    }
+
+    // 非空白列：只做很小的重複壓縮，減少條紋
+    let repeat = 1;
+    while(
+      y + repeat < rows.length &&
+      repeat < 2 &&
+      sameRow(current.data, rows[y + repeat].data) &&
+      rows[y + repeat].black > 0
+    ){
+      repeat++;
+    }
+
+    runs.push({
+      row:y,
+      repeat,
+      data:current.data,
+      black:current.black
+    });
+
+    y += repeat;
+  }
+
+  return runs;
+}
+function rowPacket(run){
+  return frame(
+    0x85,
+    [
+      ...u16(run.row),
+      0,
+      run.black & 255,
+      (run.black >> 8) & 255,
+      run.repeat,
+      ...run.data
+    ]
+  );
+}
+async function sendBitmapOptimized(runs){
+  for(let i=0;i<runs.length;i++){
+    if(state.stop) throw new Error("使用者停止");
+
+    await writeRaw(rowPacket(runs[i]));
+
+    // 黑色內容多時，給印表機一點喘息
+    if(runs[i].black > 0){
+      await delay(4);
+    }
+
+    // 每一小批再停一下
+    if((i + 1) % 24 === 0){
+      await delay(18);
+    }
+
+    if((i + 1) % 8 === 0 || i === runs.length - 1){
+      $("printStatus").textContent = `傳送資料 ${i+1}/${runs.length}`;
+    }
+  }
+}
+
+/* =========================
+   BLE CONNECT
+========================= */
+$("connectBtn").onclick = async () => {
+  try{
+    setStatus($("bleStatus"), "warn", "正在連線…");
+
+    const device = await navigator.bluetooth.requestDevice({
+      acceptAllDevices:true,
+      optionalServices:[SERVICE_UUID]
+    });
+
+    state.device = device;
+    $("deviceName").textContent = device.name || "—";
+
+    device.addEventListener("gattserverdisconnected", () => {
+      state.server = null;
+      state.write = null;
+      state.notify = null;
+      setStatus($("bleStatus"), "", "已中斷");
+      updateButtons();
+    });
+
+    state.server = await device.gatt.connect();
+    const service = await state.server.getPrimaryService(SERVICE_UUID);
+    state.write = await service.getCharacteristic(WRITE_UUID);
+    state.notify = await service.getCharacteristic(NOTIFY_UUID);
+
+    state.rx = [];
+
+    state.notify.addEventListener("characteristicvaluechanged", e => {
+      const value = e.target.value;
+      const bytes = new Uint8Array(value.buffer, value.byteOffset, value.byteLength);
+      const text = hex(bytes);
+      state.rx.push(text);
+      log("RX：" + text);
+    });
+
+    await state.notify.startNotifications();
+
+    setStatus($("bleStatus"), "ok", "✅ B3S 已連線");
+    updateButtons();
+  }catch(err){
+    setStatus($("bleStatus"), "err", "❌ " + errorText(err));
+    log("CONNECT ERROR：" + errorText(err));
+  }
+};
+
+$("disconnectBtn").onclick = () => {
+  try{
+    state.device?.gatt?.disconnect();
+  }catch{}
+  state.server = null;
+  state.write = null;
+  state.notify = null;
+  setStatus($("bleStatus"), "", "已中斷");
+  updateButtons();
+};
+
+/* =========================
+   STOP
+========================= */
+$("stopBtn").onclick = async () => {
+  state.stop = true;
+  try{ await writeControl(CONTROL.pageEnd()); }catch{}
+  await delay(100);
+  try{ await writeControl(CONTROL.printEnd()); }catch{}
+  setStatus($("printStatus"), "warn", "⏹ 已送出停止");
+};
+
+/* =========================
+   PRINT BIG SIGN
+========================= */
+$("printBigBtn").onclick = async () => {
+  if(!connected()) return;
+
+  const s = settings();
+  const canvas = buildBigSignCanvas();
+  const rows = canvasToRows(canvas);
+  const runs = rowsToRunsOptimized(rows);
+
+  state.running = true;
+  state.stop = false;
+  updateButtons();
+
+  setStatus($("printStatus"), "warn", "開始列印…");
+
+  try{
+    log("========== V19.2 BIG SIGN START ==========");
+    log(`紙張設定：${s.paperWidth} × ${s.paperHeight} mm`);
+    log(`CANVAS：${canvas.width} × ${canvas.height}`);
+    log(`LABEL TYPE：${s.paperType}`);
+    log(`DENSITY：${s.density}`);
+    log(`TEXT：${s.bigText || "1"}`);
+    log(`RUNS：${runs.length}`);
+
+    if(!await sendWait("CONNECT", CONTROL.connect(), 0xC2, 5000)){
+      throw new Error("CONNECT 沒有 ACK");
+    }
+
+    if(!await sendWait("DENSITY", CONTROL.density(s.density), 0x31, 5000)){
+      throw new Error("DENSITY 沒有 ACK");
+    }
+
+    if(!await sendWait("LABEL TYPE", CONTROL.labelType(s.paperType), 0x33, 5000)){
+      throw new Error("LABEL TYPE 沒有 ACK");
+    }
+
+    if(!await sendWait("PRINT START", CONTROL.printStart(), 0x02, 5000)){
+      throw new Error("PRINT START 沒有 ACK");
+    }
+
+    if(!await sendWait("PAGE START", CONTROL.pageStart(), 0x04, 5000)){
+      throw new Error("PAGE START 沒有 ACK");
+    }
+
+    if(!await sendWait("PAGE SIZE", CONTROL.pageSize(canvas.height, canvas.width), 0x14, 5000)){
+      throw new Error("PAGE SIZE 沒有 ACK");
+    }
+
+    $("printStatus").textContent = `傳送資料 0/${runs.length}`;
+    await sendBitmapOptimized(runs);
+    log("BITMAP DATA ✅ 全部送完");
+
+    const pageEndOk = await sendWait("PAGE END", CONTROL.pageEnd(), 0xE4, 20000);
+    if(!pageEndOk){
+      log("PAGE END 沒有 E4，請觀察是否仍有出紙。");
+    }
+
+    await delay(500);
+
+    const printEndOk = await sendWait("PRINT END", CONTROL.printEnd(), 0xF4, 12000);
+    if(!printEndOk){
+      log("PRINT END 沒有 F4，若紙有印出仍可先觀察實際結果。");
+    }
+
+    if(pageEndOk && printEndOk){
+      setStatus($("printStatus"), "ok", "✅ 列印流程完成");
+    }else if(pageEndOk || printEndOk){
+      setStatus($("printStatus"), "warn", "⚠️ 指令已完成大部分，請看實際紙張結果");
+    }else{
+      setStatus($("printStatus"), "warn", "⚠️ 未收到完整 ACK，請查看紀錄");
+    }
+
+    log("========== V19.2 BIG SIGN END ==========");
+  }catch(err){
+    setStatus($("printStatus"), "err", "❌ " + errorText(err));
+    log("BIG SIGN ERROR：" + errorText(err));
+  }finally{
+    state.running = false;
+    updateButtons();
+  }
+};
+
+/* =========================
+   LOG
+========================= */
+$("clearBtn").onclick = () => {
+  $("log").value = "";
+};
+$("copyBtn").onclick = async () => {
+  try{
+    await navigator.clipboard.writeText($("log").value);
+    alert("已複製紀錄");
+  }catch{
+    $("log").select();
+  }
+};
+
+/* =========================
+   EVENTS
+========================= */
+[
+  "paperWidth","paperHeight","paperType","density","bigText","fontMode",
+  "fontPx","fontWeight","alignX","alignY","marginMm","offsetX","offsetY"
+].forEach(id => {
+  $(id).addEventListener("input", refreshPreview);
+  $(id).addEventListener("change", refreshPreview);
+});
+$("refreshPreviewBtn").onclick = refreshPreview;
+
+/* =========================
+   INIT
+========================= */
+refreshPreview();
+updateButtons();
+</script>
+</body>
+</html>
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8">
