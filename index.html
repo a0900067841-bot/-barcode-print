@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 
-<title>商品條碼／QR／大字牌｜B3S V19.3</title>
+<title>商品條碼／QR／大字牌｜B3S V19.4</title>
 
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
@@ -34,15 +34,8 @@ body{
   margin-bottom:14px
 }
 
-h1{
-  margin:0 0 4px;
-  font-size:25px
-}
-
-h2{
-  margin:0 0 12px;
-  font-size:20px
-}
+h1{margin:0 0 4px;font-size:25px}
+h2{margin:0 0 12px;font-size:20px}
 
 .help{
   color:#667085;
@@ -63,9 +56,7 @@ h2{
 }
 
 @media(max-width:650px){
-  .grid,.grid3{
-    grid-template-columns:1fr
-  }
+  .grid,.grid3{grid-template-columns:1fr}
 }
 
 label{
@@ -101,39 +92,13 @@ button{
   font-weight:700
 }
 
-button:disabled{
-  opacity:.38
-}
+button:disabled{opacity:.38}
 
-.primary{
-  background:#1265f3;
-  color:#fff
-}
-
-.success{
-  background:#e7f8ef;
-  color:#087443
-}
-
-.danger{
-  background:#d92d20;
-  color:#fff
-}
-
-.gray{
-  background:#e9edf3;
-  color:#344054
-}
-
-.purple{
-  background:#eee8ff;
-  color:#5b37b7
-}
-
-.orange{
-  background:#fff1dc;
-  color:#9a5000
-}
+.primary{background:#1265f3;color:#fff}
+.success{background:#e7f8ef;color:#087443}
+.danger{background:#d92d20;color:#fff}
+.gray{background:#e9edf3;color:#344054}
+.purple{background:#eee8ff;color:#5b37b7}
 
 .row{
   display:flex;
@@ -150,20 +115,9 @@ button:disabled{
   line-height:1.5
 }
 
-.ok{
-  background:#ecfdf3;
-  color:#067647
-}
-
-.warn{
-  background:#fff8e6;
-  color:#8a5a00
-}
-
-.err{
-  background:#fff1f0;
-  color:#d92d20
-}
+.ok{background:#ecfdf3;color:#067647}
+.warn{background:#fff8e6;color:#8a5a00}
+.err{background:#fff1f0;color:#d92d20}
 
 .verified{
   background:#ecfdf3;
@@ -206,9 +160,7 @@ button:disabled{
   height:auto
 }
 
-.hidden{
-  display:none!important
-}
+.hidden{display:none!important}
 
 hr{
   border:0;
@@ -234,21 +186,13 @@ hr{
 <div class="wrap">
 
 <h1>商品條碼／QR／大字牌</h1>
-
-<div class="help">
-B3S V19.3 正式版｜Bluefy / Web Bluetooth
-</div>
-
-
-<!-- B3S -->
+<div class="help">B3S V19.4 穩定正式版｜Bluefy / Web Bluetooth</div>
 
 <div class="card">
 
 <h2>🖨 B3S 印表機</h2>
 
-<div id="bleStatus" class="status">
-尚未連線
-</div>
+<div id="bleStatus" class="status">尚未連線</div>
 
 <div class="row">
 
@@ -267,26 +211,13 @@ B3S V19.3 正式版｜Bluefy / Web Bluetooth
 </div>
 
 <div class="help" style="margin-top:8px">
-
-裝置：
-<span id="deviceName">—</span>
-
-<br>
-
-GATT：
-<span id="gattState">false</span>
-
-<br>
-
-列印通道：
-<span id="channelState">未就緒</span>
-
+裝置：<span id="deviceName">—</span><br>
+GATT：<span id="gattState">false</span><br>
+列印通道：<span id="channelState">未就緒</span>
 </div>
 
 </div>
 
-
-<!-- MODE -->
 
 <div class="card">
 
@@ -294,68 +225,31 @@ GATT：
 
 <select id="mode">
 
-<option value="name_barcode_number">
-商品名稱＋條碼＋條碼號碼
-</option>
+<option value="name_barcode_number">商品名稱＋條碼＋條碼號碼</option>
+<option value="name_barcode">商品名稱＋條碼</option>
+<option value="barcode_number">條碼＋條碼號碼</option>
+<option value="barcode">只有條碼</option>
+<option value="name">只有商品名稱</option>
 
-<option value="name_barcode">
-商品名稱＋條碼
-</option>
+<option value="name_qr">商品名稱＋QR Code</option>
+<option value="qr">只有 QR Code</option>
+<option value="qr_text">QR Code＋文字</option>
+<option value="name_qr_text">商品名稱＋QR Code＋文字</option>
 
-<option value="barcode_number">
-條碼＋條碼號碼
-</option>
+<option value="name_barcode_qr">商品名稱＋條碼＋QR Code</option>
+<option value="name_barcode_number_qr">商品名稱＋條碼＋號碼＋QR Code</option>
 
-<option value="barcode">
-只有條碼
-</option>
+<option value="name_text">商品名稱＋自訂文字</option>
+<option value="text">只有自訂文字</option>
 
-<option value="name">
-只有商品名稱
-</option>
-
-<option value="name_qr">
-商品名稱＋QR Code
-</option>
-
-<option value="qr">
-只有 QR Code
-</option>
-
-<option value="qr_text">
-QR Code＋文字
-</option>
-
-<option value="name_qr_text">
-商品名稱＋QR Code＋文字
-</option>
-
-<option value="name_barcode_qr">
-商品名稱＋條碼＋QR Code
-</option>
-
-<option value="name_barcode_number_qr">
-商品名稱＋條碼＋號碼＋QR Code
-</option>
-
-<option value="name_text">
-商品名稱＋自訂文字
-</option>
-
-<option value="text">
-只有自訂文字
-</option>
-
-<option value="big_sign">
-🔢 大字號碼牌 75×148 mm
-</option>
+<option value="big_sign">🔢 大字號碼牌 75×148 mm</option>
 
 </select>
 
 </div>
 
 
-<!-- GENERAL -->
+<!-- 一般商品 -->
 
 <div id="generalPanel">
 
@@ -389,17 +283,11 @@ QR Code＋文字
 
 <div class="row" style="margin-top:10px">
 
-<button id="addBtn" class="primary">
-＋ 加入商品
-</button>
+<button id="addBtn" class="primary">＋ 加入商品</button>
 
-<button id="scanBtn" class="purple">
-📷 掃描條碼 / QR
-</button>
+<button id="scanBtn" class="purple">📷 掃描條碼 / QR</button>
 
-<button id="clearProductsBtn" class="gray">
-清空商品
-</button>
+<button id="clearProductsBtn" class="gray">清空商品</button>
 
 </div>
 
@@ -418,7 +306,6 @@ QR Code＋文字
 
 <div>
 <label>紙張寬度</label>
-
 <select id="paperWidth">
 <option value="30">30 mm</option>
 <option value="40">40 mm</option>
@@ -432,10 +319,8 @@ QR Code＋文字
 </select>
 </div>
 
-
 <div>
 <label>紙張模式</label>
-
 <select id="paperMode">
 <option value="3" selected>連續紙</option>
 <option value="1">間隙紙</option>
@@ -445,10 +330,8 @@ QR Code＋文字
 </select>
 </div>
 
-
 <div>
 <label>列印濃度</label>
-
 <select id="density">
 <option value="1">1</option>
 <option value="2" selected>2</option>
@@ -458,40 +341,33 @@ QR Code＋文字
 </select>
 </div>
 
-
 <div>
 <label>商品間距（mm）</label>
 <input id="itemGap" type="number" min="1" max="20" value="2">
 </div>
-
 
 <div>
 <label>商品名稱字體</label>
 <input id="nameFont" type="number" min="12" max="100" value="30">
 </div>
 
-
 <div>
 <label>條碼號碼字體</label>
 <input id="numberFont" type="number" min="10" max="100" value="24">
 </div>
-
 
 <div>
 <label>自訂文字字體</label>
 <input id="textFont" type="number" min="12" max="100" value="36">
 </div>
 
-
 <div>
 <label>條碼高度（cm）</label>
 <input id="barcodeHeight" type="number" min=".5" max="20" step=".1" value="2">
 </div>
 
-
 <div>
 <label>條碼寬度</label>
-
 <select id="barcodeWidth">
 <option value="40">40%</option>
 <option value="50">50%</option>
@@ -503,10 +379,8 @@ QR Code＋文字
 </select>
 </div>
 
-
 <div>
 <label>條碼位置</label>
-
 <select id="barcodeAlign">
 <option value="left">靠左</option>
 <option value="center" selected>置中</option>
@@ -514,12 +388,10 @@ QR Code＋文字
 </select>
 </div>
 
-
 <div>
 <label>條碼 X 位移（mm）</label>
 <input id="barcodeX" type="number" step=".5" value="0">
 </div>
-
 
 <div>
 <label>QR Code 大小（cm）</label>
@@ -568,7 +440,7 @@ QR Code＋文字
 </div>
 
 
-<!-- BIG -->
+<!-- 大字 -->
 
 <div id="bigPanel" class="hidden">
 
@@ -577,26 +449,21 @@ QR Code＋文字
 <h2>🔢 大字號碼牌</h2>
 
 <div class="verified">
-✅ V19.2 實測成功基準<br>
+✅ 使用 V19.2 已實測成功的列印核心<br>
 實體紙：75 × 148 mm<br>
 有效列印寬：72 mm<br>
 黑標模式：2<br>
-濃度：1<br>
-單張列印：正常
+建議濃度：1
 </div>
 
-<label style="margin-top:12px">
-要列印的內容
-</label>
+<label style="margin-top:12px">要列印的內容</label>
 
 <textarea id="bigText" placeholder="例如：1234567890"></textarea>
-
 
 <div class="grid3" style="margin-top:10px">
 
 <div>
 <label>分頁方式</label>
-
 <select id="splitMode">
 <option value="char" selected>依每個字分頁</option>
 <option value="space">依空格分頁</option>
@@ -604,10 +471,8 @@ QR Code＋文字
 </select>
 </div>
 
-
 <div>
 <label>每張幾個字</label>
-
 <select id="charsPerPage">
 <option value="1" selected>1 字 / 張</option>
 <option value="2">2 字 / 張</option>
@@ -616,26 +481,21 @@ QR Code＋文字
 </select>
 </div>
 
-
 <div>
 <label>字體大小</label>
-
 <select id="bigFontMode">
 <option value="auto" selected>自動最大</option>
 <option value="manual">手動</option>
 </select>
 </div>
 
-
 <div>
 <label>手動字體 px</label>
 <input id="bigFontSize" type="number" min="30" max="1000" value="430">
 </div>
 
-
 <div>
 <label>粗體</label>
-
 <select id="bigBold">
 <option value="900">超粗</option>
 <option value="700" selected>粗體</option>
@@ -645,10 +505,8 @@ QR Code＋文字
 </select>
 </div>
 
-
 <div>
 <label>水平位置</label>
-
 <select id="bigAlign">
 <option value="left">靠左</option>
 <option value="center" selected>置中</option>
@@ -656,10 +514,8 @@ QR Code＋文字
 </select>
 </div>
 
-
 <div>
 <label>垂直位置</label>
-
 <select id="bigVAlign">
 <option value="top">靠上</option>
 <option value="center" selected>置中</option>
@@ -667,28 +523,23 @@ QR Code＋文字
 </select>
 </div>
 
-
 <div>
 <label>邊界（mm）</label>
 <input id="bigMargin" type="number" min="0" max="30" step=".5" value="7">
 </div>
-
 
 <div>
 <label>X 位移（mm）</label>
 <input id="bigX" type="number" step=".5" value="0">
 </div>
 
-
 <div>
 <label>Y 位移（mm）</label>
 <input id="bigY" type="number" step=".5" value="0">
 </div>
 
-
 <div>
 <label>大字濃度</label>
-
 <select id="bigDensity">
 <option value="1" selected>1</option>
 <option value="2">2</option>
@@ -696,24 +547,11 @@ QR Code＋文字
 </select>
 </div>
 
-
-<div>
-<label>大字傳輸品質</label>
-
-<select id="bigQuality">
-<option value="quality" selected>品質優先</option>
-<option value="normal">標準</option>
-<option value="fast">快速</option>
-</select>
 </div>
-
-</div>
-
 
 <div class="help" style="margin-top:10px">
-建議保持「品質優先＋濃度 1」。這組是以 V19.2 成功結果再微調傳輸節奏。
+這版不再提供 V19.3 的「品質優先」傳輸模式，避免再次多送一張空白紙。
 </div>
-
 
 <div class="row" style="margin-top:10px">
 
@@ -727,7 +565,6 @@ QR Code＋文字
 
 </div>
 
-
 <div id="bigStatus" class="status">
 等待列印
 </div>
@@ -738,15 +575,12 @@ QR Code＋文字
 <div class="card">
 
 <h2>大字預覽</h2>
-
 <div id="bigPreview" class="previewBox"></div>
 
 </div>
 
 </div>
 
-
-<!-- LOG -->
 
 <div class="card">
 
@@ -775,79 +609,46 @@ QR Code＋文字
 
 const $=id=>document.getElementById(id);
 
-
-/* =========================================================
-UTIL
-========================================================= */
-
 function delay(ms){
   return new Promise(resolve=>setTimeout(resolve,ms));
 }
 
-
 function errorText(error){
-
-  if(error?.message){
-    return error.message;
-  }
-
-  if(typeof error==="string"){
-    return error;
-  }
-
+  if(error?.message)return error.message;
+  if(typeof error==="string")return error;
   return String(error||"未知錯誤");
 }
-
 
 function mmToDots(mm){
   return Math.round(Number(mm)*203/25.4);
 }
 
-
 function paperDots(mm){
   return Math.floor(mmToDots(mm)/8)*8;
 }
-
 
 function u16(value){
   return[(value>>8)&255,value&255];
 }
 
-
 function hex(bytes){
-
   return Array.from(bytes)
-  .map(
-    value=>
-    value
-    .toString(16)
-    .padStart(2,"0")
-    .toUpperCase()
-  )
+  .map(v=>v.toString(16).padStart(2,"0").toUpperCase())
   .join(" ");
 }
 
-
 function log(text){
-
   const box=$("log");
+  box.value+=`[${new Date().toLocaleTimeString()}] ${text}\n`;
+  box.scrollTop=box.scrollHeight;
+}
 
-  box.value+=
-  `[${new Date().toLocaleTimeString()}] ${text}\n`;
-
-  box.scrollTop=
-  box.scrollHeight;
+function clamp(v,min,max){
+  return Math.max(min,Math.min(max,v));
 }
 
 
-function clamp(value,min,max){
-  return Math.max(min,Math.min(max,value));
-}
-
-
-/* =========================================================
-BLE
-========================================================= */
+/* BLE */
 
 const SERVICE=
 "49535343-fe7d-4ae5-8fa9-9fafd205e455";
@@ -858,24 +659,17 @@ const WRITE_UUID=
 const NOTIFY_UUID=
 "49535343-1e4d-4bd9-ba61-23c647249616";
 
-
 const state={
-
   device:null,
   server:null,
   write:null,
   notify:null,
-
   rx:[],
-
   running:false,
   stop:false
-
 };
 
-
 function connected(){
-
   return !!(
     state.server?.connected &&
     state.write &&
@@ -883,41 +677,28 @@ function connected(){
   );
 }
 
-
 function updateButtons(){
 
-  const ready=
-  connected();
+  const ready=connected();
 
-  $("disconnectBtn").disabled=
-  !ready;
-
-  $("stopBtn").disabled=
-  !ready;
+  $("disconnectBtn").disabled=!ready;
+  $("stopBtn").disabled=!ready;
 
   $("printAllBtn").disabled=
-  !ready||
-  state.running;
+  !ready||state.running;
 
   $("bigPrintBtn").disabled=
-  !ready||
-  state.running;
+  !ready||state.running;
 
   $("gattState").textContent=
-  String(
-    !!state.server?.connected
-  );
+  String(!!state.server?.connected);
 
   $("channelState").textContent=
-  ready
-  ?"已就緒"
-  :"未就緒";
+  ready?"已就緒":"未就緒";
 }
 
 
-/* =========================================================
-PACKET
-========================================================= */
+/* PACKET */
 
 function frame(
   command,
@@ -931,19 +712,17 @@ function frame(
   let checksum=
   command^payload.length;
 
-  for(const value of payload){
-    checksum^=value;
+  for(const v of payload){
+    checksum^=v;
   }
 
   const packet=[
-    0x55,
-    0x55,
+    0x55,0x55,
     command,
     payload.length,
     ...payload,
     checksum&255,
-    0xAA,
-    0xAA
+    0xAA,0xAA
   ];
 
   if(prefix){
@@ -953,67 +732,41 @@ function frame(
   return new Uint8Array(packet);
 }
 
-
 const CONTROL={
 
   connect:
-  ()=>frame(
-    0xC1,
-    [1],
-    true
-  ),
+  ()=>frame(0xC1,[1],true),
 
   density:
-  value=>frame(
-    0x21,
-    [value]
-  ),
+  v=>frame(0x21,[v]),
 
   labelType:
-  value=>frame(
-    0x23,
-    [value]
-  ),
+  v=>frame(0x23,[v]),
 
   printStart:
-  ()=>frame(
-    0x01,
-    [1]
-  ),
+  ()=>frame(0x01,[1]),
 
   pageStart:
-  ()=>frame(
-    0x03,
-    [1]
-  ),
+  ()=>frame(0x03,[1]),
 
   pageSize:
-  (height,width)=>frame(
+  (h,w)=>frame(
     0x13,
     [
-      ...u16(height),
-      ...u16(width)
+      ...u16(h),
+      ...u16(w)
     ]
   ),
 
   pageEnd:
-  ()=>frame(
-    0xE3,
-    [1]
-  ),
+  ()=>frame(0xE3,[1]),
 
   printEnd:
-  ()=>frame(
-    0xF3,
-    [1]
-  )
-
+  ()=>frame(0xF3,[1])
 };
 
 
-/* =========================================================
-RX
-========================================================= */
+/* RX */
 
 function parsePackets(text){
 
@@ -1028,19 +781,15 @@ function parsePackets(text){
 
   let pos=0;
 
-
   while(pos<bytes.length){
 
     if(
       bytes[pos]!==0x55 ||
       bytes[pos+1]!==0x55
     ){
-
       pos++;
-
       continue;
     }
-
 
     const command=
     bytes[pos+2];
@@ -1054,44 +803,33 @@ function parsePackets(text){
     const tail=
     checksumIndex+1;
 
-
     if(tail+1>=bytes.length){
       break;
     }
-
 
     if(
       bytes[tail]!==0xAA ||
       bytes[tail+1]!==0xAA
     ){
-
       pos++;
-
       continue;
     }
-
 
     let checksum=
     command^length;
 
-
     for(let i=0;i<length;i++){
-
       checksum^=
       bytes[pos+4+i];
     }
-
 
     if(
       (checksum&255)!==
       bytes[checksumIndex]
     ){
-
       pos++;
-
       continue;
     }
-
 
     result.push({
       command,
@@ -1102,19 +840,14 @@ function parsePackets(text){
       )
     });
 
-
-    pos=
-    tail+2;
+    pos=tail+2;
   }
-
 
   return result;
 }
 
 
-/* =========================================================
-WRITE
-========================================================= */
+/* WRITE */
 
 async function rawGattWrite(bytes){
 
@@ -1122,7 +855,6 @@ async function rawGattWrite(bytes){
     state.write.properties.writeWithoutResponse &&
     state.write.writeValueWithoutResponse
   ){
-
     await state.write
     .writeValueWithoutResponse(bytes);
   }
@@ -1130,23 +862,19 @@ async function rawGattWrite(bytes){
   else if(
     state.write.writeValueWithResponse
   ){
-
     await state.write
     .writeValueWithResponse(bytes);
   }
 
   else{
-
     await state.write
     .writeValue(bytes);
   }
 }
 
-
 async function writeControl(bytes){
 
   if(!connected()){
-
     throw new Error(
       "B3S 尚未連線"
     );
@@ -1158,7 +886,6 @@ async function writeControl(bytes){
 
   await rawGattWrite(bytes);
 }
-
 
 async function writeRaw(
   bytes,
@@ -1174,7 +901,6 @@ async function writeRaw(
   ){
 
     if(state.stop){
-
       throw new Error(
         "使用者停止"
       );
@@ -1194,9 +920,7 @@ async function writeRaw(
 }
 
 
-/* =========================================================
-ACK
-========================================================= */
+/* ACK */
 
 async function sendWait(
   name,
@@ -1217,7 +941,6 @@ async function sendWait(
   const start=
   Date.now();
 
-
   while(
     Date.now()-start<
     timeout
@@ -1227,7 +950,6 @@ async function sendWait(
     state.rx.slice(
       startIndex
     );
-
 
     for(const raw of incoming){
 
@@ -1253,7 +975,6 @@ async function sendWait(
     await delay(25);
   }
 
-
   log(
     `${name} ACK ❌ TIMEOUT`
   );
@@ -1262,20 +983,17 @@ async function sendWait(
 }
 
 
-/* =========================================================
-CANVAS
-========================================================= */
+/* CANVAS */
 
 function whiteCanvas(width,height){
 
   const canvas=
-  document.createElement("canvas");
+  document.createElement(
+    "canvas"
+  );
 
-  canvas.width=
-  width;
-
-  canvas.height=
-  height;
+  canvas.width=width;
+  canvas.height=height;
 
   const ctx=
   canvas.getContext("2d");
@@ -1283,17 +1001,14 @@ function whiteCanvas(width,height){
   ctx.fillStyle="#fff";
 
   ctx.fillRect(
-    0,
-    0,
-    width,
-    height
+    0,0,
+    width,height
   );
 
   ctx.fillStyle="#000";
 
   return canvas;
 }
-
 
 function wrapText(
   ctx,
@@ -1308,12 +1023,10 @@ function wrapText(
 
   let line="";
 
-
   for(const char of chars){
 
     const test=
     line+char;
-
 
     if(
       ctx.measureText(test).width>
@@ -1322,16 +1035,13 @@ function wrapText(
     ){
 
       lines.push(line);
-
       line=char;
     }
 
     else{
-
       line=test;
     }
   }
-
 
   if(line){
     lines.push(line);
@@ -1341,9 +1051,7 @@ function wrapText(
 }
 
 
-/* =========================================================
-ROWS
-========================================================= */
+/* ROW */
 
 function canvasRows(canvas){
 
@@ -1352,14 +1060,12 @@ function canvasRows(canvas){
 
   const data=
   ctx.getImageData(
-    0,
-    0,
+    0,0,
     canvas.width,
     canvas.height
   ).data;
 
   const rows=[];
-
 
   for(
     let y=0;
@@ -1373,7 +1079,6 @@ function canvasRows(canvas){
     );
 
     let black=0;
-
 
     for(
       let x=0;
@@ -1391,7 +1096,6 @@ function canvasRows(canvas){
         data[i+2]*114
       )/1000;
 
-
       if(gray<170){
 
         row[x>>3]|=
@@ -1401,7 +1105,6 @@ function canvasRows(canvas){
       }
     }
 
-
     rows.push({
       row:y,
       data:row,
@@ -1409,17 +1112,14 @@ function canvasRows(canvas){
     });
   }
 
-
   return rows;
 }
-
 
 function sameRow(a,b){
 
   if(a.length!==b.length){
     return false;
   }
-
 
   for(
     let i=0;
@@ -1436,7 +1136,7 @@ function sameRow(a,b){
 }
 
 
-/* 一般標籤 */
+/* 一般商品壓縮 */
 
 function canvasToRuns(canvas){
 
@@ -1447,14 +1147,12 @@ function canvasToRuns(canvas){
 
   let y=0;
 
-
   while(y<rows.length){
 
     const first=
     rows[y];
 
     let repeat=1;
-
 
     while(
       y+repeat<
@@ -1465,38 +1163,28 @@ function canvasToRuns(canvas){
         rows[y+repeat].data
       )
     ){
-
       repeat++;
     }
 
-
     runs.push({
-
       row:y,
-
       repeat,
-
       data:first.data,
-
       black:first.black
-
     });
-
 
     y+=repeat;
   }
-
 
   return runs;
 }
 
 
-/* 大字 V19.3
+/*
+V19.2 已驗證核心：
 
-   空白列壓縮。
-
-   黑色列只允許最多 2 列相同壓縮，
-   延續 V19.2 已成功只出一張的方式。
+空白列最多壓 40。
+有黑色的相同列最多 repeat 2。
 */
 
 function canvasToBigRuns(canvas){
@@ -1508,82 +1196,62 @@ function canvasToBigRuns(canvas){
 
   let y=0;
 
-
   while(y<rows.length){
 
     const current=
     rows[y];
 
-
     if(current.black===0){
 
       let repeat=1;
 
-
       while(
         y+repeat<
         rows.length &&
-        repeat<40 &&
-        rows[y+repeat].black===0
+        rows[y+repeat].black===0 &&
+        repeat<40
       ){
 
         repeat++;
       }
 
-
       runs.push({
-
         row:y,
-
         repeat,
-
         data:current.data,
-
         black:0
-
       });
-
 
       y+=repeat;
 
       continue;
     }
 
-
     let repeat=1;
-
 
     while(
       y+repeat<
       rows.length &&
       repeat<2 &&
-      rows[y+repeat].black>0 &&
       sameRow(
         current.data,
         rows[y+repeat].data
-      )
+      ) &&
+      rows[y+repeat].black>0
     ){
 
       repeat++;
     }
 
-
     runs.push({
-
       row:y,
-
       repeat,
-
       data:current.data,
-
       black:current.black
-
     });
-
 
     y+=repeat;
   }
-
 
   return runs;
 }
@@ -1594,27 +1262,18 @@ function rowPacket(run){
   return frame(
     0x85,
     [
-
       ...u16(run.row),
-
       0,
-
       run.black&255,
-
       (run.black>>8)&255,
-
       run.repeat,
-
       ...run.data
-
     ]
   );
 }
 
 
-/* =========================================================
-BARCODE
-========================================================= */
+/* BARCODE */
 
 function createBarcodeCanvas(value){
 
@@ -1623,29 +1282,19 @@ function createBarcodeCanvas(value){
     "canvas"
   );
 
-
   JsBarcode(
     raw,
     String(value),
     {
-
       format:"CODE128",
-
       displayValue:false,
-
       margin:0,
-
       width:2,
-
       height:100,
-
       background:"#fff",
-
       lineColor:"#000"
-
     }
   );
-
 
   return raw;
 }
@@ -1662,13 +1311,13 @@ function stretchBarcode(
     "canvas"
   );
 
-
   canvas.width=
   Math.max(
     8,
-    Math.floor(targetWidth/8)*8
+    Math.floor(
+      targetWidth/8
+    )*8
   );
-
 
   canvas.height=
   Math.max(
@@ -1676,49 +1325,34 @@ function stretchBarcode(
     targetHeight
   );
 
-
   const ctx=
   canvas.getContext("2d");
 
-
-  ctx.fillStyle=
-  "#fff";
-
+  ctx.fillStyle="#fff";
 
   ctx.fillRect(
-    0,
-    0,
+    0,0,
     canvas.width,
     canvas.height
   );
-
 
   ctx.imageSmoothingEnabled=
   false;
 
-
   ctx.drawImage(
     raw,
-
-    0,
-    0,
-    raw.width,
-    raw.height,
-
-    0,
-    0,
+    0,0,
+    raw.width,raw.height,
+    0,0,
     canvas.width,
     canvas.height
   );
-
 
   return canvas;
 }
 
 
-/* =========================================================
-QR
-========================================================= */
+/* QR */
 
 async function createQRCanvas(
   value,
@@ -1735,7 +1369,6 @@ async function createQRCanvas(
           "div"
         );
 
-
         holder.style.position=
         "fixed";
 
@@ -1745,30 +1378,20 @@ async function createQRCanvas(
         holder.style.top=
         "-9999px";
 
-
-        document.body
-        .appendChild(holder);
-
+        document.body.appendChild(
+          holder
+        );
 
         new QRCode(
           holder,
           {
-
-            text:
-            String(value),
-
-            width:
-            dots,
-
-            height:
-            dots,
-
+            text:String(value),
+            width:dots,
+            height:dots,
             correctLevel:
             QRCode.CorrectLevel.M
-
           }
         );
-
 
         setTimeout(
           ()=>{
@@ -1780,43 +1403,32 @@ async function createQRCanvas(
                 "canvas"
               );
 
-
               if(!source){
-
                 throw new Error(
                   "QR Code 產生失敗"
                 );
               }
-
 
               const canvas=
               document.createElement(
                 "canvas"
               );
 
-
-              canvas.width=
-              dots;
-
-              canvas.height=
-              dots;
-
+              canvas.width=dots;
+              canvas.height=dots;
 
               canvas
               .getContext("2d")
               .drawImage(
                 source,
-                0,
-                0,
-                dots,
-                dots
+                0,0,
+                dots,dots
               );
-
 
               holder.remove();
 
-
               resolve(canvas);
+
             }
 
             catch(error){
@@ -1829,7 +1441,6 @@ async function createQRCanvas(
           },
           30
         );
-
       }
 
       catch(error){
@@ -1841,12 +1452,9 @@ async function createQRCanvas(
 }
 
 
-/* =========================================================
-PRODUCTS
-========================================================= */
+/* PRODUCTS */
 
 let products=[];
-
 
 function escapeHtml(value){
 
@@ -1857,16 +1465,12 @@ function escapeHtml(value){
   .replaceAll('"',"&quot;");
 }
 
-
 function renderProducts(){
 
   const box=
   $("products");
 
-
-  box.innerHTML=
-  "";
-
+  box.innerHTML="";
 
   if(!products.length){
 
@@ -1876,7 +1480,6 @@ function renderProducts(){
     return;
   }
 
-
   products.forEach(
     (item,index)=>{
 
@@ -1885,10 +1488,8 @@ function renderProducts(){
         "div"
       );
 
-
       div.className=
       "item";
-
 
       div.innerHTML=`
 
@@ -1920,11 +1521,9 @@ function renderProducts(){
 
       `;
 
-
       box.appendChild(div);
     }
   );
-
 
   document
   .querySelectorAll(
@@ -1942,7 +1541,6 @@ function renderProducts(){
           ),
           1
         );
-
 
         renderProducts();
 
@@ -1980,7 +1578,6 @@ $("addBtn").onclick=
 
   };
 
-
   if(
     !item.name &&
     !item.barcode &&
@@ -1995,9 +1592,7 @@ $("addBtn").onclick=
     return;
   }
 
-
   products.push(item);
-
 
   renderProducts();
 
@@ -2016,15 +1611,12 @@ $("clearProductsBtn").onclick=
 };
 
 
-/* =========================================================
-GENERAL CANVAS
-========================================================= */
+/* GENERAL CANVAS */
 
 async function buildProductCanvas(item){
 
   const mode=
   $("mode").value;
-
 
   const width=
   paperDots(
@@ -2033,13 +1625,11 @@ async function buildProductCanvas(item){
     )
   );
 
-
   const margin=
   Math.max(
     8,
     mmToDots(2)
   );
-
 
   const gap=
   Math.max(
@@ -2051,24 +1641,20 @@ async function buildProductCanvas(item){
     )
   );
 
-
   const nameFont=
   Number(
     $("nameFont").value
   )||30;
-
 
   const numberFont=
   Number(
     $("numberFont").value
   )||24;
 
-
   const textFont=
   Number(
     $("textFont").value
   )||36;
-
 
   const barcodeHeight=
   mmToDots(
@@ -2077,12 +1663,10 @@ async function buildProductCanvas(item){
     )*10
   );
 
-
   const barcodePercent=
   Number(
     $("barcodeWidth").value
   )/100;
-
 
   const qrDots=
   mmToDots(
@@ -2091,15 +1675,12 @@ async function buildProductCanvas(item){
     )*10
   );
 
-
   const footer=
   $("footer")
   .value
   .trim();
 
-
   const layers=[];
-
 
   function spacer(height=gap){
 
@@ -2108,7 +1689,6 @@ async function buildProductCanvas(item){
       height
     });
   }
-
 
   const needName=[
     "name_barcode_number",
@@ -2121,7 +1701,6 @@ async function buildProductCanvas(item){
     "name_text"
   ].includes(mode);
 
-
   const needBarcode=[
     "name_barcode_number",
     "name_barcode",
@@ -2131,13 +1710,11 @@ async function buildProductCanvas(item){
     "name_barcode_number_qr"
   ].includes(mode);
 
-
   const needNumber=[
     "name_barcode_number",
     "barcode_number",
     "name_barcode_number_qr"
   ].includes(mode);
-
 
   const needQR=[
     "name_qr",
@@ -2147,7 +1724,6 @@ async function buildProductCanvas(item){
     "name_barcode_qr",
     "name_barcode_number_qr"
   ].includes(mode);
-
 
   const needText=[
     "qr_text",
@@ -2183,11 +1759,9 @@ async function buildProductCanvas(item){
       item.barcode
     );
 
-
     const available=
     width-
     margin*2;
-
 
     const target=
     Math.max(
@@ -2198,14 +1772,12 @@ async function buildProductCanvas(item){
       )
     );
 
-
     const barcodeCanvas=
     stretchBarcode(
       raw,
       target,
       barcodeHeight
     );
-
 
     layers.push({
 
@@ -2226,7 +1798,6 @@ async function buildProductCanvas(item){
 
     });
 
-
     spacer();
   }
 
@@ -2237,20 +1808,11 @@ async function buildProductCanvas(item){
   ){
 
     layers.push({
-
       type:"text",
-
-      text:
-      item.barcode,
-
-      font:
-      numberFont,
-
-      weight:
-      "500"
-
+      text:item.barcode,
+      font:numberFont,
+      weight:"500"
     });
-
 
     spacer();
   }
@@ -2271,22 +1833,12 @@ async function buildProductCanvas(item){
       qrDots
     );
 
-
     layers.push({
-
       type:"image",
-
-      canvas:
-      qrCanvas,
-
-      align:
-      "center",
-
-      xOffset:
-      0
-
+      canvas:qrCanvas,
+      align:"center",
+      xOffset:0
     });
-
 
     spacer();
   }
@@ -2298,20 +1850,11 @@ async function buildProductCanvas(item){
   ){
 
     layers.push({
-
       type:"text",
-
-      text:
-      item.text,
-
-      font:
-      textFont,
-
-      weight:
-      "700"
-
+      text:item.text,
+      font:textFont,
+      weight:"700"
     });
-
 
     spacer();
   }
@@ -2328,22 +1871,12 @@ async function buildProductCanvas(item){
         continue;
       }
 
-
       layers.push({
-
         type:"text",
-
-        text:
-        line,
-
-        font:
-        20,
-
-        weight:
-        "500"
-
+        text:line,
+        font:20,
+        weight:"500"
       });
-
 
       spacer(
         Math.max(
@@ -2369,7 +1902,6 @@ async function buildProductCanvas(item){
   let height=
   margin*2;
 
-
   const measure=
   document
   .createElement("canvas")
@@ -2380,16 +1912,14 @@ async function buildProductCanvas(item){
 
     if(layer.type==="space"){
 
-      height+=
-      layer.height;
+      height+=layer.height;
     }
 
     else if(
       layer.type==="image"
     ){
 
-      height+=
-      layer.canvas.height;
+      height+=layer.canvas.height;
     }
 
     else if(
@@ -2399,7 +1929,6 @@ async function buildProductCanvas(item){
       measure.font=
       `${layer.weight} ${layer.font}px "PingFang TC",sans-serif`;
 
-
       const lines=
       wrapText(
         measure,
@@ -2408,17 +1937,12 @@ async function buildProductCanvas(item){
         margin*2
       );
 
-
-      layer.lines=
-      lines;
-
+      layer.lines=lines;
 
       layer.lineHeight=
       Math.ceil(
-        layer.font*
-        1.25
+        layer.font*1.25
       );
-
 
       height+=
       layer.lineHeight*
@@ -2440,31 +1964,24 @@ async function buildProductCanvas(item){
     height
   );
 
-
   const ctx=
   canvas.getContext("2d");
 
-
-  let y=
-  margin;
+  let y=margin;
 
 
   for(const layer of layers){
 
     if(layer.type==="space"){
 
-      y+=
-      layer.height;
-
+      y+=layer.height;
       continue;
     }
 
 
     if(layer.type==="image"){
 
-      let x=
-      margin;
-
+      let x=margin;
 
       if(
         layer.align==="center"
@@ -2487,10 +2004,8 @@ async function buildProductCanvas(item){
         layer.canvas.width;
       }
 
-
       x+=
       layer.xOffset||0;
-
 
       x=
       clamp(
@@ -2500,17 +2015,14 @@ async function buildProductCanvas(item){
         layer.canvas.width
       );
 
-
       ctx.drawImage(
         layer.canvas,
         Math.round(x),
         Math.round(y)
       );
 
-
       y+=
       layer.canvas.height;
-
 
       continue;
     }
@@ -2518,21 +2030,13 @@ async function buildProductCanvas(item){
 
     if(layer.type==="text"){
 
-      ctx.fillStyle=
-      "#000";
-
+      ctx.fillStyle="#000";
 
       ctx.font=
       `${layer.weight} ${layer.font}px -apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif`;
 
-
-      ctx.textAlign=
-      "center";
-
-
-      ctx.textBaseline=
-      "top";
-
+      ctx.textAlign="center";
+      ctx.textBaseline="top";
 
       for(const line of layer.lines){
 
@@ -2542,31 +2046,24 @@ async function buildProductCanvas(item){
           y
         );
 
-
         y+=
         layer.lineHeight;
       }
     }
   }
 
-
   return canvas;
 }
 
 
-/* =========================================================
-GENERAL PREVIEW
-========================================================= */
+/* GENERAL PREVIEW */
 
 async function renderGeneralPreview(){
 
   const box=
   $("generalPreview");
 
-
-  box.innerHTML=
-  "";
-
+  box.innerHTML="";
 
   if(!products.length){
 
@@ -2575,7 +2072,6 @@ async function renderGeneralPreview(){
 
     return;
   }
-
 
   try{
 
@@ -2586,25 +2082,17 @@ async function renderGeneralPreview(){
         product
       );
 
-
       const holder=
       document.createElement(
         "div"
       );
 
-
       holder.className=
       "previewPage";
 
+      holder.appendChild(canvas);
 
-      holder.appendChild(
-        canvas
-      );
-
-
-      box.appendChild(
-        holder
-      );
+      box.appendChild(holder);
     }
   }
 
@@ -2615,28 +2103,22 @@ async function renderGeneralPreview(){
   }
 }
 
-
 $("previewBtn").onclick=
 renderGeneralPreview;
 
 
-/* =========================================================
-BIG SPLIT
-========================================================= */
+/* BIG */
 
 function splitBigText(){
 
   const raw=
   $("bigText").value;
 
-
   const splitMode=
   $("splitMode").value;
 
-
   const charsPer=
   $("charsPerPage").value;
-
 
   let tokens=[];
 
@@ -2678,16 +2160,13 @@ function splitBigText(){
     return tokens;
   }
 
-
   const count=
   Math.max(
     1,
     Number(charsPer)||1
   );
 
-
   const pages=[];
-
 
   for(
     let i=0;
@@ -2705,14 +2184,9 @@ function splitBigText(){
     );
   }
 
-
   return pages;
 }
 
-
-/* =========================================================
-BIG FONT
-========================================================= */
 
 function fitFont(
   ctx,
@@ -2726,29 +2200,21 @@ function fitFont(
   let high=1000;
   let best=20;
 
-
   while(low<=high){
 
     const mid=
     Math.floor(
-      (
-        low+
-        high
-      )/2
+      (low+high)/2
     );
-
 
     ctx.font=
     `${weight} ${mid}px Arial,-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif`;
 
-
     const metrics=
     ctx.measureText(text);
 
-
     const width=
     metrics.width;
-
 
     const height=
     (
@@ -2760,45 +2226,31 @@ function fitFont(
       mid*.2
     );
 
-
     if(
       width<=maxWidth &&
       height<=maxHeight
     ){
 
-      best=
-      mid;
-
-      low=
-      mid+1;
+      best=mid;
+      low=mid+1;
     }
 
     else{
-
-      high=
-      mid-1;
+      high=mid-1;
     }
   }
-
 
   return best;
 }
 
-
-/* =========================================================
-BIG CANVAS
-72 × 148 固定
-========================================================= */
 
 function buildBigCanvas(text){
 
   const width=
   paperDots(72);
 
-
   const height=
   mmToDots(148);
-
 
   const canvas=
   whiteCanvas(
@@ -2806,10 +2258,8 @@ function buildBigCanvas(text){
     height
   );
 
-
   const ctx=
   canvas.getContext("2d");
-
 
   const margin=
   mmToDots(
@@ -2818,14 +2268,12 @@ function buildBigCanvas(text){
     )||0
   );
 
-
   const xOffset=
   mmToDots(
     Number(
       $("bigX").value
     )||0
   );
-
 
   const yOffset=
   mmToDots(
@@ -2834,10 +2282,8 @@ function buildBigCanvas(text){
     )||0
   );
 
-
   const weight=
   $("bigBold").value;
-
 
   const maxWidth=
   Math.max(
@@ -2846,7 +2292,6 @@ function buildBigCanvas(text){
     margin*2
   );
 
-
   const maxHeight=
   Math.max(
     20,
@@ -2854,9 +2299,7 @@ function buildBigCanvas(text){
     margin*2
   );
 
-
   let fontSize;
-
 
   if(
     $("bigFontMode").value===
@@ -2881,30 +2324,22 @@ function buildBigCanvas(text){
     )||430;
   }
 
-
-  ctx.fillStyle=
-  "#000";
-
+  ctx.fillStyle="#000";
 
   ctx.font=
   `${weight} ${fontSize}px Arial,-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif`;
 
-
   const align=
   $("bigAlign").value;
-
 
   const valign=
   $("bigVAlign").value;
 
-
   let x;
-
 
   if(align==="left"){
 
     ctx.textAlign="left";
-
     x=margin;
   }
 
@@ -2913,52 +2348,36 @@ function buildBigCanvas(text){
   ){
 
     ctx.textAlign="right";
-
-    x=
-    width-margin;
+    x=width-margin;
   }
 
   else{
 
     ctx.textAlign="center";
-
-    x=
-    width/2;
+    x=width/2;
   }
-
 
   let y;
 
-
   if(valign==="top"){
 
-    ctx.textBaseline=
-    "top";
-
-    y=
-    margin;
+    ctx.textBaseline="top";
+    y=margin;
   }
 
   else if(
     valign==="bottom"
   ){
 
-    ctx.textBaseline=
-    "bottom";
-
-    y=
-    height-margin;
+    ctx.textBaseline="bottom";
+    y=height-margin;
   }
 
   else{
 
-    ctx.textBaseline=
-    "middle";
-
-    y=
-    height/2;
+    ctx.textBaseline="middle";
+    y=height/2;
   }
-
 
   ctx.fillText(
     text,
@@ -2966,28 +2385,19 @@ function buildBigCanvas(text){
     y+yOffset
   );
 
-
   return canvas;
 }
 
-
-/* =========================================================
-BIG PREVIEW
-========================================================= */
 
 function renderBigPreview(){
 
   const pages=
   splitBigText();
 
-
   const box=
   $("bigPreview");
 
-
-  box.innerHTML=
-  "";
-
+  box.innerHTML="";
 
   if(!pages.length){
 
@@ -2997,7 +2407,6 @@ function renderBigPreview(){
     return;
   }
 
-
   pages.forEach(
     (text,index)=>{
 
@@ -3006,54 +2415,39 @@ function renderBigPreview(){
         "div"
       );
 
-
       holder.className=
       "previewPage";
-
 
       const label=
       document.createElement(
         "div"
       );
 
-
       label.className=
       "help";
-
 
       label.style.padding=
       "5px";
 
-
       label.textContent=
       `第 ${index+1} 張：${text}`;
 
-
-      holder.appendChild(
-        label
-      );
-
+      holder.appendChild(label);
 
       holder.appendChild(
         buildBigCanvas(text)
       );
 
-
-      box.appendChild(
-        holder
-      );
+      box.appendChild(holder);
     }
   );
 }
-
 
 $("bigPreviewBtn").onclick=
 renderBigPreview;
 
 
-/* =========================================================
-PRINT SESSION
-========================================================= */
+/* PRINT START */
 
 async function beginPrint(
   density,
@@ -3068,12 +2462,10 @@ async function beginPrint(
       5000
     )
   ){
-
     throw new Error(
       "CONNECT 沒有 ACK"
     );
   }
-
 
   if(
     !await sendWait(
@@ -3083,12 +2475,10 @@ async function beginPrint(
       5000
     )
   ){
-
     throw new Error(
       "DENSITY 沒有 ACK"
     );
   }
-
 
   if(
     !await sendWait(
@@ -3098,12 +2488,10 @@ async function beginPrint(
       5000
     )
   ){
-
     throw new Error(
       "LABEL TYPE 沒有 ACK"
     );
   }
-
 
   if(
     !await sendWait(
@@ -3113,7 +2501,6 @@ async function beginPrint(
       5000
     )
   ){
-
     throw new Error(
       "PRINT START 沒有 ACK"
     );
@@ -3123,16 +2510,15 @@ async function beginPrint(
 
 async function finishPrint(){
 
-  const result=
+  const ok=
   await sendWait(
     "PRINT END",
     CONTROL.printEnd(),
     0xF4,
-    15000
+    12000
   );
 
-
-  if(!result){
+  if(!ok){
 
     throw new Error(
       "PRINT END 沒有 ACK"
@@ -3141,9 +2527,7 @@ async function finishPrint(){
 }
 
 
-/* =========================================================
-NORMAL PAGE
-========================================================= */
+/* NORMAL PRINT */
 
 async function sendNormalPage(
   canvas,
@@ -3160,12 +2544,10 @@ async function sendNormalPage(
       5000
     )
   ){
-
     throw new Error(
-      `第 ${pageIndex+1} 張 PAGE START 失敗`
+      "PAGE START 失敗"
     );
   }
-
 
   if(
     !await sendWait(
@@ -3178,16 +2560,13 @@ async function sendNormalPage(
       5000
     )
   ){
-
     throw new Error(
-      `第 ${pageIndex+1} 張 PAGE SIZE 失敗`
+      "PAGE SIZE 失敗"
     );
   }
 
-
   const runs=
   canvasToRuns(canvas);
-
 
   for(
     let i=0;
@@ -3202,7 +2581,6 @@ async function sendNormalPage(
       5
     );
 
-
     if(
       i%20===0 ||
       i===runs.length-1
@@ -3213,7 +2591,6 @@ async function sendNormalPage(
     }
   }
 
-
   if(
     !await sendWait(
       `PAGE END ${pageIndex+1}`,
@@ -3222,17 +2599,14 @@ async function sendNormalPage(
       15000
     )
   ){
-
     throw new Error(
-      `第 ${pageIndex+1} 張 PAGE END 失敗`
+      "PAGE END 失敗"
     );
   }
 }
 
 
-/* =========================================================
-BIG V19.3
-========================================================= */
+/* 大字：V19.2 完整成功節奏 */
 
 async function sendBigPage(
   canvas,
@@ -3249,12 +2623,10 @@ async function sendBigPage(
       5000
     )
   ){
-
     throw new Error(
       `第 ${pageIndex+1} 張 PAGE START 失敗`
     );
   }
-
 
   if(
     !await sendWait(
@@ -3267,78 +2639,17 @@ async function sendBigPage(
       5000
     )
   ){
-
     throw new Error(
       `第 ${pageIndex+1} 張 PAGE SIZE 失敗`
     );
   }
 
-
   const runs=
   canvasToBigRuns(canvas);
 
-
-  const quality=
-  $("bigQuality").value;
-
-
-  let chunkDelay=2;
-  let blackDelay=4;
-  let batch=24;
-  let batchDelay=18;
-
-
-  /*
-  V19.2：
-  blackDelay 4
-  batch 24
-  batchDelay 18
-
-  V19.3 品質優先：
-  稍微增加黑色列間隔
-  */
-
-
-  if(
-    quality==="quality"
-  ){
-
-    chunkDelay=
-    2;
-
-    blackDelay=
-    7;
-
-    batch=
-    16;
-
-    batchDelay=
-    25;
-  }
-
-
-  else if(
-    quality==="fast"
-  ){
-
-    chunkDelay=
-    1;
-
-    blackDelay=
-    2;
-
-    batch=
-    32;
-
-    batchDelay=
-    8;
-  }
-
-
   log(
-    `BIG V19.3：${canvas.width}×${canvas.height}｜RUNS ${runs.length}｜QUALITY ${quality}`
+    `V19.2 CORE：${canvas.width}×${canvas.height}｜RUNS ${runs.length}`
   );
-
 
   for(
     let i=0;
@@ -3350,31 +2661,29 @@ async function sendBigPage(
       rowPacket(
         runs[i]
       ),
-      chunkDelay
+      2
     );
 
+    /*
+    V19.2 成功設定：
+    有黑色內容 → 等 4ms
+    */
 
     if(
-      runs[i].black>
-      0
+      runs[i].black>0
     ){
-
-      await delay(
-        blackDelay
-      );
+      await delay(4);
     }
 
+    /*
+    每 24 組稍微休息
+    */
 
     if(
-      (i+1)%batch===
-      0
+      (i+1)%24===0
     ){
-
-      await delay(
-        batchDelay
-      );
+      await delay(18);
     }
-
 
     if(
       (i+1)%8===0 ||
@@ -3386,50 +2695,39 @@ async function sendBigPage(
     }
   }
 
-
   log(
-    `第 ${pageIndex+1} 張 BITMAP ✅`
+    `第 ${pageIndex+1} 張 BITMAP DATA ✅`
   );
-
 
   status.textContent=
   `第 ${pageIndex+1}/${total} 張｜黑標定位中…`;
 
+  const pageEnd=
+  await sendWait(
+    `BIG PAGE END ${pageIndex+1}`,
+    CONTROL.pageEnd(),
+    0xE4,
+    20000
+  );
 
-  if(
-    !await sendWait(
-      `BIG PAGE END ${pageIndex+1}`,
-      CONTROL.pageEnd(),
-      0xE4,
-      20000
-    )
-  ){
+  if(!pageEnd){
 
     throw new Error(
       `第 ${pageIndex+1} 張 PAGE END／黑標定位逾時`
     );
   }
 
-
-  /*
-  多張時讓機器完成定位再下一頁
-  */
-
   if(
     pageIndex<
     total-1
   ){
 
-    await delay(
-      500
-    );
+    await delay(500);
   }
 }
 
 
-/* =========================================================
-GENERAL PRINT
-========================================================= */
+/* GENERAL PRINT */
 
 $("printAllBtn").onclick=
 async()=>{
@@ -3443,39 +2741,27 @@ async()=>{
     return;
   }
 
-
   if(!connected()){
     return;
   }
 
-
-  state.running=
-  true;
-
-
-  state.stop=
-  false;
-
+  state.running=true;
+  state.stop=false;
 
   updateButtons();
-
 
   const status=
   $("generalStatus");
 
-
   status.className=
   "status warn";
-
 
   status.textContent=
   "準備列印…";
 
-
   try{
 
     const canvases=[];
-
 
     for(const product of products){
 
@@ -3486,7 +2772,6 @@ async()=>{
       );
     }
 
-
     await beginPrint(
       Number(
         $("density").value
@@ -3495,7 +2780,6 @@ async()=>{
         $("paperMode").value
       )
     );
-
 
     for(
       let i=0;
@@ -3511,17 +2795,13 @@ async()=>{
       );
     }
 
-
     await finishPrint();
-
 
     status.className=
     "status ok";
 
-
     status.textContent=
     `✅ 完成 ${canvases.length} 張`;
-
 
     if(
       $("autoClear").checked
@@ -3529,9 +2809,7 @@ async()=>{
 
       products=[];
 
-
       renderProducts();
-
 
       renderGeneralPreview();
     }
@@ -3542,42 +2820,33 @@ async()=>{
     const message=
     errorText(error);
 
-
     status.className=
     "status err";
-
 
     status.textContent=
     "❌ "+message;
 
-
     log(
-      "GENERAL ERROR："+
-      message
+      "GENERAL ERROR："+message
     );
   }
 
   finally{
 
-    state.running=
-    false;
-
+    state.running=false;
 
     updateButtons();
   }
 };
 
 
-/* =========================================================
-BIG PRINT
-========================================================= */
+/* BIG PRINT */
 
 $("bigPrintBtn").onclick=
 async()=>{
 
   const pages=
   splitBigText();
-
 
   if(!pages.length){
 
@@ -3588,34 +2857,23 @@ async()=>{
     return;
   }
 
-
   if(!connected()){
     return;
   }
 
-
-  state.running=
-  true;
-
-
-  state.stop=
-  false;
-
+  state.running=true;
+  state.stop=false;
 
   updateButtons();
-
 
   const status=
   $("bigStatus");
 
-
   status.className=
   "status warn";
 
-
   status.textContent=
   "準備大字列印…";
-
 
   try{
 
@@ -3625,21 +2883,17 @@ async()=>{
       buildBigCanvas(text)
     );
 
-
     log(
-      "========== V19.3 BIG START =========="
+      "========== V19.4 BIG START =========="
     );
 
-
     log(
-      `共 ${canvases.length} 張`
+      "BIG ENGINE：V19.2 VERIFIED CORE"
     );
 
-
     log(
-      "固定：72×148｜黑標2"
+      `共 ${canvases.length} 張｜72×148｜黑標2`
     );
-
 
     await beginPrint(
       Number(
@@ -3647,7 +2901,6 @@ async()=>{
       ),
       2
     );
-
 
     for(
       let i=0;
@@ -3663,20 +2916,24 @@ async()=>{
       );
     }
 
+    /*
+    V19.2：
+    PAGE END 完成後等一下
+    再 PRINT END
+    */
+
+    await delay(500);
 
     await finishPrint();
-
 
     status.className=
     "status ok";
 
-
     status.textContent=
     `✅ 大字列印完成，共 ${canvases.length} 張`;
 
-
     log(
-      "========== V19.3 BIG COMPLETE =========="
+      "========== V19.4 BIG COMPLETE =========="
     );
   }
 
@@ -3685,45 +2942,27 @@ async()=>{
     const message=
     errorText(error);
 
-
     status.className=
     "status err";
-
 
     status.textContent=
     "❌ "+message;
 
-
     log(
-      "BIG ERROR："+
-      message
+      "BIG ERROR："+message
     );
-
-
-    try{
-
-      await writeControl(
-        CONTROL.printEnd()
-      );
-    }
-
-    catch{}
   }
 
   finally{
 
-    state.running=
-    false;
-
+    state.running=false;
 
     updateButtons();
   }
 };
 
 
-/* =========================================================
-CONNECT
-========================================================= */
+/* CONNECT */
 
 $("connectBtn").onclick=
 async()=>{
@@ -3733,37 +2972,25 @@ async()=>{
     $("bleStatus").className=
     "status warn";
 
-
     $("bleStatus").textContent=
     "正在連線…";
-
 
     const device=
     await navigator.bluetooth
     .requestDevice({
-
       acceptAllDevices:true,
-
       optionalServices:[
         SERVICE
       ]
-
     });
 
-
-    state.device=
-    device;
-
+    state.device=device;
 
     $("deviceName").textContent=
-    device.name||
-    "—";
-
+    device.name||"—";
 
     state.server=
-    await device.gatt
-    .connect();
-
+    await device.gatt.connect();
 
     const service=
     await state.server
@@ -3771,13 +2998,11 @@ async()=>{
       SERVICE
     );
 
-
     state.write=
     await service
     .getCharacteristic(
       WRITE_UUID
     );
-
 
     state.notify=
     await service
@@ -3785,9 +3010,7 @@ async()=>{
       NOTIFY_UUID
     );
 
-
     state.rx=[];
-
 
     state.notify
     .addEventListener(
@@ -3797,7 +3020,6 @@ async()=>{
         const value=
         event.target.value;
 
-
         const bytes=
         new Uint8Array(
           value.buffer,
@@ -3805,15 +3027,10 @@ async()=>{
           value.byteLength
         );
 
-
         const text=
         hex(bytes);
 
-
-        state.rx.push(
-          text
-        );
-
+        state.rx.push(text);
 
         log(
           "RX："+text
@@ -3821,46 +3038,33 @@ async()=>{
       }
     );
 
-
     await state.notify
     .startNotifications();
-
 
     state.device
     .addEventListener(
       "gattserverdisconnected",
       ()=>{
 
-        state.server=
-        null;
-
-        state.write=
-        null;
-
-        state.notify=
-        null;
-
+        state.server=null;
+        state.write=null;
+        state.notify=null;
 
         $("bleStatus").className=
         "status warn";
 
-
         $("bleStatus").textContent=
         "B3S 已中斷";
-
 
         updateButtons();
       }
     );
 
-
     $("bleStatus").className=
     "status ok";
 
-
     $("bleStatus").textContent=
     "✅ B3S 已連線";
-
 
     updateButtons();
   }
@@ -3870,133 +3074,95 @@ async()=>{
     const message=
     errorText(error);
 
-
     $("bleStatus").className=
     "status err";
-
 
     $("bleStatus").textContent=
     "❌ "+message;
 
-
     log(
-      "CONNECT ERROR："+
-      message
+      "CONNECT ERROR："+message
     );
-
 
     updateButtons();
   }
 };
 
 
-/* =========================================================
-DISCONNECT
-========================================================= */
+/* DISCONNECT */
 
 $("disconnectBtn").onclick=
 ()=>{
 
   try{
-
-    state.device
-    ?.gatt
-    ?.disconnect();
+    state.device?.gatt?.disconnect();
   }
-
   catch{}
 
-
   state.server=null;
-
   state.write=null;
-
   state.notify=null;
-
 
   $("bleStatus").className=
   "status";
 
-
   $("bleStatus").textContent=
   "已中斷";
-
 
   updateButtons();
 };
 
 
-/* =========================================================
-STOP
-========================================================= */
+/* STOP */
 
 $("stopBtn").onclick=
 async()=>{
 
-  state.stop=
-  true;
-
+  state.stop=true;
 
   log(
     "使用者按下停止"
   );
 
-
   try{
-
     await writeControl(
       CONTROL.pageEnd()
     );
   }
-
   catch{}
 
-
-  await delay(
-    100
-  );
-
+  await delay(100);
 
   try{
-
     await writeControl(
       CONTROL.printEnd()
     );
   }
-
   catch{}
-
 
   $("generalStatus").className=
   "status warn";
 
-
   $("generalStatus").textContent=
   "⏹ 已停止";
 
-
   $("bigStatus").className=
   "status warn";
-
 
   $("bigStatus").textContent=
   "⏹ 已停止";
 };
 
 
-/* =========================================================
-SCANNER
-========================================================= */
+/* SCANNER */
 
 let html5QrCode=null;
-
 
 $("scanBtn").onclick=
 async()=>{
 
   const reader=
   $("reader");
-
 
   try{
 
@@ -4006,40 +3172,31 @@ async()=>{
       .stop()
       .catch(()=>{});
 
-
       html5QrCode.clear();
 
-
       html5QrCode=null;
-
 
       reader
       .classList
       .add("hidden");
 
-
       $("scanBtn").textContent=
       "📷 掃描條碼 / QR";
-
 
       return;
     }
 
-
     reader
     .classList
     .remove("hidden");
-
 
     html5QrCode=
     new Html5Qrcode(
       "reader"
     );
 
-
     $("scanBtn").textContent=
     "停止掃描";
-
 
     await html5QrCode.start(
 
@@ -4061,18 +3218,16 @@ async()=>{
 
         const value=
         String(
-          decodedText||
-          ""
-        )
-        .trim();
-
+          decodedText||""
+        ).trim();
 
         if(!value){
           return;
         }
 
-
-        if(/^\d+$/.test(value)){
+        if(
+          /^\d+$/.test(value)
+        ){
 
           $("barcode").value=
           value;
@@ -4084,25 +3239,18 @@ async()=>{
           value;
         }
 
-
         try{
-
           await html5QrCode.stop();
         }
-
         catch{}
-
 
         html5QrCode.clear();
 
-
         html5QrCode=null;
-
 
         reader
         .classList
         .add("hidden");
-
 
         $("scanBtn").textContent=
         "📷 掃描條碼 / QR";
@@ -4117,22 +3265,16 @@ async()=>{
       errorText(error)
     );
 
-
     try{
-
       html5QrCode?.clear();
     }
-
     catch{}
 
-
     html5QrCode=null;
-
 
     reader
     .classList
     .add("hidden");
-
 
     $("scanBtn").textContent=
     "📷 掃描條碼 / QR";
@@ -4140,16 +3282,13 @@ async()=>{
 };
 
 
-/* =========================================================
-MODE
-========================================================= */
+/* MODE */
 
 function updateMode(){
 
   const big=
   $("mode").value===
   "big_sign";
-
 
   $("generalPanel")
   .classList
@@ -4158,7 +3297,6 @@ function updateMode(){
     big
   );
 
-
   $("bigPanel")
   .classList
   .toggle(
@@ -4166,26 +3304,20 @@ function updateMode(){
     !big
   );
 
-
   if(big){
-
     renderBigPreview();
   }
 
   else{
-
     renderGeneralPreview();
   }
 }
-
 
 $("mode").onchange=
 updateMode;
 
 
-/* =========================================================
-PREVIEW EVENTS
-========================================================= */
+/* PREVIEW EVENTS */
 
 [
   "paperWidth",
@@ -4238,15 +3370,12 @@ PREVIEW EVENTS
 );
 
 
-/* =========================================================
-LOG
-========================================================= */
+/* LOG */
 
 $("clearLogBtn").onclick=
 ()=>{
 
-  $("log").value=
-  "";
+  $("log").value="";
 };
 
 
@@ -4260,7 +3389,6 @@ async()=>{
       $("log").value
     );
 
-
     alert(
       "已複製"
     );
@@ -4273,18 +3401,12 @@ async()=>{
 };
 
 
-/* =========================================================
-INIT
-========================================================= */
+/* INIT */
 
 renderProducts();
-
 renderGeneralPreview();
-
 renderBigPreview();
-
 updateMode();
-
 updateButtons();
 
 </script>
