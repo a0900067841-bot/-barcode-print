@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 
-<title>B3S V19.9 穩定高度診斷</title>
+<title>B3S V19.10 細分高度診斷</title>
 
 <style>
 *{box-sizing:border-box}
@@ -88,24 +88,34 @@ button:disabled{
   color:#087443;
 }
 
-.orange{
+.gray{
+  background:#e9edf3;
+  color:#344054;
+}
+
+.h140{
+  background:#e8f1ff;
+  color:#175cd3;
+}
+
+.h142{
+  background:#e9f7ef;
+  color:#087443;
+}
+
+.h144{
   background:#fff2d6;
   color:#9a5b00;
 }
 
-.purple{
+.h146{
   background:#eee8ff;
   color:#5b37b7;
 }
 
-.primary{
-  background:#1265f3;
-  color:#fff;
-}
-
-.gray{
-  background:#e9edf3;
-  color:#344054;
+.h148{
+  background:#ffe8e8;
+  color:#b42318;
 }
 
 .row{
@@ -116,7 +126,7 @@ button:disabled{
 
 textarea{
   width:100%;
-  min-height:300px;
+  min-height:320px;
   resize:vertical;
   border:1px solid #ccd3dd;
   border-radius:10px;
@@ -150,11 +160,11 @@ canvas{
 
 <div class="wrap">
 
-<h1>B3S V19.9 穩定高度診斷</h1>
+<h1>B3S V19.10 細分高度診斷</h1>
 
 <div class="help">
 固定：8｜72mm寬｜黑標2｜濃度1<br>
-這版先確保 PAGE END 穩定收到 E4，再判斷 148 / 140 / 130mm 出紙數。
+只改頁面高度，找出 140～148mm 之間最穩定、不多送紙的位置。
 </div>
 
 
@@ -188,20 +198,28 @@ GATT：<span id="gattState">false</span>
 
 <div class="card">
 
-<h2>高度測試</h2>
+<h2>高度細分測試</h2>
 
 <div class="row">
 
-<button id="test148" class="orange" disabled>
-148 mm
-</button>
-
-<button id="test140" class="purple" disabled>
+<button id="test140" class="h140" disabled>
 140 mm
 </button>
 
-<button id="test130" class="primary" disabled>
-130 mm
+<button id="test142" class="h142" disabled>
+142 mm
+</button>
+
+<button id="test144" class="h144" disabled>
+144 mm
+</button>
+
+<button id="test146" class="h146" disabled>
+146 mm
+</button>
+
+<button id="test148" class="h148" disabled>
+148 mm
 </button>
 
 </div>
@@ -211,9 +229,9 @@ GATT：<span id="gattState">false</span>
 </div>
 
 <div class="help" style="margin-top:10px">
-先只測 <b>148mm</b>。<br>
-如果 PAGE END 正常收到 E4，再繼續 140 / 130。<br>
-這輪仍然可以使用同一張測試紙。
+目前已知：140mm 可只出 1 張；148mm 主要 1 張，但下一張會多露約 0.4cm。<br>
+所以這次建議先按 <b>144mm</b>。<br>
+不用看畫質，可以繼續使用同一張測試紙。
 </div>
 
 </div>
@@ -330,8 +348,6 @@ const state={
   write:null,
   notify:null,
 
-  rx:[],
-
   parsedRx:[],
 
   running:false
@@ -357,14 +373,18 @@ function updateButtons(){
   $("disconnectBtn").disabled=
   !connected();
 
-  $("test148").disabled=
-  !ready;
-
-  $("test140").disabled=
-  !ready;
-
-  $("test130").disabled=
-  !ready;
+  [
+    "test140",
+    "test142",
+    "test144",
+    "test146",
+    "test148"
+  ]
+  .forEach(
+    id=>{
+      $(id).disabled=!ready;
+    }
+  );
 
   $("gattState").textContent=
   String(!!state.server?.connected);
@@ -468,7 +488,7 @@ const CMD={
 
 
 /* =========================================================
-RX PARSER
+RX
 ========================================================= */
 
 function parsePackets(text){
@@ -606,15 +626,6 @@ async function rawGattWrite(bytes){
 }
 
 
-/*
-V19.9：
-
-仍保持快速傳輸，
-但由 2ms 微調至 3ms。
-
-不是 V19.5 那種極慢模式。
-*/
-
 async function writeRaw(bytes){
 
   for(
@@ -636,7 +647,7 @@ async function writeRaw(bytes){
 
 
 /* =========================================================
-WAIT ACK
+ACK
 ========================================================= */
 
 async function sendWait(
@@ -699,20 +710,8 @@ async function sendWait(
 
 
 /* =========================================================
-D3 WAIT
+D3 SETTLE
 ========================================================= */
-
-/*
-我們目前不定義 D3 的實際意義。
-
-只是根據實測：
-成功列印常常會看到
-D3 payload 第一個 byte 往後到 03。
-
-V19.9 在 Bitmap 送完後，
-若尚未看到 D3 ... 03，
-最多等幾秒再送 PAGE END。
-*/
 
 function hasLateD3(startIndex){
 
@@ -749,13 +748,9 @@ async function settleBeforePageEnd(
   "Bitmap 已送完｜等待印表機處理…";
 
   log(
-    "BITMAP 傳送完成，進入 V19.9 settle"
+    "BITMAP 傳送完成，開始 SETTLE"
   );
 
-
-  /*
-  先固定休息 700ms。
-  */
 
   await delay(700);
 
@@ -765,7 +760,7 @@ async function settleBeforePageEnd(
   ){
 
     log(
-      "SETTLE：已看到後段 D3，繼續"
+      "SETTLE：已看到後段 D3"
     );
 
     await delay(300);
@@ -775,20 +770,17 @@ async function settleBeforePageEnd(
 
 
   log(
-    "SETTLE：尚未看到後段 D3，開始等待"
+    "SETTLE：尚未看到後段 D3，等待中"
   );
 
 
   const start=
   Date.now();
 
-  const maxWait=
-  5000;
-
 
   while(
     Date.now()-start<
-    maxWait
+    5000
   ){
 
     if(
@@ -809,14 +801,10 @@ async function settleBeforePageEnd(
   }
 
 
-  /*
-  沒看到也不直接判定錯誤，
-  再額外給印表機一點時間。
-  */
-
   log(
-    "SETTLE：5秒內未看到後段 D3，額外等待 1200ms"
+    "SETTLE：5秒未看到後段 D3，再等待1200ms"
   );
+
 
   await delay(1200);
 }
@@ -1035,7 +1023,6 @@ function canvasRows(canvas){
 function sameRow(a,b){
 
   if(a.length!==b.length){
-
     return false;
   }
 
@@ -1047,7 +1034,6 @@ function sameRow(a,b){
   ){
 
     if(a[i]!==b[i]){
-
       return false;
     }
   }
@@ -1056,13 +1042,6 @@ function sameRow(a,b){
   return true;
 }
 
-
-/*
-保持 V19.2 / V19.4 壓縮策略：
-
-空白最多 repeat 40
-黑色相同列最多 repeat 2
-*/
 
 function toRuns(canvas){
 
@@ -1217,7 +1196,7 @@ function rowPacket(run){
 
 
 /* =========================================================
-PREPARE PRINT
+PREPARE
 ========================================================= */
 
 async function preparePrint(){
@@ -1299,7 +1278,7 @@ async function preparePrint(){
 
 
 /* =========================================================
-SEND BITMAP V19.9
+BITMAP
 ========================================================= */
 
 async function sendBitmap(
@@ -1333,6 +1312,7 @@ async function sendBitmap(
     `CANVAS ${canvas.width}×${canvas.height}`
   );
 
+
   log(
     `RUNS ${runs.length}`
   );
@@ -1354,11 +1334,6 @@ async function sendBitmap(
       )
     );
 
-
-    /*
-    比 V19.8 稍微穩一點，
-    但沒有像 V19.5 那樣大幅拖慢。
-    */
 
     if(
       runs[i].black>
@@ -1413,7 +1388,7 @@ async function sendBitmap(
 
 
 /* =========================================================
-HEIGHT TEST
+TEST
 ========================================================= */
 
 async function runHeightTest(
@@ -1438,6 +1413,7 @@ async function runHeightTest(
   status.className=
   "status warn";
 
+
   status.textContent=
   `正在測試 ${heightMm}mm…`;
 
@@ -1452,8 +1428,9 @@ async function runHeightTest(
 
     log("");
 
+
     log(
-      `========== V19.9 HEIGHT ${heightMm}mm START ==========`
+      `========== V19.10 HEIGHT ${heightMm}mm START ==========`
     );
 
 
@@ -1489,12 +1466,6 @@ async function runHeightTest(
     }
 
 
-    /*
-    V19.9：
-    結束流程仍然固定500ms，
-    避免同時改太多變因。
-    */
-
     await delay(
       500
     );
@@ -1524,11 +1495,11 @@ async function runHeightTest(
 
 
     status.textContent=
-    `✅ ${heightMm}mm 完成｜PAGE END E4 正常｜請記錄出幾張`;
+    `✅ ${heightMm}mm 完成｜E4/F4 正常｜請記錄出紙狀況`;
 
 
     log(
-      `========== V19.9 HEIGHT ${heightMm}mm COMPLETE ==========`
+      `========== V19.10 HEIGHT ${heightMm}mm COMPLETE ==========`
     );
   }
 
@@ -1568,14 +1539,20 @@ async function runHeightTest(
 BUTTONS
 ========================================================= */
 
-$("test148").onclick=
-()=>runHeightTest(148);
-
 $("test140").onclick=
 ()=>runHeightTest(140);
 
-$("test130").onclick=
-()=>runHeightTest(130);
+$("test142").onclick=
+()=>runHeightTest(142);
+
+$("test144").onclick=
+()=>runHeightTest(144);
+
+$("test146").onclick=
+()=>runHeightTest(146);
+
+$("test148").onclick=
+()=>runHeightTest(148);
 
 
 /* =========================================================
@@ -1589,6 +1566,7 @@ async()=>{
 
     $("bleStatus").className=
     "status warn";
+
 
     $("bleStatus").textContent=
     "正在連線…";
@@ -1643,9 +1621,6 @@ async()=>{
     );
 
 
-    state.rx=
-    [];
-
     state.parsedRx=
     [];
 
@@ -1669,11 +1644,6 @@ async()=>{
 
         const text=
         hex(bytes);
-
-
-        state.rx.push(
-          text
-        );
 
 
         const packets=
@@ -1872,7 +1842,7 @@ function renderPreview(){
 
 
   holder.appendChild(
-    buildCanvas(148)
+    buildCanvas(144)
   );
 
 
