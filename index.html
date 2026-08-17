@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>B3S V19.7 出紙診斷</title>
+<title>B3S V19.8 高度診斷</title>
 
 <style>
 *{box-sizing:border-box}
@@ -51,12 +51,15 @@ button:disabled{opacity:.4}
 .danger{background:#d92d20;color:#fff}
 .gray{background:#e9edf3;color:#344054}
 .row{display:flex;flex-wrap:wrap;gap:6px}
-canvas{
-  display:block;
-  max-width:100%;
-  height:auto;
-  background:white;
-  margin:auto
+textarea{
+  width:100%;
+  min-height:280px;
+  resize:vertical;
+  border:1px solid #ccd3dd;
+  border-radius:10px;
+  padding:10px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:12px
 }
 .preview{
   background:#e7e9ed;
@@ -69,15 +72,10 @@ canvas{
   background:#fff;
   box-shadow:0 1px 4px #999
 }
-textarea{
-  width:100%;
-  min-height:260px;
-  resize:vertical;
-  border:1px solid #ccd3dd;
-  border-radius:10px;
-  padding:10px;
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-  font-size:12px
+canvas{
+  display:block;
+  max-width:100%;
+  height:auto
 }
 </style>
 </head>
@@ -85,26 +83,19 @@ textarea{
 <body>
 <div class="wrap">
 
-<h1>B3S V19.7 出紙診斷</h1>
+<h1>B3S V19.8 高度診斷</h1>
 <div class="help">
-固定測試：8｜72×148｜黑標2｜濃度1
+固定：8｜72mm寬｜黑標2｜濃度1｜PAGE END → 500ms → PRINT END
 </div>
 
 <div class="card">
 <h2>🖨 B3S</h2>
 
-<div id="bleStatus" class="status">
-尚未連線
-</div>
+<div id="bleStatus" class="status">尚未連線</div>
 
 <div class="row">
-<button id="connectBtn" class="success">
-🔵 連接 B3S
-</button>
-
-<button id="disconnectBtn" class="gray" disabled>
-中斷
-</button>
+<button id="connectBtn" class="success">🔵 連接 B3S</button>
+<button id="disconnectBtn" class="gray" disabled>中斷</button>
 </div>
 
 <div class="help" style="margin-top:8px">
@@ -115,36 +106,12 @@ GATT：<span id="gattState">false</span>
 
 
 <div class="card">
-<h2>測試內容</h2>
-
-<div class="preview">
-  <div class="page" id="previewBox"></div>
-</div>
-
-<div class="help" style="margin-top:10px">
-這三個按鍵印出的內容完全相同，只改最後的結束流程。
-每次只按一個，記錄出 1 張還是 2 張。
-</div>
-</div>
-
-
-<div class="card">
-<h2>出紙診斷</h2>
+<h2>高度測試</h2>
 
 <div class="row">
-
-<button id="testA" class="orange" disabled>
-A｜只 PAGE END
-</button>
-
-<button id="testB" class="purple" disabled>
-B｜PAGE END → 2秒 → PRINT END
-</button>
-
-<button id="testC" class="primary" disabled>
-C｜正常 500ms 結束
-</button>
-
+<button id="test148" class="orange" disabled>148 mm</button>
+<button id="test140" class="purple" disabled>140 mm</button>
+<button id="test130" class="primary" disabled>130 mm</button>
 </div>
 
 <div id="testStatus" class="status">
@@ -152,9 +119,16 @@ C｜正常 500ms 結束
 </div>
 
 <div class="help" style="margin-top:10px">
-建議順序：A → B → C。<br>
-每次測完先告訴我「出幾張」，不用連續一次全測完。
+每次只測一個高度。<br>
+不用看畫質，只記錄：<b>出 1 張或 2 張</b>。<br>
+可以繼續使用同一張廢紙。
 </div>
+</div>
+
+
+<div class="card">
+<h2>預覽</h2>
+<div id="preview" class="preview"></div>
 </div>
 
 
@@ -162,13 +136,8 @@ C｜正常 500ms 結束
 <h2>通訊紀錄</h2>
 
 <div class="row">
-<button id="copyLogBtn" class="gray">
-複製紀錄
-</button>
-
-<button id="clearLogBtn" class="gray">
-清除
-</button>
+<button id="copyLogBtn" class="gray">複製紀錄</button>
+<button id="clearLogBtn" class="gray">清除</button>
 </div>
 
 <textarea id="log" readonly></textarea>
@@ -176,17 +145,16 @@ C｜正常 500ms 結束
 
 </div>
 
-
 <script>
 
-const $ = id => document.getElementById(id);
+const $=id=>document.getElementById(id);
 
 function delay(ms){
   return new Promise(r=>setTimeout(r,ms));
 }
 
 function errorText(e){
-  return e?.message || String(e || "未知錯誤");
+  return e?.message||String(e||"未知錯誤");
 }
 
 function mmToDots(mm){
@@ -209,20 +177,20 @@ function hex(bytes){
 
 function log(text){
   const box=$("log");
-  box.value += `[${new Date().toLocaleTimeString()}] ${text}\n`;
+  box.value+=`[${new Date().toLocaleTimeString()}] ${text}\n`;
   box.scrollTop=box.scrollHeight;
 }
 
 
 /* BLE */
 
-const SERVICE =
+const SERVICE=
 "49535343-fe7d-4ae5-8fa9-9fafd205e455";
 
-const WRITE_UUID =
+const WRITE_UUID=
 "49535343-8841-43f4-a8d4-ecbe34729bb3";
 
-const NOTIFY_UUID =
+const NOTIFY_UUID=
 "49535343-1e4d-4bd9-ba61-23c647249616";
 
 const state={
@@ -243,12 +211,12 @@ function connected(){
 }
 
 function updateButtons(){
-  const ready=connected() && !state.running;
+  const ready=connected()&&!state.running;
 
   $("disconnectBtn").disabled=!connected();
-  $("testA").disabled=!ready;
-  $("testB").disabled=!ready;
-  $("testC").disabled=!ready;
+  $("test148").disabled=!ready;
+  $("test140").disabled=!ready;
+  $("test130").disabled=!ready;
 
   $("gattState").textContent=
   String(!!state.server?.connected);
@@ -262,10 +230,10 @@ function frame(command,data=[1],prefix=false){
   const payload=Array.from(data);
 
   let checksum=
-  command ^ payload.length;
+  command^payload.length;
 
   for(const b of payload){
-    checksum ^= b;
+    checksum^=b;
   }
 
   const packet=[
@@ -290,10 +258,7 @@ const CMD={
   labelType:v=>frame(0x23,[v]),
   printStart:()=>frame(0x01,[1]),
   pageStart:()=>frame(0x03,[1]),
-  pageSize:(h,w)=>frame(
-    0x13,
-    [...u16(h),...u16(w)]
-  ),
+  pageSize:(h,w)=>frame(0x13,[...u16(h),...u16(w)]),
   pageEnd:()=>frame(0xE3,[1]),
   printEnd:()=>frame(0xF3,[1])
 };
@@ -446,13 +411,12 @@ async function sendWait(
 
 /* CANVAS */
 
-function build8Canvas(){
+function buildCanvas(heightMm){
 
   const width=paperDots(72);
-  const height=mmToDots(148);
+  const height=mmToDots(heightMm);
 
-  const canvas=
-  document.createElement("canvas");
+  const canvas=document.createElement("canvas");
 
   canvas.width=width;
   canvas.height=height;
@@ -464,11 +428,6 @@ function build8Canvas(){
 
   ctx.fillStyle="#000";
 
-  /*
-  維持大字測試條件：
-  粗體700、自動最大概念。
-  */
-
   const margin=mmToDots(7);
 
   let low=20;
@@ -477,8 +436,7 @@ function build8Canvas(){
 
   while(low<=high){
 
-    const mid=
-    Math.floor((low+high)/2);
+    const mid=Math.floor((low+high)/2);
 
     ctx.font=
     `700 ${mid}px Arial,"PingFang TC",sans-serif`;
@@ -495,8 +453,7 @@ function build8Canvas(){
     ){
       best=mid;
       low=mid+1;
-    }
-    else{
+    }else{
       high=mid-1;
     }
   }
@@ -553,7 +510,7 @@ function canvasRows(canvas){
 
       if(gray<170){
 
-        row[x>>3] |=
+        row[x>>3]|=
         0x80>>(x&7);
 
         black++;
@@ -585,19 +542,11 @@ function sameRow(a,b){
   return true;
 }
 
-
-/*
-採用 V19.2 / V19.4 核心：
-空白最多40
-黑色相同列最多repeat2
-*/
-
 function toRuns(canvas){
 
   const rows=canvasRows(canvas);
 
   const runs=[];
-
   let y=0;
 
   while(y<rows.length){
@@ -627,7 +576,6 @@ function toRuns(canvas){
       continue;
     }
 
-
     let repeat=1;
 
     while(
@@ -655,7 +603,6 @@ function toRuns(canvas){
   return runs;
 }
 
-
 function rowPacket(run){
 
   return frame(
@@ -672,7 +619,7 @@ function rowPacket(run){
 }
 
 
-/* PREPARE */
+/* PRINT */
 
 async function preparePrint(){
 
@@ -728,8 +675,6 @@ async function preparePrint(){
 }
 
 
-/* SEND BITMAP */
-
 async function sendBitmap(canvas){
 
   if(
@@ -774,9 +719,7 @@ async function sendBitmap(canvas){
 }
 
 
-/* TEST */
-
-async function runTest(type){
+async function runHeightTest(heightMm){
 
   if(!connected())return;
 
@@ -786,143 +729,57 @@ async function runTest(type){
   const status=$("testStatus");
 
   status.className="status warn";
-  status.textContent=`測試 ${type} 執行中…`;
+  status.textContent=
+  `正在測試 ${heightMm} mm…`;
 
   try{
 
-    const canvas=build8Canvas();
+    const canvas=
+    buildCanvas(heightMm);
 
     log("");
     log(
-      `========== TEST ${type} START ==========`
+      `========== HEIGHT ${heightMm}mm START ==========`
     );
 
     await preparePrint();
 
     await sendBitmap(canvas);
 
-
-    /*
-    TEST A：
-    PAGE END 之後完全不送 PRINT END
-    */
-
-    if(type==="A"){
-
-      if(
-        !await sendWait(
-          "PAGE END",
-          CMD.pageEnd(),
-          0xE4,
-          20000
-        )
-      ){
-        throw new Error(
-          "PAGE END 沒有 ACK"
-        );
-      }
-
-      log(
-        "TEST A：故意不送 PRINT END"
+    if(
+      !await sendWait(
+        "PAGE END",
+        CMD.pageEnd(),
+        0xE4,
+        20000
+      )
+    ){
+      throw new Error(
+        "PAGE END 沒有 ACK"
       );
-
-      status.className="status ok";
-      status.textContent=
-      "✅ A 完成｜現在只看出幾張";
-
     }
 
+    await delay(500);
 
-    /*
-    TEST B：
-    PAGE END後等2000ms
-    再PRINT END
-    */
-
-    else if(type==="B"){
-
-      if(
-        !await sendWait(
-          "PAGE END",
-          CMD.pageEnd(),
-          0xE4,
-          20000
-        )
-      ){
-        throw new Error(
-          "PAGE END 沒有 ACK"
-        );
-      }
-
-      log(
-        "等待 2000ms..."
+    if(
+      !await sendWait(
+        "PRINT END",
+        CMD.printEnd(),
+        0xF4,
+        12000
+      )
+    ){
+      throw new Error(
+        "PRINT END 沒有 ACK"
       );
-
-      await delay(2000);
-
-      if(
-        !await sendWait(
-          "PRINT END",
-          CMD.printEnd(),
-          0xF4,
-          12000
-        )
-      ){
-        throw new Error(
-          "PRINT END 沒有 ACK"
-        );
-      }
-
-      status.className="status ok";
-      status.textContent=
-      "✅ B 完成｜現在只看出幾張";
-
     }
 
-
-    /*
-    TEST C：
-    原本V19.4/V19.6結束方式
-    */
-
-    else{
-
-      if(
-        !await sendWait(
-          "PAGE END",
-          CMD.pageEnd(),
-          0xE4,
-          20000
-        )
-      ){
-        throw new Error(
-          "PAGE END 沒有 ACK"
-        );
-      }
-
-      await delay(500);
-
-      if(
-        !await sendWait(
-          "PRINT END",
-          CMD.printEnd(),
-          0xF4,
-          12000
-        )
-      ){
-        throw new Error(
-          "PRINT END 沒有 ACK"
-        );
-      }
-
-      status.className="status ok";
-      status.textContent=
-      "✅ C 完成｜現在只看出幾張";
-    }
-
+    status.className="status ok";
+    status.textContent=
+    `✅ ${heightMm} mm 完成｜只記錄出幾張`;
 
     log(
-      `========== TEST ${type} COMPLETE ==========`
+      `========== HEIGHT ${heightMm}mm COMPLETE ==========`
     );
 
   }
@@ -937,7 +794,7 @@ async function runTest(type){
     "❌ "+message;
 
     log(
-      `TEST ${type} ERROR：${message}`
+      `HEIGHT ${heightMm} ERROR：${message}`
     );
   }
 
@@ -951,9 +808,14 @@ async function runTest(type){
 
 /* BUTTONS */
 
-$("testA").onclick=()=>runTest("A");
-$("testB").onclick=()=>runTest("B");
-$("testC").onclick=()=>runTest("C");
+$("test148").onclick=
+()=>runHeightTest(148);
+
+$("test140").onclick=
+()=>runHeightTest(140);
+
+$("test130").onclick=
+()=>runHeightTest(130);
 
 
 /* CONNECT */
@@ -1115,15 +977,24 @@ $("clearLogBtn").onclick=
 };
 
 
-/* INIT */
+/* PREVIEW */
 
-const previewCanvas=
-build8Canvas();
+function renderPreview(){
 
-$("previewBox").appendChild(
-  previewCanvas
-);
+  const box=$("preview");
+  box.innerHTML="";
 
+  const holder=document.createElement("div");
+  holder.className="page";
+
+  holder.appendChild(
+    buildCanvas(148)
+  );
+
+  box.appendChild(holder);
+}
+
+renderPreview();
 updateButtons();
 
 </script>
