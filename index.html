@@ -3,37 +3,72 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>B3S V19.8 高度診斷</title>
+
+<title>B3S V19.9 穩定高度診斷</title>
 
 <style>
 *{box-sizing:border-box}
+
 body{
   margin:0;
   background:#f4f6f8;
   color:#18202a;
-  font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif;
 }
-.wrap{max-width:850px;margin:auto;padding:14px}
+
+.wrap{
+  max-width:850px;
+  margin:auto;
+  padding:14px;
+}
+
 .card{
   background:#fff;
   border:1px solid #d8dee8;
   border-radius:16px;
   padding:15px;
-  margin-bottom:14px
+  margin-bottom:14px;
 }
-h1{font-size:24px;margin:0 0 5px}
-h2{font-size:19px;margin:0 0 10px}
-.help{font-size:13px;color:#667085;line-height:1.6}
+
+h1{
+  margin:0 0 5px;
+  font-size:24px;
+}
+
+h2{
+  margin:0 0 10px;
+  font-size:19px;
+}
+
+.help{
+  font-size:13px;
+  color:#667085;
+  line-height:1.65;
+}
+
 .status{
   padding:10px;
   border-radius:10px;
   background:#f2f4f7;
   margin-top:10px;
-  line-height:1.5
+  line-height:1.5;
 }
-.ok{background:#ecfdf3;color:#067647}
-.warn{background:#fff8e6;color:#8a5a00}
-.err{background:#fff1f0;color:#d92d20}
+
+.ok{
+  background:#ecfdf3;
+  color:#067647;
+}
+
+.warn{
+  background:#fff8e6;
+  color:#8a5a00;
+}
+
+.err{
+  background:#fff1f0;
+  color:#d92d20;
+}
+
 button{
   min-height:48px;
   border:0;
@@ -41,77 +76,134 @@ button{
   padding:10px 14px;
   margin:4px;
   font-size:15px;
-  font-weight:700
+  font-weight:700;
 }
-button:disabled{opacity:.4}
-.primary{background:#1265f3;color:#fff}
-.success{background:#e7f8ef;color:#087443}
-.orange{background:#fff2d6;color:#9a5b00}
-.purple{background:#eee8ff;color:#5b37b7}
-.danger{background:#d92d20;color:#fff}
-.gray{background:#e9edf3;color:#344054}
-.row{display:flex;flex-wrap:wrap;gap:6px}
+
+button:disabled{
+  opacity:.4;
+}
+
+.success{
+  background:#e7f8ef;
+  color:#087443;
+}
+
+.orange{
+  background:#fff2d6;
+  color:#9a5b00;
+}
+
+.purple{
+  background:#eee8ff;
+  color:#5b37b7;
+}
+
+.primary{
+  background:#1265f3;
+  color:#fff;
+}
+
+.gray{
+  background:#e9edf3;
+  color:#344054;
+}
+
+.row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+
 textarea{
   width:100%;
-  min-height:280px;
+  min-height:300px;
   resize:vertical;
   border:1px solid #ccd3dd;
   border-radius:10px;
   padding:10px;
   font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-  font-size:12px
+  font-size:12px;
 }
+
 .preview{
   background:#e7e9ed;
   padding:12px;
   border-radius:12px;
-  overflow:auto
+  overflow:auto;
 }
+
 .page{
   display:inline-block;
   background:#fff;
-  box-shadow:0 1px 4px #999
+  box-shadow:0 1px 4px #999;
 }
+
 canvas{
   display:block;
   max-width:100%;
-  height:auto
+  height:auto;
 }
 </style>
 </head>
 
 <body>
+
 <div class="wrap">
 
-<h1>B3S V19.8 高度診斷</h1>
+<h1>B3S V19.9 穩定高度診斷</h1>
+
 <div class="help">
-固定：8｜72mm寬｜黑標2｜濃度1｜PAGE END → 500ms → PRINT END
+固定：8｜72mm寬｜黑標2｜濃度1<br>
+這版先確保 PAGE END 穩定收到 E4，再判斷 148 / 140 / 130mm 出紙數。
 </div>
 
+
 <div class="card">
+
 <h2>🖨 B3S</h2>
 
-<div id="bleStatus" class="status">尚未連線</div>
+<div id="bleStatus" class="status">
+尚未連線
+</div>
 
 <div class="row">
-<button id="connectBtn" class="success">🔵 連接 B3S</button>
-<button id="disconnectBtn" class="gray" disabled>中斷</button>
+
+<button id="connectBtn" class="success">
+🔵 連接 B3S
+</button>
+
+<button id="disconnectBtn" class="gray" disabled>
+中斷
+</button>
+
 </div>
 
 <div class="help" style="margin-top:8px">
 裝置：<span id="deviceName">—</span><br>
 GATT：<span id="gattState">false</span>
 </div>
+
 </div>
 
 
 <div class="card">
+
 <h2>高度測試</h2>
 
 <div class="row">
-<button id="test148" class="orange" disabled>148 mm</button>
-<button id="test140" class="purple" disabled>140 mm</button>
-<button id="test130" class="primary" disabled>130 mm</button>
+
+<button id="test148" class="orange" disabled>
+148 mm
+</button>
+
+<button id="test140" class="purple" disabled>
+140 mm
+</button>
+
+<button id="test130" class="primary" disabled>
+130 mm
+</button>
+
 </div>
 
 <div id="testStatus" class="status">
@@ -119,42 +211,62 @@ GATT：<span id="gattState">false</span>
 </div>
 
 <div class="help" style="margin-top:10px">
-每次只測一個高度。<br>
-不用看畫質，只記錄：<b>出 1 張或 2 張</b>。<br>
-可以繼續使用同一張廢紙。
+先只測 <b>148mm</b>。<br>
+如果 PAGE END 正常收到 E4，再繼續 140 / 130。<br>
+這輪仍然可以使用同一張測試紙。
 </div>
+
 </div>
 
 
 <div class="card">
+
 <h2>預覽</h2>
+
 <div id="preview" class="preview"></div>
+
 </div>
 
 
 <div class="card">
+
 <h2>通訊紀錄</h2>
 
 <div class="row">
-<button id="copyLogBtn" class="gray">複製紀錄</button>
-<button id="clearLogBtn" class="gray">清除</button>
+
+<button id="copyLogBtn" class="gray">
+複製紀錄
+</button>
+
+<button id="clearLogBtn" class="gray">
+清除
+</button>
+
 </div>
 
 <textarea id="log" readonly></textarea>
+
 </div>
 
 </div>
+
 
 <script>
 
-const $=id=>document.getElementById(id);
+const $=
+id=>document.getElementById(id);
+
+
+/* =========================================================
+UTIL
+========================================================= */
 
 function delay(ms){
-  return new Promise(r=>setTimeout(r,ms));
+  return new Promise(resolve=>setTimeout(resolve,ms));
 }
 
-function errorText(e){
-  return e?.message||String(e||"未知錯誤");
+function errorText(error){
+  return error?.message||String(error||"未知錯誤");
 }
 
 function mmToDots(mm){
@@ -165,24 +277,41 @@ function paperDots(mm){
   return Math.floor(mmToDots(mm)/8)*8;
 }
 
-function u16(v){
-  return [(v>>8)&255,v&255];
+function u16(value){
+  return[
+    (value>>8)&255,
+    value&255
+  ];
 }
 
 function hex(bytes){
+
   return Array.from(bytes)
-    .map(v=>v.toString(16).padStart(2,"0").toUpperCase())
-    .join(" ");
+  .map(
+    value=>
+    value
+    .toString(16)
+    .padStart(2,"0")
+    .toUpperCase()
+  )
+  .join(" ");
 }
 
 function log(text){
+
   const box=$("log");
-  box.value+=`[${new Date().toLocaleTimeString()}] ${text}\n`;
-  box.scrollTop=box.scrollHeight;
+
+  box.value+=
+  `[${new Date().toLocaleTimeString()}] ${text}\n`;
+
+  box.scrollTop=
+  box.scrollHeight;
 }
 
 
-/* BLE */
+/* =========================================================
+BLE
+========================================================= */
 
 const SERVICE=
 "49535343-fe7d-4ae5-8fa9-9fafd205e455";
@@ -193,16 +322,25 @@ const WRITE_UUID=
 const NOTIFY_UUID=
 "49535343-1e4d-4bd9-ba61-23c647249616";
 
+
 const state={
+
   device:null,
   server:null,
   write:null,
   notify:null,
+
   rx:[],
+
+  parsedRx:[],
+
   running:false
+
 };
 
+
 function connected(){
+
   return !!(
     state.server?.connected &&
     state.write &&
@@ -210,39 +348,58 @@ function connected(){
   );
 }
 
-function updateButtons(){
-  const ready=connected()&&!state.running;
 
-  $("disconnectBtn").disabled=!connected();
-  $("test148").disabled=!ready;
-  $("test140").disabled=!ready;
-  $("test130").disabled=!ready;
+function updateButtons(){
+
+  const ready=
+  connected()&&!state.running;
+
+  $("disconnectBtn").disabled=
+  !connected();
+
+  $("test148").disabled=
+  !ready;
+
+  $("test140").disabled=
+  !ready;
+
+  $("test130").disabled=
+  !ready;
 
   $("gattState").textContent=
   String(!!state.server?.connected);
 }
 
 
-/* PACKET */
+/* =========================================================
+PACKET
+========================================================= */
 
-function frame(command,data=[1],prefix=false){
+function frame(
+  command,
+  data=[1],
+  prefix=false
+){
 
-  const payload=Array.from(data);
+  const payload=
+  Array.from(data);
 
   let checksum=
   command^payload.length;
 
-  for(const b of payload){
-    checksum^=b;
+  for(const value of payload){
+    checksum^=value;
   }
 
   const packet=[
-    0x55,0x55,
+    0x55,
+    0x55,
     command,
     payload.length,
     ...payload,
     checksum&255,
-    0xAA,0xAA
+    0xAA,
+    0xAA
   ];
 
   if(prefix){
@@ -252,19 +409,67 @@ function frame(command,data=[1],prefix=false){
   return new Uint8Array(packet);
 }
 
+
 const CMD={
-  connect:()=>frame(0xC1,[1],true),
-  density:v=>frame(0x21,[v]),
-  labelType:v=>frame(0x23,[v]),
-  printStart:()=>frame(0x01,[1]),
-  pageStart:()=>frame(0x03,[1]),
-  pageSize:(h,w)=>frame(0x13,[...u16(h),...u16(w)]),
-  pageEnd:()=>frame(0xE3,[1]),
-  printEnd:()=>frame(0xF3,[1])
+
+  connect:
+  ()=>frame(
+    0xC1,
+    [1],
+    true
+  ),
+
+  density:
+  value=>frame(
+    0x21,
+    [value]
+  ),
+
+  labelType:
+  value=>frame(
+    0x23,
+    [value]
+  ),
+
+  printStart:
+  ()=>frame(
+    0x01,
+    [1]
+  ),
+
+  pageStart:
+  ()=>frame(
+    0x03,
+    [1]
+  ),
+
+  pageSize:
+  (height,width)=>frame(
+    0x13,
+    [
+      ...u16(height),
+      ...u16(width)
+    ]
+  ),
+
+  pageEnd:
+  ()=>frame(
+    0xE3,
+    [1]
+  ),
+
+  printEnd:
+  ()=>frame(
+    0xF3,
+    [1]
+  )
+
 };
 
 
-/* RX */
+/* =========================================================
+RX PARSER
+========================================================= */
 
 function parsePackets(text){
 
@@ -273,10 +478,12 @@ function parsePackets(text){
   .trim()
   .split(/\s+/)
   .filter(Boolean)
-  .map(v=>parseInt(v,16));
+  .map(value=>parseInt(value,16));
 
   const result=[];
+
   let pos=0;
+
 
   while(pos<bytes.length){
 
@@ -284,57 +491,93 @@ function parsePackets(text){
       bytes[pos]!==0x55 ||
       bytes[pos+1]!==0x55
     ){
+
       pos++;
+
       continue;
     }
 
-    const command=bytes[pos+2];
-    const length=bytes[pos+3];
-    const checksumIndex=pos+4+length;
-    const tail=checksumIndex+1;
+
+    const command=
+    bytes[pos+2];
+
+    const length=
+    bytes[pos+3];
+
+    const checksumIndex=
+    pos+4+length;
+
+    const tail=
+    checksumIndex+1;
+
 
     if(tail+1>=bytes.length){
       break;
     }
 
+
     if(
       bytes[tail]!==0xAA ||
       bytes[tail+1]!==0xAA
     ){
+
       pos++;
+
       continue;
     }
 
-    let checksum=command^length;
 
-    for(let i=0;i<length;i++){
-      checksum^=bytes[pos+4+i];
+    let checksum=
+    command^length;
+
+
+    for(
+      let i=0;
+      i<length;
+      i++
+    ){
+
+      checksum^=
+      bytes[pos+4+i];
     }
+
 
     if(
       (checksum&255)!==
       bytes[checksumIndex]
     ){
+
       pos++;
+
       continue;
     }
 
+
     result.push({
+
       command,
-      payload:bytes.slice(
+
+      payload:
+      bytes.slice(
         pos+4,
         pos+4+length
       )
+
     });
 
-    pos=tail+2;
+
+    pos=
+    tail+2;
   }
+
 
   return result;
 }
 
 
-/* WRITE */
+/* =========================================================
+WRITE
+========================================================= */
 
 async function rawGattWrite(bytes){
 
@@ -342,29 +585,59 @@ async function rawGattWrite(bytes){
     state.write.properties.writeWithoutResponse &&
     state.write.writeValueWithoutResponse
   ){
-    await state.write.writeValueWithoutResponse(bytes);
+
+    await state.write
+    .writeValueWithoutResponse(bytes);
   }
+
   else if(
     state.write.writeValueWithResponse
   ){
-    await state.write.writeValueWithResponse(bytes);
+
+    await state.write
+    .writeValueWithResponse(bytes);
   }
+
   else{
-    await state.write.writeValue(bytes);
+
+    await state.write
+    .writeValue(bytes);
   }
 }
+
+
+/*
+V19.9：
+
+仍保持快速傳輸，
+但由 2ms 微調至 3ms。
+
+不是 V19.5 那種極慢模式。
+*/
 
 async function writeRaw(bytes){
 
-  for(let i=0;i<bytes.length;i+=20){
+  for(
+    let i=0;
+    i<bytes.length;
+    i+=20
+  ){
 
     await rawGattWrite(
-      bytes.slice(i,i+20)
+      bytes.slice(
+        i,
+        i+20
+      )
     );
 
-    await delay(2);
+    await delay(3);
   }
 }
+
+
+/* =========================================================
+WAIT ACK
+========================================================= */
 
 async function sendWait(
   name,
@@ -373,96 +646,293 @@ async function sendWait(
   timeout=5000
 ){
 
-  const startIndex=state.rx.length;
+  const startIndex=
+  state.parsedRx.length;
 
-  log(`${name} → ${hex(packet)}`);
+  log(
+    `${name} → ${hex(packet)}`
+  );
 
   await rawGattWrite(packet);
 
-  const start=Date.now();
+  const start=
+  Date.now();
 
-  while(Date.now()-start<timeout){
+
+  while(
+    Date.now()-start<
+    timeout
+  ){
 
     const incoming=
-    state.rx.slice(startIndex);
+    state.parsedRx.slice(
+      startIndex
+    );
 
-    for(const raw of incoming){
 
-      for(const parsed of parsePackets(raw)){
+    for(const parsed of incoming){
 
-        if(parsed.command===expected){
+      if(
+        parsed.command===
+        expected
+      ){
 
-          log(
-            `${name} ACK ✅ 0x${expected.toString(16).toUpperCase()}`
-          );
+        log(
+          `${name} ACK ✅ 0x${expected.toString(16).toUpperCase()}`
+        );
 
-          return true;
-        }
+        return true;
       }
     }
+
 
     await delay(25);
   }
 
-  log(`${name} ACK ❌ TIMEOUT`);
+
+  log(
+    `${name} ACK ❌ TIMEOUT`
+  );
+
   return false;
 }
 
 
-/* CANVAS */
+/* =========================================================
+D3 WAIT
+========================================================= */
+
+/*
+我們目前不定義 D3 的實際意義。
+
+只是根據實測：
+成功列印常常會看到
+D3 payload 第一個 byte 往後到 03。
+
+V19.9 在 Bitmap 送完後，
+若尚未看到 D3 ... 03，
+最多等幾秒再送 PAGE END。
+*/
+
+function hasLateD3(startIndex){
+
+  const incoming=
+  state.parsedRx.slice(
+    startIndex
+  );
+
+
+  for(const packet of incoming){
+
+    if(
+      packet.command===
+      0xD3 &&
+      packet.payload?.length>=1 &&
+      packet.payload[0]>=3
+    ){
+
+      return true;
+    }
+  }
+
+
+  return false;
+}
+
+
+async function settleBeforePageEnd(
+  startIndex,
+  status
+){
+
+  status.textContent=
+  "Bitmap 已送完｜等待印表機處理…";
+
+  log(
+    "BITMAP 傳送完成，進入 V19.9 settle"
+  );
+
+
+  /*
+  先固定休息 700ms。
+  */
+
+  await delay(700);
+
+
+  if(
+    hasLateD3(startIndex)
+  ){
+
+    log(
+      "SETTLE：已看到後段 D3，繼續"
+    );
+
+    await delay(300);
+
+    return;
+  }
+
+
+  log(
+    "SETTLE：尚未看到後段 D3，開始等待"
+  );
+
+
+  const start=
+  Date.now();
+
+  const maxWait=
+  5000;
+
+
+  while(
+    Date.now()-start<
+    maxWait
+  ){
+
+    if(
+      hasLateD3(startIndex)
+    ){
+
+      log(
+        `SETTLE：等待 ${Date.now()-start}ms 後看到後段 D3`
+      );
+
+      await delay(400);
+
+      return;
+    }
+
+
+    await delay(100);
+  }
+
+
+  /*
+  沒看到也不直接判定錯誤，
+  再額外給印表機一點時間。
+  */
+
+  log(
+    "SETTLE：5秒內未看到後段 D3，額外等待 1200ms"
+  );
+
+  await delay(1200);
+}
+
+
+/* =========================================================
+CANVAS
+========================================================= */
 
 function buildCanvas(heightMm){
 
-  const width=paperDots(72);
-  const height=mmToDots(heightMm);
+  const width=
+  paperDots(72);
 
-  const canvas=document.createElement("canvas");
+  const height=
+  mmToDots(heightMm);
 
-  canvas.width=width;
-  canvas.height=height;
 
-  const ctx=canvas.getContext("2d");
+  const canvas=
+  document.createElement(
+    "canvas"
+  );
 
-  ctx.fillStyle="#fff";
-  ctx.fillRect(0,0,width,height);
+  canvas.width=
+  width;
 
-  ctx.fillStyle="#000";
+  canvas.height=
+  height;
 
-  const margin=mmToDots(7);
+
+  const ctx=
+  canvas.getContext("2d");
+
+
+  ctx.fillStyle=
+  "#fff";
+
+  ctx.fillRect(
+    0,
+    0,
+    width,
+    height
+  );
+
+
+  ctx.fillStyle=
+  "#000";
+
+
+  const margin=
+  mmToDots(7);
+
 
   let low=20;
   let high=1000;
   let best=20;
 
+
   while(low<=high){
 
-    const mid=Math.floor((low+high)/2);
+    const mid=
+    Math.floor(
+      (low+high)/2
+    );
+
 
     ctx.font=
     `700 ${mid}px Arial,"PingFang TC",sans-serif`;
 
-    const m=ctx.measureText("8");
+
+    const metrics=
+    ctx.measureText("8");
+
 
     const textHeight=
-    (m.actualBoundingBoxAscent||mid*.8)+
-    (m.actualBoundingBoxDescent||mid*.2);
+    (
+      metrics.actualBoundingBoxAscent||
+      mid*.8
+    )+
+    (
+      metrics.actualBoundingBoxDescent||
+      mid*.2
+    );
+
 
     if(
-      m.width<=width-margin*2 &&
-      textHeight<=height-margin*2
+      metrics.width<=
+      width-margin*2 &&
+      textHeight<=
+      height-margin*2
     ){
-      best=mid;
-      low=mid+1;
-    }else{
-      high=mid-1;
+
+      best=
+      mid;
+
+      low=
+      mid+1;
+    }
+
+    else{
+
+      high=
+      mid-1;
     }
   }
+
 
   ctx.font=
   `700 ${best}px Arial,"PingFang TC",sans-serif`;
 
-  ctx.textAlign="center";
-  ctx.textBaseline="middle";
+  ctx.textAlign=
+  "center";
+
+  ctx.textBaseline=
+  "middle";
+
 
   ctx.fillText(
     "8",
@@ -470,36 +940,62 @@ function buildCanvas(heightMm){
     height/2
   );
 
+
   return canvas;
 }
 
 
-/* RASTER */
+/* =========================================================
+RASTER
+========================================================= */
 
 function canvasRows(canvas){
 
-  const ctx=canvas.getContext("2d");
+  const ctx=
+  canvas.getContext("2d");
+
 
   const data=
   ctx.getImageData(
-    0,0,
+    0,
+    0,
     canvas.width,
     canvas.height
   ).data;
 
+
   const rows=[];
 
-  for(let y=0;y<canvas.height;y++){
+
+  for(
+    let y=0;
+    y<canvas.height;
+    y++
+  ){
 
     const row=
-    new Uint8Array(canvas.width/8);
+    new Uint8Array(
+      canvas.width/8
+    );
 
-    let black=0;
 
-    for(let x=0;x<canvas.width;x++){
+    let black=
+    0;
+
+
+    for(
+      let x=0;
+      x<canvas.width;
+      x++
+    ){
 
       const i=
-      (y*canvas.width+x)*4;
+      (
+        y*
+        canvas.width+
+        x
+      )*4;
+
 
       const gray=
       (
@@ -508,118 +1004,221 @@ function canvasRows(canvas){
         data[i+2]*114
       )/1000;
 
+
       if(gray<170){
 
         row[x>>3]|=
-        0x80>>(x&7);
+        0x80>>
+        (x&7);
 
         black++;
       }
     }
 
+
     rows.push({
+
       row:y,
+
       data:row,
+
       black
+
     });
   }
+
 
   return rows;
 }
 
+
 function sameRow(a,b){
 
   if(a.length!==b.length){
+
     return false;
   }
 
-  for(let i=0;i<a.length;i++){
+
+  for(
+    let i=0;
+    i<a.length;
+    i++
+  ){
+
     if(a[i]!==b[i]){
+
       return false;
     }
   }
 
+
   return true;
 }
 
+
+/*
+保持 V19.2 / V19.4 壓縮策略：
+
+空白最多 repeat 40
+黑色相同列最多 repeat 2
+*/
+
 function toRuns(canvas){
 
-  const rows=canvasRows(canvas);
+  const rows=
+  canvasRows(canvas);
 
   const runs=[];
+
   let y=0;
 
-  while(y<rows.length){
 
-    const current=rows[y];
+  while(
+    y<
+    rows.length
+  ){
 
-    if(current.black===0){
+    const current=
+    rows[y];
 
-      let repeat=1;
+
+    if(
+      current.black===
+      0
+    ){
+
+      let repeat=
+      1;
+
 
       while(
-        y+repeat<rows.length &&
-        repeat<40 &&
-        rows[y+repeat].black===0
+        y+repeat<
+        rows.length &&
+        repeat<
+        40 &&
+        rows[
+          y+
+          repeat
+        ].black===
+        0
       ){
+
         repeat++;
       }
 
+
       runs.push({
+
         row:y,
+
         repeat,
-        data:current.data,
-        black:0
+
+        data:
+        current.data,
+
+        black:
+        0
+
       });
 
-      y+=repeat;
+
+      y+=
+      repeat;
+
+
       continue;
     }
 
-    let repeat=1;
+
+    let repeat=
+    1;
+
 
     while(
-      y+repeat<rows.length &&
-      repeat<2 &&
-      rows[y+repeat].black>0 &&
+      y+repeat<
+      rows.length &&
+      repeat<
+      2 &&
+      rows[
+        y+
+        repeat
+      ].black>
+      0 &&
       sameRow(
         current.data,
-        rows[y+repeat].data
+        rows[
+          y+
+          repeat
+        ].data
       )
     ){
+
       repeat++;
     }
 
+
     runs.push({
+
       row:y,
+
       repeat,
-      data:current.data,
-      black:current.black
+
+      data:
+      current.data,
+
+      black:
+      current.black
+
     });
 
-    y+=repeat;
+
+    y+=
+    repeat;
   }
+
 
   return runs;
 }
+
+
+/* =========================================================
+ROW PACKET
+========================================================= */
 
 function rowPacket(run){
 
   return frame(
     0x85,
     [
-      ...u16(run.row),
+
+      ...u16(
+        run.row
+      ),
+
       0,
-      run.black&255,
-      (run.black>>8)&255,
+
+      run.black&
+      255,
+
+      (
+        run.black>>
+        8
+      )&
+      255,
+
       run.repeat,
+
       ...run.data
+
     ]
   );
 }
 
 
-/* PRINT */
+/* =========================================================
+PREPARE PRINT
+========================================================= */
 
 async function preparePrint(){
 
@@ -627,55 +1226,86 @@ async function preparePrint(){
     !await sendWait(
       "CONNECT",
       CMD.connect(),
-      0xC2
+      0xC2,
+      5000
     )
   ){
-    throw new Error("CONNECT 失敗");
+
+    throw new Error(
+      "CONNECT 失敗"
+    );
   }
+
 
   if(
     !await sendWait(
       "DENSITY 1",
       CMD.density(1),
-      0x31
+      0x31,
+      5000
     )
   ){
-    throw new Error("DENSITY 失敗");
+
+    throw new Error(
+      "DENSITY 失敗"
+    );
   }
+
 
   if(
     !await sendWait(
       "LABEL TYPE 2",
       CMD.labelType(2),
-      0x33
+      0x33,
+      5000
     )
   ){
-    throw new Error("LABEL TYPE 失敗");
+
+    throw new Error(
+      "LABEL TYPE 失敗"
+    );
   }
+
 
   if(
     !await sendWait(
       "PRINT START",
       CMD.printStart(),
-      0x02
+      0x02,
+      5000
     )
   ){
-    throw new Error("PRINT START 失敗");
+
+    throw new Error(
+      "PRINT START 失敗"
+    );
   }
+
 
   if(
     !await sendWait(
       "PAGE START",
       CMD.pageStart(),
-      0x04
+      0x04,
+      5000
     )
   ){
-    throw new Error("PAGE START 失敗");
+
+    throw new Error(
+      "PAGE START 失敗"
+    );
   }
 }
 
 
-async function sendBitmap(canvas){
+/* =========================================================
+SEND BITMAP V19.9
+========================================================= */
+
+async function sendBitmap(
+  canvas,
+  status
+){
 
   if(
     !await sendWait(
@@ -684,13 +1314,20 @@ async function sendBitmap(canvas){
         canvas.height,
         canvas.width
       ),
-      0x14
+      0x14,
+      5000
     )
   ){
-    throw new Error("PAGE SIZE 失敗");
+
+    throw new Error(
+      "PAGE SIZE 失敗"
+    );
   }
 
-  const runs=toRuns(canvas);
+
+  const runs=
+  toRuns(canvas);
+
 
   log(
     `CANVAS ${canvas.width}×${canvas.height}`
@@ -700,98 +1337,217 @@ async function sendBitmap(canvas){
     `RUNS ${runs.length}`
   );
 
-  for(let i=0;i<runs.length;i++){
+
+  const d3StartIndex=
+  state.parsedRx.length;
+
+
+  for(
+    let i=0;
+    i<runs.length;
+    i++
+  ){
 
     await writeRaw(
-      rowPacket(runs[i])
+      rowPacket(
+        runs[i]
+      )
     );
 
-    if(runs[i].black>0){
-      await delay(4);
+
+    /*
+    比 V19.8 稍微穩一點，
+    但沒有像 V19.5 那樣大幅拖慢。
+    */
+
+    if(
+      runs[i].black>
+      0
+    ){
+
+      await delay(5);
     }
 
-    if((i+1)%24===0){
+
+    if(
+      (
+        i+
+        1
+      )%
+      24===
+      0
+    ){
+
       await delay(18);
+    }
+
+
+    if(
+      (
+        i+
+        1
+      )%
+      20===
+      0 ||
+      i===
+      runs.length-
+      1
+    ){
+
+      status.textContent=
+      `Bitmap ${i+1}/${runs.length}`;
     }
   }
 
-  log("BITMAP DATA ✅");
+
+  log(
+    "BITMAP DATA ✅"
+  );
+
+
+  await settleBeforePageEnd(
+    d3StartIndex,
+    status
+  );
 }
 
 
-async function runHeightTest(heightMm){
+/* =========================================================
+HEIGHT TEST
+========================================================= */
 
-  if(!connected())return;
+async function runHeightTest(
+  heightMm
+){
 
-  state.running=true;
+  if(!connected()){
+    return;
+  }
+
+
+  state.running=
+  true;
+
   updateButtons();
 
-  const status=$("testStatus");
 
-  status.className="status warn";
+  const status=
+  $("testStatus");
+
+
+  status.className=
+  "status warn";
+
   status.textContent=
-  `正在測試 ${heightMm} mm…`;
+  `正在測試 ${heightMm}mm…`;
+
 
   try{
 
     const canvas=
-    buildCanvas(heightMm);
+    buildCanvas(
+      heightMm
+    );
+
 
     log("");
+
     log(
-      `========== HEIGHT ${heightMm}mm START ==========`
+      `========== V19.9 HEIGHT ${heightMm}mm START ==========`
     );
+
 
     await preparePrint();
 
-    await sendBitmap(canvas);
 
-    if(
-      !await sendWait(
-        "PAGE END",
-        CMD.pageEnd(),
-        0xE4,
-        20000
-      )
-    ){
-      throw new Error(
-        "PAGE END 沒有 ACK"
-      );
-    }
-
-    await delay(500);
-
-    if(
-      !await sendWait(
-        "PRINT END",
-        CMD.printEnd(),
-        0xF4,
-        12000
-      )
-    ){
-      throw new Error(
-        "PRINT END 沒有 ACK"
-      );
-    }
-
-    status.className="status ok";
-    status.textContent=
-    `✅ ${heightMm} mm 完成｜只記錄出幾張`;
-
-    log(
-      `========== HEIGHT ${heightMm}mm COMPLETE ==========`
+    await sendBitmap(
+      canvas,
+      status
     );
 
+
+    status.textContent=
+    "準備 PAGE END…";
+
+
+    const pageEndOk=
+    await sendWait(
+      "PAGE END",
+      CMD.pageEnd(),
+      0xE4,
+      20000
+    );
+
+
+    if(
+      !pageEndOk
+    ){
+
+      throw new Error(
+        "PAGE END 沒有收到 E4"
+      );
+    }
+
+
+    /*
+    V19.9：
+    結束流程仍然固定500ms，
+    避免同時改太多變因。
+    */
+
+    await delay(
+      500
+    );
+
+
+    const printEndOk=
+    await sendWait(
+      "PRINT END",
+      CMD.printEnd(),
+      0xF4,
+      12000
+    );
+
+
+    if(
+      !printEndOk
+    ){
+
+      throw new Error(
+        "PRINT END 沒有收到 F4"
+      );
+    }
+
+
+    status.className=
+    "status ok";
+
+
+    status.textContent=
+    `✅ ${heightMm}mm 完成｜PAGE END E4 正常｜請記錄出幾張`;
+
+
+    log(
+      `========== V19.9 HEIGHT ${heightMm}mm COMPLETE ==========`
+    );
   }
 
   catch(error){
 
     const message=
-    errorText(error);
+    errorText(
+      error
+    );
 
-    status.className="status err";
+
+    status.className=
+    "status err";
+
+
     status.textContent=
-    "❌ "+message;
+    "❌ "+
+    message;
+
 
     log(
       `HEIGHT ${heightMm} ERROR：${message}`
@@ -800,13 +1556,17 @@ async function runHeightTest(heightMm){
 
   finally{
 
-    state.running=false;
+    state.running=
+    false;
+
     updateButtons();
   }
 }
 
 
-/* BUTTONS */
+/* =========================================================
+BUTTONS
+========================================================= */
 
 $("test148").onclick=
 ()=>runHeightTest(148);
@@ -818,7 +1578,9 @@ $("test130").onclick=
 ()=>runHeightTest(130);
 
 
-/* CONNECT */
+/* =========================================================
+CONNECT
+========================================================= */
 
 $("connectBtn").onclick=
 async()=>{
@@ -831,42 +1593,71 @@ async()=>{
     $("bleStatus").textContent=
     "正在連線…";
 
+
     const device=
-    await navigator.bluetooth.requestDevice({
-      acceptAllDevices:true,
-      optionalServices:[SERVICE]
+    await navigator.bluetooth
+    .requestDevice({
+
+      acceptAllDevices:
+      true,
+
+      optionalServices:[
+        SERVICE
+      ]
+
     });
 
-    state.device=device;
+
+    state.device=
+    device;
+
 
     $("deviceName").textContent=
-    device.name||"—";
+    device.name||
+    "—";
+
 
     state.server=
-    await device.gatt.connect();
+    await device.gatt
+    .connect();
+
 
     const service=
-    await state.server.getPrimaryService(
+    await state.server
+    .getPrimaryService(
       SERVICE
     );
 
+
     state.write=
-    await service.getCharacteristic(
+    await service
+    .getCharacteristic(
       WRITE_UUID
     );
 
+
     state.notify=
-    await service.getCharacteristic(
+    await service
+    .getCharacteristic(
       NOTIFY_UUID
     );
 
-    state.rx=[];
 
-    state.notify.addEventListener(
+    state.rx=
+    [];
+
+    state.parsedRx=
+    [];
+
+
+    state.notify
+    .addEventListener(
       "characteristicvaluechanged",
       event=>{
 
-        const value=event.target.value;
+        const value=
+        event.target.value;
+
 
         const bytes=
         new Uint8Array(
@@ -875,126 +1666,224 @@ async()=>{
           value.byteLength
         );
 
-        const text=hex(bytes);
 
-        state.rx.push(text);
+        const text=
+        hex(bytes);
 
-        log("RX："+text);
+
+        state.rx.push(
+          text
+        );
+
+
+        const packets=
+        parsePackets(
+          text
+        );
+
+
+        for(
+          const packet
+          of packets
+        ){
+
+          state.parsedRx.push(
+            packet
+          );
+        }
+
+
+        log(
+          "RX："+
+          text
+        );
       }
     );
 
-    await state.notify.startNotifications();
 
-    state.device.addEventListener(
+    await state.notify
+    .startNotifications();
+
+
+    state.device
+    .addEventListener(
       "gattserverdisconnected",
       ()=>{
 
-        state.server=null;
-        state.write=null;
-        state.notify=null;
+        state.server=
+        null;
+
+        state.write=
+        null;
+
+        state.notify=
+        null;
+
 
         $("bleStatus").className=
         "status warn";
 
+
         $("bleStatus").textContent=
         "B3S 已中斷";
+
 
         updateButtons();
       }
     );
 
+
     $("bleStatus").className=
     "status ok";
+
 
     $("bleStatus").textContent=
     "✅ B3S 已連線";
 
-    updateButtons();
 
+    updateButtons();
   }
 
   catch(error){
 
     const message=
-    errorText(error);
+    errorText(
+      error
+    );
+
 
     $("bleStatus").className=
     "status err";
 
+
     $("bleStatus").textContent=
-    "❌ "+message;
+    "❌ "+
+    message;
+
 
     log(
-      "CONNECT ERROR："+message
+      "CONNECT ERROR："+
+      message
     );
+
 
     updateButtons();
   }
 };
 
 
+/* =========================================================
+DISCONNECT
+========================================================= */
+
 $("disconnectBtn").onclick=
 ()=>{
 
   try{
-    state.device?.gatt?.disconnect();
-  }catch{}
 
-  state.server=null;
-  state.write=null;
-  state.notify=null;
+    state.device
+    ?.gatt
+    ?.disconnect();
 
-  $("bleStatus").className="status";
-  $("bleStatus").textContent="已中斷";
+  }
+
+  catch{}
+
+
+  state.server=
+  null;
+
+  state.write=
+  null;
+
+  state.notify=
+  null;
+
+
+  $("bleStatus").className=
+  "status";
+
+
+  $("bleStatus").textContent=
+  "已中斷";
+
 
   updateButtons();
 };
 
 
-/* LOG */
+/* =========================================================
+LOG
+========================================================= */
+
+$("clearLogBtn").onclick=
+()=>{
+
+  $("log").value=
+  "";
+};
+
 
 $("copyLogBtn").onclick=
 async()=>{
 
   try{
 
-    await navigator.clipboard.writeText(
+    await navigator.clipboard
+    .writeText(
       $("log").value
     );
 
-    alert("已複製");
 
-  }catch{
+    alert(
+      "已複製"
+    );
+  }
+
+  catch{
 
     $("log").select();
   }
 };
 
-$("clearLogBtn").onclick=
-()=>{
 
-  $("log").value="";
-};
-
-
-/* PREVIEW */
+/* =========================================================
+PREVIEW
+========================================================= */
 
 function renderPreview(){
 
-  const box=$("preview");
-  box.innerHTML="";
+  const box=
+  $("preview");
 
-  const holder=document.createElement("div");
-  holder.className="page";
+
+  box.innerHTML=
+  "";
+
+
+  const holder=
+  document.createElement(
+    "div"
+  );
+
+
+  holder.className=
+  "page";
+
 
   holder.appendChild(
     buildCanvas(148)
   );
 
-  box.appendChild(holder);
+
+  box.appendChild(
+    holder
+  );
 }
 
+
 renderPreview();
+
 updateButtons();
 
 </script>
