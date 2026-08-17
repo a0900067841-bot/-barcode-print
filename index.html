@@ -3,17 +3,29 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>B3S V19.11 大字畫質診斷</title>
+
+<title>商品條碼／QR／大字牌｜B3S V20.0</title>
+
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 
 <style>
 *{box-sizing:border-box}
+
 body{
   margin:0;
   background:#f4f6f8;
   color:#18202a;
   font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif
 }
-.wrap{max-width:850px;margin:auto;padding:14px}
+
+.wrap{
+  max-width:920px;
+  margin:auto;
+  padding:14px
+}
+
 .card{
   background:#fff;
   border:1px solid #d8dee8;
@@ -21,161 +33,753 @@ body{
   padding:15px;
   margin-bottom:14px
 }
-h1{font-size:24px;margin:0 0 5px}
-h2{font-size:19px;margin:0 0 10px}
-.help{font-size:13px;color:#667085;line-height:1.65}
-.status{
-  padding:10px;
-  border-radius:10px;
-  background:#f2f4f7;
-  margin-top:10px;
-  line-height:1.5
+
+h1{
+  margin:0 0 4px;
+  font-size:25px
 }
-.ok{background:#ecfdf3;color:#067647}
-.warn{background:#fff8e6;color:#8a5a00}
-.err{background:#fff1f0;color:#d92d20}
+
+h2{
+  margin:0 0 12px;
+  font-size:20px
+}
+
+.help{
+  color:#667085;
+  font-size:13px;
+  line-height:1.65
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px
+}
+
+.grid3{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px
+}
+
+@media(max-width:650px){
+  .grid,.grid3{
+    grid-template-columns:1fr
+  }
+}
+
+label{
+  display:block;
+  font-size:13px;
+  color:#475467;
+  margin-bottom:5px;
+  font-weight:700
+}
+
+input,select,textarea{
+  width:100%;
+  min-height:44px;
+  border:1px solid #cfd6e1;
+  border-radius:10px;
+  padding:9px 10px;
+  font-size:16px;
+  background:#fff
+}
+
+textarea{
+  min-height:90px;
+  resize:vertical
+}
+
 button{
-  min-height:48px;
+  min-height:46px;
   border:0;
   border-radius:11px;
-  padding:10px 14px;
-  margin:4px;
+  padding:9px 14px;
+  margin:3px;
   font-size:15px;
   font-weight:700
 }
-button:disabled{opacity:.4}
-.success{background:#e7f8ef;color:#087443}
-.primary{background:#1265f3;color:#fff}
-.orange{background:#fff2d6;color:#9a5b00}
-.purple{background:#eee8ff;color:#5b37b7}
-.gray{background:#e9edf3;color:#344054}
-.row{display:flex;flex-wrap:wrap;gap:6px}
-textarea{
-  width:100%;
-  min-height:300px;
-  resize:vertical;
-  border:1px solid #ccd3dd;
+
+button:disabled{
+  opacity:.4
+}
+
+.primary{
+  background:#1265f3;
+  color:#fff
+}
+
+.success{
+  background:#e7f8ef;
+  color:#087443
+}
+
+.danger{
+  background:#d92d20;
+  color:#fff
+}
+
+.gray{
+  background:#e9edf3;
+  color:#344054
+}
+
+.purple{
+  background:#eee8ff;
+  color:#5b37b7
+}
+
+.orange{
+  background:#fff2d6;
+  color:#9a5b00
+}
+
+.row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  align-items:center
+}
+
+.status{
+  padding:11px;
+  border-radius:10px;
+  background:#f2f4f7;
+  margin-top:9px;
+  line-height:1.5
+}
+
+.ok{
+  background:#ecfdf3;
+  color:#067647
+}
+
+.warn{
+  background:#fff8e6;
+  color:#8a5a00
+}
+
+.err{
+  background:#fff1f0;
+  color:#d92d20
+}
+
+.verified{
+  background:#ecfdf3;
+  border:1px solid #abefc6;
+  color:#067647;
   border-radius:10px;
   padding:10px;
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-  font-size:12px
+  font-weight:700;
+  line-height:1.65
 }
-.preview{
+
+.note{
+  background:#fff8e6;
+  border:1px solid #f4d58d;
+  color:#7a5200;
+  border-radius:10px;
+  padding:10px;
+  line-height:1.65
+}
+
+.item{
+  border:1px solid #e0e5ec;
+  border-radius:13px;
+  padding:11px;
+  margin:8px 0;
+  background:#fafbfc
+}
+
+.previewBox{
   background:#e7e9ed;
   padding:12px;
+  overflow:auto;
   border-radius:12px;
-  overflow:auto
+  margin-top:10px
 }
-.page{
+
+.previewPage{
   display:inline-block;
+  vertical-align:top;
+  margin:5px;
   background:#fff;
-  box-shadow:0 1px 4px #999
+  box-shadow:0 1px 4px #999;
+  max-width:100%
 }
-canvas{
+
+.previewPage canvas{
   display:block;
   max-width:100%;
   height:auto
+}
+
+.hidden{
+  display:none!important
+}
+
+hr{
+  border:0;
+  border-top:1px solid #e5e7eb;
+  margin:14px 0
+}
+
+.log{
+  min-height:250px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:12px
+}
+
+#reader{
+  width:100%;
+  margin-top:10px
 }
 </style>
 </head>
 
 <body>
+
 <div class="wrap">
 
-<h1>B3S V19.11 大字畫質診斷</h1>
+<h1>商品條碼／QR／大字牌</h1>
+
 <div class="help">
-固定：8｜72×146mm｜黑標2｜濃度1<br>
-只比較黑色點陣處理，不改高度、不改出紙流程。
+B3S V20.0 正式版
 </div>
 
+
+<!-- PRINTER -->
+
 <div class="card">
-<h2>🖨 B3S</h2>
+
+<h2>🖨 B3S 印表機</h2>
 
 <div id="bleStatus" class="status">
 尚未連線
 </div>
 
 <div class="row">
+
 <button id="connectBtn" class="success">
 🔵 連接 B3S
 </button>
 
 <button id="disconnectBtn" class="gray" disabled>
-中斷
+中斷連線
 </button>
+
+<button id="stopBtn" class="danger" disabled>
+⏹ 停止列印
+</button>
+
 </div>
 
 <div class="help" style="margin-top:8px">
 裝置：<span id="deviceName">—</span><br>
-GATT：<span id="gattState">false</span>
+GATT：<span id="gattState">false</span><br>
+列印通道：<span id="channelState">未就緒</span>
 </div>
+
+</div>
+
+
+<!-- MODE -->
+
+<div class="card">
+
+<h2>列印模式</h2>
+
+<select id="mode">
+
+<option value="name_barcode_number">
+商品名稱＋條碼＋條碼號碼
+</option>
+
+<option value="name_barcode">
+商品名稱＋條碼
+</option>
+
+<option value="barcode_number">
+條碼＋條碼號碼
+</option>
+
+<option value="barcode">
+只有條碼
+</option>
+
+<option value="name">
+只有商品名稱
+</option>
+
+<option value="name_qr">
+商品名稱＋QR Code
+</option>
+
+<option value="qr">
+只有 QR Code
+</option>
+
+<option value="qr_text">
+QR Code＋文字
+</option>
+
+<option value="name_qr_text">
+商品名稱＋QR Code＋文字
+</option>
+
+<option value="name_barcode_qr">
+商品名稱＋條碼＋QR Code
+</option>
+
+<option value="name_barcode_number_qr">
+商品名稱＋條碼＋號碼＋QR Code
+</option>
+
+<option value="name_text">
+商品名稱＋自訂文字
+</option>
+
+<option value="text">
+只有自訂文字
+</option>
+
+<option value="big_sign">
+🔢 大字號碼牌
+</option>
+
+</select>
+
+</div>
+
+
+<!-- GENERAL -->
+
+<div id="generalPanel">
+
+<div class="card">
+
+<h2>商品資料</h2>
+
+<div class="grid">
+
+<div>
+<label>商品名稱</label>
+<input id="productName" placeholder="例如：可口可樂">
+</div>
+
+<div>
+<label>商品條碼</label>
+<input id="barcode" inputmode="numeric" placeholder="例如：4710123456789">
+</div>
+
+<div>
+<label>QR Code 內容</label>
+<input id="qrValue" placeholder="網址、文字、商品編號">
+</div>
+
+<div>
+<label>自訂文字</label>
+<input id="customText" placeholder="例如：特價商品">
+</div>
+
+</div>
+
+<div class="row" style="margin-top:10px">
+
+<button id="addBtn" class="primary">
+＋ 加入商品
+</button>
+
+<button id="scanBtn" class="purple">
+📷 掃描條碼 / QR
+</button>
+
+<button id="clearProductsBtn" class="gray">
+清空商品
+</button>
+
+</div>
+
+<div id="reader" class="hidden"></div>
+
+<div id="products"></div>
+
 </div>
 
 
 <div class="card">
-<h2>畫質測試</h2>
+
+<h2>一般／小票紙列印設定</h2>
+
+<div class="note">
+💡 後續開發測試建議先用便宜的連續小票紙。<br>
+若只是測條碼、QR、字體、位置、BLE傳輸，不需要使用75×148黑標紙。
+</div>
+
+<div class="grid3" style="margin-top:12px">
+
+<div>
+<label>紙張寬度</label>
+
+<select id="paperWidth">
+<option value="30">30 mm</option>
+<option value="40">40 mm</option>
+<option value="50">50 mm</option>
+<option value="58" selected>58 mm</option>
+<option value="60">60 mm</option>
+<option value="70">70 mm</option>
+<option value="72">72 mm</option>
+<option value="75">75 mm</option>
+<option value="77">77 mm</option>
+</select>
+</div>
+
+
+<div>
+<label>紙張模式</label>
+
+<select id="paperMode">
+<option value="3" selected>連續紙／小票紙</option>
+<option value="1">間隙紙</option>
+<option value="2">黑標紙</option>
+<option value="4">穿孔紙</option>
+<option value="5">透明紙</option>
+</select>
+</div>
+
+
+<div>
+<label>列印濃度</label>
+
+<select id="density">
+<option value="1">1</option>
+<option value="2" selected>2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+</select>
+</div>
+
+
+<div>
+<label>商品間距（mm）</label>
+<input id="itemGap" type="number" min="1" max="20" value="2">
+</div>
+
+
+<div>
+<label>商品名稱字體</label>
+<input id="nameFont" type="number" min="12" max="100" value="30">
+</div>
+
+
+<div>
+<label>條碼號碼字體</label>
+<input id="numberFont" type="number" min="10" max="100" value="24">
+</div>
+
+
+<div>
+<label>自訂文字字體</label>
+<input id="textFont" type="number" min="12" max="100" value="36">
+</div>
+
+
+<div>
+<label>條碼高度（cm）</label>
+<input id="barcodeHeight" type="number" min=".5" max="20" step=".1" value="2">
+</div>
+
+
+<div>
+<label>條碼寬度</label>
+
+<select id="barcodeWidth">
+<option value="40">40%</option>
+<option value="50">50%</option>
+<option value="60">60%</option>
+<option value="70">70%</option>
+<option value="80">80%</option>
+<option value="90">90%</option>
+<option value="100" selected>100%</option>
+</select>
+</div>
+
+
+<div>
+<label>條碼位置</label>
+
+<select id="barcodeAlign">
+<option value="left">靠左</option>
+<option value="center" selected>置中</option>
+<option value="right">靠右</option>
+</select>
+</div>
+
+
+<div>
+<label>條碼 X 位移（mm）</label>
+<input id="barcodeX" type="number" step=".5" value="0">
+</div>
+
+
+<div>
+<label>QR Code 大小（cm）</label>
+<input id="qrSize" type="number" min="1" max="10" step=".1" value="3">
+</div>
+
+</div>
+
+<hr>
+
+<label>底部文字（可多行）</label>
+<textarea id="footer"></textarea>
+
+<label style="margin-top:10px">
+<input id="autoClear" type="checkbox" style="width:auto;min-height:auto">
+列印成功後自動清空商品
+</label>
+
+</div>
+
+
+<div class="card">
+
+<h2>商品預覽</h2>
 
 <div class="row">
 
-<button id="testRaw" class="primary" disabled>
-原始100%
+<button id="previewBtn" class="gray">
+更新預覽
 </button>
 
-<button id="testLight" class="orange" disabled>
-輕微減載
-</button>
-
-<button id="testBalanced" class="purple" disabled>
-平衡減載
+<button id="printAllBtn" class="primary" disabled>
+🖨 列印全部商品
 </button>
 
 </div>
 
-<div id="testStatus" class="status">
-等待測試
+<div id="generalPreview" class="previewBox"></div>
+
+<div id="generalStatus" class="status">
+等待列印
 </div>
 
-<div class="help" style="margin-top:10px">
-第一次請先只按 <b>原始100%</b>。<br>
-先看 146mm 穩定流程下，不做任何挖點時的真實畫質。
 </div>
+
+</div>
+
+
+<!-- BIG SIGN -->
+
+<div id="bigPanel" class="hidden">
+
+<div class="card">
+
+<h2>🔢 大字號碼牌</h2>
+
+<div class="verified">
+✅ 實體紙張：75 × 148 mm<br>
+✅ 有效列印寬度：72 mm<br>
+✅ 穩定頁面高度：146 mm<br>
+✅ 黑標模式：2<br>
+✅ 原始100%點陣<br>
+✅ 使用穩定 SETTLE／PAGE END 流程
+</div>
+
+
+<label style="margin-top:12px">
+要列印的內容
+</label>
+
+<textarea id="bigText" placeholder="例如：1234567890"></textarea>
+
+
+<div class="grid3" style="margin-top:10px">
+
+<div>
+<label>分頁方式</label>
+
+<select id="splitMode">
+<option value="char" selected>依每個字分頁</option>
+<option value="space">依空格分頁</option>
+<option value="line">依換行分頁</option>
+</select>
+</div>
+
+
+<div>
+<label>每張幾個字</label>
+
+<select id="charsPerPage">
+<option value="1" selected>1 字 / 張</option>
+<option value="2">2 字 / 張</option>
+<option value="3">3 字 / 張</option>
+<option value="auto">自動</option>
+</select>
+</div>
+
+
+<div>
+<label>大字濃度</label>
+
+<select id="bigDensity">
+<option value="1" selected>1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+</select>
+</div>
+
+
+<div>
+<label>字體大小</label>
+
+<select id="bigFontMode">
+<option value="auto" selected>自動最大</option>
+<option value="manual">手動</option>
+</select>
+</div>
+
+
+<div>
+<label>手動字體 px</label>
+<input id="bigFontSize" type="number" min="30" max="1000" value="430">
+</div>
+
+
+<div>
+<label>字體粗細</label>
+
+<select id="bigBold">
+<option value="900">超粗 900</option>
+<option value="700" selected>粗體 700</option>
+<option value="600">中粗 600</option>
+<option value="500">中等 500</option>
+<option value="400">一般 400</option>
+</select>
+</div>
+
+
+<div>
+<label>水平位置</label>
+
+<select id="bigAlign">
+<option value="left">靠左</option>
+<option value="center" selected>置中</option>
+<option value="right">靠右</option>
+</select>
+</div>
+
+
+<div>
+<label>垂直位置</label>
+
+<select id="bigVAlign">
+<option value="top">靠上</option>
+<option value="center" selected>置中</option>
+<option value="bottom">靠下</option>
+</select>
+</div>
+
+
+<div>
+<label>邊界（mm）</label>
+<input id="bigMargin" type="number" min="0" max="30" step=".5" value="7">
+</div>
+
+
+<div>
+<label>X 位移（mm）</label>
+<input id="bigX" type="number" step=".5" value="0">
+</div>
+
+
+<div>
+<label>Y 位移（mm）</label>
+<input id="bigY" type="number" step=".5" value="0">
+</div>
+
+</div>
+
+<div class="note" style="margin-top:12px">
+濃度 1～5 可自行調整。<br>
+目前實測基準是濃度1；如果正式使用覺得太淡，可以逐級加到2、3、4、5。建議不要一次直接跳5。
+</div>
+
+
+<div class="row" style="margin-top:10px">
+
+<button id="bigPreviewBtn" class="gray">
+更新大字預覽
+</button>
+
+<button id="bigPrintBtn" class="primary" disabled>
+🖨 列印全部號碼牌
+</button>
+
+</div>
+
+<div id="bigStatus" class="status">
+等待列印
+</div>
+
 </div>
 
 
 <div class="card">
-<h2>預覽</h2>
-<div id="preview" class="preview"></div>
+
+<h2>大字預覽</h2>
+
+<div id="bigPreview" class="previewBox"></div>
+
+</div>
+
 </div>
 
 
+<!-- LOG -->
+
 <div class="card">
+
 <h2>通訊紀錄</h2>
 
 <div class="row">
+
 <button id="copyLogBtn" class="gray">
 複製紀錄
 </button>
 
 <button id="clearLogBtn" class="gray">
-清除
+清除紀錄
 </button>
-</div>
-
-<textarea id="log" readonly></textarea>
-</div>
 
 </div>
+
+<textarea id="log" class="log" readonly></textarea>
+
+</div>
+
+</div>
+
 
 <script>
 
 const $=id=>document.getElementById(id);
 
+
+/* =========================================================
+UTIL
+========================================================= */
+
 function delay(ms){
-  return new Promise(r=>setTimeout(r,ms));
+  return new Promise(resolve=>setTimeout(resolve,ms));
 }
 
-function errorText(e){
-  return e?.message||String(e||"未知錯誤");
+function errorText(error){
+  return error?.message||String(error||"未知錯誤");
 }
 
 function mmToDots(mm){
@@ -186,24 +790,34 @@ function paperDots(mm){
   return Math.floor(mmToDots(mm)/8)*8;
 }
 
-function u16(v){
-  return[(v>>8)&255,v&255];
+function u16(value){
+  return[(value>>8)&255,value&255];
 }
 
 function hex(bytes){
   return Array.from(bytes)
-  .map(v=>v.toString(16).padStart(2,"0").toUpperCase())
+  .map(value=>value.toString(16).padStart(2,"0").toUpperCase())
   .join(" ");
 }
 
 function log(text){
   const box=$("log");
-  box.value+=`[${new Date().toLocaleTimeString()}] ${text}\n`;
-  box.scrollTop=box.scrollHeight;
+
+  box.value+=
+  `[${new Date().toLocaleTimeString()}] ${text}\n`;
+
+  box.scrollTop=
+  box.scrollHeight;
+}
+
+function clamp(value,min,max){
+  return Math.max(min,Math.min(max,value));
 }
 
 
-/* BLE */
+/* =========================================================
+BLE
+========================================================= */
 
 const SERVICE=
 "49535343-fe7d-4ae5-8fa9-9fafd205e455";
@@ -214,14 +828,19 @@ const WRITE_UUID=
 const NOTIFY_UUID=
 "49535343-1e4d-4bd9-ba61-23c647249616";
 
+
 const state={
   device:null,
   server:null,
   write:null,
   notify:null,
+
   parsedRx:[],
-  running:false
+
+  running:false,
+  stop:false
 };
+
 
 function connected(){
   return !!(
@@ -231,38 +850,52 @@ function connected(){
   );
 }
 
-function updateButtons(){
-  const ready=connected()&&!state.running;
 
-  $("disconnectBtn").disabled=!connected();
-  $("testRaw").disabled=!ready;
-  $("testLight").disabled=!ready;
-  $("testBalanced").disabled=!ready;
+function updateButtons(){
+
+  const ready=connected();
+
+  $("disconnectBtn").disabled=!ready;
+  $("stopBtn").disabled=!ready;
+
+  $("printAllBtn").disabled=
+  !ready||state.running;
+
+  $("bigPrintBtn").disabled=
+  !ready||state.running;
 
   $("gattState").textContent=
   String(!!state.server?.connected);
+
+  $("channelState").textContent=
+  ready?"已就緒":"未就緒";
 }
 
 
-/* PACKET */
+/* =========================================================
+PACKET
+========================================================= */
 
 function frame(command,data=[1],prefix=false){
 
   const payload=Array.from(data);
 
-  let checksum=command^payload.length;
+  let checksum=
+  command^payload.length;
 
-  for(const b of payload){
-    checksum^=b;
+  for(const value of payload){
+    checksum^=value;
   }
 
   const packet=[
-    0x55,0x55,
+    0x55,
+    0x55,
     command,
     payload.length,
     ...payload,
     checksum&255,
-    0xAA,0xAA
+    0xAA,
+    0xAA
   ];
 
   if(prefix){
@@ -272,22 +905,45 @@ function frame(command,data=[1],prefix=false){
   return new Uint8Array(packet);
 }
 
+
 const CMD={
-  connect:()=>frame(0xC1,[1],true),
-  density:v=>frame(0x21,[v]),
-  labelType:v=>frame(0x23,[v]),
-  printStart:()=>frame(0x01,[1]),
-  pageStart:()=>frame(0x03,[1]),
-  pageSize:(h,w)=>frame(
+
+  connect:
+  ()=>frame(0xC1,[1],true),
+
+  density:
+  value=>frame(0x21,[value]),
+
+  labelType:
+  value=>frame(0x23,[value]),
+
+  printStart:
+  ()=>frame(0x01,[1]),
+
+  pageStart:
+  ()=>frame(0x03,[1]),
+
+  pageSize:
+  (height,width)=>frame(
     0x13,
-    [...u16(h),...u16(w)]
+    [
+      ...u16(height),
+      ...u16(width)
+    ]
   ),
-  pageEnd:()=>frame(0xE3,[1]),
-  printEnd:()=>frame(0xF3,[1])
+
+  pageEnd:
+  ()=>frame(0xE3,[1]),
+
+  printEnd:
+  ()=>frame(0xF3,[1])
+
 };
 
 
-/* RX */
+/* =========================================================
+RX PARSER
+========================================================= */
 
 function parsePackets(text){
 
@@ -299,6 +955,7 @@ function parsePackets(text){
   .map(v=>parseInt(v,16));
 
   const result=[];
+
   let pos=0;
 
   while(pos<bytes.length){
@@ -357,7 +1014,9 @@ function parsePackets(text){
 }
 
 
-/* WRITE */
+/* =========================================================
+WRITE
+========================================================= */
 
 async function rawGattWrite(bytes){
 
@@ -377,20 +1036,27 @@ async function rawGattWrite(bytes){
   }
 }
 
-async function writeRaw(bytes){
+
+async function writeRaw(bytes,chunkDelay=3){
 
   for(let i=0;i<bytes.length;i+=20){
+
+    if(state.stop){
+      throw new Error("使用者停止");
+    }
 
     await rawGattWrite(
       bytes.slice(i,i+20)
     );
 
-    await delay(3);
+    await delay(chunkDelay);
   }
 }
 
 
-/* ACK */
+/* =========================================================
+ACK
+========================================================= */
 
 async function sendWait(
   name,
@@ -399,9 +1065,12 @@ async function sendWait(
   timeout=5000
 ){
 
-  const startIndex=state.parsedRx.length;
+  const startIndex=
+  state.parsedRx.length;
 
-  log(`${name} → ${hex(packet)}`);
+  log(
+    `${name} → ${hex(packet)}`
+  );
 
   await rawGattWrite(packet);
 
@@ -433,7 +1102,9 @@ async function sendWait(
 }
 
 
-/* D3 SETTLE */
+/* =========================================================
+SETTLE
+========================================================= */
 
 function hasLateD3(startIndex){
 
@@ -454,21 +1125,28 @@ function hasLateD3(startIndex){
   return false;
 }
 
+
 async function settleBeforePageEnd(
   startIndex,
   status
 ){
 
-  status.textContent=
-  "Bitmap 已送完｜等待印表機處理…";
+  if(status){
+    status.textContent=
+    "Bitmap 已送完｜等待印表機處理…";
+  }
 
-  log("BITMAP 完成，開始 SETTLE");
+  log(
+    "BITMAP 完成，開始 SETTLE"
+  );
 
   await delay(700);
 
   if(hasLateD3(startIndex)){
 
-    log("SETTLE：已看到後段 D3");
+    log(
+      "SETTLE：已看到後段 D3"
+    );
 
     await delay(300);
 
@@ -494,101 +1172,104 @@ async function settleBeforePageEnd(
   }
 
   log(
-    "SETTLE：5秒未看到後段 D3，再等待1200ms"
+    "SETTLE：5秒未看到後段D3，再等待1200ms"
   );
 
   await delay(1200);
 }
 
 
-/* CANVAS */
+/* =========================================================
+CANVAS
+========================================================= */
 
-function buildCanvas(){
+function whiteCanvas(width,height){
 
-  const width=paperDots(72);
-  const height=mmToDots(146);
-
-  const canvas=document.createElement("canvas");
+  const canvas=
+  document.createElement("canvas");
 
   canvas.width=width;
   canvas.height=height;
 
-  const ctx=canvas.getContext("2d");
+  const ctx=
+  canvas.getContext("2d");
 
   ctx.fillStyle="#fff";
   ctx.fillRect(0,0,width,height);
 
   ctx.fillStyle="#000";
 
-  const margin=mmToDots(7);
-
-  let low=20;
-  let high=1000;
-  let best=20;
-
-  while(low<=high){
-
-    const mid=Math.floor((low+high)/2);
-
-    ctx.font=
-    `700 ${mid}px Arial,"PingFang TC",sans-serif`;
-
-    const metrics=
-    ctx.measureText("8");
-
-    const textHeight=
-    (metrics.actualBoundingBoxAscent||mid*.8)+
-    (metrics.actualBoundingBoxDescent||mid*.2);
-
-    if(
-      metrics.width<=width-margin*2 &&
-      textHeight<=height-margin*2
-    ){
-      best=mid;
-      low=mid+1;
-    }
-    else{
-      high=mid-1;
-    }
-  }
-
-  ctx.font=
-  `700 ${best}px Arial,"PingFang TC",sans-serif`;
-
-  ctx.textAlign="center";
-  ctx.textBaseline="middle";
-
-  ctx.fillText(
-    "8",
-    width/2,
-    height/2
-  );
-
   return canvas;
 }
 
 
-/* RASTER */
+function wrapText(
+  ctx,
+  text,
+  maxWidth
+){
 
-function makeBitmap(canvas){
+  const chars=
+  Array.from(text||"");
 
-  const ctx=canvas.getContext("2d");
+  const lines=[];
+
+  let line="";
+
+  for(const char of chars){
+
+    const test=
+    line+char;
+
+    if(
+      ctx.measureText(test).width>
+      maxWidth &&
+      line
+    ){
+
+      lines.push(line);
+      line=char;
+    }
+    else{
+      line=test;
+    }
+  }
+
+  if(line){
+    lines.push(line);
+  }
+
+  return lines;
+}
+
+
+/* =========================================================
+RASTER
+========================================================= */
+
+function canvasRows(canvas){
+
+  const ctx=
+  canvas.getContext("2d");
 
   const data=
   ctx.getImageData(
-    0,0,
+    0,
+    0,
     canvas.width,
     canvas.height
   ).data;
 
-  const mask=[];
+  const rows=[];
 
   for(let y=0;y<canvas.height;y++){
 
-    const line=
-    new Uint8Array(canvas.width);
+    const row=
+    new Uint8Array(
+      canvas.width/8
+    );
 
-    let count=0;
+    let black=0;
 
     for(let x=0;x<canvas.width;x++){
 
@@ -603,80 +1284,6 @@ function makeBitmap(canvas){
       )/1000;
 
       if(gray<170){
-        line[x]=1;
-        count++;
-      }
-    }
-
-    mask.push({
-      line,
-      count
-    });
-  }
-
-  return mask;
-}
-
-
-function rasterRows(canvas,mode){
-
-  const bitmap=
-  makeBitmap(canvas);
-
-  const rows=[];
-
-  let divisor=0;
-
-  if(mode==="light"){
-    divisor=14;
-  }
-  else if(mode==="balanced"){
-    divisor=10;
-  }
-
-  for(let y=0;y<bitmap.length;y++){
-
-    const source=bitmap[y];
-
-    const row=
-    new Uint8Array(canvas.width/8);
-
-    let black=0;
-
-    const dense=
-    source.count>=180;
-
-    for(let x=0;x<canvas.width;x++){
-
-      if(source.line[x]!==1){
-        continue;
-      }
-
-      let keep=true;
-
-      /*
-      原始100%：完全不處理
-
-      輕微：
-      密集區約移除 1/14
-
-      平衡：
-      密集區約移除 1/10
-      */
-
-      if(
-        dense &&
-        divisor>0
-      ){
-
-        if(
-          (x+y*3)%divisor===0
-        ){
-          keep=false;
-        }
-      }
-
-      if(keep){
 
         row[x>>3]|=
         0x80>>(x&7);
@@ -703,7 +1310,6 @@ function sameRow(a,b){
   }
 
   for(let i=0;i<a.length;i++){
-
     if(a[i]!==b[i]){
       return false;
     }
@@ -713,10 +1319,16 @@ function sameRow(a,b){
 }
 
 
-function toRuns(canvas,mode){
+/*
+正式版大字：
+空白最多 repeat 40
+黑色相同列最多 repeat 2
+*/
+
+function canvasToRuns(canvas){
 
   const rows=
-  rasterRows(canvas,mode);
+  canvasRows(canvas);
 
   const runs=[];
 
@@ -724,7 +1336,8 @@ function toRuns(canvas,mode){
 
   while(y<rows.length){
 
-    const current=rows[y];
+    const current=
+    rows[y];
 
     if(current.black===0){
 
@@ -794,185 +1407,1645 @@ function rowPacket(run){
 }
 
 
-/* PREPARE */
+/* =========================================================
+BARCODE
+========================================================= */
 
-async function preparePrint(){
+function createBarcodeCanvas(value){
+
+  const raw=
+  document.createElement("canvas");
+
+  JsBarcode(
+    raw,
+    String(value),
+    {
+      format:"CODE128",
+      displayValue:false,
+      margin:0,
+      width:2,
+      height:100,
+      background:"#fff",
+      lineColor:"#000"
+    }
+  );
+
+  return raw;
+}
+
+
+function stretchBarcode(
+  raw,
+  targetWidth,
+  targetHeight
+){
+
+  const canvas=
+  document.createElement("canvas");
+
+  canvas.width=
+  Math.max(
+    8,
+    Math.floor(targetWidth/8)*8
+  );
+
+  canvas.height=
+  Math.max(
+    10,
+    targetHeight
+  );
+
+  const ctx=
+  canvas.getContext("2d");
+
+  ctx.fillStyle="#fff";
+
+  ctx.fillRect(
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
+
+  ctx.imageSmoothingEnabled=false;
+
+  ctx.drawImage(
+    raw,
+    0,
+    0,
+    raw.width,
+    raw.height,
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
+
+  return canvas;
+}
+
+
+/* =========================================================
+QR
+========================================================= */
+
+async function createQRCanvas(value,dots){
+
+  return new Promise((resolve,reject)=>{
+
+    try{
+
+      const holder=
+      document.createElement("div");
+
+      holder.style.position="fixed";
+      holder.style.left="-9999px";
+      holder.style.top="-9999px";
+
+      document.body.appendChild(holder);
+
+      new QRCode(
+        holder,
+        {
+          text:String(value),
+          width:dots,
+          height:dots,
+          correctLevel:
+          QRCode.CorrectLevel.M
+        }
+      );
+
+      setTimeout(()=>{
+
+        try{
+
+          const source=
+          holder.querySelector("canvas");
+
+          if(!source){
+            throw new Error("QR Code 產生失敗");
+          }
+
+          const canvas=
+          document.createElement("canvas");
+
+          canvas.width=dots;
+          canvas.height=dots;
+
+          canvas
+          .getContext("2d")
+          .drawImage(
+            source,
+            0,
+            0,
+            dots,
+            dots
+          );
+
+          holder.remove();
+
+          resolve(canvas);
+        }
+
+        catch(error){
+
+          holder.remove();
+
+          reject(error);
+        }
+
+      },30);
+    }
+
+    catch(error){
+      reject(error);
+    }
+  });
+}
+
+
+/* =========================================================
+PRODUCT LIST
+========================================================= */
+
+let products=[];
+
+
+function escapeHtml(value){
+
+  return String(value||"")
+  .replaceAll("&","&amp;")
+  .replaceAll("<","&lt;")
+  .replaceAll(">","&gt;")
+  .replaceAll('"',"&quot;");
+}
+
+
+function renderProducts(){
+
+  const box=$("products");
+
+  box.innerHTML="";
+
+  if(!products.length){
+
+    box.innerHTML=
+    '<div class="help" style="margin-top:12px">尚未加入商品</div>';
+
+    return;
+  }
+
+  products.forEach((item,index)=>{
+
+    const div=
+    document.createElement("div");
+
+    div.className="item";
+
+    div.innerHTML=`
+
+    <b>
+    ${index+1}.
+    ${escapeHtml(item.name||"未命名")}
+    </b>
+
+    <div class="help">
+
+    條碼：
+    ${escapeHtml(item.barcode||"—")}
+    <br>
+
+    QR：
+    ${escapeHtml(item.qr||"—")}
+    <br>
+
+    文字：
+    ${escapeHtml(item.text||"—")}
+
+    </div>
+
+    <button
+    class="danger removeProduct"
+    data-i="${index}">
+    刪除
+    </button>
+
+    `;
+
+    box.appendChild(div);
+  });
+
+  document
+  .querySelectorAll(".removeProduct")
+  .forEach(button=>{
+
+    button.onclick=()=>{
+
+      products.splice(
+        Number(button.dataset.i),
+        1
+      );
+
+      renderProducts();
+      renderGeneralPreview();
+    };
+  });
+}
+
+
+$("addBtn").onclick=()=>{
+
+  const item={
+
+    name:
+    $("productName")
+    .value
+    .trim(),
+
+    barcode:
+    $("barcode")
+    .value
+    .trim(),
+
+    qr:
+    $("qrValue")
+    .value
+    .trim(),
+
+    text:
+    $("customText")
+    .value
+    .trim()
+
+  };
+
+  if(
+    !item.name &&
+    !item.barcode &&
+    !item.qr &&
+    !item.text
+  ){
+
+    alert("請先輸入商品資料");
+
+    return;
+  }
+
+  products.push(item);
+
+  renderProducts();
+  renderGeneralPreview();
+};
+
+
+$("clearProductsBtn").onclick=()=>{
+
+  products=[];
+
+  renderProducts();
+  renderGeneralPreview();
+};
+
+
+/* =========================================================
+GENERAL CANVAS
+========================================================= */
+
+async function buildProductCanvas(item){
+
+  const mode=$("mode").value;
+
+  const width=
+  paperDots(
+    Number(
+      $("paperWidth").value
+    )
+  );
+
+  const margin=
+  Math.max(
+    8,
+    mmToDots(2)
+  );
+
+  const gap=
+  Math.max(
+    2,
+    mmToDots(
+      Number(
+        $("itemGap").value
+      )
+    )
+  );
+
+  const nameFont=
+  Number(
+    $("nameFont").value
+  )||30;
+
+  const numberFont=
+  Number(
+    $("numberFont").value
+  )||24;
+
+  const textFont=
+  Number(
+    $("textFont").value
+  )||36;
+
+  const barcodeHeight=
+  mmToDots(
+    Number(
+      $("barcodeHeight").value
+    )*10
+  );
+
+  const barcodePercent=
+  Number(
+    $("barcodeWidth").value
+  )/100;
+
+  const qrDots=
+  mmToDots(
+    Number(
+      $("qrSize").value
+    )*10
+  );
+
+  const footer=
+  $("footer")
+  .value
+  .trim();
+
+  const layers=[];
+
+
+  function spacer(height=gap){
+    layers.push({
+      type:"space",
+      height
+    });
+  }
+
+
+  const needName=[
+    "name_barcode_number",
+    "name_barcode",
+    "name",
+    "name_qr",
+    "name_qr_text",
+    "name_barcode_qr",
+    "name_barcode_number_qr",
+    "name_text"
+  ].includes(mode);
+
+
+  const needBarcode=[
+    "name_barcode_number",
+    "name_barcode",
+    "barcode_number",
+    "barcode",
+    "name_barcode_qr",
+    "name_barcode_number_qr"
+  ].includes(mode);
+
+
+  const needNumber=[
+    "name_barcode_number",
+    "barcode_number",
+    "name_barcode_number_qr"
+  ].includes(mode);
+
+
+  const needQR=[
+    "name_qr",
+    "qr",
+    "qr_text",
+    "name_qr_text",
+    "name_barcode_qr",
+    "name_barcode_number_qr"
+  ].includes(mode);
+
+
+  const needText=[
+    "qr_text",
+    "name_qr_text",
+    "name_text",
+    "text"
+  ].includes(mode);
+
+
+  if(needName&&item.name){
+
+    layers.push({
+      type:"text",
+      text:item.name,
+      font:nameFont,
+      weight:"700"
+    });
+
+    spacer();
+  }
+
+
+  if(needBarcode&&item.barcode){
+
+    const raw=
+    createBarcodeCanvas(
+      item.barcode
+    );
+
+    const available=
+    width-margin*2;
+
+    const target=
+    Math.max(
+      32,
+      Math.floor(
+        available*
+        barcodePercent
+      )
+    );
+
+    const barcodeCanvas=
+    stretchBarcode(
+      raw,
+      target,
+      barcodeHeight
+    );
+
+    layers.push({
+      type:"image",
+      canvas:barcodeCanvas,
+      align:
+      $("barcodeAlign").value,
+      xOffset:
+      mmToDots(
+        Number(
+          $("barcodeX").value
+        )||0
+      )
+    });
+
+    spacer();
+  }
+
+
+  if(needNumber&&item.barcode){
+
+    layers.push({
+      type:"text",
+      text:item.barcode,
+      font:numberFont,
+      weight:"500"
+    });
+
+    spacer();
+  }
+
+
+  if(
+    needQR &&
+    (
+      item.qr||
+      item.barcode
+    )
+  ){
+
+    const qrCanvas=
+    await createQRCanvas(
+      item.qr||
+      item.barcode,
+      qrDots
+    );
+
+    layers.push({
+      type:"image",
+      canvas:qrCanvas,
+      align:"center",
+      xOffset:0
+    });
+
+    spacer();
+  }
+
+
+  if(needText&&item.text){
+
+    layers.push({
+      type:"text",
+      text:item.text,
+      font:textFont,
+      weight:"700"
+    });
+
+    spacer();
+  }
+
+
+  if(footer){
+
+    for(
+      const line
+      of footer.split(/\r?\n/)
+    ){
+
+      if(!line){
+        continue;
+      }
+
+      layers.push({
+        type:"text",
+        text:line,
+        font:20,
+        weight:"500"
+      });
+
+      spacer(
+        Math.max(
+          2,
+          gap/2
+        )
+      );
+    }
+  }
+
+
+  if(
+    layers.length &&
+    layers[
+      layers.length-1
+    ].type==="space"
+  ){
+    layers.pop();
+  }
+
+
+  let height=
+  margin*2;
+
+
+  const measure=
+  document
+  .createElement("canvas")
+  .getContext("2d");
+
+
+  for(const layer of layers){
+
+    if(layer.type==="space"){
+      height+=layer.height;
+    }
+
+    else if(layer.type==="image"){
+      height+=layer.canvas.height;
+    }
+
+    else if(layer.type==="text"){
+
+      measure.font=
+      `${layer.weight} ${layer.font}px "PingFang TC",sans-serif`;
+
+      const lines=
+      wrapText(
+        measure,
+        layer.text,
+        width-margin*2
+      );
+
+      layer.lines=lines;
+
+      layer.lineHeight=
+      Math.ceil(
+        layer.font*1.25
+      );
+
+      height+=
+      layer.lineHeight*
+      lines.length;
+    }
+  }
+
+
+  height=
+  Math.max(
+    80,
+    Math.ceil(height)
+  );
+
+
+  const canvas=
+  whiteCanvas(
+    width,
+    height
+  );
+
+  const ctx=
+  canvas.getContext("2d");
+
+  let y=margin;
+
+
+  for(const layer of layers){
+
+    if(layer.type==="space"){
+
+      y+=layer.height;
+
+      continue;
+    }
+
+
+    if(layer.type==="image"){
+
+      let x=margin;
+
+      if(layer.align==="center"){
+
+        x=
+        (
+          width-
+          layer.canvas.width
+        )/2;
+      }
+
+      else if(layer.align==="right"){
+
+        x=
+        width-
+        margin-
+        layer.canvas.width;
+      }
+
+
+      x+=
+      layer.xOffset||
+      0;
+
+
+      x=
+      clamp(
+        x,
+        0,
+        width-
+        layer.canvas.width
+      );
+
+
+      ctx.drawImage(
+        layer.canvas,
+        Math.round(x),
+        Math.round(y)
+      );
+
+      y+=
+      layer.canvas.height;
+
+      continue;
+    }
+
+
+    if(layer.type==="text"){
+
+      ctx.fillStyle="#000";
+
+      ctx.font=
+      `${layer.weight} ${layer.font}px -apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif`;
+
+      ctx.textAlign="center";
+      ctx.textBaseline="top";
+
+
+      for(
+        const line
+        of layer.lines
+      ){
+
+        ctx.fillText(
+          line,
+          width/2,
+          y
+        );
+
+        y+=layer.lineHeight;
+      }
+    }
+  }
+
+  return canvas;
+}
+
+
+/* =========================================================
+GENERAL PREVIEW
+========================================================= */
+
+async function renderGeneralPreview(){
+
+  const box=
+  $("generalPreview");
+
+  box.innerHTML="";
+
+  if(!products.length){
+
+    box.innerHTML=
+    '<div class="help">加入商品後顯示預覽</div>';
+
+    return;
+  }
+
+  try{
+
+    for(const product of products){
+
+      const canvas=
+      await buildProductCanvas(
+        product
+      );
+
+      const holder=
+      document.createElement("div");
+
+      holder.className=
+      "previewPage";
+
+      holder.appendChild(canvas);
+
+      box.appendChild(holder);
+    }
+  }
+
+  catch(error){
+
+    box.innerHTML=
+    `<div class="status err">${escapeHtml(errorText(error))}</div>`;
+  }
+}
+
+
+$("previewBtn").onclick=
+renderGeneralPreview;
+
+
+/* =========================================================
+BIG SPLIT
+========================================================= */
+
+function splitBigText(){
+
+  const raw=
+  $("bigText").value;
+
+  const splitMode=
+  $("splitMode").value;
+
+  const charsPer=
+  $("charsPerPage").value;
+
+  let tokens=[];
+
+
+  if(splitMode==="space"){
+
+    tokens=
+    raw
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+  }
+
+  else if(splitMode==="line"){
+
+    tokens=
+    raw
+    .split(/\r?\n/)
+    .map(v=>v.trim())
+    .filter(Boolean);
+  }
+
+  else{
+
+    tokens=
+    Array.from(
+      raw.replace(
+        /\s+/g,
+        ""
+      )
+    );
+  }
+
+
+  if(
+    splitMode!=="char" ||
+    charsPer==="auto"
+  ){
+    return tokens;
+  }
+
+
+  const count=
+  Math.max(
+    1,
+    Number(charsPer)||1
+  );
+
+  const pages=[];
+
+
+  for(
+    let i=0;
+    i<tokens.length;
+    i+=count
+  ){
+
+    pages.push(
+      tokens
+      .slice(
+        i,
+        i+count
+      )
+      .join("")
+    );
+  }
+
+  return pages;
+}
+
+
+/* =========================================================
+BIG FONT
+========================================================= */
+
+function fitFont(
+  ctx,
+  text,
+  maxWidth,
+  maxHeight,
+  weight
+){
+
+  let low=20;
+  let high=1000;
+  let best=20;
+
+  while(low<=high){
+
+    const mid=
+    Math.floor(
+      (low+high)/2
+    );
+
+    ctx.font=
+    `${weight} ${mid}px Arial,-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif`;
+
+    const metrics=
+    ctx.measureText(text);
+
+    const width=
+    metrics.width;
+
+    const height=
+    (
+      metrics.actualBoundingBoxAscent||
+      mid*.8
+    )+
+    (
+      metrics.actualBoundingBoxDescent||
+      mid*.2
+    );
+
+    if(
+      width<=maxWidth &&
+      height<=maxHeight
+    ){
+
+      best=mid;
+      low=mid+1;
+    }
+    else{
+      high=mid-1;
+    }
+  }
+
+  return best;
+}
+
+
+/* =========================================================
+BIG CANVAS
+========================================================= */
+
+function buildBigCanvas(text){
+
+  /*
+  正式黑標紙：
+  實體 75×148
+  有效寬 72
+  穩定頁高 146
+  */
+
+  const width=
+  paperDots(72);
+
+  const height=
+  mmToDots(146);
+
+
+  const canvas=
+  whiteCanvas(
+    width,
+    height
+  );
+
+
+  const ctx=
+  canvas.getContext("2d");
+
+
+  const margin=
+  mmToDots(
+    Number(
+      $("bigMargin").value
+    )||0
+  );
+
+
+  const xOffset=
+  mmToDots(
+    Number(
+      $("bigX").value
+    )||0
+  );
+
+
+  const yOffset=
+  mmToDots(
+    Number(
+      $("bigY").value
+    )||0
+  );
+
+
+  const weight=
+  $("bigBold").value;
+
+
+  const maxWidth=
+  Math.max(
+    20,
+    width-
+    margin*2
+  );
+
+
+  const maxHeight=
+  Math.max(
+    20,
+    height-
+    margin*2
+  );
+
+
+  let fontSize;
+
+
+  if(
+    $("bigFontMode").value===
+    "auto"
+  ){
+
+    fontSize=
+    fitFont(
+      ctx,
+      text,
+      maxWidth,
+      maxHeight,
+      weight
+    );
+  }
+
+  else{
+
+    fontSize=
+    Number(
+      $("bigFontSize").value
+    )||430;
+  }
+
+
+  ctx.fillStyle="#000";
+
+
+  ctx.font=
+  `${weight} ${fontSize}px Arial,-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif`;
+
+
+  const align=
+  $("bigAlign").value;
+
+
+  const valign=
+  $("bigVAlign").value;
+
+
+  let x;
+
+
+  if(align==="left"){
+
+    ctx.textAlign="left";
+
+    x=margin;
+  }
+
+  else if(align==="right"){
+
+    ctx.textAlign="right";
+
+    x=
+    width-
+    margin;
+  }
+
+  else{
+
+    ctx.textAlign="center";
+
+    x=
+    width/2;
+  }
+
+
+  let y;
+
+
+  if(valign==="top"){
+
+    ctx.textBaseline="top";
+
+    y=margin;
+  }
+
+  else if(valign==="bottom"){
+
+    ctx.textBaseline="bottom";
+
+    y=
+    height-
+    margin;
+  }
+
+  else{
+
+    ctx.textBaseline="middle";
+
+    y=
+    height/2;
+  }
+
+
+  ctx.fillText(
+    text,
+    x+xOffset,
+    y+yOffset
+  );
+
+  return canvas;
+}
+
+
+/* =========================================================
+BIG PREVIEW
+========================================================= */
+
+function renderBigPreview(){
+
+  const pages=
+  splitBigText();
+
+  const box=
+  $("bigPreview");
+
+  box.innerHTML="";
+
+  if(!pages.length){
+
+    box.innerHTML=
+    '<div class="help">請輸入大字內容</div>';
+
+    return;
+  }
+
+  pages.forEach((text,index)=>{
+
+    const holder=
+    document.createElement("div");
+
+    holder.className=
+    "previewPage";
+
+
+    const label=
+    document.createElement("div");
+
+    label.className=
+    "help";
+
+    label.style.padding="5px";
+
+    label.textContent=
+    `第 ${index+1} 張：${text}`;
+
+
+    holder.appendChild(label);
+
+    holder.appendChild(
+      buildBigCanvas(text)
+    );
+
+
+    box.appendChild(holder);
+  });
+}
+
+
+$("bigPreviewBtn").onclick=
+renderBigPreview;
+
+
+/* =========================================================
+PRINT SESSION
+========================================================= */
+
+async function beginPrint(
+  density,
+  labelType
+){
 
   if(
     !await sendWait(
       "CONNECT",
       CMD.connect(),
-      0xC2
+      0xC2,
+      5000
     )
   ){
-    throw new Error("CONNECT 失敗");
+    throw new Error(
+      "CONNECT 沒有 ACK"
+    );
   }
+
 
   if(
     !await sendWait(
-      "DENSITY 1",
-      CMD.density(1),
-      0x31
+      "DENSITY",
+      CMD.density(density),
+      0x31,
+      5000
     )
   ){
-    throw new Error("DENSITY 失敗");
+    throw new Error(
+      "DENSITY 沒有 ACK"
+    );
   }
+
 
   if(
     !await sendWait(
-      "LABEL TYPE 2",
-      CMD.labelType(2),
-      0x33
+      "LABEL TYPE",
+      CMD.labelType(labelType),
+      0x33,
+      5000
     )
   ){
-    throw new Error("LABEL TYPE 失敗");
+    throw new Error(
+      "LABEL TYPE 沒有 ACK"
+    );
   }
+
 
   if(
     !await sendWait(
       "PRINT START",
       CMD.printStart(),
-      0x02
+      0x02,
+      5000
     )
   ){
-    throw new Error("PRINT START 失敗");
-  }
-
-  if(
-    !await sendWait(
-      "PAGE START",
-      CMD.pageStart(),
-      0x04
-    )
-  ){
-    throw new Error("PAGE START 失敗");
+    throw new Error(
+      "PRINT START 沒有 ACK"
+    );
   }
 }
 
 
-/* PRINT QUALITY TEST */
+async function finishPrint(){
 
-async function runQualityTest(mode){
+  const result=
+  await sendWait(
+    "PRINT END",
+    CMD.printEnd(),
+    0xF4,
+    12000
+  );
 
-  if(!connected()){
-    return;
+  if(!result){
+    throw new Error(
+      "PRINT END 沒有 ACK"
+    );
+  }
+}
+
+
+/* =========================================================
+SEND PAGE
+========================================================= */
+
+async function sendPage(
+  canvas,
+  pageIndex,
+  total,
+  status,
+  stableMode=true
+){
+
+  if(
+    !await sendWait(
+      `PAGE START ${pageIndex+1}`,
+      CMD.pageStart(),
+      0x04,
+      5000
+    )
+  ){
+
+    throw new Error(
+      `第 ${pageIndex+1} 張 PAGE START 失敗`
+    );
   }
 
-  state.running=true;
-  updateButtons();
 
-  const status=$("testStatus");
+  if(
+    !await sendWait(
+      `PAGE SIZE ${pageIndex+1}`,
+      CMD.pageSize(
+        canvas.height,
+        canvas.width
+      ),
+      0x14,
+      5000
+    )
+  ){
 
-  status.className="status warn";
-  status.textContent=`正在測試 ${mode}…`;
+    throw new Error(
+      `第 ${pageIndex+1} 張 PAGE SIZE 失敗`
+    );
+  }
 
-  try{
 
-    const canvas=buildCanvas();
+  const runs=
+  canvasToRuns(canvas);
 
-    log("");
-    log(
-      `========== V19.11 QUALITY ${mode} START ==========`
+
+  log(
+    `PAGE ${pageIndex+1}｜CANVAS ${canvas.width}×${canvas.height}｜RUNS ${runs.length}`
+  );
+
+
+  const d3StartIndex=
+  state.parsedRx.length;
+
+
+  for(
+    let i=0;
+    i<runs.length;
+    i++
+  ){
+
+    await writeRaw(
+      rowPacket(runs[i]),
+      stableMode?3:5
     );
 
-    await preparePrint();
 
     if(
-      !await sendWait(
-        "PAGE SIZE",
-        CMD.pageSize(
-          canvas.height,
-          canvas.width
-        ),
-        0x14
-      )
+      stableMode &&
+      runs[i].black>0
     ){
-      throw new Error("PAGE SIZE 失敗");
+
+      await delay(5);
     }
 
-    const runs=
-    toRuns(canvas,mode);
 
-    log(
-      `CANVAS ${canvas.width}×${canvas.height}`
-    );
+    if(
+      stableMode &&
+      (
+        i+
+        1
+      )%
+      24===
+      0
+    ){
 
-    log(
-      `MODE ${mode}`
-    );
-
-    log(
-      `RUNS ${runs.length}`
-    );
-
-    const d3StartIndex=
-    state.parsedRx.length;
-
-    for(let i=0;i<runs.length;i++){
-
-      await writeRaw(
-        rowPacket(runs[i])
-      );
-
-      if(runs[i].black>0){
-        await delay(5);
-      }
-
-      if((i+1)%24===0){
-        await delay(18);
-      }
-
-      if(
-        (i+1)%20===0 ||
-        i===runs.length-1
-      ){
-        status.textContent=
-        `${mode}｜Bitmap ${i+1}/${runs.length}`;
-      }
+      await delay(18);
     }
 
-    log("BITMAP DATA ✅");
+
+    if(
+      (
+        i+
+        1
+      )%
+      20===
+      0 ||
+      i===
+      runs.length-
+      1
+    ){
+
+      status.textContent=
+      `第 ${pageIndex+1}/${total} 張｜${i+1}/${runs.length}`;
+    }
+  }
+
+
+  log(
+    `第 ${pageIndex+1} 張 BITMAP DATA ✅`
+  );
+
+
+  if(stableMode){
 
     await settleBeforePageEnd(
       d3StartIndex,
       status
     );
+  }
 
-    if(
-      !await sendWait(
-        "PAGE END",
-        CMD.pageEnd(),
-        0xE4,
-        20000
-      )
-    ){
-      throw new Error(
-        "PAGE END 沒有 E4"
+
+  if(
+    !await sendWait(
+      `PAGE END ${pageIndex+1}`,
+      CMD.pageEnd(),
+      0xE4,
+      20000
+    )
+  ){
+
+    throw new Error(
+      `第 ${pageIndex+1} 張 PAGE END 失敗`
+    );
+  }
+
+
+  if(
+    pageIndex<
+    total-1
+  ){
+
+    await delay(500);
+  }
+}
+
+
+/* =========================================================
+GENERAL PRINT
+========================================================= */
+
+$("printAllBtn").onclick=
+async()=>{
+
+  if(!products.length){
+
+    alert("尚未加入商品");
+
+    return;
+  }
+
+
+  if(!connected()){
+    return;
+  }
+
+
+  state.running=true;
+  state.stop=false;
+
+  updateButtons();
+
+
+  const status=
+  $("generalStatus");
+
+
+  status.className=
+  "status warn";
+
+
+  status.textContent=
+  "準備列印…";
+
+
+  try{
+
+    const canvases=[];
+
+
+    for(const product of products){
+
+      canvases.push(
+        await buildProductCanvas(product)
       );
     }
+
+
+    await beginPrint(
+      Number(
+        $("density").value
+      ),
+      Number(
+        $("paperMode").value
+      )
+    );
+
+
+    for(
+      let i=0;
+      i<canvases.length;
+      i++
+    ){
+
+      await sendPage(
+        canvases[i],
+        i,
+        canvases.length,
+        status,
+        false
+      );
+    }
+
 
     await delay(500);
 
+    await finishPrint();
+
+
+    status.className=
+    "status ok";
+
+
+    status.textContent=
+    `✅ 完成 ${canvases.length} 張`;
+
+
     if(
-      !await sendWait(
-        "PRINT END",
-        CMD.printEnd(),
-        0xF4,
-        12000
-      )
+      $("autoClear").checked
     ){
-      throw new Error(
-        "PRINT END 沒有 F4"
+
+      products=[];
+
+      renderProducts();
+      renderGeneralPreview();
+    }
+  }
+
+  catch(error){
+
+    const message=
+    errorText(error);
+
+
+    status.className=
+    "status err";
+
+
+    status.textContent=
+    "❌ "+message;
+
+
+    log(
+      "GENERAL ERROR："+message
+    );
+  }
+
+  finally{
+
+    state.running=false;
+
+    updateButtons();
+  }
+};
+
+
+/* =========================================================
+BIG PRINT
+========================================================= */
+
+$("bigPrintBtn").onclick=
+async()=>{
+
+  const pages=
+  splitBigText();
+
+
+  if(!pages.length){
+
+    alert(
+      "請輸入號碼牌內容"
+    );
+
+    return;
+  }
+
+
+  if(!connected()){
+    return;
+  }
+
+
+  state.running=true;
+
+  state.stop=false;
+
+  updateButtons();
+
+
+  const status=
+  $("bigStatus");
+
+
+  status.className=
+  "status warn";
+
+
+  status.textContent=
+  "準備大字列印…";
+
+
+  try{
+
+    const canvases=
+    pages.map(
+      text=>
+      buildBigCanvas(text)
+    );
+
+
+    log(
+      "========== V20 BIG START =========="
+    );
+
+
+    log(
+      `共 ${canvases.length} 張`
+    );
+
+
+    log(
+      `固定：72×146｜黑標2｜濃度${$("bigDensity").value}`
+    );
+
+
+    await beginPrint(
+      Number(
+        $("bigDensity").value
+      ),
+      2
+    );
+
+
+    for(
+      let i=0;
+      i<canvases.length;
+      i++
+    ){
+
+      await sendPage(
+        canvases[i],
+        i,
+        canvases.length,
+        status,
+        true
       );
     }
 
-    status.className="status ok";
+
+    await delay(500);
+
+
+    await finishPrint();
+
+
+    status.className=
+    "status ok";
+
 
     status.textContent=
-    `✅ ${mode} 完成｜請看8的黑色均勻度`;
+    `✅ 大字列印完成，共 ${canvases.length} 張`;
+
 
     log(
-      `========== V19.11 QUALITY ${mode} COMPLETE ==========`
+      "========== V20 BIG COMPLETE =========="
     );
   }
 
@@ -981,36 +3054,32 @@ async function runQualityTest(mode){
     const message=
     errorText(error);
 
-    status.className="status err";
+
+    status.className=
+    "status err";
+
+
     status.textContent=
     "❌ "+message;
 
+
     log(
-      `QUALITY ERROR：${message}`
+      "BIG ERROR："+message
     );
   }
 
   finally{
 
     state.running=false;
+
     updateButtons();
   }
-}
+};
 
 
-/* BUTTONS */
-
-$("testRaw").onclick=
-()=>runQualityTest("raw");
-
-$("testLight").onclick=
-()=>runQualityTest("light");
-
-$("testBalanced").onclick=
-()=>runQualityTest("balanced");
-
-
-/* CONNECT */
+/* =========================================================
+CONNECT
+========================================================= */
 
 $("connectBtn").onclick=
 async()=>{
@@ -1020,46 +3089,61 @@ async()=>{
     $("bleStatus").className=
     "status warn";
 
+
     $("bleStatus").textContent=
     "正在連線…";
 
+
     const device=
-    await navigator.bluetooth.requestDevice({
+    await navigator.bluetooth
+    .requestDevice({
+
       acceptAllDevices:true,
-      optionalServices:[SERVICE]
+
+      optionalServices:[
+        SERVICE
+      ]
+
     });
 
+
     state.device=device;
+
 
     $("deviceName").textContent=
     device.name||"—";
 
+
     state.server=
     await device.gatt.connect();
 
+
     const service=
-    await state.server.getPrimaryService(
-      SERVICE
-    );
+    await state.server
+    .getPrimaryService(SERVICE);
+
 
     state.write=
-    await service.getCharacteristic(
-      WRITE_UUID
-    );
+    await service
+    .getCharacteristic(WRITE_UUID);
+
 
     state.notify=
-    await service.getCharacteristic(
-      NOTIFY_UUID
-    );
+    await service
+    .getCharacteristic(NOTIFY_UUID);
+
 
     state.parsedRx=[];
 
-    state.notify.addEventListener(
+
+    state.notify
+    .addEventListener(
       "characteristicvaluechanged",
       event=>{
 
         const value=
         event.target.value;
+
 
         const bytes=
         new Uint8Array(
@@ -1068,23 +3152,34 @@ async()=>{
           value.byteLength
         );
 
+
         const text=
         hex(bytes);
+
 
         const packets=
         parsePackets(text);
 
+
         for(const packet of packets){
+
           state.parsedRx.push(packet);
         }
 
-        log("RX："+text);
+
+        log(
+          "RX："+text
+        );
       }
     );
 
-    await state.notify.startNotifications();
 
-    state.device.addEventListener(
+    await state.notify
+    .startNotifications();
+
+
+    state.device
+    .addEventListener(
       "gattserverdisconnected",
       ()=>{
 
@@ -1092,24 +3187,29 @@ async()=>{
         state.write=null;
         state.notify=null;
 
+
         $("bleStatus").className=
         "status warn";
 
+
         $("bleStatus").textContent=
         "B3S 已中斷";
+
 
         updateButtons();
       }
     );
 
+
     $("bleStatus").className=
     "status ok";
+
 
     $("bleStatus").textContent=
     "✅ B3S 已連線";
 
-    updateButtons();
 
+    updateButtons();
   }
 
   catch(error){
@@ -1117,59 +3217,355 @@ async()=>{
     const message=
     errorText(error);
 
+
     $("bleStatus").className=
     "status err";
+
 
     $("bleStatus").textContent=
     "❌ "+message;
 
+
     log(
       "CONNECT ERROR："+message
     );
+
 
     updateButtons();
   }
 };
 
 
-/* DISCONNECT */
+/* =========================================================
+DISCONNECT
+========================================================= */
 
 $("disconnectBtn").onclick=
 ()=>{
 
   try{
-    state.device?.gatt?.disconnect();
-  }catch{}
+
+    state.device
+    ?.gatt
+    ?.disconnect();
+
+  }
+  catch{}
+
 
   state.server=null;
   state.write=null;
   state.notify=null;
 
-  $("bleStatus").className="status";
-  $("bleStatus").textContent="已中斷";
+
+  $("bleStatus").className=
+  "status";
+
+
+  $("bleStatus").textContent=
+  "已中斷";
+
 
   updateButtons();
 };
 
 
-/* LOG */
+/* =========================================================
+STOP
+========================================================= */
 
-$("copyLogBtn").onclick=
+$("stopBtn").onclick=
 async()=>{
+
+  state.stop=true;
+
+
+  log(
+    "使用者按下停止"
+  );
+
 
   try{
 
-    await navigator.clipboard.writeText(
-      $("log").value
+    await rawGattWrite(
+      CMD.pageEnd()
     );
 
-    alert("已複製");
+  }
+  catch{}
 
-  }catch{
 
-    $("log").select();
+  await delay(100);
+
+
+  try{
+
+    await rawGattWrite(
+      CMD.printEnd()
+    );
+
+  }
+  catch{}
+
+
+  $("generalStatus").className=
+  "status warn";
+
+
+  $("generalStatus").textContent=
+  "⏹ 已停止";
+
+
+  $("bigStatus").className=
+  "status warn";
+
+
+  $("bigStatus").textContent=
+  "⏹ 已停止";
+};
+
+
+/* =========================================================
+SCANNER
+========================================================= */
+
+let html5QrCode=null;
+
+
+$("scanBtn").onclick=
+async()=>{
+
+  const reader=
+  $("reader");
+
+
+  try{
+
+    if(html5QrCode){
+
+      await html5QrCode
+      .stop()
+      .catch(()=>{});
+
+
+      html5QrCode.clear();
+
+
+      html5QrCode=null;
+
+
+      reader
+      .classList
+      .add("hidden");
+
+
+      $("scanBtn").textContent=
+      "📷 掃描條碼 / QR";
+
+
+      return;
+    }
+
+
+    reader
+    .classList
+    .remove("hidden");
+
+
+    html5QrCode=
+    new Html5Qrcode("reader");
+
+
+    $("scanBtn").textContent=
+    "停止掃描";
+
+
+    await html5QrCode.start(
+
+      {
+        facingMode:"environment"
+      },
+
+      {
+        fps:10,
+
+        qrbox:{
+          width:260,
+          height:180
+        }
+      },
+
+      async decodedText=>{
+
+        const value=
+        String(decodedText||"")
+        .trim();
+
+
+        if(!value){
+          return;
+        }
+
+
+        if(/^\d+$/.test(value)){
+
+          $("barcode").value=
+          value;
+        }
+
+        else{
+
+          $("qrValue").value=
+          value;
+        }
+
+
+        try{
+
+          await html5QrCode.stop();
+
+        }
+        catch{}
+
+
+        html5QrCode.clear();
+
+        html5QrCode=null;
+
+
+        reader
+        .classList
+        .add("hidden");
+
+
+        $("scanBtn").textContent=
+        "📷 掃描條碼 / QR";
+      }
+    );
+  }
+
+  catch(error){
+
+    alert(
+      "掃描器錯誤："+
+      errorText(error)
+    );
+
+
+    try{
+      html5QrCode?.clear();
+    }
+    catch{}
+
+
+    html5QrCode=null;
+
+
+    reader
+    .classList
+    .add("hidden");
+
+
+    $("scanBtn").textContent=
+    "📷 掃描條碼 / QR";
   }
 };
+
+
+/* =========================================================
+MODE
+========================================================= */
+
+function updateMode(){
+
+  const big=
+  $("mode").value===
+  "big_sign";
+
+
+  $("generalPanel")
+  .classList
+  .toggle(
+    "hidden",
+    big
+  );
+
+
+  $("bigPanel")
+  .classList
+  .toggle(
+    "hidden",
+    !big
+  );
+
+
+  if(big){
+    renderBigPreview();
+  }
+  else{
+    renderGeneralPreview();
+  }
+}
+
+
+$("mode").onchange=
+updateMode;
+
+
+/* =========================================================
+PREVIEW EVENTS
+========================================================= */
+
+[
+  "paperWidth",
+  "paperMode",
+  "nameFont",
+  "numberFont",
+  "textFont",
+  "barcodeHeight",
+  "barcodeWidth",
+  "barcodeAlign",
+  "barcodeX",
+  "qrSize",
+  "itemGap",
+  "footer"
+]
+.forEach(id=>{
+
+  $(id)
+  .addEventListener(
+    "change",
+    renderGeneralPreview
+  );
+});
+
+
+[
+  "bigText",
+  "splitMode",
+  "charsPerPage",
+  "bigFontMode",
+  "bigFontSize",
+  "bigBold",
+  "bigAlign",
+  "bigVAlign",
+  "bigMargin",
+  "bigX",
+  "bigY"
+]
+.forEach(id=>{
+
+  $(id)
+  .addEventListener(
+    "change",
+    renderBigPreview
+  );
+});
+
+
+/* =========================================================
+LOG
+========================================================= */
 
 $("clearLogBtn").onclick=
 ()=>{
@@ -1178,29 +3574,42 @@ $("clearLogBtn").onclick=
 };
 
 
-/* PREVIEW */
+$("copyLogBtn").onclick=
+async()=>{
 
-function renderPreview(){
+  try{
 
-  const box=$("preview");
+    await navigator.clipboard
+    .writeText(
+      $("log").value
+    );
 
-  box.innerHTML="";
 
-  const holder=
-  document.createElement("div");
+    alert("已複製");
+  }
 
-  holder.className="page";
+  catch{
 
-  holder.appendChild(
-    buildCanvas()
-  );
+    $("log").select();
+  }
+};
 
-  box.appendChild(holder);
-}
 
-renderPreview();
+/* =========================================================
+INIT
+========================================================= */
+
+renderProducts();
+
+renderGeneralPreview();
+
+renderBigPreview();
+
+updateMode();
+
 updateButtons();
 
 </script>
+
 </body>
 </html>
