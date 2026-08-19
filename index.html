@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 
-<title>商品條碼／QR／大字／照片｜B3S V20.2</title>
+<title>商品條碼／QR／大字／照片｜B3S V20.3</title>
 
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
@@ -34,15 +34,8 @@ body{
   margin-bottom:14px
 }
 
-h1{
-  margin:0 0 4px;
-  font-size:25px
-}
-
-h2{
-  margin:0 0 12px;
-  font-size:20px
-}
+h1{margin:0 0 4px;font-size:25px}
+h2{margin:0 0 12px;font-size:20px}
 
 .help{
   color:#667085;
@@ -63,9 +56,7 @@ h2{
 }
 
 @media(max-width:650px){
-  .grid,.grid3{
-    grid-template-columns:1fr
-  }
+  .grid,.grid3{grid-template-columns:1fr}
 }
 
 label{
@@ -106,39 +97,14 @@ button{
   font-weight:700
 }
 
-button:disabled{
-  opacity:.4
-}
+button:disabled{opacity:.4}
 
-.primary{
-  background:#1265f3;
-  color:#fff
-}
-
-.success{
-  background:#e7f8ef;
-  color:#087443
-}
-
-.danger{
-  background:#d92d20;
-  color:#fff
-}
-
-.gray{
-  background:#e9edf3;
-  color:#344054
-}
-
-.purple{
-  background:#eee8ff;
-  color:#5b37b7
-}
-
-.orange{
-  background:#fff2d6;
-  color:#9a5b00
-}
+.primary{background:#1265f3;color:#fff}
+.success{background:#e7f8ef;color:#087443}
+.danger{background:#d92d20;color:#fff}
+.gray{background:#e9edf3;color:#344054}
+.purple{background:#eee8ff;color:#5b37b7}
+.orange{background:#fff2d6;color:#9a5b00}
 
 .row{
   display:flex;
@@ -155,20 +121,9 @@ button:disabled{
   line-height:1.5
 }
 
-.ok{
-  background:#ecfdf3;
-  color:#067647
-}
-
-.warn{
-  background:#fff8e6;
-  color:#8a5a00
-}
-
-.err{
-  background:#fff1f0;
-  color:#d92d20
-}
+.ok{background:#ecfdf3;color:#067647}
+.warn{background:#fff8e6;color:#8a5a00}
+.err{background:#fff1f0;color:#d92d20}
 
 .verified{
   background:#ecfdf3;
@@ -220,9 +175,7 @@ button:disabled{
   height:auto
 }
 
-.hidden{
-  display:none!important
-}
+.hidden{display:none!important}
 
 hr{
   border:0;
@@ -240,10 +193,6 @@ hr{
   width:100%;
   margin-top:10px
 }
-
-.photoFile{
-  padding:8px
-}
 </style>
 </head>
 
@@ -252,33 +201,17 @@ hr{
 <div class="wrap">
 
 <h1>商品條碼／QR／大字／照片</h1>
-<div class="help">B3S V20.2 正式版</div>
-
-
-<!-- PRINTER -->
+<div class="help">B3S V20.3 正式版</div>
 
 <div class="card">
-
 <h2>🖨 B3S 印表機</h2>
 
-<div id="bleStatus" class="status">
-尚未連線
-</div>
+<div id="bleStatus" class="status">尚未連線</div>
 
 <div class="row">
-
-<button id="connectBtn" class="success">
-🔵 連接 B3S
-</button>
-
-<button id="disconnectBtn" class="gray" disabled>
-中斷連線
-</button>
-
-<button id="stopBtn" class="danger" disabled>
-⏹ 停止列印
-</button>
-
+<button id="connectBtn" class="success">🔵 連接 B3S</button>
+<button id="disconnectBtn" class="gray" disabled>中斷連線</button>
+<button id="stopBtn" class="danger" disabled>⏹ 停止列印</button>
 </div>
 
 <div class="help" style="margin-top:8px">
@@ -286,89 +219,33 @@ hr{
 GATT：<span id="gattState">false</span><br>
 列印通道：<span id="channelState">未就緒</span>
 </div>
-
 </div>
 
-
-<!-- MODE -->
-
 <div class="card">
-
 <h2>列印模式</h2>
 
 <select id="mode">
-
-<option value="name_barcode_number">
-商品名稱＋條碼＋條碼號碼
-</option>
-
-<option value="name_barcode">
-商品名稱＋條碼
-</option>
-
-<option value="barcode_number">
-條碼＋條碼號碼
-</option>
-
-<option value="barcode">
-只有條碼
-</option>
-
-<option value="name">
-只有商品名稱
-</option>
-
-<option value="name_qr">
-商品名稱＋QR Code
-</option>
-
-<option value="qr">
-只有 QR Code
-</option>
-
-<option value="qr_text">
-QR Code＋文字
-</option>
-
-<option value="name_qr_text">
-商品名稱＋QR Code＋文字
-</option>
-
-<option value="name_barcode_qr">
-商品名稱＋條碼＋QR Code
-</option>
-
-<option value="name_barcode_number_qr">
-商品名稱＋條碼＋號碼＋QR Code
-</option>
-
-<option value="name_text">
-商品名稱＋自訂文字
-</option>
-
-<option value="text">
-只有自訂文字
-</option>
-
-<option value="big_sign">
-🔢 大字號碼牌
-</option>
-
-<option value="photo">
-🖼 照片列印
-</option>
-
+<option value="name_barcode_number">商品名稱＋條碼＋條碼號碼</option>
+<option value="name_barcode">商品名稱＋條碼</option>
+<option value="barcode_number">條碼＋條碼號碼</option>
+<option value="barcode">只有條碼</option>
+<option value="name">只有商品名稱</option>
+<option value="name_qr">商品名稱＋QR Code</option>
+<option value="qr">只有 QR Code</option>
+<option value="qr_text">QR Code＋文字</option>
+<option value="name_qr_text">商品名稱＋QR Code＋文字</option>
+<option value="name_barcode_qr">商品名稱＋條碼＋QR Code</option>
+<option value="name_barcode_number_qr">商品名稱＋條碼＋號碼＋QR Code</option>
+<option value="name_text">商品名稱＋自訂文字</option>
+<option value="text">只有自訂文字</option>
+<option value="big_sign">🔢 大字號碼牌</option>
+<option value="photo">🖼 照片列印</option>
 </select>
-
 </div>
-
-
-<!-- GENERAL -->
 
 <div id="generalPanel">
 
 <div class="card">
-
 <h2>商品資料</h2>
 
 <div class="grid">
@@ -396,40 +273,22 @@ QR Code＋文字
 </div>
 
 <div class="row" style="margin-top:10px">
-
-<button id="addBtn" class="primary">
-＋ 加入商品
-</button>
-
-<button id="scanBtn" class="purple">
-📷 掃描條碼 / QR
-</button>
-
-<button id="clearProductsBtn" class="gray">
-清空商品
-</button>
-
+<button id="addBtn" class="primary">＋ 加入商品</button>
+<button id="scanBtn" class="purple">📷 掃描條碼 / QR</button>
+<button id="clearProductsBtn" class="gray">清空商品</button>
 </div>
 
 <div id="reader" class="hidden"></div>
 <div id="products"></div>
-
 </div>
-
 
 <div class="card">
-
 <h2>一般／小票紙列印設定</h2>
 
-<div class="note">
-💡 開發測試可優先使用便宜的連續小票紙。
-</div>
-
-<div class="grid3" style="margin-top:12px">
+<div class="grid3">
 
 <div>
 <label>紙張寬度</label>
-
 <select id="paperWidth">
 <option value="30">30 mm</option>
 <option value="40">40 mm</option>
@@ -445,11 +304,10 @@ QR Code＋文字
 
 <div>
 <label>紙張模式</label>
-
 <select id="paperMode">
-<option value="3" selected>連續紙／小票紙</option>
 <option value="1">間隙紙</option>
 <option value="2">黑標紙</option>
+<option value="3" selected>連續紙／小票紙</option>
 <option value="4">穿孔紙</option>
 <option value="5">透明紙</option>
 </select>
@@ -457,7 +315,6 @@ QR Code＋文字
 
 <div>
 <label>列印濃度</label>
-
 <select id="density">
 <option value="1">1</option>
 <option value="2" selected>2</option>
@@ -494,7 +351,6 @@ QR Code＋文字
 
 <div>
 <label>條碼寬度</label>
-
 <select id="barcodeWidth">
 <option value="40">40%</option>
 <option value="50">50%</option>
@@ -508,7 +364,6 @@ QR Code＋文字
 
 <div>
 <label>條碼位置</label>
-
 <select id="barcodeAlign">
 <option value="left">靠左</option>
 <option value="center" selected>置中</option>
@@ -535,11 +390,6 @@ QR Code＋文字
 條碼高度與商品名稱／條碼號碼同步縮放
 </label>
 
-<div class="help" style="margin-top:6px">
-開啟時：以條碼高度 2cm 為基準同步縮放文字。<br>
-關閉時：使用上方商品名稱字體／條碼號碼字體固定值。
-</div>
-
 <hr>
 
 <label>底部文字（可多行）</label>
@@ -552,35 +402,20 @@ QR Code＋文字
 
 </div>
 
-
 <div class="card">
-
 <h2>商品預覽</h2>
 
 <div class="row">
-
-<button id="previewBtn" class="gray">
-更新預覽
-</button>
-
-<button id="printAllBtn" class="primary" disabled>
-🖨 列印全部商品
-</button>
-
+<button id="previewBtn" class="gray">更新預覽</button>
+<button id="printAllBtn" class="primary" disabled>🖨 列印全部商品</button>
 </div>
 
 <div id="generalPreview" class="previewBox"></div>
-
-<div id="generalStatus" class="status">
-等待列印
+<div id="generalStatus" class="status">等待列印</div>
 </div>
 
 </div>
 
-</div>
-
-
-<!-- BIG SIGN -->
 
 <div id="bigPanel" class="hidden">
 
@@ -589,24 +424,50 @@ QR Code＋文字
 <h2>🔢 大字號碼牌</h2>
 
 <div class="verified">
-✅ 實體紙張：75 × 148 mm<br>
-✅ 有效列印：72 × 146 mm<br>
-✅ 黑標模式：2<br>
-✅ 支援照片式 Floyd 影像化大字<br>
-✅ 穩定 SETTLE / PAGE END 流程
+✅ 可自訂紙張寬度、高度、紙張種類<br>
+✅ 支援 Floyd / 原始100%<br>
+✅ 黑度90～100%<br>
+✅ 濃度1～5
 </div>
 
-<label style="margin-top:12px">
-要列印的內容
-</label>
-
+<label style="margin-top:12px">要列印的內容</label>
 <textarea id="bigText" placeholder="例如：1234567890"></textarea>
 
 <div class="grid3" style="margin-top:10px">
 
 <div>
-<label>分頁方式</label>
+<label>大字紙寬</label>
+<select id="bigPaperWidth">
+<option value="30">30 mm</option>
+<option value="40">40 mm</option>
+<option value="50">50 mm</option>
+<option value="58" selected>58 mm</option>
+<option value="60">60 mm</option>
+<option value="70">70 mm</option>
+<option value="72">72 mm</option>
+<option value="75">75 mm</option>
+<option value="77">77 mm</option>
+</select>
+</div>
 
+<div>
+<label>大字紙高（mm）</label>
+<input id="bigPaperHeight" type="number" min="20" max="300" value="100">
+</div>
+
+<div>
+<label>大字紙張種類</label>
+<select id="bigPaperMode">
+<option value="1">間隙紙</option>
+<option value="2">黑標紙</option>
+<option value="3" selected>連續紙／小票紙</option>
+<option value="4">穿孔紙</option>
+<option value="5">透明紙</option>
+</select>
+</div>
+
+<div>
+<label>分頁方式</label>
 <select id="splitMode">
 <option value="char" selected>依每個字分頁</option>
 <option value="space">依空格分頁</option>
@@ -616,7 +477,6 @@ QR Code＋文字
 
 <div>
 <label>每張幾個字</label>
-
 <select id="charsPerPage">
 <option value="1" selected>1 字 / 張</option>
 <option value="2">2 字 / 張</option>
@@ -627,19 +487,17 @@ QR Code＋文字
 
 <div>
 <label>大字濃度</label>
-
 <select id="bigDensity">
-<option value="1">1</option>
+<option value="1" selected>1</option>
 <option value="2">2</option>
 <option value="3">3</option>
 <option value="4">4</option>
-<option value="5" selected>5</option>
+<option value="5">5</option>
 </select>
 </div>
 
 <div>
 <label>大字影像處理</label>
-
 <select id="bigProcess">
 <option value="floyd" selected>照片 Floyd</option>
 <option value="raw">原始100%</option>
@@ -648,10 +506,9 @@ QR Code＋文字
 
 <div>
 <label>照片黑度</label>
-
 <select id="bigPhotoBlack">
-<option value="90">90%</option>
-<option value="94" selected>94%</option>
+<option value="90" selected>90%</option>
+<option value="94">94%</option>
 <option value="97">97%</option>
 <option value="100">100%</option>
 </select>
@@ -659,7 +516,6 @@ QR Code＋文字
 
 <div>
 <label>字體大小</label>
-
 <select id="bigFontMode">
 <option value="auto" selected>自動最大</option>
 <option value="manual">手動</option>
@@ -673,7 +529,6 @@ QR Code＋文字
 
 <div>
 <label>字體粗細</label>
-
 <select id="bigBold">
 <option value="900">超粗 900</option>
 <option value="700" selected>粗體 700</option>
@@ -685,7 +540,6 @@ QR Code＋文字
 
 <div>
 <label>水平位置</label>
-
 <select id="bigAlign">
 <option value="left">靠左</option>
 <option value="center" selected>置中</option>
@@ -695,7 +549,6 @@ QR Code＋文字
 
 <div>
 <label>垂直位置</label>
-
 <select id="bigVAlign">
 <option value="top">靠上</option>
 <option value="center" selected>置中</option>
@@ -721,41 +574,26 @@ QR Code＋文字
 </div>
 
 <div class="note" style="margin-top:12px">
-照片 Floyd 預設：黑度94%＋濃度5。<br>
-原始100% 可切回舊的大字點陣方式。
+小票紙建議：58mm＋100mm＋連續紙3。<br>
+粉紅75×148黑標紙：72mm＋146mm＋黑標2。
 </div>
 
 <div class="row" style="margin-top:10px">
-
-<button id="bigPreviewBtn" class="gray">
-更新大字預覽
-</button>
-
-<button id="bigPrintBtn" class="primary" disabled>
-🖨 列印全部號碼牌
-</button>
-
+<button id="bigPreviewBtn" class="gray">更新大字預覽</button>
+<button id="bigPrintBtn" class="primary" disabled>🖨 列印全部號碼牌</button>
 </div>
 
-<div id="bigStatus" class="status">
-等待列印
-</div>
+<div id="bigStatus" class="status">等待列印</div>
 
 </div>
-
 
 <div class="card">
-
 <h2>大字預覽</h2>
-
 <div id="bigPreview" class="previewBox"></div>
-
 </div>
 
 </div>
 
-
-<!-- PHOTO -->
 
 <div id="photoPanel" class="hidden">
 
@@ -763,41 +601,21 @@ QR Code＋文字
 
 <h2>🖼 照片列印</h2>
 
-<div class="note">
-可先使用小票紙測試。<br>
-75×148黑標紙模式自動使用72×146有效頁面。
-</div>
-
-<label style="margin-top:12px">選擇照片</label>
-
-<input
-  id="photoFile"
-  class="photoFile"
-  type="file"
-  accept="image/*"
->
+<label>選擇照片</label>
+<input id="photoFile" type="file" accept="image/*">
 
 <div class="grid3" style="margin-top:12px">
 
 <div>
 <label>照片紙張</label>
-
 <select id="photoPaperPreset">
-
-<option value="receipt" selected>
-一般／小票紙
-</option>
-
-<option value="bigblack">
-75×148 黑標紙
-</option>
-
+<option value="receipt" selected>一般／小票紙</option>
+<option value="bigblack">75×148 黑標紙</option>
 </select>
 </div>
 
 <div>
 <label>一般紙寬</label>
-
 <select id="photoPaperWidth">
 <option value="30">30 mm</option>
 <option value="40">40 mm</option>
@@ -818,11 +636,10 @@ QR Code＋文字
 
 <div>
 <label>一般紙模式</label>
-
 <select id="photoPaperMode">
-<option value="3" selected>連續紙</option>
 <option value="1">間隙紙</option>
 <option value="2">黑標紙</option>
+<option value="3" selected>連續紙</option>
 <option value="4">穿孔紙</option>
 <option value="5">透明紙</option>
 </select>
@@ -830,7 +647,6 @@ QR Code＋文字
 
 <div>
 <label>照片濃度</label>
-
 <select id="photoDensity">
 <option value="1">1</option>
 <option value="2">2</option>
@@ -842,21 +658,10 @@ QR Code＋文字
 
 <div>
 <label>照片處理</label>
-
 <select id="photoProcess">
-
-<option value="threshold">
-純黑白
-</option>
-
-<option value="ordered">
-照片抖動
-</option>
-
-<option value="floyd" selected>
-誤差擴散 Floyd
-</option>
-
+<option value="threshold">純黑白</option>
+<option value="ordered">照片抖動</option>
+<option value="floyd" selected>誤差擴散 Floyd</option>
 </select>
 </div>
 
@@ -872,7 +677,6 @@ QR Code＋文字
 
 <div>
 <label>旋轉</label>
-
 <select id="photoRotate">
 <option value="0" selected>0°</option>
 <option value="90">90°</option>
@@ -893,7 +697,6 @@ QR Code＋文字
 
 <div>
 <label>圖片填入方式</label>
-
 <select id="photoFit">
 <option value="contain" selected>完整顯示</option>
 <option value="cover">填滿裁切</option>
@@ -903,57 +706,33 @@ QR Code＋文字
 </div>
 
 <div class="row" style="margin-top:10px">
-
-<button id="photoPreviewBtn" class="gray">
-更新照片預覽
-</button>
-
-<button id="photoPrintBtn" class="primary" disabled>
-🖨 列印照片
-</button>
-
+<button id="photoPreviewBtn" class="gray">更新照片預覽</button>
+<button id="photoPrintBtn" class="primary" disabled>🖨 列印照片</button>
 </div>
 
-<div id="photoStatus" class="status">
-尚未選擇照片
-</div>
+<div id="photoStatus" class="status">尚未選擇照片</div>
 
 </div>
-
 
 <div class="card">
-
 <h2>照片預覽</h2>
-
 <div id="photoPreview" class="previewBox">
 <div class="help">選擇照片後顯示預覽</div>
 </div>
-
 </div>
 
 </div>
 
-
-<!-- LOG -->
 
 <div class="card">
-
 <h2>通訊紀錄</h2>
 
 <div class="row">
-
-<button id="copyLogBtn" class="gray">
-複製紀錄
-</button>
-
-<button id="clearLogBtn" class="gray">
-清除紀錄
-</button>
-
+<button id="copyLogBtn" class="gray">複製紀錄</button>
+<button id="clearLogBtn" class="gray">清除紀錄</button>
 </div>
 
 <textarea id="log" class="log" readonly></textarea>
-
 </div>
 
 </div>
@@ -962,11 +741,6 @@ QR Code＋文字
 <script>
 
 const $=id=>document.getElementById(id);
-
-
-/* =========================================================
-UTIL
-========================================================= */
 
 function delay(ms){
   return new Promise(resolve=>setTimeout(resolve,ms));
@@ -995,14 +769,9 @@ function hex(bytes){
 }
 
 function log(text){
-
   const box=$("log");
-
-  box.value+=
-  `[${new Date().toLocaleTimeString()}] ${text}\n`;
-
-  box.scrollTop=
-  box.scrollHeight;
+  box.value+=`[${new Date().toLocaleTimeString()}] ${text}\n`;
+  box.scrollTop=box.scrollHeight;
 }
 
 function clamp(value,min,max){
@@ -1010,9 +779,7 @@ function clamp(value,min,max){
 }
 
 
-/* =========================================================
-BLE
-========================================================= */
+/* BLE */
 
 const SERVICE=
 "49535343-fe7d-4ae5-8fa9-9fafd205e455";
@@ -1023,24 +790,17 @@ const WRITE_UUID=
 const NOTIFY_UUID=
 "49535343-1e4d-4bd9-ba61-23c647249616";
 
-
 const state={
-
   device:null,
   server:null,
   write:null,
   notify:null,
-
   parsedRx:[],
-
   running:false,
   stop:false
-
 };
 
-
 function connected(){
-
   return !!(
     state.server?.connected &&
     state.write &&
@@ -1048,9 +808,7 @@ function connected(){
   );
 }
 
-
 function updateButtons(){
-
   const ready=connected();
 
   $("disconnectBtn").disabled=!ready;
@@ -1075,9 +833,7 @@ function updateButtons(){
 }
 
 
-/* =========================================================
-PACKET
-========================================================= */
+/* PACKET */
 
 function frame(command,data=[1],prefix=false){
 
@@ -1106,45 +862,25 @@ function frame(command,data=[1],prefix=false){
   return new Uint8Array(packet);
 }
 
-
 const CMD={
-
-  connect:
-  ()=>frame(0xC1,[1],true),
-
-  density:
-  value=>frame(0x21,[value]),
-
-  labelType:
-  value=>frame(0x23,[value]),
-
-  printStart:
-  ()=>frame(0x01,[1]),
-
-  pageStart:
-  ()=>frame(0x03,[1]),
-
-  pageSize:
-  (height,width)=>frame(
+  connect:()=>frame(0xC1,[1],true),
+  density:value=>frame(0x21,[value]),
+  labelType:value=>frame(0x23,[value]),
+  printStart:()=>frame(0x01,[1]),
+  pageStart:()=>frame(0x03,[1]),
+  pageSize:(height,width)=>frame(
     0x13,
     [
       ...u16(height),
       ...u16(width)
     ]
   ),
-
-  pageEnd:
-  ()=>frame(0xE3,[1]),
-
-  printEnd:
-  ()=>frame(0xF3,[1])
-
+  pageEnd:()=>frame(0xE3,[1]),
+  printEnd:()=>frame(0xF3,[1])
 };
 
 
-/* =========================================================
-RX
-========================================================= */
+/* RX */
 
 function parsePackets(text){
 
@@ -1219,9 +955,7 @@ function parsePackets(text){
 }
 
 
-/* =========================================================
-WRITE
-========================================================= */
+/* WRITE */
 
 async function rawGattWrite(bytes){
 
@@ -1229,19 +963,16 @@ async function rawGattWrite(bytes){
     state.write.properties.writeWithoutResponse &&
     state.write.writeValueWithoutResponse
   ){
-
     await state.write.writeValueWithoutResponse(bytes);
   }
 
   else if(
     state.write.writeValueWithResponse
   ){
-
     await state.write.writeValueWithResponse(bytes);
   }
 
   else{
-
     await state.write.writeValue(bytes);
   }
 }
@@ -1264,9 +995,7 @@ async function writeRaw(bytes,chunkDelay=3){
 }
 
 
-/* =========================================================
-ACK
-========================================================= */
+/* ACK */
 
 async function sendWait(
   name,
@@ -1304,17 +1033,13 @@ async function sendWait(
     await delay(25);
   }
 
-  log(
-    `${name} ACK ❌ TIMEOUT`
-  );
+  log(`${name} ACK ❌ TIMEOUT`);
 
   return false;
 }
 
 
-/* =========================================================
-SETTLE
-========================================================= */
+/* SETTLE */
 
 function hasLateD3(startIndex){
 
@@ -1346,20 +1071,10 @@ async function settleBeforePageEnd(
     "Bitmap 已送完｜等待印表機處理…";
   }
 
-  log(
-    "BITMAP 完成，開始 SETTLE"
-  );
-
   await delay(700);
 
   if(hasLateD3(startIndex)){
-
-    log(
-      "SETTLE：已看到後段 D3"
-    );
-
     await delay(300);
-
     return;
   }
 
@@ -1368,30 +1083,18 @@ async function settleBeforePageEnd(
   while(Date.now()-start<5000){
 
     if(hasLateD3(startIndex)){
-
-      log(
-        `SETTLE：等待 ${Date.now()-start}ms 後看到後段 D3`
-      );
-
       await delay(400);
-
       return;
     }
 
     await delay(100);
   }
 
-  log(
-    "SETTLE：5秒未看到後段D3，再等待1200ms"
-  );
-
   await delay(1200);
 }
 
 
-/* =========================================================
-CANVAS
-========================================================= */
+/* CANVAS */
 
 function whiteCanvas(width,height){
 
@@ -1405,11 +1108,7 @@ function whiteCanvas(width,height){
   canvas.getContext("2d");
 
   ctx.fillStyle="#fff";
-
-  ctx.fillRect(
-    0,0,
-    width,height
-  );
+  ctx.fillRect(0,0,width,height);
 
   ctx.fillStyle="#000";
 
@@ -1423,7 +1122,6 @@ function wrapText(ctx,text,maxWidth){
   Array.from(text||"");
 
   const lines=[];
-
   let line="";
 
   for(const char of chars){
@@ -1451,9 +1149,7 @@ function wrapText(ctx,text,maxWidth){
 }
 
 
-/* =========================================================
-RASTER
-========================================================= */
+/* RASTER */
 
 function canvasRows(canvas){
 
@@ -1515,22 +1211,12 @@ function sameRow(a,b){
   }
 
   for(let i=0;i<a.length;i++){
-
     if(a[i]!==b[i]){
       return false;
     }
   }
 
   return true;
-}
-
-
-function canvasToRuns(canvas){
-
-  const rows=
-  canvasRows(canvas);
-
-  return rowsToRuns(rows);
 }
 
 
@@ -1564,7 +1250,6 @@ function rowsToRuns(rows){
       });
 
       y+=repeat;
-
       continue;
     }
 
@@ -1596,6 +1281,13 @@ function rowsToRuns(rows){
 }
 
 
+function canvasToRuns(canvas){
+  return rowsToRuns(
+    canvasRows(canvas)
+  );
+}
+
+
 function rowPacket(run){
 
   return frame(
@@ -1612,9 +1304,7 @@ function rowPacket(run){
 }
 
 
-/* =========================================================
-BARCODE
-========================================================= */
+/* BARCODE */
 
 function createBarcodeCanvas(value){
 
@@ -1655,16 +1345,12 @@ function stretchBarcode(
   );
 
   canvas.height=
-  Math.max(
-    10,
-    targetHeight
-  );
+  Math.max(10,targetHeight);
 
   const ctx=
   canvas.getContext("2d");
 
   ctx.fillStyle="#fff";
-
   ctx.fillRect(
     0,0,
     canvas.width,
@@ -1687,9 +1373,7 @@ function stretchBarcode(
 }
 
 
-/* =========================================================
-QR
-========================================================= */
+/* QR */
 
 async function createQRCanvas(value,dots){
 
@@ -1748,7 +1432,6 @@ async function createQRCanvas(value,dots){
         }
 
         catch(error){
-
           holder.remove();
           reject(error);
         }
@@ -1763,9 +1446,7 @@ async function createQRCanvas(value,dots){
 }
 
 
-/* =========================================================
-PRODUCTS
-========================================================= */
+/* PRODUCTS */
 
 let products=[];
 
@@ -1783,7 +1464,6 @@ function escapeHtml(value){
 function renderProducts(){
 
   const box=$("products");
-
   box.innerHTML="";
 
   if(!products.length){
@@ -1802,24 +1482,18 @@ function renderProducts(){
     div.className="item";
 
     div.innerHTML=`
+      <b>${index+1}. ${escapeHtml(item.name||"未命名")}</b>
+      <div class="help">
+      條碼：${escapeHtml(item.barcode||"—")}<br>
+      QR：${escapeHtml(item.qr||"—")}<br>
+      文字：${escapeHtml(item.text||"—")}
+      </div>
 
-    <b>
-    ${index+1}.
-    ${escapeHtml(item.name||"未命名")}
-    </b>
-
-    <div class="help">
-    條碼：${escapeHtml(item.barcode||"—")}<br>
-    QR：${escapeHtml(item.qr||"—")}<br>
-    文字：${escapeHtml(item.text||"—")}
-    </div>
-
-    <button
-    class="danger removeProduct"
-    data-i="${index}">
-    刪除
-    </button>
-
+      <button
+      class="danger removeProduct"
+      data-i="${index}">
+      刪除
+      </button>
     `;
 
     box.appendChild(div);
@@ -1837,7 +1511,6 @@ function renderProducts(){
       );
 
       renderProducts();
-
       renderGeneralPreview();
     };
   });
@@ -1847,23 +1520,10 @@ function renderProducts(){
 $("addBtn").onclick=()=>{
 
   const item={
-
-    name:
-    $("productName")
-    .value.trim(),
-
-    barcode:
-    $("barcode")
-    .value.trim(),
-
-    qr:
-    $("qrValue")
-    .value.trim(),
-
-    text:
-    $("customText")
-    .value.trim()
-
+    name:$("productName").value.trim(),
+    barcode:$("barcode").value.trim(),
+    qr:$("qrValue").value.trim(),
+    text:$("customText").value.trim()
   };
 
   if(
@@ -1872,16 +1532,13 @@ $("addBtn").onclick=()=>{
     !item.qr &&
     !item.text
   ){
-
     alert("請先輸入商品資料");
-
     return;
   }
 
   products.push(item);
 
   renderProducts();
-
   renderGeneralPreview();
 };
 
@@ -1891,19 +1548,15 @@ $("clearProductsBtn").onclick=()=>{
   products=[];
 
   renderProducts();
-
   renderGeneralPreview();
 };
 
 
-/* =========================================================
-GENERAL CANVAS
-========================================================= */
+/* GENERAL CANVAS */
 
 async function buildProductCanvas(item){
 
-  const mode=
-  $("mode").value;
+  const mode=$("mode").value;
 
   const width=
   paperDots(
@@ -1928,16 +1581,13 @@ async function buildProductCanvas(item){
     )
   );
 
-
   const barcodeHeightCm=
   Number(
     $("barcodeHeight").value
   )||2;
 
-
   const sync=
   $("syncBarcodeText").checked;
-
 
   const textScale=
   sync
@@ -1948,18 +1598,15 @@ async function buildProductCanvas(item){
   )
   :1;
 
-
   const baseNameFont=
   Number(
     $("nameFont").value
   )||30;
 
-
   const baseNumberFont=
   Number(
     $("numberFont").value
   )||24;
-
 
   const nameFont=
   sync
@@ -1969,7 +1616,6 @@ async function buildProductCanvas(item){
   )
   :baseNameFont;
 
-
   const numberFont=
   sync
   ?Math.round(
@@ -1978,24 +1624,20 @@ async function buildProductCanvas(item){
   )
   :baseNumberFont;
 
-
   const textFont=
   Number(
     $("textFont").value
   )||36;
-
 
   const barcodeHeight=
   mmToDots(
     barcodeHeightCm*10
   );
 
-
   const barcodePercent=
   Number(
     $("barcodeWidth").value
   )/100;
-
 
   const qrDots=
   mmToDots(
@@ -2004,23 +1646,17 @@ async function buildProductCanvas(item){
     )*10
   );
 
-
   const footer=
-  $("footer")
-  .value.trim();
-
+  $("footer").value.trim();
 
   const layers=[];
 
-
   function spacer(height=gap){
-
     layers.push({
       type:"space",
       height
     });
   }
-
 
   const needName=[
     "name_barcode_number",
@@ -2033,7 +1669,6 @@ async function buildProductCanvas(item){
     "name_text"
   ].includes(mode);
 
-
   const needBarcode=[
     "name_barcode_number",
     "name_barcode",
@@ -2043,13 +1678,11 @@ async function buildProductCanvas(item){
     "name_barcode_number_qr"
   ].includes(mode);
 
-
   const needNumber=[
     "name_barcode_number",
     "barcode_number",
     "name_barcode_number_qr"
   ].includes(mode);
-
 
   const needQR=[
     "name_qr",
@@ -2060,14 +1693,12 @@ async function buildProductCanvas(item){
     "name_barcode_number_qr"
   ].includes(mode);
 
-
   const needText=[
     "qr_text",
     "name_qr_text",
     "name_text",
     "text"
   ].includes(mode);
-
 
   if(needName&&item.name){
 
@@ -2080,7 +1711,6 @@ async function buildProductCanvas(item){
 
     spacer();
   }
-
 
   if(needBarcode&&item.barcode){
 
@@ -2111,10 +1741,8 @@ async function buildProductCanvas(item){
     layers.push({
       type:"image",
       canvas:barcodeCanvas,
-      align:
-      $("barcodeAlign").value,
-      xOffset:
-      mmToDots(
+      align:$("barcodeAlign").value,
+      xOffset:mmToDots(
         Number(
           $("barcodeX").value
         )||0
@@ -2123,7 +1751,6 @@ async function buildProductCanvas(item){
 
     spacer();
   }
-
 
   if(needNumber&&item.barcode){
 
@@ -2137,7 +1764,6 @@ async function buildProductCanvas(item){
     spacer();
   }
 
-
   if(
     needQR &&
     (
@@ -2148,8 +1774,7 @@ async function buildProductCanvas(item){
 
     const qrCanvas=
     await createQRCanvas(
-      item.qr||
-      item.barcode,
+      item.qr||item.barcode,
       qrDots
     );
 
@@ -2163,7 +1788,6 @@ async function buildProductCanvas(item){
     spacer();
   }
 
-
   if(needText&&item.text){
 
     layers.push({
@@ -2175,7 +1799,6 @@ async function buildProductCanvas(item){
 
     spacer();
   }
-
 
   if(footer){
 
@@ -2204,7 +1827,6 @@ async function buildProductCanvas(item){
     }
   }
 
-
   if(
     layers.length &&
     layers[
@@ -2214,16 +1836,13 @@ async function buildProductCanvas(item){
     layers.pop();
   }
 
-
   let height=
   margin*2;
-
 
   const measure=
   document
   .createElement("canvas")
   .getContext("2d");
-
 
   for(const layer of layers){
 
@@ -2260,13 +1879,11 @@ async function buildProductCanvas(item){
     }
   }
 
-
   height=
   Math.max(
     80,
     Math.ceil(height)
   );
-
 
   const canvas=
   whiteCanvas(
@@ -2274,59 +1891,42 @@ async function buildProductCanvas(item){
     height
   );
 
-
   const ctx=
   canvas.getContext("2d");
 
-
   let y=margin;
-
 
   for(const layer of layers){
 
     if(layer.type==="space"){
 
       y+=layer.height;
-
       continue;
     }
-
 
     if(layer.type==="image"){
 
       let x=margin;
 
       if(layer.align==="center"){
-
-        x=
-        (
-          width-
-          layer.canvas.width
-        )/2;
+        x=(width-layer.canvas.width)/2;
       }
 
       else if(layer.align==="right"){
-
         x=
         width-
         margin-
         layer.canvas.width;
       }
 
-
-      x+=
-      layer.xOffset||
-      0;
-
+      x+=layer.xOffset||0;
 
       x=
       clamp(
         x,
         0,
-        width-
-        layer.canvas.width
+        width-layer.canvas.width
       );
-
 
       ctx.drawImage(
         layer.canvas,
@@ -2334,13 +1934,10 @@ async function buildProductCanvas(item){
         Math.round(y)
       );
 
-
-      y+=
-      layer.canvas.height;
+      y+=layer.canvas.height;
 
       continue;
     }
-
 
     if(layer.type==="text"){
 
@@ -2352,7 +1949,6 @@ async function buildProductCanvas(item){
       ctx.textAlign="center";
       ctx.textBaseline="top";
 
-
       for(const line of layer.lines){
 
         ctx.fillText(
@@ -2361,20 +1957,16 @@ async function buildProductCanvas(item){
           y
         );
 
-        y+=
-        layer.lineHeight;
+        y+=layer.lineHeight;
       }
     }
   }
-
 
   return canvas;
 }
 
 
-/* =========================================================
-GENERAL PREVIEW
-========================================================= */
+/* GENERAL PREVIEW */
 
 async function renderGeneralPreview(){
 
@@ -2390,7 +1982,6 @@ async function renderGeneralPreview(){
 
     return;
   }
-
 
   try{
 
@@ -2420,14 +2011,11 @@ async function renderGeneralPreview(){
   }
 }
 
-
 $("previewBtn").onclick=
 renderGeneralPreview;
 
 
-/* =========================================================
-BIG
-========================================================= */
+/* BIG */
 
 function splitBigText(){
 
@@ -2441,7 +2029,6 @@ function splitBigText(){
   $("charsPerPage").value;
 
   let tokens=[];
-
 
   if(splitMode==="space"){
 
@@ -2471,7 +2058,6 @@ function splitBigText(){
     );
   }
 
-
   if(
     splitMode!=="char" ||
     charsPer==="auto"
@@ -2479,16 +2065,13 @@ function splitBigText(){
     return tokens;
   }
 
-
   const count=
   Math.max(
     1,
     Number(charsPer)||1
   );
 
-
   const pages=[];
-
 
   for(
     let i=0;
@@ -2505,7 +2088,6 @@ function splitBigText(){
       .join("")
     );
   }
-
 
   return pages;
 }
@@ -2567,14 +2149,41 @@ function fitFont(
 }
 
 
+function bigPageSettings(){
+
+  return{
+    width:
+    paperDots(
+      Number(
+        $("bigPaperWidth").value
+      )
+    ),
+
+    height:
+    mmToDots(
+      Number(
+        $("bigPaperHeight").value
+      )||100
+    ),
+
+    labelType:
+    Number(
+      $("bigPaperMode").value
+    )
+  };
+}
+
+
 function buildBigCanvas(text){
 
+  const settings=
+  bigPageSettings();
+
   const width=
-  paperDots(72);
+  settings.width;
 
   const height=
-  mmToDots(146);
-
+  settings.height;
 
   const canvas=
   whiteCanvas(
@@ -2582,10 +2191,8 @@ function buildBigCanvas(text){
     height
   );
 
-
   const ctx=
   canvas.getContext("2d");
-
 
   const margin=
   mmToDots(
@@ -2594,14 +2201,12 @@ function buildBigCanvas(text){
     )||0
   );
 
-
   const xOffset=
   mmToDots(
     Number(
       $("bigX").value
     )||0
   );
-
 
   const yOffset=
   mmToDots(
@@ -2610,10 +2215,8 @@ function buildBigCanvas(text){
     )||0
   );
 
-
   const weight=
   $("bigBold").value;
-
 
   const maxWidth=
   Math.max(
@@ -2621,19 +2224,17 @@ function buildBigCanvas(text){
     width-margin*2
   );
 
-
   const maxHeight=
   Math.max(
     20,
     height-margin*2
   );
 
-
   let fontSize;
 
-
   if(
-    $("bigFontMode").value==="auto"
+    $("bigFontMode").value===
+    "auto"
   ){
 
     fontSize=
@@ -2654,13 +2255,10 @@ function buildBigCanvas(text){
     )||430;
   }
 
-
   ctx.fillStyle="#000";
-
 
   ctx.font=
   `${weight} ${fontSize}px Arial,-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif`;
-
 
   const align=
   $("bigAlign").value;
@@ -2668,9 +2266,7 @@ function buildBigCanvas(text){
   const valign=
   $("bigVAlign").value;
 
-
   let x;
-
 
   if(align==="left"){
 
@@ -2690,9 +2286,7 @@ function buildBigCanvas(text){
     x=width/2;
   }
 
-
   let y;
-
 
   if(valign==="top"){
 
@@ -2712,21 +2306,17 @@ function buildBigCanvas(text){
     y=height/2;
   }
 
-
   ctx.fillText(
     text,
     x+xOffset,
     y+yOffset
   );
 
-
   return canvas;
 }
 
 
-/* =========================================================
-V20.2 BIG IMAGE ENGINE
-========================================================= */
+/* BIG FLOYD */
 
 function bigFloydRows(
   canvas,
@@ -2736,7 +2326,6 @@ function bigFloydRows(
   const ctx=
   canvas.getContext("2d");
 
-
   const source=
   ctx.getImageData(
     0,
@@ -2745,19 +2334,16 @@ function bigFloydRows(
     canvas.height
   ).data;
 
-
   const w=
   canvas.width;
 
   const h=
   canvas.height;
 
-
   const gray=
   new Float32Array(
     w*h
   );
-
 
   const targetBlackGray=
   Math.round(
@@ -2767,7 +2353,6 @@ function bigFloydRows(
       blackPercent/100
     )
   );
-
 
   for(let y=0;y<h;y++){
 
@@ -2779,7 +2364,6 @@ function bigFloydRows(
         x
       )*4;
 
-
       const original=
       (
         source[srcIndex]*299+
@@ -2787,11 +2371,9 @@ function bigFloydRows(
         source[srcIndex+2]*114
       )/1000;
 
-
       const darkness=
       1-
       original/255;
-
 
       gray[
         y*w+x
@@ -2805,12 +2387,8 @@ function bigFloydRows(
     }
   }
 
-
   const rows=[];
-
-  const threshold=
-  128;
-
+  const threshold=128;
 
   for(let y=0;y<h;y++){
 
@@ -2819,13 +2397,10 @@ function bigFloydRows(
       w/8
     );
 
-
     let black=0;
-
 
     const reverse=
     y%2===1;
-
 
     if(!reverse){
 
@@ -2834,7 +2409,6 @@ function bigFloydRows(
         const idx=
         y*w+x;
 
-
         const old=
         clamp(
           gray[idx],
@@ -2842,17 +2416,13 @@ function bigFloydRows(
           255
         );
 
-
         const newValue=
         old<threshold
         ?0
         :255;
 
-
         const error=
-        old-
-        newValue;
-
+        old-newValue;
 
         if(newValue===0){
 
@@ -2862,50 +2432,30 @@ function bigFloydRows(
           black++;
         }
 
-
         if(x+1<w){
-
-          gray[
-            idx+1
-          ]+=
-          error*
-          7/16;
+          gray[idx+1]+=
+          error*7/16;
         }
-
 
         if(
           y+1<h &&
           x>0
         ){
-
-          gray[
-            idx+w-1
-          ]+=
-          error*
-          3/16;
+          gray[idx+w-1]+=
+          error*3/16;
         }
-
 
         if(y+1<h){
-
-          gray[
-            idx+w
-          ]+=
-          error*
-          5/16;
+          gray[idx+w]+=
+          error*5/16;
         }
-
 
         if(
           y+1<h &&
           x+1<w
         ){
-
-          gray[
-            idx+w+1
-          ]+=
-          error*
-          1/16;
+          gray[idx+w+1]+=
+          error*1/16;
         }
       }
     }
@@ -2921,7 +2471,6 @@ function bigFloydRows(
         const idx=
         y*w+x;
 
-
         const old=
         clamp(
           gray[idx],
@@ -2929,17 +2478,13 @@ function bigFloydRows(
           255
         );
 
-
         const newValue=
         old<threshold
         ?0
         :255;
 
-
         const error=
-        old-
-        newValue;
-
+        old-newValue;
 
         if(newValue===0){
 
@@ -2949,54 +2494,33 @@ function bigFloydRows(
           black++;
         }
 
-
         if(x-1>=0){
-
-          gray[
-            idx-1
-          ]+=
-          error*
-          7/16;
+          gray[idx-1]+=
+          error*7/16;
         }
-
 
         if(
           y+1<h &&
           x+1<w
         ){
-
-          gray[
-            idx+w+1
-          ]+=
-          error*
-          3/16;
+          gray[idx+w+1]+=
+          error*3/16;
         }
-
 
         if(y+1<h){
-
-          gray[
-            idx+w
-          ]+=
-          error*
-          5/16;
+          gray[idx+w]+=
+          error*5/16;
         }
-
 
         if(
           y+1<h &&
           x-1>=0
         ){
-
-          gray[
-            idx+w-1
-          ]+=
-          error*
-          1/16;
+          gray[idx+w-1]+=
+          error*1/16;
         }
       }
     }
-
 
     rows.push({
       row:y,
@@ -3005,34 +2529,25 @@ function bigFloydRows(
     });
   }
 
-
   return rows;
 }
 
 
 function bigRows(canvas){
 
-  const mode=
-  $("bigProcess").value;
+  if(
+    $("bigProcess").value===
+    "raw"
+  ){
 
-
-  if(mode==="raw"){
-
-    return canvasRows(
-      canvas
-    );
+    return canvasRows(canvas);
   }
-
-
-  const blackPercent=
-  Number(
-    $("bigPhotoBlack").value
-  )||94;
-
 
   return bigFloydRows(
     canvas,
-    blackPercent
+    Number(
+      $("bigPhotoBlack").value
+    )||90
   );
 }
 
@@ -3040,16 +2555,10 @@ function bigRows(canvas){
 function bigRuns(canvas){
 
   return rowsToRuns(
-    bigRows(
-      canvas
-    )
+    bigRows(canvas)
   );
 }
 
-
-/* =========================================================
-BIG PREVIEW
-========================================================= */
 
 function renderBigPreview(){
 
@@ -3061,7 +2570,6 @@ function renderBigPreview(){
 
   box.innerHTML="";
 
-
   if(!pages.length){
 
     box.innerHTML=
@@ -3070,7 +2578,6 @@ function renderBigPreview(){
     return;
   }
 
-
   pages.forEach((text,index)=>{
 
     const holder=
@@ -3078,7 +2585,6 @@ function renderBigPreview(){
 
     holder.className=
     "previewPage";
-
 
     const label=
     document.createElement("div");
@@ -3089,26 +2595,21 @@ function renderBigPreview(){
     label.textContent=
     `第 ${index+1} 張：${text}`;
 
-
     holder.appendChild(label);
 
     holder.appendChild(
       buildBigCanvas(text)
     );
 
-
     box.appendChild(holder);
   });
 }
-
 
 $("bigPreviewBtn").onclick=
 renderBigPreview;
 
 
-/* =========================================================
-PHOTO
-========================================================= */
+/* PHOTO */
 
 let photoImage=null;
 
@@ -3127,12 +2628,10 @@ $("photoFile").addEventListener(
     const reader=
     new FileReader();
 
-
     reader.onload=()=>{
 
       const img=
       new Image();
-
 
       img.onload=()=>{
 
@@ -3149,7 +2648,6 @@ $("photoFile").addEventListener(
         updateButtons();
       };
 
-
       img.onerror=()=>{
 
         $("photoStatus").className=
@@ -3159,11 +2657,9 @@ $("photoFile").addEventListener(
         "照片讀取失敗";
       };
 
-
       img.src=
       reader.result;
     };
-
 
     reader.readAsDataURL(file);
   }
@@ -3175,24 +2671,15 @@ function photoPageSettings(){
   const preset=
   $("photoPaperPreset").value;
 
-
   if(preset==="bigblack"){
 
     return{
-      width:
-      paperDots(72),
-
-      height:
-      mmToDots(146),
-
-      labelType:
-      2,
-
-      stable:
-      true
+      width:paperDots(72),
+      height:mmToDots(146),
+      labelType:2,
+      stable:true
     };
   }
-
 
   return{
     width:
@@ -3214,8 +2701,7 @@ function photoPageSettings(){
       $("photoPaperMode").value
     ),
 
-    stable:
-    false
+    stable:false
   };
 }
 
@@ -3226,10 +2712,8 @@ function buildPhotoCanvas(){
     return null;
   }
 
-
   const settings=
   photoPageSettings();
-
 
   const canvas=
   whiteCanvas(
@@ -3237,16 +2721,13 @@ function buildPhotoCanvas(){
     settings.height
   );
 
-
   const ctx=
   canvas.getContext("2d");
-
 
   const rotation=
   Number(
     $("photoRotate").value
   );
-
 
   const scale=
   (
@@ -3255,14 +2736,12 @@ function buildPhotoCanvas(){
     )||100
   )/100;
 
-
   const xOffset=
   mmToDots(
     Number(
       $("photoX").value
     )||0
   );
-
 
   const yOffset=
   mmToDots(
@@ -3271,29 +2750,24 @@ function buildPhotoCanvas(){
     )||0
   );
 
-
   const fit=
   $("photoFit").value;
 
-
-  let sourceW=
+  const sourceW=
   photoImage.naturalWidth;
 
-  let sourceH=
+  const sourceH=
   photoImage.naturalHeight;
-
 
   const rotated=
   rotation===90||
   rotation===270;
-
 
   const effectiveW=
   rotated?sourceH:sourceW;
 
   const effectiveH=
   rotated?sourceW:sourceH;
-
 
   const fitScale=
   fit==="cover"
@@ -3306,10 +2780,8 @@ function buildPhotoCanvas(){
     settings.height/effectiveH
   );
 
-
   const drawScale=
   fitScale*scale;
-
 
   const drawW=
   sourceW*drawScale;
@@ -3317,21 +2789,17 @@ function buildPhotoCanvas(){
   const drawH=
   sourceH*drawScale;
 
-
   ctx.save();
-
 
   ctx.translate(
     settings.width/2+xOffset,
     settings.height/2+yOffset
   );
 
-
   ctx.rotate(
     rotation*
     Math.PI/180
   );
-
 
   ctx.drawImage(
     photoImage,
@@ -3341,110 +2809,9 @@ function buildPhotoCanvas(){
     drawH
   );
 
-
   ctx.restore();
 
-
   return canvas;
-}
-
-
-function orderedPhotoRows(
-  canvas,
-  threshold
-){
-
-  const ctx=
-  canvas.getContext("2d");
-
-
-  const image=
-  ctx.getImageData(
-    0,0,
-    canvas.width,
-    canvas.height
-  );
-
-
-  const data=
-  image.data;
-
-
-  const bayer=[
-    0,8,2,10,
-    12,4,14,6,
-    3,11,1,9,
-    15,7,13,5
-  ];
-
-
-  const rows=[];
-
-
-  for(let y=0;y<canvas.height;y++){
-
-    const row=
-    new Uint8Array(
-      canvas.width/8
-    );
-
-
-    let black=0;
-
-
-    for(let x=0;x<canvas.width;x++){
-
-      const i=
-      (
-        y*
-        canvas.width+
-        x
-      )*4;
-
-
-      const gray=
-      (
-        data[i]*299+
-        data[i+1]*587+
-        data[i+2]*114
-      )/1000;
-
-
-      const b=
-      bayer[
-        (y&3)*4+
-        (x&3)
-      ];
-
-
-      const local=
-      threshold+
-      (
-        b-
-        7.5
-      )*
-      9;
-
-
-      if(gray<local){
-
-        row[x>>3]|=
-        0x80>>(x&7);
-
-        black++;
-      }
-    }
-
-
-    rows.push({
-      row:y,
-      data:row,
-      black
-    });
-  }
-
-
-  return rows;
 }
 
 
@@ -3456,7 +2823,6 @@ function thresholdPhotoRows(
   const ctx=
   canvas.getContext("2d");
 
-
   const data=
   ctx.getImageData(
     0,0,
@@ -3464,9 +2830,7 @@ function thresholdPhotoRows(
     canvas.height
   ).data;
 
-
   const rows=[];
-
 
   for(let y=0;y<canvas.height;y++){
 
@@ -3475,19 +2839,12 @@ function thresholdPhotoRows(
       canvas.width/8
     );
 
-
     let black=0;
-
 
     for(let x=0;x<canvas.width;x++){
 
       const i=
-      (
-        y*
-        canvas.width+
-        x
-      )*4;
-
+      (y*canvas.width+x)*4;
 
       const gray=
       (
@@ -3495,7 +2852,6 @@ function thresholdPhotoRows(
         data[i+1]*587+
         data[i+2]*114
       )/1000;
-
 
       if(gray<threshold){
 
@@ -3506,7 +2862,6 @@ function thresholdPhotoRows(
       }
     }
 
-
     rows.push({
       row:y,
       data:row,
@@ -3514,6 +2869,83 @@ function thresholdPhotoRows(
     });
   }
 
+  return rows;
+}
+
+
+function orderedPhotoRows(
+  canvas,
+  threshold
+){
+
+  const ctx=
+  canvas.getContext("2d");
+
+  const data=
+  ctx.getImageData(
+    0,0,
+    canvas.width,
+    canvas.height
+  ).data;
+
+  const bayer=[
+    0,8,2,10,
+    12,4,14,6,
+    3,11,1,9,
+    15,7,13,5
+  ];
+
+  const rows=[];
+
+  for(let y=0;y<canvas.height;y++){
+
+    const row=
+    new Uint8Array(
+      canvas.width/8
+    );
+
+    let black=0;
+
+    for(let x=0;x<canvas.width;x++){
+
+      const i=
+      (y*canvas.width+x)*4;
+
+      const gray=
+      (
+        data[i]*299+
+        data[i+1]*587+
+        data[i+2]*114
+      )/1000;
+
+      const b=
+      bayer[
+        (y&3)*4+
+        (x&3)
+      ];
+
+      const local=
+      threshold+
+      (
+        b-
+        7.5
+      )*9;
+
+      if(gray<local){
+
+        row[x>>3]|=
+        0x80>>(x&7);
+
+        black++;
+      }
+    }
+
+    rows.push({
+      row:y,
+      data:row,
+      black
+    });
+  }
 
   return rows;
 }
@@ -3527,7 +2959,6 @@ function floydPhotoRows(
   const ctx=
   canvas.getContext("2d");
 
-
   const source=
   ctx.getImageData(
     0,0,
@@ -3535,29 +2966,23 @@ function floydPhotoRows(
     canvas.height
   ).data;
 
-
   const w=
   canvas.width;
 
   const h=
   canvas.height;
 
-
   const gray=
   new Float32Array(
     w*h
   );
-
 
   for(let y=0;y<h;y++){
 
     for(let x=0;x<w;x++){
 
       const i=
-      (
-        y*w+x
-      )*4;
-
+      (y*w+x)*4;
 
       gray[
         y*w+x
@@ -3570,9 +2995,7 @@ function floydPhotoRows(
     }
   }
 
-
   const rows=[];
-
 
   for(let y=0;y<h;y++){
 
@@ -3581,182 +3004,110 @@ function floydPhotoRows(
       w/8
     );
 
-
     let black=0;
-
 
     const reverse=
     y%2===1;
 
+    const start=
+    reverse?w-1:0;
 
-    if(!reverse){
+    const end=
+    reverse?-1:w;
 
-      for(let x=0;x<w;x++){
+    const step=
+    reverse?-1:1;
 
-        const idx=
-        y*w+x;
+    for(
+      let x=start;
+      x!==end;
+      x+=step
+    ){
 
+      const idx=
+      y*w+x;
 
-        const old=
-        clamp(
-          gray[idx],
-          0,
-          255
-        );
+      const old=
+      clamp(
+        gray[idx],
+        0,
+        255
+      );
 
+      const newValue=
+      old<threshold
+      ?0
+      :255;
 
-        const newValue=
-        old<threshold
-        ?0
-        :255;
+      const error=
+      old-newValue;
 
+      if(newValue===0){
 
-        const error=
-        old-newValue;
+        row[x>>3]|=
+        0x80>>(x&7);
 
+        black++;
+      }
 
-        if(newValue===0){
-
-          row[x>>3]|=
-          0x80>>(x&7);
-
-          black++;
-        }
-
+      if(!reverse){
 
         if(x+1<w){
-
-          gray[
-            idx+1
-          ]+=
-          error*
-          7/16;
+          gray[idx+1]+=
+          error*7/16;
         }
-
 
         if(
           y+1<h &&
           x>0
         ){
-
-          gray[
-            idx+w-1
-          ]+=
-          error*
-          3/16;
+          gray[idx+w-1]+=
+          error*3/16;
         }
-
 
         if(y+1<h){
-
-          gray[
-            idx+w
-          ]+=
-          error*
-          5/16;
+          gray[idx+w]+=
+          error*5/16;
         }
-
 
         if(
           y+1<h &&
           x+1<w
         ){
-
-          gray[
-            idx+w+1
-          ]+=
-          error*
-          1/16;
+          gray[idx+w+1]+=
+          error*1/16;
         }
       }
-    }
 
-    else{
-
-      for(
-        let x=w-1;
-        x>=0;
-        x--
-      ){
-
-        const idx=
-        y*w+x;
-
-
-        const old=
-        clamp(
-          gray[idx],
-          0,
-          255
-        );
-
-
-        const newValue=
-        old<threshold
-        ?0
-        :255;
-
-
-        const error=
-        old-newValue;
-
-
-        if(newValue===0){
-
-          row[x>>3]|=
-          0x80>>(x&7);
-
-          black++;
-        }
-
+      else{
 
         if(x-1>=0){
-
-          gray[
-            idx-1
-          ]+=
-          error*
-          7/16;
+          gray[idx-1]+=
+          error*7/16;
         }
-
 
         if(
           y+1<h &&
           x+1<w
         ){
-
-          gray[
-            idx+w+1
-          ]+=
-          error*
-          3/16;
+          gray[idx+w+1]+=
+          error*3/16;
         }
-
 
         if(y+1<h){
-
-          gray[
-            idx+w
-          ]+=
-          error*
-          5/16;
+          gray[idx+w]+=
+          error*5/16;
         }
-
 
         if(
           y+1<h &&
           x-1>=0
         ){
-
-          gray[
-            idx+w-1
-          ]+=
-          error*
-          1/16;
+          gray[idx+w-1]+=
+          error*1/16;
         }
       }
     }
-
 
     rows.push({
       row:y,
@@ -3764,7 +3115,6 @@ function floydPhotoRows(
       black
     });
   }
-
 
   return rows;
 }
@@ -3775,12 +3125,10 @@ function photoRows(canvas){
   const mode=
   $("photoProcess").value;
 
-
   const threshold=
   Number(
     $("photoThreshold").value
   )||160;
-
 
   if(mode==="ordered"){
 
@@ -3790,7 +3138,6 @@ function photoRows(canvas){
     );
   }
 
-
   if(mode==="floyd"){
 
     return floydPhotoRows(
@@ -3798,7 +3145,6 @@ function photoRows(canvas){
       threshold
     );
   }
-
 
   return thresholdPhotoRows(
     canvas,
@@ -3812,9 +3158,7 @@ function renderPhotoPreview(){
   const box=
   $("photoPreview");
 
-
   box.innerHTML="";
-
 
   if(!photoImage){
 
@@ -3824,38 +3168,29 @@ function renderPhotoPreview(){
     return;
   }
 
-
   const canvas=
   buildPhotoCanvas();
-
 
   if(!canvas){
     return;
   }
 
-
   const holder=
   document.createElement("div");
-
 
   holder.className=
   "previewPage";
 
-
   holder.appendChild(canvas);
-
 
   box.appendChild(holder);
 }
-
 
 $("photoPreviewBtn").onclick=
 renderPhotoPreview;
 
 
-/* =========================================================
-PRINT SESSION
-========================================================= */
+/* PRINT SESSION */
 
 async function beginPrint(
   density,
@@ -3866,8 +3201,7 @@ async function beginPrint(
     !await sendWait(
       "CONNECT",
       CMD.connect(),
-      0xC2,
-      5000
+      0xC2
     )
   ){
     throw new Error(
@@ -3875,13 +3209,11 @@ async function beginPrint(
     );
   }
 
-
   if(
     !await sendWait(
       "DENSITY",
       CMD.density(density),
-      0x31,
-      5000
+      0x31
     )
   ){
     throw new Error(
@@ -3889,13 +3221,11 @@ async function beginPrint(
     );
   }
 
-
   if(
     !await sendWait(
       "LABEL TYPE",
       CMD.labelType(labelType),
-      0x33,
-      5000
+      0x33
     )
   ){
     throw new Error(
@@ -3903,13 +3233,11 @@ async function beginPrint(
     );
   }
 
-
   if(
     !await sendWait(
       "PRINT START",
       CMD.printStart(),
-      0x02,
-      5000
+      0x02
     )
   ){
     throw new Error(
@@ -3936,9 +3264,7 @@ async function finishPrint(){
 }
 
 
-/* =========================================================
-PAGE SEND
-========================================================= */
+/* PAGE SEND */
 
 async function sendRunsPage(
   canvas,
@@ -3953,15 +3279,13 @@ async function sendRunsPage(
     !await sendWait(
       `PAGE START ${pageIndex+1}`,
       CMD.pageStart(),
-      0x04,
-      5000
+      0x04
     )
   ){
     throw new Error(
-      `第 ${pageIndex+1} 張 PAGE START 失敗`
+      `PAGE START 失敗`
     );
   }
-
 
   if(
     !await sendWait(
@@ -3970,34 +3294,27 @@ async function sendRunsPage(
         canvas.height,
         canvas.width
       ),
-      0x14,
-      5000
+      0x14
     )
   ){
     throw new Error(
-      `第 ${pageIndex+1} 張 PAGE SIZE 失敗`
+      `PAGE SIZE 失敗`
     );
   }
 
-
   log(
-    `PAGE ${pageIndex+1}｜CANVAS ${canvas.width}×${canvas.height}｜RUNS ${runs.length}`
+    `PAGE ${pageIndex+1}｜${canvas.width}×${canvas.height}｜RUNS ${runs.length}`
   );
-
 
   const d3StartIndex=
   state.parsedRx.length;
 
-
   for(let i=0;i<runs.length;i++){
 
     await writeRaw(
-      rowPacket(
-        runs[i]
-      ),
+      rowPacket(runs[i]),
       stableMode?3:5
     );
-
 
     if(
       stableMode &&
@@ -4005,7 +3322,6 @@ async function sendRunsPage(
     ){
       await delay(5);
     }
-
 
     if(
       stableMode &&
@@ -4018,7 +3334,6 @@ async function sendRunsPage(
     ){
       await delay(18);
     }
-
 
     if(
       (
@@ -4036,12 +3351,6 @@ async function sendRunsPage(
     }
   }
 
-
-  log(
-    `第 ${pageIndex+1} 張 BITMAP DATA ✅`
-  );
-
-
   if(stableMode){
 
     await settleBeforePageEnd(
@@ -4049,7 +3358,6 @@ async function sendRunsPage(
       status
     );
   }
-
 
   if(
     !await sendWait(
@@ -4060,10 +3368,9 @@ async function sendRunsPage(
     )
   ){
     throw new Error(
-      `第 ${pageIndex+1} 張 PAGE END 失敗`
+      `PAGE END 失敗`
     );
   }
-
 
   if(pageIndex<total-1){
     await delay(500);
@@ -4090,47 +3397,37 @@ async function sendCanvasPage(
 }
 
 
-/* =========================================================
-GENERAL PRINT
-========================================================= */
+/* GENERAL PRINT */
 
 $("printAllBtn").onclick=
 async()=>{
 
   if(!products.length){
-
     alert("尚未加入商品");
     return;
   }
 
-
   if(!connected()){
     return;
   }
-
 
   state.running=true;
   state.stop=false;
 
   updateButtons();
 
-
   const status=
   $("generalStatus");
-
 
   status.className=
   "status warn";
 
-
   status.textContent=
   "準備列印…";
-
 
   try{
 
     const canvases=[];
-
 
     for(const product of products){
 
@@ -4141,7 +3438,6 @@ async()=>{
       );
     }
 
-
     await beginPrint(
       Number(
         $("density").value
@@ -4150,7 +3446,6 @@ async()=>{
         $("paperMode").value
       )
     );
-
 
     for(
       let i=0;
@@ -4167,19 +3462,15 @@ async()=>{
       );
     }
 
-
     await delay(500);
 
     await finishPrint();
 
-
     status.className=
     "status ok";
 
-
     status.textContent=
     `✅ 完成 ${canvases.length} 張`;
-
 
     if(
       $("autoClear").checked
@@ -4198,14 +3489,11 @@ async()=>{
     const message=
     errorText(error);
 
-
     status.className=
     "status err";
 
-
     status.textContent=
     "❌ "+message;
-
 
     log(
       "GENERAL ERROR："+message
@@ -4221,9 +3509,7 @@ async()=>{
 };
 
 
-/* =========================================================
-BIG PRINT V20.2
-========================================================= */
+/* BIG PRINT */
 
 $("bigPrintBtn").onclick=
 async()=>{
@@ -4231,41 +3517,33 @@ async()=>{
   const pages=
   splitBigText();
 
-
   if(!pages.length){
-
-    alert(
-      "請輸入號碼牌內容"
-    );
-
+    alert("請輸入號碼牌內容");
     return;
   }
-
 
   if(!connected()){
     return;
   }
-
 
   state.running=true;
   state.stop=false;
 
   updateButtons();
 
-
   const status=
   $("bigStatus");
-
 
   status.className=
   "status warn";
 
-
   status.textContent=
-  "準備影像化大字列印…";
-
+  "準備大字列印…";
 
   try{
+
+    const settings=
+    bigPageSettings();
 
     const canvases=
     pages.map(
@@ -4273,45 +3551,24 @@ async()=>{
       buildBigCanvas(text)
     );
 
-
     log(
-      "========== V20.2 BIG IMAGE START =========="
+      "========== V20.3 BIG START =========="
     );
 
-
     log(
-      `共 ${canvases.length} 張`
+      `紙張：${$("bigPaperWidth").value}×${$("bigPaperHeight").value}mm｜模式${settings.labelType}`
     );
 
-
     log(
-      `固定：72×146｜黑標2｜濃度${$("bigDensity").value}`
+      `FLOYD：${$("bigProcess").value}｜黑度${$("bigPhotoBlack").value}%｜濃度${$("bigDensity").value}`
     );
-
-
-    log(
-      `BIG PROCESS：${$("bigProcess").value}`
-    );
-
-
-    if(
-      $("bigProcess").value===
-      "floyd"
-    ){
-
-      log(
-        `BIG PHOTO BLACK：${$("bigPhotoBlack").value}%`
-      );
-    }
-
 
     await beginPrint(
       Number(
         $("bigDensity").value
       ),
-      2
+      settings.labelType
     );
-
 
     for(
       let i=0;
@@ -4322,12 +3579,8 @@ async()=>{
       const canvas=
       canvases[i];
 
-
       const runs=
-      bigRuns(
-        canvas
-      );
-
+      bigRuns(canvas);
 
       await sendRunsPage(
         canvas,
@@ -4335,56 +3588,40 @@ async()=>{
         i,
         canvases.length,
         status,
-        true
+        settings.labelType===2
       );
     }
 
-
-    await delay(
-      500
-    );
-
+    await delay(500);
 
     await finishPrint();
-
 
     status.className=
     "status ok";
 
-
     status.textContent=
-    `✅ 影像化大字列印完成，共 ${canvases.length} 張`;
-
+    `✅ 大字列印完成，共 ${canvases.length} 張`;
 
     log(
-      "========== V20.2 BIG IMAGE COMPLETE =========="
+      "========== V20.3 BIG COMPLETE =========="
     );
   }
-
 
   catch(error){
 
     const message=
-    errorText(
-      error
-    );
-
+    errorText(error);
 
     status.className=
     "status err";
 
-
     status.textContent=
-    "❌ "+
-    message;
-
+    "❌ "+message;
 
     log(
-      "BIG ERROR："+
-      message
+      "BIG ERROR："+message
     );
   }
-
 
   finally{
 
@@ -4395,73 +3632,46 @@ async()=>{
 };
 
 
-/* =========================================================
-PHOTO PRINT
-========================================================= */
+/* PHOTO PRINT */
 
 $("photoPrintBtn").onclick=
 async()=>{
 
   if(!photoImage){
-
-    alert(
-      "請先選擇照片"
-    );
-
+    alert("請先選擇照片");
     return;
   }
-
 
   if(!connected()){
     return;
   }
-
 
   state.running=true;
   state.stop=false;
 
   updateButtons();
 
-
   const status=
   $("photoStatus");
-
 
   status.className=
   "status warn";
 
-
   status.textContent=
   "準備照片列印…";
-
 
   try{
 
     const canvas=
     buildPhotoCanvas();
 
-
     const settings=
     photoPageSettings();
 
-
-    const rows=
-    photoRows(canvas);
-
-
     const runs=
-    rowsToRuns(rows);
-
-
-    log(
-      "========== V20.2 PHOTO START =========="
+    rowsToRuns(
+      photoRows(canvas)
     );
-
-
-    log(
-      `PHOTO ${canvas.width}×${canvas.height}｜${$("photoProcess").value}｜濃度${$("photoDensity").value}`
-    );
-
 
     await beginPrint(
       Number(
@@ -4469,7 +3679,6 @@ async()=>{
       ),
       settings.labelType
     );
-
 
     await sendRunsPage(
       canvas,
@@ -4480,23 +3689,15 @@ async()=>{
       settings.stable
     );
 
-
     await delay(500);
 
     await finishPrint();
 
-
     status.className=
     "status ok";
 
-
     status.textContent=
     "✅ 照片列印完成";
-
-
-    log(
-      "========== V20.2 PHOTO COMPLETE =========="
-    );
   }
 
   catch(error){
@@ -4504,14 +3705,11 @@ async()=>{
     const message=
     errorText(error);
 
-
     status.className=
     "status err";
 
-
     status.textContent=
     "❌ "+message;
-
 
     log(
       "PHOTO ERROR："+message
@@ -4527,9 +3725,7 @@ async()=>{
 };
 
 
-/* =========================================================
-CONNECT
-========================================================= */
+/* CONNECT */
 
 $("connectBtn").onclick=
 async()=>{
@@ -4539,51 +3735,36 @@ async()=>{
     $("bleStatus").className=
     "status warn";
 
-
     $("bleStatus").textContent=
     "正在連線…";
 
-
     const device=
     await navigator.bluetooth.requestDevice({
-
       acceptAllDevices:true,
-
-      optionalServices:[
-        SERVICE
-      ]
-
+      optionalServices:[SERVICE]
     });
 
-
     state.device=device;
-
 
     $("deviceName").textContent=
     device.name||"—";
 
-
     state.server=
     await device.gatt.connect();
-
 
     const service=
     await state.server
     .getPrimaryService(SERVICE);
 
-
     state.write=
     await service
     .getCharacteristic(WRITE_UUID);
-
 
     state.notify=
     await service
     .getCharacteristic(NOTIFY_UUID);
 
-
     state.parsedRx=[];
-
 
     state.notify
     .addEventListener(
@@ -4593,7 +3774,6 @@ async()=>{
         const value=
         event.target.value;
 
-
         const bytes=
         new Uint8Array(
           value.buffer,
@@ -4601,33 +3781,21 @@ async()=>{
           value.byteLength
         );
 
-
         const text=
         hex(bytes);
-
 
         const packets=
         parsePackets(text);
 
-
         for(const packet of packets){
-
-          state.parsedRx.push(
-            packet
-          );
+          state.parsedRx.push(packet);
         }
 
-
-        log(
-          "RX："+text
-        );
+        log("RX："+text);
       }
     );
 
-
-    await state.notify
-    .startNotifications();
-
+    await state.notify.startNotifications();
 
     state.device
     .addEventListener(
@@ -4638,27 +3806,21 @@ async()=>{
         state.write=null;
         state.notify=null;
 
-
         $("bleStatus").className=
         "status warn";
 
-
         $("bleStatus").textContent=
         "B3S 已中斷";
-
 
         updateButtons();
       }
     );
 
-
     $("bleStatus").className=
     "status ok";
 
-
     $("bleStatus").textContent=
     "✅ B3S 已連線";
-
 
     updateButtons();
   }
@@ -4668,28 +3830,22 @@ async()=>{
     const message=
     errorText(error);
 
-
     $("bleStatus").className=
     "status err";
-
 
     $("bleStatus").textContent=
     "❌ "+message;
 
-
     log(
       "CONNECT ERROR："+message
     );
-
 
     updateButtons();
   }
 };
 
 
-/* =========================================================
-DISCONNECT
-========================================================= */
+/* DISCONNECT */
 
 $("disconnectBtn").onclick=
 ()=>{
@@ -4699,100 +3855,63 @@ $("disconnectBtn").onclick=
   }
   catch{}
 
-
   state.server=null;
   state.write=null;
   state.notify=null;
 
-
   $("bleStatus").className=
   "status";
 
-
   $("bleStatus").textContent=
   "已中斷";
-
 
   updateButtons();
 };
 
 
-/* =========================================================
-STOP
-========================================================= */
+/* STOP */
 
 $("stopBtn").onclick=
 async()=>{
 
   state.stop=true;
 
-
-  log(
-    "使用者按下停止"
-  );
-
-
   try{
-
     await rawGattWrite(
       CMD.pageEnd()
     );
-
   }
   catch{}
-
 
   await delay(100);
 
-
   try{
-
     await rawGattWrite(
       CMD.printEnd()
     );
-
   }
   catch{}
-
-
-  $("generalStatus").className=
-  "status warn";
-
 
   $("generalStatus").textContent=
   "⏹ 已停止";
 
-
-  $("bigStatus").className=
-  "status warn";
-
-
   $("bigStatus").textContent=
   "⏹ 已停止";
-
-
-  $("photoStatus").className=
-  "status warn";
-
 
   $("photoStatus").textContent=
   "⏹ 已停止";
 };
 
 
-/* =========================================================
-SCANNER
-========================================================= */
+/* SCANNER */
 
 let html5QrCode=null;
-
 
 $("scanBtn").onclick=
 async()=>{
 
   const reader=
   $("reader");
-
 
   try{
 
@@ -4802,38 +3921,29 @@ async()=>{
       .stop()
       .catch(()=>{});
 
-
       html5QrCode.clear();
 
-
       html5QrCode=null;
-
 
       reader
       .classList
       .add("hidden");
 
-
       $("scanBtn").textContent=
       "📷 掃描條碼 / QR";
 
-
       return;
     }
-
 
     reader
     .classList
     .remove("hidden");
 
-
     html5QrCode=
     new Html5Qrcode("reader");
 
-
     $("scanBtn").textContent=
     "停止掃描";
-
 
     await html5QrCode.start(
 
@@ -4843,7 +3953,6 @@ async()=>{
 
       {
         fps:10,
-
         qrbox:{
           width:260,
           height:180
@@ -4856,40 +3965,29 @@ async()=>{
         String(decodedText||"")
         .trim();
 
-
         if(!value){
           return;
         }
 
-
         if(/^\d+$/.test(value)){
-
-          $("barcode").value=
-          value;
+          $("barcode").value=value;
         }
-
         else{
-
-          $("qrValue").value=
-          value;
+          $("qrValue").value=value;
         }
-
 
         try{
           await html5QrCode.stop();
         }
         catch{}
 
-
         html5QrCode.clear();
 
         html5QrCode=null;
 
-
         reader
         .classList
         .add("hidden");
-
 
         $("scanBtn").textContent=
         "📷 掃描條碼 / QR";
@@ -4904,20 +4002,16 @@ async()=>{
       errorText(error)
     );
 
-
     try{
       html5QrCode?.clear();
     }
     catch{}
 
-
     html5QrCode=null;
-
 
     reader
     .classList
     .add("hidden");
-
 
     $("scanBtn").textContent=
     "📷 掃描條碼 / QR";
@@ -4925,23 +4019,18 @@ async()=>{
 };
 
 
-/* =========================================================
-MODE
-========================================================= */
+/* MODE */
 
 function updateMode(){
 
   const value=
   $("mode").value;
 
-
   const big=
   value==="big_sign";
 
-
   const photo=
   value==="photo";
-
 
   $("generalPanel")
   .classList
@@ -4950,7 +4039,6 @@ function updateMode(){
     big||photo
   );
 
-
   $("bigPanel")
   .classList
   .toggle(
@@ -4958,14 +4046,12 @@ function updateMode(){
     !big
   );
 
-
   $("photoPanel")
   .classList
   .toggle(
     "hidden",
     !photo
   );
-
 
   if(big){
     renderBigPreview();
@@ -4980,14 +4066,11 @@ function updateMode(){
   }
 }
 
-
 $("mode").onchange=
 updateMode;
 
 
-/* =========================================================
-PREVIEW EVENTS
-========================================================= */
+/* EVENTS */
 
 [
   "paperWidth",
@@ -5016,6 +4099,9 @@ PREVIEW EVENTS
 
 [
   "bigText",
+  "bigPaperWidth",
+  "bigPaperHeight",
+  "bigPaperMode",
   "splitMode",
   "charsPerPage",
   "bigFontMode",
@@ -5062,9 +4148,7 @@ PREVIEW EVENTS
 });
 
 
-/* =========================================================
-LOG
-========================================================= */
+/* LOG */
 
 $("clearLogBtn").onclick=
 ()=>{
@@ -5083,10 +4167,7 @@ async()=>{
       $("log").value
     );
 
-
-    alert(
-      "已複製"
-    );
+    alert("已複製");
   }
 
   catch{
@@ -5096,20 +4177,13 @@ async()=>{
 };
 
 
-/* =========================================================
-INIT
-========================================================= */
+/* INIT */
 
 renderProducts();
-
 renderGeneralPreview();
-
 renderBigPreview();
-
 renderPhotoPreview();
-
 updateMode();
-
 updateButtons();
 
 </script>
