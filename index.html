@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 
-<title>商品條碼／QR／大字／照片｜B3S V20.1</title>
+<title>商品條碼／QR／大字／照片｜B3S V20.2</title>
 
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
@@ -63,7 +63,9 @@ h2{
 }
 
 @media(max-width:650px){
-  .grid,.grid3{grid-template-columns:1fr}
+  .grid,.grid3{
+    grid-template-columns:1fr
+  }
 }
 
 label{
@@ -104,7 +106,9 @@ button{
   font-weight:700
 }
 
-button:disabled{opacity:.4}
+button:disabled{
+  opacity:.4
+}
 
 .primary{
   background:#1265f3;
@@ -216,7 +220,9 @@ button:disabled{opacity:.4}
   height:auto
 }
 
-.hidden{display:none!important}
+.hidden{
+  display:none!important
+}
 
 hr{
   border:0;
@@ -246,7 +252,7 @@ hr{
 <div class="wrap">
 
 <h1>商品條碼／QR／大字／照片</h1>
-<div class="help">B3S V20.1 正式版</div>
+<div class="help">B3S V20.2 正式版</div>
 
 
 <!-- PRINTER -->
@@ -530,8 +536,8 @@ QR Code＋文字
 </label>
 
 <div class="help" style="margin-top:6px">
-開啟時：以「條碼高度 2cm」為基準同步縮放文字。<br>
-關閉時：使用上方「商品名稱字體／條碼號碼字體」的固定值。
+開啟時：以條碼高度 2cm 為基準同步縮放文字。<br>
+關閉時：使用上方商品名稱字體／條碼號碼字體固定值。
 </div>
 
 <hr>
@@ -586,7 +592,7 @@ QR Code＋文字
 ✅ 實體紙張：75 × 148 mm<br>
 ✅ 有效列印：72 × 146 mm<br>
 ✅ 黑標模式：2<br>
-✅ 原始100%點陣<br>
+✅ 支援照片式 Floyd 影像化大字<br>
 ✅ 穩定 SETTLE / PAGE END 流程
 </div>
 
@@ -625,9 +631,29 @@ QR Code＋文字
 <select id="bigDensity">
 <option value="1">1</option>
 <option value="2">2</option>
-<option value="3" selected>3</option>
+<option value="3">3</option>
 <option value="4">4</option>
-<option value="5">5</option>
+<option value="5" selected>5</option>
+</select>
+</div>
+
+<div>
+<label>大字影像處理</label>
+
+<select id="bigProcess">
+<option value="floyd" selected>照片 Floyd</option>
+<option value="raw">原始100%</option>
+</select>
+</div>
+
+<div>
+<label>照片黑度</label>
+
+<select id="bigPhotoBlack">
+<option value="90">90%</option>
+<option value="94" selected>94%</option>
+<option value="97">97%</option>
+<option value="100">100%</option>
 </select>
 </div>
 
@@ -694,6 +720,11 @@ QR Code＋文字
 
 </div>
 
+<div class="note" style="margin-top:12px">
+照片 Floyd 預設：黑度94%＋濃度5。<br>
+原始100% 可切回舊的大字點陣方式。
+</div>
+
 <div class="row" style="margin-top:10px">
 
 <button id="bigPreviewBtn" class="gray">
@@ -733,8 +764,8 @@ QR Code＋文字
 <h2>🖼 照片列印</h2>
 
 <div class="note">
-可先用小票紙測試。<br>
-75×148黑標紙模式會自動使用目前穩定的72×146有效頁面。
+可先使用小票紙測試。<br>
+75×148黑標紙模式自動使用72×146有效頁面。
 </div>
 
 <label style="margin-top:12px">選擇照片</label>
@@ -818,12 +849,12 @@ QR Code＋文字
 純黑白
 </option>
 
-<option value="ordered" selected>
+<option value="ordered">
 照片抖動
 </option>
 
-<option value="floyd">
-誤差擴散
+<option value="floyd" selected>
+誤差擴散 Floyd
 </option>
 
 </select>
@@ -1305,7 +1336,10 @@ function hasLateD3(startIndex){
 }
 
 
-async function settleBeforePageEnd(startIndex,status){
+async function settleBeforePageEnd(
+  startIndex,
+  status
+){
 
   if(status){
     status.textContent=
@@ -1895,18 +1929,15 @@ async function buildProductCanvas(item){
   );
 
 
-  /*
-  V20.1：
-  條碼高度2cm = 文字倍率1.0
-  */
-
   const barcodeHeightCm=
   Number(
     $("barcodeHeight").value
   )||2;
 
+
   const sync=
   $("syncBarcodeText").checked;
+
 
   const textScale=
   sync
@@ -1922,6 +1953,7 @@ async function buildProductCanvas(item){
   Number(
     $("nameFont").value
   )||30;
+
 
   const baseNumberFont=
   Number(
@@ -2692,6 +2724,333 @@ function buildBigCanvas(text){
 }
 
 
+/* =========================================================
+V20.2 BIG IMAGE ENGINE
+========================================================= */
+
+function bigFloydRows(
+  canvas,
+  blackPercent
+){
+
+  const ctx=
+  canvas.getContext("2d");
+
+
+  const source=
+  ctx.getImageData(
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  ).data;
+
+
+  const w=
+  canvas.width;
+
+  const h=
+  canvas.height;
+
+
+  const gray=
+  new Float32Array(
+    w*h
+  );
+
+
+  const targetBlackGray=
+  Math.round(
+    255*
+    (
+      1-
+      blackPercent/100
+    )
+  );
+
+
+  for(let y=0;y<h;y++){
+
+    for(let x=0;x<w;x++){
+
+      const srcIndex=
+      (
+        y*w+
+        x
+      )*4;
+
+
+      const original=
+      (
+        source[srcIndex]*299+
+        source[srcIndex+1]*587+
+        source[srcIndex+2]*114
+      )/1000;
+
+
+      const darkness=
+      1-
+      original/255;
+
+
+      gray[
+        y*w+x
+      ]=
+      255-
+      darkness*
+      (
+        255-
+        targetBlackGray
+      );
+    }
+  }
+
+
+  const rows=[];
+
+  const threshold=
+  128;
+
+
+  for(let y=0;y<h;y++){
+
+    const row=
+    new Uint8Array(
+      w/8
+    );
+
+
+    let black=0;
+
+
+    const reverse=
+    y%2===1;
+
+
+    if(!reverse){
+
+      for(let x=0;x<w;x++){
+
+        const idx=
+        y*w+x;
+
+
+        const old=
+        clamp(
+          gray[idx],
+          0,
+          255
+        );
+
+
+        const newValue=
+        old<threshold
+        ?0
+        :255;
+
+
+        const error=
+        old-
+        newValue;
+
+
+        if(newValue===0){
+
+          row[x>>3]|=
+          0x80>>(x&7);
+
+          black++;
+        }
+
+
+        if(x+1<w){
+
+          gray[
+            idx+1
+          ]+=
+          error*
+          7/16;
+        }
+
+
+        if(
+          y+1<h &&
+          x>0
+        ){
+
+          gray[
+            idx+w-1
+          ]+=
+          error*
+          3/16;
+        }
+
+
+        if(y+1<h){
+
+          gray[
+            idx+w
+          ]+=
+          error*
+          5/16;
+        }
+
+
+        if(
+          y+1<h &&
+          x+1<w
+        ){
+
+          gray[
+            idx+w+1
+          ]+=
+          error*
+          1/16;
+        }
+      }
+    }
+
+    else{
+
+      for(
+        let x=w-1;
+        x>=0;
+        x--
+      ){
+
+        const idx=
+        y*w+x;
+
+
+        const old=
+        clamp(
+          gray[idx],
+          0,
+          255
+        );
+
+
+        const newValue=
+        old<threshold
+        ?0
+        :255;
+
+
+        const error=
+        old-
+        newValue;
+
+
+        if(newValue===0){
+
+          row[x>>3]|=
+          0x80>>(x&7);
+
+          black++;
+        }
+
+
+        if(x-1>=0){
+
+          gray[
+            idx-1
+          ]+=
+          error*
+          7/16;
+        }
+
+
+        if(
+          y+1<h &&
+          x+1<w
+        ){
+
+          gray[
+            idx+w+1
+          ]+=
+          error*
+          3/16;
+        }
+
+
+        if(y+1<h){
+
+          gray[
+            idx+w
+          ]+=
+          error*
+          5/16;
+        }
+
+
+        if(
+          y+1<h &&
+          x-1>=0
+        ){
+
+          gray[
+            idx+w-1
+          ]+=
+          error*
+          1/16;
+        }
+      }
+    }
+
+
+    rows.push({
+      row:y,
+      data:row,
+      black
+    });
+  }
+
+
+  return rows;
+}
+
+
+function bigRows(canvas){
+
+  const mode=
+  $("bigProcess").value;
+
+
+  if(mode==="raw"){
+
+    return canvasRows(
+      canvas
+    );
+  }
+
+
+  const blackPercent=
+  Number(
+    $("bigPhotoBlack").value
+  )||94;
+
+
+  return bigFloydRows(
+    canvas,
+    blackPercent
+  );
+}
+
+
+function bigRuns(canvas){
+
+  return rowsToRuns(
+    bigRows(
+      canvas
+    )
+  );
+}
+
+
+/* =========================================================
+BIG PREVIEW
+========================================================= */
+
 function renderBigPreview(){
 
   const pages=
@@ -3226,78 +3585,175 @@ function floydPhotoRows(
     let black=0;
 
 
-    for(let x=0;x<w;x++){
-
-      const idx=
-      y*w+x;
+    const reverse=
+    y%2===1;
 
 
-      const old=
-      gray[idx];
+    if(!reverse){
+
+      for(let x=0;x<w;x++){
+
+        const idx=
+        y*w+x;
 
 
-      const newValue=
-      old<threshold
-      ?0
-      :255;
+        const old=
+        clamp(
+          gray[idx],
+          0,
+          255
+        );
 
 
-      const error=
-      old-newValue;
+        const newValue=
+        old<threshold
+        ?0
+        :255;
 
 
-      if(newValue===0){
+        const error=
+        old-newValue;
 
-        row[x>>3]|=
-        0x80>>(x&7);
 
-        black++;
+        if(newValue===0){
+
+          row[x>>3]|=
+          0x80>>(x&7);
+
+          black++;
+        }
+
+
+        if(x+1<w){
+
+          gray[
+            idx+1
+          ]+=
+          error*
+          7/16;
+        }
+
+
+        if(
+          y+1<h &&
+          x>0
+        ){
+
+          gray[
+            idx+w-1
+          ]+=
+          error*
+          3/16;
+        }
+
+
+        if(y+1<h){
+
+          gray[
+            idx+w
+          ]+=
+          error*
+          5/16;
+        }
+
+
+        if(
+          y+1<h &&
+          x+1<w
+        ){
+
+          gray[
+            idx+w+1
+          ]+=
+          error*
+          1/16;
+        }
       }
+    }
 
+    else{
 
-      if(x+1<w){
-
-        gray[
-          idx+1
-        ]+=
-        error*
-        7/16;
-      }
-
-
-      if(
-        y+1<h &&
-        x>0
+      for(
+        let x=w-1;
+        x>=0;
+        x--
       ){
 
-        gray[
-          idx+w-1
-        ]+=
-        error*
-        3/16;
-      }
+        const idx=
+        y*w+x;
 
 
-      if(y+1<h){
-
-        gray[
-          idx+w
-        ]+=
-        error*
-        5/16;
-      }
+        const old=
+        clamp(
+          gray[idx],
+          0,
+          255
+        );
 
 
-      if(
-        y+1<h &&
-        x+1<w
-      ){
+        const newValue=
+        old<threshold
+        ?0
+        :255;
 
-        gray[
-          idx+w+1
-        ]+=
-        error*
-        1/16;
+
+        const error=
+        old-newValue;
+
+
+        if(newValue===0){
+
+          row[x>>3]|=
+          0x80>>(x&7);
+
+          black++;
+        }
+
+
+        if(x-1>=0){
+
+          gray[
+            idx-1
+          ]+=
+          error*
+          7/16;
+        }
+
+
+        if(
+          y+1<h &&
+          x+1<w
+        ){
+
+          gray[
+            idx+w+1
+          ]+=
+          error*
+          3/16;
+        }
+
+
+        if(y+1<h){
+
+          gray[
+            idx+w
+          ]+=
+          error*
+          5/16;
+        }
+
+
+        if(
+          y+1<h &&
+          x-1>=0
+        ){
+
+          gray[
+            idx+w-1
+          ]+=
+          error*
+          1/16;
+        }
       }
     }
 
@@ -3766,7 +4222,7 @@ async()=>{
 
 
 /* =========================================================
-BIG PRINT
+BIG PRINT V20.2
 ========================================================= */
 
 $("bigPrintBtn").onclick=
@@ -3806,7 +4262,7 @@ async()=>{
 
 
   status.textContent=
-  "準備大字列印…";
+  "準備影像化大字列印…";
 
 
   try{
@@ -3819,13 +4275,34 @@ async()=>{
 
 
     log(
-      "========== V20.1 BIG START =========="
+      "========== V20.2 BIG IMAGE START =========="
+    );
+
+
+    log(
+      `共 ${canvases.length} 張`
     );
 
 
     log(
       `固定：72×146｜黑標2｜濃度${$("bigDensity").value}`
     );
+
+
+    log(
+      `BIG PROCESS：${$("bigProcess").value}`
+    );
+
+
+    if(
+      $("bigProcess").value===
+      "floyd"
+    ){
+
+      log(
+        `BIG PHOTO BLACK：${$("bigPhotoBlack").value}%`
+      );
+    }
 
 
     await beginPrint(
@@ -3842,8 +4319,19 @@ async()=>{
       i++
     ){
 
-      await sendCanvasPage(
-        canvases[i],
+      const canvas=
+      canvases[i];
+
+
+      const runs=
+      bigRuns(
+        canvas
+      );
+
+
+      await sendRunsPage(
+        canvas,
+        runs,
         i,
         canvases.length,
         status,
@@ -3852,7 +4340,10 @@ async()=>{
     }
 
 
-    await delay(500);
+    await delay(
+      500
+    );
+
 
     await finishPrint();
 
@@ -3862,18 +4353,21 @@ async()=>{
 
 
     status.textContent=
-    `✅ 大字列印完成，共 ${canvases.length} 張`;
+    `✅ 影像化大字列印完成，共 ${canvases.length} 張`;
 
 
     log(
-      "========== V20.1 BIG COMPLETE =========="
+      "========== V20.2 BIG IMAGE COMPLETE =========="
     );
   }
+
 
   catch(error){
 
     const message=
-    errorText(error);
+    errorText(
+      error
+    );
 
 
     status.className=
@@ -3881,13 +4375,16 @@ async()=>{
 
 
     status.textContent=
-    "❌ "+message;
+    "❌ "+
+    message;
 
 
     log(
-      "BIG ERROR："+message
+      "BIG ERROR："+
+      message
     );
   }
+
 
   finally{
 
@@ -3957,7 +4454,7 @@ async()=>{
 
 
     log(
-      "========== V20.1 PHOTO START =========="
+      "========== V20.2 PHOTO START =========="
     );
 
 
@@ -3998,7 +4495,7 @@ async()=>{
 
 
     log(
-      "========== V20.1 PHOTO COMPLETE =========="
+      "========== V20.2 PHOTO COMPLETE =========="
     );
   }
 
@@ -4528,7 +5025,9 @@ PREVIEW EVENTS
   "bigVAlign",
   "bigMargin",
   "bigX",
-  "bigY"
+  "bigY",
+  "bigProcess",
+  "bigPhotoBlack"
 ]
 .forEach(id=>{
 
