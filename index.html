@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 
-<title>商品條碼／QR／大字／照片｜B3S V20.3</title>
+<title>商品條碼／QR／大字／照片｜B3S V20.4</title>
 
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
@@ -104,7 +104,6 @@ button:disabled{opacity:.4}
 .danger{background:#d92d20;color:#fff}
 .gray{background:#e9edf3;color:#344054}
 .purple{background:#eee8ff;color:#5b37b7}
-.orange{background:#fff2d6;color:#9a5b00}
 
 .row{
   display:flex;
@@ -150,6 +149,39 @@ button:disabled{opacity:.4}
   padding:11px;
   margin:8px 0;
   background:#fafbfc
+}
+
+.photoItem{
+  display:grid;
+  grid-template-columns:86px 1fr;
+  gap:10px;
+  align-items:center;
+  border:1px solid #e0e5ec;
+  border-radius:13px;
+  padding:10px;
+  margin:8px 0;
+  background:#fafbfc
+}
+
+.photoThumb{
+  width:86px;
+  height:86px;
+  object-fit:cover;
+  border-radius:8px;
+  background:#eee
+}
+
+.photoActions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:4px;
+  margin-top:7px
+}
+
+.photoActions button{
+  min-height:36px;
+  padding:6px 10px;
+  font-size:13px
 }
 
 .previewBox{
@@ -201,7 +233,8 @@ hr{
 <div class="wrap">
 
 <h1>商品條碼／QR／大字／照片</h1>
-<div class="help">B3S V20.3 正式版</div>
+<div class="help">B3S V20.4 正式版</div>
+
 
 <div class="card">
 <h2>🖨 B3S 印表機</h2>
@@ -221,6 +254,7 @@ GATT：<span id="gattState">false</span><br>
 </div>
 </div>
 
+
 <div class="card">
 <h2>列印模式</h2>
 
@@ -239,9 +273,12 @@ GATT：<span id="gattState">false</span><br>
 <option value="name_text">商品名稱＋自訂文字</option>
 <option value="text">只有自訂文字</option>
 <option value="big_sign">🔢 大字號碼牌</option>
-<option value="photo">🖼 照片列印</option>
+<option value="photo">🖼 照片批次列印</option>
 </select>
 </div>
+
+
+<!-- GENERAL -->
 
 <div id="generalPanel">
 
@@ -281,6 +318,7 @@ GATT：<span id="gattState">false</span><br>
 <div id="reader" class="hidden"></div>
 <div id="products"></div>
 </div>
+
 
 <div class="card">
 <h2>一般／小票紙列印設定</h2>
@@ -402,6 +440,7 @@ GATT：<span id="gattState">false</span><br>
 
 </div>
 
+
 <div class="card">
 <h2>商品預覽</h2>
 
@@ -417,6 +456,8 @@ GATT：<span id="gattState">false</span><br>
 </div>
 
 
+<!-- BIG -->
+
 <div id="bigPanel" class="hidden">
 
 <div class="card">
@@ -424,8 +465,9 @@ GATT：<span id="gattState">false</span><br>
 <h2>🔢 大字號碼牌</h2>
 
 <div class="verified">
-✅ 可自訂紙張寬度、高度、紙張種類<br>
-✅ 支援 Floyd / 原始100%<br>
+✅ 紙張寬度／高度可調<br>
+✅ 紙張種類 1～5<br>
+✅ Floyd / 原始100%<br>
 ✅ 黑度90～100%<br>
 ✅ 濃度1～5
 </div>
@@ -574,8 +616,8 @@ GATT：<span id="gattState">false</span><br>
 </div>
 
 <div class="note" style="margin-top:12px">
-小票紙建議：58mm＋100mm＋連續紙3。<br>
-粉紅75×148黑標紙：72mm＋146mm＋黑標2。
+小票紙：58 × 100mm＋連續紙3。<br>
+75×148黑標紙：72 × 146mm＋黑標2。
 </div>
 
 <div class="row" style="margin-top:10px">
@@ -595,16 +637,37 @@ GATT：<span id="gattState">false</span><br>
 </div>
 
 
+<!-- PHOTO -->
+
 <div id="photoPanel" class="hidden">
 
 <div class="card">
 
-<h2>🖼 照片列印</h2>
+<h2>🖼 照片批次列印</h2>
 
-<label>選擇照片</label>
-<input id="photoFile" type="file" accept="image/*">
+<div class="note">
+一次可從 iPhone 相簿選擇多張照片。<br>
+所有照片共用下方列印設定，並依清單順序列印。
+</div>
 
-<div class="grid3" style="margin-top:12px">
+<label style="margin-top:12px">選擇照片（可多選）</label>
+
+<input
+  id="photoFile"
+  type="file"
+  accept="image/*"
+  multiple
+>
+
+<div class="row" style="margin-top:8px">
+<button id="clearPhotosBtn" class="gray">清空全部照片</button>
+</div>
+
+<div id="photoList"></div>
+
+<hr>
+
+<div class="grid3">
 
 <div>
 <label>照片紙張</label>
@@ -706,13 +769,16 @@ GATT：<span id="gattState">false</span><br>
 </div>
 
 <div class="row" style="margin-top:10px">
-<button id="photoPreviewBtn" class="gray">更新照片預覽</button>
-<button id="photoPrintBtn" class="primary" disabled>🖨 列印照片</button>
+<button id="photoPreviewBtn" class="gray">更新全部預覽</button>
+<button id="photoPrintBtn" class="primary" disabled>🖨 列印全部照片</button>
 </div>
 
-<div id="photoStatus" class="status">尚未選擇照片</div>
+<div id="photoStatus" class="status">
+尚未選擇照片
+</div>
 
 </div>
+
 
 <div class="card">
 <h2>照片預覽</h2>
@@ -723,6 +789,8 @@ GATT：<span id="gattState">false</span><br>
 
 </div>
 
+
+<!-- LOG -->
 
 <div class="card">
 <h2>通訊紀錄</h2>
@@ -809,6 +877,7 @@ function connected(){
 }
 
 function updateButtons(){
+
   const ready=connected();
 
   $("disconnectBtn").disabled=!ready;
@@ -823,7 +892,7 @@ function updateButtons(){
   $("photoPrintBtn").disabled=
   !ready||
   state.running||
-  !photoImage;
+  !photoItems.length;
 
   $("gattState").textContent=
   String(!!state.server?.connected);
@@ -833,7 +902,7 @@ function updateButtons(){
 }
 
 
-/* PACKET */
+/* PACKETS */
 
 function frame(command,data=[1],prefix=false){
 
@@ -977,7 +1046,6 @@ async function rawGattWrite(bytes){
   }
 }
 
-
 async function writeRaw(bytes,chunkDelay=3){
 
   for(let i=0;i<bytes.length;i+=20){
@@ -1060,7 +1128,6 @@ function hasLateD3(startIndex){
   return false;
 }
 
-
 async function settleBeforePageEnd(
   startIndex,
   status
@@ -1114,7 +1181,6 @@ function whiteCanvas(width,height){
 
   return canvas;
 }
-
 
 function wrapText(ctx,text,maxWidth){
 
@@ -1203,7 +1269,6 @@ function canvasRows(canvas){
   return rows;
 }
 
-
 function sameRow(a,b){
 
   if(a.length!==b.length){
@@ -1211,6 +1276,7 @@ function sameRow(a,b){
   }
 
   for(let i=0;i<a.length;i++){
+
     if(a[i]!==b[i]){
       return false;
     }
@@ -1218,7 +1284,6 @@ function sameRow(a,b){
 
   return true;
 }
-
 
 function rowsToRuns(rows){
 
@@ -1280,13 +1345,11 @@ function rowsToRuns(rows){
   return runs;
 }
 
-
 function canvasToRuns(canvas){
   return rowsToRuns(
     canvasRows(canvas)
   );
 }
-
 
 function rowPacket(run){
 
@@ -1327,7 +1390,6 @@ function createBarcodeCanvas(value){
 
   return raw;
 }
-
 
 function stretchBarcode(
   raw,
@@ -1450,7 +1512,6 @@ async function createQRCanvas(value,dots){
 
 let products=[];
 
-
 function escapeHtml(value){
 
   return String(value||"")
@@ -1459,7 +1520,6 @@ function escapeHtml(value){
   .replaceAll(">","&gt;")
   .replaceAll('"',"&quot;");
 }
-
 
 function renderProducts(){
 
@@ -1516,7 +1576,6 @@ function renderProducts(){
   });
 }
 
-
 $("addBtn").onclick=()=>{
 
   const item={
@@ -1541,7 +1600,6 @@ $("addBtn").onclick=()=>{
   renderProducts();
   renderGeneralPreview();
 };
-
 
 $("clearProductsBtn").onclick=()=>{
 
@@ -1935,7 +1993,6 @@ async function buildProductCanvas(item){
       );
 
       y+=layer.canvas.height;
-
       continue;
     }
 
@@ -1964,9 +2021,6 @@ async function buildProductCanvas(item){
 
   return canvas;
 }
-
-
-/* GENERAL PREVIEW */
 
 async function renderGeneralPreview(){
 
@@ -2316,8 +2370,6 @@ function buildBigCanvas(text){
 }
 
 
-/* BIG FLOYD */
-
 function bigFloydRows(
   canvas,
   blackPercent
@@ -2402,35 +2454,48 @@ function bigFloydRows(
     const reverse=
     y%2===1;
 
-    if(!reverse){
+    const start=
+    reverse?w-1:0;
 
-      for(let x=0;x<w;x++){
+    const end=
+    reverse?-1:w;
 
-        const idx=
-        y*w+x;
+    const step=
+    reverse?-1:1;
 
-        const old=
-        clamp(
-          gray[idx],
-          0,
-          255
-        );
+    for(
+      let x=start;
+      x!==end;
+      x+=step
+    ){
 
-        const newValue=
-        old<threshold
-        ?0
-        :255;
+      const idx=
+      y*w+x;
 
-        const error=
-        old-newValue;
+      const old=
+      clamp(
+        gray[idx],
+        0,
+        255
+      );
 
-        if(newValue===0){
+      const newValue=
+      old<threshold
+      ?0
+      :255;
 
-          row[x>>3]|=
-          0x80>>(x&7);
+      const error=
+      old-newValue;
 
-          black++;
-        }
+      if(newValue===0){
+
+        row[x>>3]|=
+        0x80>>(x&7);
+
+        black++;
+      }
+
+      if(!reverse){
 
         if(x+1<w){
           gray[idx+1]+=
@@ -2458,41 +2523,8 @@ function bigFloydRows(
           error*1/16;
         }
       }
-    }
 
-    else{
-
-      for(
-        let x=w-1;
-        x>=0;
-        x--
-      ){
-
-        const idx=
-        y*w+x;
-
-        const old=
-        clamp(
-          gray[idx],
-          0,
-          255
-        );
-
-        const newValue=
-        old<threshold
-        ?0
-        :255;
-
-        const error=
-        old-newValue;
-
-        if(newValue===0){
-
-          row[x>>3]|=
-          0x80>>(x&7);
-
-          black++;
-        }
+      else{
 
         if(x-1>=0){
           gray[idx-1]+=
@@ -2539,7 +2571,6 @@ function bigRows(canvas){
     $("bigProcess").value===
     "raw"
   ){
-
     return canvasRows(canvas);
   }
 
@@ -2609,21 +2640,14 @@ $("bigPreviewBtn").onclick=
 renderBigPreview;
 
 
-/* PHOTO */
+/* PHOTO BATCH */
 
-let photoImage=null;
+let photoItems=[];
 
 
-$("photoFile").addEventListener(
-  "change",
-  event=>{
+function readPhotoFile(file){
 
-    const file=
-    event.target.files?.[0];
-
-    if(!file){
-      return;
-    }
+  return new Promise((resolve,reject)=>{
 
     const reader=
     new FileReader();
@@ -2635,35 +2659,265 @@ $("photoFile").addEventListener(
 
       img.onload=()=>{
 
-        photoImage=img;
+        resolve({
+          id:
+          `${Date.now()}_${Math.random()}`,
 
-        $("photoStatus").className=
-        "status ok";
+          name:
+          file.name||"照片",
 
-        $("photoStatus").textContent=
-        `✅ 已載入照片 ${img.naturalWidth}×${img.naturalHeight}`;
+          image:
+          img,
 
-        renderPhotoPreview();
-
-        updateButtons();
+          src:
+          reader.result
+        });
       };
 
-      img.onerror=()=>{
-
-        $("photoStatus").className=
-        "status err";
-
-        $("photoStatus").textContent=
-        "照片讀取失敗";
-      };
+      img.onerror=()=>reject(
+        new Error("照片讀取失敗")
+      );
 
       img.src=
       reader.result;
     };
 
+    reader.onerror=()=>reject(
+      new Error("照片檔案讀取失敗")
+    );
+
     reader.readAsDataURL(file);
+  });
+}
+
+
+$("photoFile").addEventListener(
+  "change",
+  async event=>{
+
+    const files=
+    Array.from(
+      event.target.files||[]
+    );
+
+    if(!files.length){
+      return;
+    }
+
+    $("photoStatus").className=
+    "status warn";
+
+    $("photoStatus").textContent=
+    `正在載入 ${files.length} 張照片…`;
+
+    try{
+
+      for(const file of files){
+
+        const item=
+        await readPhotoFile(file);
+
+        photoItems.push(item);
+      }
+
+      renderPhotoList();
+      renderPhotoPreview();
+
+      $("photoStatus").className=
+      "status ok";
+
+      $("photoStatus").textContent=
+      `✅ 已加入 ${photoItems.length} 張照片`;
+
+      updateButtons();
+    }
+
+    catch(error){
+
+      $("photoStatus").className=
+      "status err";
+
+      $("photoStatus").textContent=
+      "❌ "+errorText(error);
+    }
+
+    finally{
+
+      event.target.value="";
+    }
   }
 );
+
+
+function renderPhotoList(){
+
+  const box=
+  $("photoList");
+
+  box.innerHTML="";
+
+  if(!photoItems.length){
+
+    box.innerHTML=
+    '<div class="help" style="margin-top:10px">尚未加入照片</div>';
+
+    updateButtons();
+
+    return;
+  }
+
+  photoItems.forEach((item,index)=>{
+
+    const div=
+    document.createElement("div");
+
+    div.className=
+    "photoItem";
+
+    div.innerHTML=`
+      <img
+        class="photoThumb"
+        src="${item.src}"
+        alt=""
+      >
+
+      <div>
+        <b>第 ${index+1} 張</b>
+
+        <div class="help">
+        ${escapeHtml(item.name)}<br>
+        ${item.image.naturalWidth} × ${item.image.naturalHeight}
+        </div>
+
+        <div class="photoActions">
+
+          <button
+            class="gray photoUp"
+            data-i="${index}">
+            ↑ 上移
+          </button>
+
+          <button
+            class="gray photoDown"
+            data-i="${index}">
+            ↓ 下移
+          </button>
+
+          <button
+            class="danger photoDelete"
+            data-i="${index}">
+            刪除
+          </button>
+
+        </div>
+      </div>
+    `;
+
+    box.appendChild(div);
+  });
+
+
+  document
+  .querySelectorAll(".photoDelete")
+  .forEach(button=>{
+
+    button.onclick=()=>{
+
+      const i=
+      Number(button.dataset.i);
+
+      photoItems.splice(i,1);
+
+      renderPhotoList();
+      renderPhotoPreview();
+
+      $("photoStatus").textContent=
+      photoItems.length
+      ?`目前 ${photoItems.length} 張照片`
+      :"尚未選擇照片";
+
+      updateButtons();
+    };
+  });
+
+
+  document
+  .querySelectorAll(".photoUp")
+  .forEach(button=>{
+
+    button.onclick=()=>{
+
+      const i=
+      Number(button.dataset.i);
+
+      if(i<=0){
+        return;
+      }
+
+      const temp=
+      photoItems[i-1];
+
+      photoItems[i-1]=
+      photoItems[i];
+
+      photoItems[i]=
+      temp;
+
+      renderPhotoList();
+      renderPhotoPreview();
+    };
+  });
+
+
+  document
+  .querySelectorAll(".photoDown")
+  .forEach(button=>{
+
+    button.onclick=()=>{
+
+      const i=
+      Number(button.dataset.i);
+
+      if(
+        i>=
+        photoItems.length-1
+      ){
+        return;
+      }
+
+      const temp=
+      photoItems[i+1];
+
+      photoItems[i+1]=
+      photoItems[i];
+
+      photoItems[i]=
+      temp;
+
+      renderPhotoList();
+      renderPhotoPreview();
+    };
+  });
+
+  updateButtons();
+}
+
+
+$("clearPhotosBtn").onclick=()=>{
+
+  photoItems=[];
+
+  renderPhotoList();
+  renderPhotoPreview();
+
+  $("photoStatus").className=
+  "status";
+
+  $("photoStatus").textContent=
+  "尚未選擇照片";
+
+  updateButtons();
+};
 
 
 function photoPageSettings(){
@@ -2701,16 +2955,13 @@ function photoPageSettings(){
       $("photoPaperMode").value
     ),
 
-    stable:false
+    stable:
+    false
   };
 }
 
 
-function buildPhotoCanvas(){
-
-  if(!photoImage){
-    return null;
-  }
+function buildPhotoCanvas(item){
 
   const settings=
   photoPageSettings();
@@ -2723,6 +2974,9 @@ function buildPhotoCanvas(){
 
   const ctx=
   canvas.getContext("2d");
+
+  const photoImage=
+  item.image;
 
   const rotation=
   Number(
@@ -2814,6 +3068,8 @@ function buildPhotoCanvas(){
   return canvas;
 }
 
+
+/* PHOTO RASTER */
 
 function thresholdPhotoRows(
   canvas,
@@ -3160,7 +3416,7 @@ function renderPhotoPreview(){
 
   box.innerHTML="";
 
-  if(!photoImage){
+  if(!photoItems.length){
 
     box.innerHTML=
     '<div class="help">選擇照片後顯示預覽</div>';
@@ -3168,22 +3424,34 @@ function renderPhotoPreview(){
     return;
   }
 
-  const canvas=
-  buildPhotoCanvas();
+  photoItems.forEach((item,index)=>{
 
-  if(!canvas){
-    return;
-  }
+    const canvas=
+    buildPhotoCanvas(item);
 
-  const holder=
-  document.createElement("div");
+    const holder=
+    document.createElement("div");
 
-  holder.className=
-  "previewPage";
+    holder.className=
+    "previewPage";
 
-  holder.appendChild(canvas);
+    const title=
+    document.createElement("div");
 
-  box.appendChild(holder);
+    title.className=
+    "help";
+
+    title.style.padding=
+    "5px";
+
+    title.textContent=
+    `第 ${index+1} 張`;
+
+    holder.appendChild(title);
+    holder.appendChild(canvas);
+
+    box.appendChild(holder);
+  });
 }
 
 $("photoPreviewBtn").onclick=
@@ -3479,7 +3747,6 @@ async()=>{
       products=[];
 
       renderProducts();
-
       renderGeneralPreview();
     }
   }
@@ -3503,7 +3770,6 @@ async()=>{
   finally{
 
     state.running=false;
-
     updateButtons();
   }
 };
@@ -3551,18 +3817,6 @@ async()=>{
       buildBigCanvas(text)
     );
 
-    log(
-      "========== V20.3 BIG START =========="
-    );
-
-    log(
-      `紙張：${$("bigPaperWidth").value}×${$("bigPaperHeight").value}mm｜模式${settings.labelType}`
-    );
-
-    log(
-      `FLOYD：${$("bigProcess").value}｜黑度${$("bigPhotoBlack").value}%｜濃度${$("bigDensity").value}`
-    );
-
     await beginPrint(
       Number(
         $("bigDensity").value
@@ -3601,10 +3855,6 @@ async()=>{
 
     status.textContent=
     `✅ 大字列印完成，共 ${canvases.length} 張`;
-
-    log(
-      "========== V20.3 BIG COMPLETE =========="
-    );
   }
 
   catch(error){
@@ -3626,19 +3876,20 @@ async()=>{
   finally{
 
     state.running=false;
-
     updateButtons();
   }
 };
 
 
-/* PHOTO PRINT */
+/* PHOTO BATCH PRINT */
 
 $("photoPrintBtn").onclick=
 async()=>{
 
-  if(!photoImage){
+  if(!photoItems.length){
+
     alert("請先選擇照片");
+
     return;
   }
 
@@ -3658,19 +3909,21 @@ async()=>{
   "status warn";
 
   status.textContent=
-  "準備照片列印…";
+  `準備列印 ${photoItems.length} 張照片…`;
 
   try{
-
-    const canvas=
-    buildPhotoCanvas();
 
     const settings=
     photoPageSettings();
 
-    const runs=
-    rowsToRuns(
-      photoRows(canvas)
+    const canvases=
+    photoItems.map(
+      item=>
+      buildPhotoCanvas(item)
+    );
+
+    log(
+      `========== V20.4 PHOTO BATCH START｜${canvases.length} 張 ==========`
     );
 
     await beginPrint(
@@ -3680,14 +3933,32 @@ async()=>{
       settings.labelType
     );
 
-    await sendRunsPage(
-      canvas,
-      runs,
-      0,
-      1,
-      status,
-      settings.stable
-    );
+    for(
+      let i=0;
+      i<canvases.length;
+      i++
+    ){
+
+      const canvas=
+      canvases[i];
+
+      status.textContent=
+      `正在處理第 ${i+1}/${canvases.length} 張照片…`;
+
+      const runs=
+      rowsToRuns(
+        photoRows(canvas)
+      );
+
+      await sendRunsPage(
+        canvas,
+        runs,
+        i,
+        canvases.length,
+        status,
+        settings.stable
+      );
+    }
 
     await delay(500);
 
@@ -3697,7 +3968,11 @@ async()=>{
     "status ok";
 
     status.textContent=
-    "✅ 照片列印完成";
+    `✅ 已完成 ${canvases.length} 張照片`;
+
+    log(
+      "========== V20.4 PHOTO BATCH COMPLETE =========="
+    );
   }
 
   catch(error){
@@ -3876,6 +4151,8 @@ async()=>{
 
   state.stop=true;
 
+  log("使用者按下停止");
+
   try{
     await rawGattWrite(
       CMD.pageEnd()
@@ -3953,6 +4230,7 @@ async()=>{
 
       {
         fps:10,
+
         qrbox:{
           width:260,
           height:180
@@ -4058,6 +4336,7 @@ function updateMode(){
   }
 
   else if(photo){
+    renderPhotoList();
     renderPhotoPreview();
   }
 
@@ -4182,6 +4461,7 @@ async()=>{
 renderProducts();
 renderGeneralPreview();
 renderBigPreview();
+renderPhotoList();
 renderPhotoPreview();
 updateMode();
 updateButtons();
