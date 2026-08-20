@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>商品條碼／QR／大字／照片｜B3S V20.6.3</title>
+<title>商品條碼／QR／大字／照片｜B3S V20.6.4</title>
 <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
@@ -13,7 +13,7 @@
 </head>
 <body>
 <div class="wrap">
-<h1>商品條碼／QR／大字／照片</h1><div class="help">B3S V20.6.3 正式版</div>
+<h1>商品條碼／QR／大字／照片</h1><div class="help">B3S V20.6.4 正式版</div>
 
 <div class="card"><h2>🖨 B3S 印表機</h2><div id="bleStatus" class="status">尚未連線</div><div class="row"><button id="connectBtn" class="success">🔵 連接 B3S</button><button id="disconnectBtn" class="gray" disabled>中斷連線</button><button id="stopBtn" class="danger" disabled>⏹ 停止列印</button></div><div class="help" style="margin-top:8px">裝置：<span id="deviceName">—</span><br>GATT：<span id="gattState">false</span><br>列印通道：<span id="channelState">未就緒</span></div></div>
 
@@ -24,7 +24,7 @@
 <div id="batchBox" class="hidden" style="margin-top:12px"><div class="note">每行一筆。支援：<br>商品名稱|條碼<br>商品名稱|條碼|QR內容|自訂文字<br>或只貼條碼。</div><label style="margin-top:10px">批次資料</label><textarea id="batchText" placeholder="可口可樂|4710123456789\n雪碧|4710987654321\n4710000000000"></textarea><div class="row"><button id="batchAddBtn" class="primary">全部加入</button><button id="batchClearBtn" class="gray">清空輸入</button></div><div id="batchStatus" class="help"></div></div>
 <div id="products"></div></div>
 
-<div class="card"><h2>一般／小票紙列印設定</h2><div class="grid3"><div><label>紙張寬度</label><select id="paperWidth"><option value="30">30 mm</option><option value="40">40 mm</option><option value="50">50 mm</option><option value="58" selected>58 mm</option><option value="60">60 mm</option><option value="70">70 mm</option><option value="72">72 mm</option><option value="75">75 mm</option><option value="77">77 mm</option></select></div><div><label>紙張模式</label><select id="paperMode"><option value="1">間隙紙</option><option value="2">黑標紙</option><option value="3" selected>連續紙／小票紙</option><option value="4">穿孔紙</option><option value="5">透明紙</option></select></div><div><label>列印濃度</label><select id="density"><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></div><div><label>商品間距（mm）</label><input id="itemGap" type="number" min="1" max="20" value="2"></div><div><label>商品名稱字體</label><input id="nameFont" type="number" min="10" max="150" value="30"></div><div><label>條碼號碼字體</label><input id="numberFont" type="number" min="10" max="150" value="24"></div><div><label>自訂文字字體</label><input id="textFont" type="number" min="12" max="150" value="36"></div><div><label>條碼高度（cm）</label><input id="barcodeHeight" type="number" min=".5" max="20" step=".1" value="2"></div><div><label>條碼寬度</label><select id="barcodeWidth"><option value="40">40%</option><option value="50">50%</option><option value="60">60%</option><option value="70">70%</option><option value="80">80%</option><option value="90">90%</option><option value="100" selected>100%</option></select></div><div><label>條碼位置</label><select id="barcodeAlign"><option value="left">靠左</option><option value="center" selected>置中</option><option value="right">靠右</option></select></div><div><label>整組左右位移（mm）</label><input id="groupMoveLeftRight" type="number" step=".5" value="0" placeholder="負數往左／正數往右"></div><div><label>整組上下位移（mm）</label><input id="groupMoveUpDown" type="number" step=".5" value="0" placeholder="負數往上／正數往下"></div><div><label>條碼左右微調（mm）</label><input id="barcodeX" type="number" step=".5" value="0" placeholder="負數往左／正數往右"></div><div><label>QR Code 大小（cm）</label><input id="qrSize" type="number" min="1" max="10" step=".1" value="3"></div></div><hr><label><input id="syncBarcodeText" type="checkbox" checked> 條碼高度與商品名稱／條碼號碼同步縮放</label><div class="help" style="margin-top:8px">整組左右／上下位移會讓商品名稱、條碼、條碼號碼、QR、自訂文字與底部文字一起移動；條碼左右微調只調整條碼。</div><hr><label>底部文字（可多行）</label><textarea id="footer"></textarea><label style="margin-top:10px"><input id="autoClear" type="checkbox"> 列印成功後自動清空商品</label></div>
+<div class="card"><h2>一般／小票紙列印設定</h2><div class="grid3"><div><label>紙張寬度</label><select id="paperWidth"><option value="30">30 mm</option><option value="40">40 mm</option><option value="50">50 mm</option><option value="58" selected>58 mm</option><option value="60">60 mm</option><option value="70">70 mm</option><option value="72">72 mm</option><option value="75">75 mm</option><option value="77">77 mm</option></select></div><div><label>紙張模式</label><select id="paperMode"><option value="1">間隙紙</option><option value="2">黑標紙</option><option value="3" selected>連續紙／小票紙</option><option value="4">穿孔紙</option><option value="5">透明紙</option></select></div><div><label>列印濃度</label><select id="density"><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></div><div><label>商品與商品間距（mm）</label><input id="productGap" type="number" min="0" max="20" step="0.5" value="1" placeholder="建議 0～2"></div><div><label>商品名稱與條碼間距（mm）</label><input id="nameBarcodeGap" type="number" min="0" max="20" step="0.5" value="1"></div><div><label>條碼與條碼號碼間距（mm）</label><input id="barcodeNumberGap" type="number" min="0" max="20" step="0.5" value="0.5"></div><div><label>其他內容間距（mm）</label><input id="contentGap" type="number" min="0" max="20" step="0.5" value="1"></div><div><label>商品名稱字體</label><input id="nameFont" type="number" min="10" max="150" value="30"></div><div><label>條碼號碼字體</label><input id="numberFont" type="number" min="10" max="150" value="24"></div><div><label>自訂文字字體</label><input id="textFont" type="number" min="12" max="150" value="36"></div><div><label>條碼高度（cm）</label><input id="barcodeHeight" type="number" min=".5" max="20" step=".1" value="2"></div><div><label>條碼寬度</label><select id="barcodeWidth"><option value="40">40%</option><option value="50">50%</option><option value="60">60%</option><option value="70">70%</option><option value="80">80%</option><option value="90">90%</option><option value="100" selected>100%</option></select></div><div><label>條碼位置</label><select id="barcodeAlign"><option value="left">靠左</option><option value="center" selected>置中</option><option value="right">靠右</option></select></div><div><label>整組左右位移（mm）</label><input id="groupMoveLeftRight" type="number" step=".5" value="0" placeholder="負數往左／正數往右"></div><div><label>整組上下位移（mm）</label><input id="groupMoveUpDown" type="number" step=".5" value="0" placeholder="負數往上／正數往下"></div><div><label>條碼左右微調（mm）</label><input id="barcodeX" type="number" step=".5" value="0" placeholder="負數往左／正數往右"></div><div><label>QR Code 大小（cm）</label><input id="qrSize" type="number" min="1" max="10" step=".1" value="3"></div></div><hr><label><input id="syncBarcodeText" type="checkbox" checked> 條碼高度與商品名稱／條碼號碼同步縮放</label><div class="help" style="margin-top:8px">整組左右／上下位移會讓商品名稱、條碼、條碼號碼、QR、自訂文字與底部文字一起移動；條碼左右微調只調整條碼。</div><div class="help" style="margin-top:6px">間距可分開調整：商品與商品、商品名稱與條碼、條碼與號碼，以及其他內容。商品與商品間距預設 1mm，可調到 0mm。</div><hr><label>底部文字（可多行）</label><textarea id="footer"></textarea><label style="margin-top:10px"><input id="autoClear" type="checkbox"> 列印成功後自動清空商品</label></div>
 <div class="card"><h2>商品預覽</h2><div class="row"><button id="previewBtn" class="gray">更新預覽</button><button id="printAllBtn" class="primary" disabled>🖨 列印全部商品</button></div><div id="generalPreview" class="previewBox"></div><div id="generalStatus" class="status">等待列印</div></div>
 </div>
 
@@ -63,7 +63,106 @@ $("addBtn").onclick=()=>{const item={name:$("productName").value.trim(),barcode:
 $("clearProductsBtn").onclick=()=>{products=[];renderProducts();renderGeneralPreview()};
 $("batchToggleBtn").onclick=()=>$("batchBox").classList.toggle("hidden");$("batchClearBtn").onclick=()=>{$("batchText").value="";$("batchStatus").textContent=""};
 $("batchAddBtn").onclick=()=>{const lines=$("batchText").value.split(/\r?\n/).map(v=>v.trim()).filter(Boolean);if(!lines.length){$("batchStatus").textContent="沒有可加入的資料";return}let added=0,skipped=0;const invalid=[];lines.forEach((line,lineIndex)=>{const parts=line.split("|").map(v=>v.trim());let item;if(parts.length===1){const only=normalizeBarcode(parts[0]);if(/^\d+$/.test(only))item={name:"",barcode:only,qr:"",text:""};else item={name:parts[0],barcode:"",qr:"",text:""}}else item={name:parts[0]||"",barcode:normalizeBarcode(parts[1]||""),qr:parts[2]||"",text:parts[3]||""};if(!item.name&&!item.barcode&&!item.qr&&!item.text){skipped++;return}if(item.barcode&&!/^\d+$/.test(item.barcode)){invalid.push(`第 ${lineIndex+1} 行：${item.barcode}`);skipped++;return}products.push(item);added++});renderProducts();renderGeneralPreview();let msg=`已加入 ${added} 筆${skipped?`，略過 ${skipped} 筆`:""}`;if(invalid.length)msg+=`\n條碼只能是數字：\n${invalid.slice(0,8).join("\n")}${invalid.length>8?`\n…另有 ${invalid.length-8} 筆`:""}`;$("batchStatus").textContent=msg;$("batchStatus").style.whiteSpace="pre-line"};
-async function buildProductCanvas(item){const mode=$("mode").value,width=paperDots(Number($("paperWidth").value)),margin=Math.max(8,mmToDots(2)),gap=Math.max(2,mmToDots(Number($("itemGap").value))),groupX=mmToDots(Number($("groupMoveLeftRight").value)||0),groupY=mmToDots(Number($("groupMoveUpDown").value)||0),bh=Number($("barcodeHeight").value)||2,sync=$("syncBarcodeText").checked,scale=sync?clamp(bh/2,.5,5):1,nameFont=sync?Math.round((Number($("nameFont").value)||30)*scale):(Number($("nameFont").value)||30),numberFont=sync?Math.round((Number($("numberFont").value)||24)*scale):(Number($("numberFont").value)||24),textFont=Number($("textFont").value)||36,barcodeHeight=mmToDots(bh*10),barcodePercent=Number($("barcodeWidth").value)/100,qrDots=mmToDots((Number($("qrSize").value)||3)*10),footer=$("footer").value.trim(),layers=[];const spacer=(height=gap)=>layers.push({type:"space",height});const needName=["name_barcode_number","name_barcode","name","name_qr","name_qr_text","name_barcode_qr","name_barcode_number_qr","name_text"].includes(mode),needBarcode=["name_barcode_number","name_barcode","barcode_number","barcode","name_barcode_qr","name_barcode_number_qr"].includes(mode),needNumber=["name_barcode_number","barcode_number","name_barcode_number_qr"].includes(mode),needQR=["name_qr","qr","qr_text","name_qr_text","name_barcode_qr","name_barcode_number_qr"].includes(mode),needText=["qr_text","name_qr_text","name_text","text"].includes(mode);if(needName&&item.name){layers.push({type:"text",text:item.name,font:nameFont,weight:"700"});spacer()}if(needBarcode&&item.barcode){const raw=createBarcodeCanvas(item.barcode),target=Math.max(32,Math.floor((width-margin*2)*barcodePercent)),bc=stretchBarcode(raw,target,barcodeHeight);layers.push({type:"image",canvas:bc,align:$("barcodeAlign").value,xOffset:mmToDots(Number($("barcodeX").value)||0)});spacer()}if(needNumber&&item.barcode){layers.push({type:"text",text:item.barcode,font:numberFont,weight:"500"});spacer()}if(needQR&&(item.qr||item.barcode)){layers.push({type:"image",canvas:await createQRCanvas(item.qr||item.barcode,qrDots),align:"center",xOffset:0});spacer()}if(needText&&item.text){layers.push({type:"text",text:item.text,font:textFont,weight:"700"});spacer()}if(footer){for(const line of footer.split(/\r?\n/)){if(!line)continue;layers.push({type:"text",text:line,font:20,weight:"500"});spacer(Math.max(2,gap/2))}}if(layers.at(-1)?.type==="space")layers.pop();let h=margin*2;const measure=document.createElement("canvas").getContext("2d");for(const l of layers){if(l.type==="space")h+=l.height;else if(l.type==="image")h+=l.canvas.height;else{measure.font=`${l.weight} ${l.font}px "PingFang TC",sans-serif`;l.lines=wrapText(measure,l.text,width-margin*2);l.lineHeight=Math.ceil(l.font*1.25);h+=l.lineHeight*l.lines.length}}const c=whiteCanvas(width,Math.max(80,Math.ceil(h))),ctx=c.getContext("2d");ctx.save();ctx.translate(groupX,groupY);let y=margin;for(const l of layers){if(l.type==="space"){y+=l.height;continue}if(l.type==="image"){let x=margin;if(l.align==="center")x=(width-l.canvas.width)/2;else if(l.align==="right")x=width-margin-l.canvas.width;x=clamp(x+(l.xOffset||0),0,width-l.canvas.width);ctx.drawImage(l.canvas,Math.round(x),Math.round(y));y+=l.canvas.height;continue}ctx.fillStyle="#000";ctx.font=`${l.weight} ${l.font}px -apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif`;ctx.textAlign="center";ctx.textBaseline="top";for(const line of l.lines){ctx.fillText(line,width/2,y);y+=l.lineHeight}}ctx.restore();return c}
+async function buildProductCanvas(item){
+  const mode=$("mode").value;
+  const width=paperDots(Number($("paperWidth").value));
+  const productGapDots=Math.max(0,mmToDots(Number($("productGap").value)||0));
+  const topPad=Math.floor(productGapDots/2);
+  const bottomPad=productGapDots-topPad;
+  const nameBarcodeGap=Math.max(0,mmToDots(Number($("nameBarcodeGap").value)||0));
+  const barcodeNumberGap=Math.max(0,mmToDots(Number($("barcodeNumberGap").value)||0));
+  const contentGap=Math.max(0,mmToDots(Number($("contentGap").value)||0));
+  const sideMargin=Math.max(8,mmToDots(2));
+  const groupX=mmToDots(Number($("groupMoveLeftRight").value)||0);
+  const groupY=mmToDots(Number($("groupMoveUpDown").value)||0);
+  const bh=Number($("barcodeHeight").value)||2;
+  const sync=$("syncBarcodeText").checked;
+  const scale=sync?clamp(bh/2,.5,5):1;
+  const nameFont=sync?Math.round((Number($("nameFont").value)||30)*scale):(Number($("nameFont").value)||30);
+  const numberFont=sync?Math.round((Number($("numberFont").value)||24)*scale):(Number($("numberFont").value)||24);
+  const textFont=Number($("textFont").value)||36;
+  const barcodeHeight=mmToDots(bh*10);
+  const barcodePercent=Number($("barcodeWidth").value)/100;
+  const qrDots=mmToDots((Number($("qrSize").value)||3)*10);
+  const footer=$("footer").value.trim();
+  const blocks=[];
+
+  function gapBetween(prevKind,nextKind){
+    if(prevKind==="name"&&nextKind==="barcode")return nameBarcodeGap;
+    if(prevKind==="barcode"&&nextKind==="number")return barcodeNumberGap;
+    return contentGap;
+  }
+  function addBlock(block){
+    const prev=blocks.length?blocks[blocks.length-1]:null;
+    if(prev)block.gapBefore=gapBetween(prev.kind,block.kind);
+    else block.gapBefore=0;
+    blocks.push(block);
+  }
+
+  const needName=["name_barcode_number","name_barcode","name","name_qr","name_qr_text","name_barcode_qr","name_barcode_number_qr","name_text"].includes(mode);
+  const needBarcode=["name_barcode_number","name_barcode","barcode_number","barcode","name_barcode_qr","name_barcode_number_qr"].includes(mode);
+  const needNumber=["name_barcode_number","barcode_number","name_barcode_number_qr"].includes(mode);
+  const needQR=["name_qr","qr","qr_text","name_qr_text","name_barcode_qr","name_barcode_number_qr"].includes(mode);
+  const needText=["qr_text","name_qr_text","name_text","text"].includes(mode);
+
+  if(needName&&item.name)addBlock({kind:"name",type:"text",text:item.name,font:nameFont,weight:"700"});
+  if(needBarcode&&item.barcode){
+    const raw=createBarcodeCanvas(item.barcode);
+    const target=Math.max(32,Math.floor((width-sideMargin*2)*barcodePercent));
+    const bc=stretchBarcode(raw,target,barcodeHeight);
+    addBlock({kind:"barcode",type:"image",canvas:bc,align:$("barcodeAlign").value,xOffset:mmToDots(Number($("barcodeX").value)||0)});
+  }
+  if(needNumber&&item.barcode)addBlock({kind:"number",type:"text",text:item.barcode,font:numberFont,weight:"500"});
+  if(needQR&&(item.qr||item.barcode))addBlock({kind:"qr",type:"image",canvas:await createQRCanvas(item.qr||item.barcode,qrDots),align:"center",xOffset:0});
+  if(needText&&item.text)addBlock({kind:"text",type:"text",text:item.text,font:textFont,weight:"700"});
+  if(footer){
+    for(const line of footer.split(/\r?\n/)){
+      if(!line)continue;
+      addBlock({kind:"footer",type:"text",text:line,font:20,weight:"500"});
+    }
+  }
+
+  let h=topPad+bottomPad;
+  const measure=document.createElement("canvas").getContext("2d");
+  for(const b of blocks){
+    h+=b.gapBefore||0;
+    if(b.type==="image")h+=b.canvas.height;
+    else{
+      measure.font=`${b.weight} ${b.font}px "PingFang TC",sans-serif`;
+      b.lines=wrapText(measure,b.text,width-sideMargin*2);
+      b.lineHeight=Math.ceil(b.font*1.25);
+      h+=b.lineHeight*b.lines.length;
+    }
+  }
+
+  const c=whiteCanvas(width,Math.max(24,Math.ceil(h)));
+  const ctx=c.getContext("2d");
+  ctx.save();
+  ctx.translate(groupX,groupY);
+  let y=topPad;
+  for(const b of blocks){
+    y+=b.gapBefore||0;
+    if(b.type==="image"){
+      let x=sideMargin;
+      if(b.align==="center")x=(width-b.canvas.width)/2;
+      else if(b.align==="right")x=width-sideMargin-b.canvas.width;
+      x=clamp(x+(b.xOffset||0),0,width-b.canvas.width);
+      ctx.drawImage(b.canvas,Math.round(x),Math.round(y));
+      y+=b.canvas.height;
+      continue;
+    }
+    ctx.fillStyle="#000";
+    ctx.font=`${b.weight} ${b.font}px -apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif`;
+    ctx.textAlign="center";
+    ctx.textBaseline="top";
+    for(const line of b.lines){
+      ctx.fillText(line,width/2,y);
+      y+=b.lineHeight;
+    }
+  }
+  ctx.restore();
+  return c;
+}
 async function renderGeneralPreview(){const box=$("generalPreview");box.innerHTML="";if(!products.length){box.innerHTML='<div class="help">加入商品後顯示預覽</div>';return}try{for(const p of products){const c=await buildProductCanvas(p),h=document.createElement("div");h.className="previewPage";h.appendChild(c);box.appendChild(h)}}catch(e){box.innerHTML=`<div class="status err">${escapeHtml(errorText(e))}</div>`}}$("previewBtn").onclick=renderGeneralPreview;
 function splitBigText(){const raw=$("bigText").value,mode=$("splitMode").value,cp=$("charsPerPage").value;let t=[];if(mode==="space")t=raw.trim().split(/\s+/).filter(Boolean);else if(mode==="line")t=raw.split(/\r?\n/).map(v=>v.trim()).filter(Boolean);else t=Array.from(raw.replace(/\s+/g,""));if(mode!=="char"||cp==="auto")return t;const n=Math.max(1,Number(cp)||1),p=[];for(let i=0;i<t.length;i+=n)p.push(t.slice(i,i+n).join(""));return p}
 function fitFont(ctx,text,maxW,maxH,weight){let low=20,high=1000,best=20;while(low<=high){const mid=Math.floor((low+high)/2);ctx.font=`${weight} ${mid}px Arial,-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif`;const m=ctx.measureText(text),h=(m.actualBoundingBoxAscent||mid*.8)+(m.actualBoundingBoxDescent||mid*.2);if(m.width<=maxW&&h<=maxH){best=mid;low=mid+1}else high=mid-1}return best}
@@ -93,7 +192,7 @@ $("disconnectBtn").onclick=()=>{try{state.device?.gatt?.disconnect()}catch{}stat
 $("stopBtn").onclick=async()=>{state.stop=true;log("使用者按下停止");try{await rawGattWrite(CMD.pageEnd())}catch{}await delay(100);try{await rawGattWrite(CMD.printEnd())}catch{}$("generalStatus").textContent="⏹ 已停止";$("bigStatus").textContent="⏹ 已停止";$("photoStatus").textContent="⏹ 已停止"};
 $("scanBtn").onclick=async()=>{const reader=$("reader");try{if(html5QrCode){await html5QrCode.stop().catch(()=>{});html5QrCode.clear();html5QrCode=null;reader.classList.add("hidden");$("scanBtn").textContent="📷 掃描條碼 / QR";return}reader.classList.remove("hidden");html5QrCode=new Html5Qrcode("reader");$("scanBtn").textContent="停止掃描";await html5QrCode.start({facingMode:"environment"},{fps:10,qrbox:{width:260,height:180}},async decoded=>{const v=String(decoded||"").trim();if(!v)return;if(/^\d+$/.test(v))$("barcode").value=v;else $("qrValue").value=v;try{await html5QrCode.stop()}catch{}html5QrCode.clear();html5QrCode=null;reader.classList.add("hidden");$("scanBtn").textContent="📷 掃描條碼 / QR"})}catch(e){alert("掃描器錯誤："+errorText(e));try{html5QrCode?.clear()}catch{}html5QrCode=null;reader.classList.add("hidden");$("scanBtn").textContent="📷 掃描條碼 / QR"}};
 function updateMode(){const v=$("mode").value,b=v==="big_sign",p=v==="photo";$("generalPanel").classList.toggle("hidden",b||p);$("bigPanel").classList.toggle("hidden",!b);$("photoPanel").classList.toggle("hidden",!p);if(b)renderBigPreview();else if(p){renderPhotoList();renderPhotoPreview()}else renderGeneralPreview()}$("mode").onchange=updateMode;
-["paperWidth","paperMode","nameFont","numberFont","textFont","barcodeHeight","barcodeWidth","barcodeAlign","groupMoveLeftRight","groupMoveUpDown","barcodeX","qrSize","itemGap","footer","syncBarcodeText"].forEach(id=>$(id).addEventListener("change",renderGeneralPreview));["bigText","bigPaperWidth","bigPaperHeight","bigPaperMode","splitMode","charsPerPage","bigFontMode","bigFontSize","bigBold","bigAlign","bigVAlign","bigMargin","bigX","bigY","bigProcess","bigPhotoBlack"].forEach(id=>$(id).addEventListener("change",renderBigPreview));["photoPaperPreset","photoPaperWidth","photoHeight","photoPaperMode","photoProcess","photoThreshold","photoSafeMargin","photoScale","photoRotate","photoX","photoY","photoFit"].forEach(id=>$(id).addEventListener("change",renderPhotoPreview));
+["paperWidth","paperMode","nameFont","numberFont","textFont","barcodeHeight","barcodeWidth","barcodeAlign","groupMoveLeftRight","groupMoveUpDown","barcodeX","qrSize","productGap","nameBarcodeGap","barcodeNumberGap","contentGap","footer","syncBarcodeText"].forEach(id=>$(id).addEventListener("change",renderGeneralPreview));["bigText","bigPaperWidth","bigPaperHeight","bigPaperMode","splitMode","charsPerPage","bigFontMode","bigFontSize","bigBold","bigAlign","bigVAlign","bigMargin","bigX","bigY","bigProcess","bigPhotoBlack"].forEach(id=>$(id).addEventListener("change",renderBigPreview));["photoPaperPreset","photoPaperWidth","photoHeight","photoPaperMode","photoProcess","photoThreshold","photoSafeMargin","photoScale","photoRotate","photoX","photoY","photoFit"].forEach(id=>$(id).addEventListener("change",renderPhotoPreview));
 $("clearLogBtn").onclick=()=>$("log").value="";$("copyLogBtn").onclick=async()=>{try{await navigator.clipboard.writeText($("log").value);alert("已複製")}catch{$("log").select()}};
 renderProducts();renderGeneralPreview();renderBigPreview();renderPhotoList();renderPhotoPreview();updateMode();updateButtons();
 </script>
