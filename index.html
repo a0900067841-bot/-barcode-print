@@ -1,811 +1,3 @@
-<!doctype html>
-<html lang="zh-Hant">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-
-<title>商品條碼／QR／大字／照片｜B3S V20.4</title>
-
-<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
-
-<style>
-*{box-sizing:border-box}
-
-body{
-  margin:0;
-  background:#f4f6f8;
-  color:#18202a;
-  font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif
-}
-
-.wrap{
-  max-width:920px;
-  margin:auto;
-  padding:14px
-}
-
-.card{
-  background:#fff;
-  border:1px solid #d8dee8;
-  border-radius:16px;
-  padding:15px;
-  margin-bottom:14px
-}
-
-h1{margin:0 0 4px;font-size:25px}
-h2{margin:0 0 12px;font-size:20px}
-
-.help{
-  color:#667085;
-  font-size:13px;
-  line-height:1.65
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:10px
-}
-
-.grid3{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:10px
-}
-
-@media(max-width:650px){
-  .grid,.grid3{grid-template-columns:1fr}
-}
-
-label{
-  display:block;
-  font-size:13px;
-  color:#475467;
-  margin-bottom:5px;
-  font-weight:700
-}
-
-input,select,textarea{
-  width:100%;
-  min-height:44px;
-  border:1px solid #cfd6e1;
-  border-radius:10px;
-  padding:9px 10px;
-  font-size:16px;
-  background:#fff
-}
-
-textarea{
-  min-height:90px;
-  resize:vertical
-}
-
-input[type="checkbox"]{
-  width:auto;
-  min-height:auto
-}
-
-button{
-  min-height:46px;
-  border:0;
-  border-radius:11px;
-  padding:9px 14px;
-  margin:3px;
-  font-size:15px;
-  font-weight:700
-}
-
-button:disabled{opacity:.4}
-
-.primary{background:#1265f3;color:#fff}
-.success{background:#e7f8ef;color:#087443}
-.danger{background:#d92d20;color:#fff}
-.gray{background:#e9edf3;color:#344054}
-.purple{background:#eee8ff;color:#5b37b7}
-
-.row{
-  display:flex;
-  flex-wrap:wrap;
-  gap:6px;
-  align-items:center
-}
-
-.status{
-  padding:11px;
-  border-radius:10px;
-  background:#f2f4f7;
-  margin-top:9px;
-  line-height:1.5
-}
-
-.ok{background:#ecfdf3;color:#067647}
-.warn{background:#fff8e6;color:#8a5a00}
-.err{background:#fff1f0;color:#d92d20}
-
-.verified{
-  background:#ecfdf3;
-  border:1px solid #abefc6;
-  color:#067647;
-  border-radius:10px;
-  padding:10px;
-  font-weight:700;
-  line-height:1.65
-}
-
-.note{
-  background:#fff8e6;
-  border:1px solid #f4d58d;
-  color:#7a5200;
-  border-radius:10px;
-  padding:10px;
-  line-height:1.65
-}
-
-.item{
-  border:1px solid #e0e5ec;
-  border-radius:13px;
-  padding:11px;
-  margin:8px 0;
-  background:#fafbfc
-}
-
-.photoItem{
-  display:grid;
-  grid-template-columns:86px 1fr;
-  gap:10px;
-  align-items:center;
-  border:1px solid #e0e5ec;
-  border-radius:13px;
-  padding:10px;
-  margin:8px 0;
-  background:#fafbfc
-}
-
-.photoThumb{
-  width:86px;
-  height:86px;
-  object-fit:cover;
-  border-radius:8px;
-  background:#eee
-}
-
-.photoActions{
-  display:flex;
-  flex-wrap:wrap;
-  gap:4px;
-  margin-top:7px
-}
-
-.photoActions button{
-  min-height:36px;
-  padding:6px 10px;
-  font-size:13px
-}
-
-.previewBox{
-  background:#e7e9ed;
-  padding:12px;
-  overflow:auto;
-  border-radius:12px;
-  margin-top:10px
-}
-
-.previewPage{
-  display:inline-block;
-  vertical-align:top;
-  margin:5px;
-  background:#fff;
-  box-shadow:0 1px 4px #999;
-  max-width:100%
-}
-
-.previewPage canvas{
-  display:block;
-  max-width:100%;
-  height:auto
-}
-
-.hidden{display:none!important}
-
-hr{
-  border:0;
-  border-top:1px solid #e5e7eb;
-  margin:14px 0
-}
-
-.log{
-  min-height:250px;
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-  font-size:12px
-}
-
-#reader{
-  width:100%;
-  margin-top:10px
-}
-</style>
-</head>
-
-<body>
-
-<div class="wrap">
-
-<h1>商品條碼／QR／大字／照片</h1>
-<div class="help">B3S V20.4 正式版</div>
-
-
-<div class="card">
-<h2>🖨 B3S 印表機</h2>
-
-<div id="bleStatus" class="status">尚未連線</div>
-
-<div class="row">
-<button id="connectBtn" class="success">🔵 連接 B3S</button>
-<button id="disconnectBtn" class="gray" disabled>中斷連線</button>
-<button id="stopBtn" class="danger" disabled>⏹ 停止列印</button>
-</div>
-
-<div class="help" style="margin-top:8px">
-裝置：<span id="deviceName">—</span><br>
-GATT：<span id="gattState">false</span><br>
-列印通道：<span id="channelState">未就緒</span>
-</div>
-</div>
-
-
-<div class="card">
-<h2>列印模式</h2>
-
-<select id="mode">
-<option value="name_barcode_number">商品名稱＋條碼＋條碼號碼</option>
-<option value="name_barcode">商品名稱＋條碼</option>
-<option value="barcode_number">條碼＋條碼號碼</option>
-<option value="barcode">只有條碼</option>
-<option value="name">只有商品名稱</option>
-<option value="name_qr">商品名稱＋QR Code</option>
-<option value="qr">只有 QR Code</option>
-<option value="qr_text">QR Code＋文字</option>
-<option value="name_qr_text">商品名稱＋QR Code＋文字</option>
-<option value="name_barcode_qr">商品名稱＋條碼＋QR Code</option>
-<option value="name_barcode_number_qr">商品名稱＋條碼＋號碼＋QR Code</option>
-<option value="name_text">商品名稱＋自訂文字</option>
-<option value="text">只有自訂文字</option>
-<option value="big_sign">🔢 大字號碼牌</option>
-<option value="photo">🖼 照片批次列印</option>
-</select>
-</div>
-
-
-<!-- GENERAL -->
-
-<div id="generalPanel">
-
-<div class="card">
-<h2>商品資料</h2>
-
-<div class="grid">
-
-<div>
-<label>商品名稱</label>
-<input id="productName" placeholder="例如：可口可樂">
-</div>
-
-<div>
-<label>商品條碼</label>
-<input id="barcode" inputmode="numeric" placeholder="例如：4710123456789">
-</div>
-
-<div>
-<label>QR Code 內容</label>
-<input id="qrValue" placeholder="網址、文字、商品編號">
-</div>
-
-<div>
-<label>自訂文字</label>
-<input id="customText" placeholder="例如：特價商品">
-</div>
-
-</div>
-
-<div class="row" style="margin-top:10px">
-<button id="addBtn" class="primary">＋ 加入商品</button>
-<button id="scanBtn" class="purple">📷 掃描條碼 / QR</button>
-<button id="clearProductsBtn" class="gray">清空商品</button>
-</div>
-
-<div id="reader" class="hidden"></div>
-<div id="products"></div>
-</div>
-
-
-<div class="card">
-<h2>一般／小票紙列印設定</h2>
-
-<div class="grid3">
-
-<div>
-<label>紙張寬度</label>
-<select id="paperWidth">
-<option value="30">30 mm</option>
-<option value="40">40 mm</option>
-<option value="50">50 mm</option>
-<option value="58" selected>58 mm</option>
-<option value="60">60 mm</option>
-<option value="70">70 mm</option>
-<option value="72">72 mm</option>
-<option value="75">75 mm</option>
-<option value="77">77 mm</option>
-</select>
-</div>
-
-<div>
-<label>紙張模式</label>
-<select id="paperMode">
-<option value="1">間隙紙</option>
-<option value="2">黑標紙</option>
-<option value="3" selected>連續紙／小票紙</option>
-<option value="4">穿孔紙</option>
-<option value="5">透明紙</option>
-</select>
-</div>
-
-<div>
-<label>列印濃度</label>
-<select id="density">
-<option value="1">1</option>
-<option value="2" selected>2</option>
-<option value="3">3</option>
-<option value="4">4</option>
-<option value="5">5</option>
-</select>
-</div>
-
-<div>
-<label>商品間距（mm）</label>
-<input id="itemGap" type="number" min="1" max="20" value="2">
-</div>
-
-<div>
-<label>商品名稱字體</label>
-<input id="nameFont" type="number" min="10" max="150" value="30">
-</div>
-
-<div>
-<label>條碼號碼字體</label>
-<input id="numberFont" type="number" min="10" max="150" value="24">
-</div>
-
-<div>
-<label>自訂文字字體</label>
-<input id="textFont" type="number" min="12" max="150" value="36">
-</div>
-
-<div>
-<label>條碼高度（cm）</label>
-<input id="barcodeHeight" type="number" min=".5" max="20" step=".1" value="2">
-</div>
-
-<div>
-<label>條碼寬度</label>
-<select id="barcodeWidth">
-<option value="40">40%</option>
-<option value="50">50%</option>
-<option value="60">60%</option>
-<option value="70">70%</option>
-<option value="80">80%</option>
-<option value="90">90%</option>
-<option value="100" selected>100%</option>
-</select>
-</div>
-
-<div>
-<label>條碼位置</label>
-<select id="barcodeAlign">
-<option value="left">靠左</option>
-<option value="center" selected>置中</option>
-<option value="right">靠右</option>
-</select>
-</div>
-
-<div>
-<label>條碼 X 位移（mm）</label>
-<input id="barcodeX" type="number" step=".5" value="0">
-</div>
-
-<div>
-<label>QR Code 大小（cm）</label>
-<input id="qrSize" type="number" min="1" max="10" step=".1" value="3">
-</div>
-
-</div>
-
-<hr>
-
-<label>
-<input id="syncBarcodeText" type="checkbox" checked>
-條碼高度與商品名稱／條碼號碼同步縮放
-</label>
-
-<hr>
-
-<label>底部文字（可多行）</label>
-<textarea id="footer"></textarea>
-
-<label style="margin-top:10px">
-<input id="autoClear" type="checkbox">
-列印成功後自動清空商品
-</label>
-
-</div>
-
-
-<div class="card">
-<h2>商品預覽</h2>
-
-<div class="row">
-<button id="previewBtn" class="gray">更新預覽</button>
-<button id="printAllBtn" class="primary" disabled>🖨 列印全部商品</button>
-</div>
-
-<div id="generalPreview" class="previewBox"></div>
-<div id="generalStatus" class="status">等待列印</div>
-</div>
-
-</div>
-
-
-<!-- BIG -->
-
-<div id="bigPanel" class="hidden">
-
-<div class="card">
-
-<h2>🔢 大字號碼牌</h2>
-
-<div class="verified">
-✅ 紙張寬度／高度可調<br>
-✅ 紙張種類 1～5<br>
-✅ Floyd / 原始100%<br>
-✅ 黑度90～100%<br>
-✅ 濃度1～5
-</div>
-
-<label style="margin-top:12px">要列印的內容</label>
-<textarea id="bigText" placeholder="例如：1234567890"></textarea>
-
-<div class="grid3" style="margin-top:10px">
-
-<div>
-<label>大字紙寬</label>
-<select id="bigPaperWidth">
-<option value="30">30 mm</option>
-<option value="40">40 mm</option>
-<option value="50">50 mm</option>
-<option value="58" selected>58 mm</option>
-<option value="60">60 mm</option>
-<option value="70">70 mm</option>
-<option value="72">72 mm</option>
-<option value="75">75 mm</option>
-<option value="77">77 mm</option>
-</select>
-</div>
-
-<div>
-<label>大字紙高（mm）</label>
-<input id="bigPaperHeight" type="number" min="20" max="300" value="100">
-</div>
-
-<div>
-<label>大字紙張種類</label>
-<select id="bigPaperMode">
-<option value="1">間隙紙</option>
-<option value="2">黑標紙</option>
-<option value="3" selected>連續紙／小票紙</option>
-<option value="4">穿孔紙</option>
-<option value="5">透明紙</option>
-</select>
-</div>
-
-<div>
-<label>分頁方式</label>
-<select id="splitMode">
-<option value="char" selected>依每個字分頁</option>
-<option value="space">依空格分頁</option>
-<option value="line">依換行分頁</option>
-</select>
-</div>
-
-<div>
-<label>每張幾個字</label>
-<select id="charsPerPage">
-<option value="1" selected>1 字 / 張</option>
-<option value="2">2 字 / 張</option>
-<option value="3">3 字 / 張</option>
-<option value="auto">自動</option>
-</select>
-</div>
-
-<div>
-<label>大字濃度</label>
-<select id="bigDensity">
-<option value="1" selected>1</option>
-<option value="2">2</option>
-<option value="3">3</option>
-<option value="4">4</option>
-<option value="5">5</option>
-</select>
-</div>
-
-<div>
-<label>大字影像處理</label>
-<select id="bigProcess">
-<option value="floyd" selected>照片 Floyd</option>
-<option value="raw">原始100%</option>
-</select>
-</div>
-
-<div>
-<label>照片黑度</label>
-<select id="bigPhotoBlack">
-<option value="90" selected>90%</option>
-<option value="94">94%</option>
-<option value="97">97%</option>
-<option value="100">100%</option>
-</select>
-</div>
-
-<div>
-<label>字體大小</label>
-<select id="bigFontMode">
-<option value="auto" selected>自動最大</option>
-<option value="manual">手動</option>
-</select>
-</div>
-
-<div>
-<label>手動字體 px</label>
-<input id="bigFontSize" type="number" min="30" max="1000" value="430">
-</div>
-
-<div>
-<label>字體粗細</label>
-<select id="bigBold">
-<option value="900">超粗 900</option>
-<option value="700" selected>粗體 700</option>
-<option value="600">中粗 600</option>
-<option value="500">中等 500</option>
-<option value="400">一般 400</option>
-</select>
-</div>
-
-<div>
-<label>水平位置</label>
-<select id="bigAlign">
-<option value="left">靠左</option>
-<option value="center" selected>置中</option>
-<option value="right">靠右</option>
-</select>
-</div>
-
-<div>
-<label>垂直位置</label>
-<select id="bigVAlign">
-<option value="top">靠上</option>
-<option value="center" selected>置中</option>
-<option value="bottom">靠下</option>
-</select>
-</div>
-
-<div>
-<label>邊界（mm）</label>
-<input id="bigMargin" type="number" min="0" max="30" step=".5" value="7">
-</div>
-
-<div>
-<label>X 位移（mm）</label>
-<input id="bigX" type="number" step=".5" value="0">
-</div>
-
-<div>
-<label>Y 位移（mm）</label>
-<input id="bigY" type="number" step=".5" value="0">
-</div>
-
-</div>
-
-<div class="note" style="margin-top:12px">
-小票紙：58 × 100mm＋連續紙3。<br>
-75×148黑標紙：72 × 146mm＋黑標2。
-</div>
-
-<div class="row" style="margin-top:10px">
-<button id="bigPreviewBtn" class="gray">更新大字預覽</button>
-<button id="bigPrintBtn" class="primary" disabled>🖨 列印全部號碼牌</button>
-</div>
-
-<div id="bigStatus" class="status">等待列印</div>
-
-</div>
-
-<div class="card">
-<h2>大字預覽</h2>
-<div id="bigPreview" class="previewBox"></div>
-</div>
-
-</div>
-
-
-<!-- PHOTO -->
-
-<div id="photoPanel" class="hidden">
-
-<div class="card">
-
-<h2>🖼 照片批次列印</h2>
-
-<div class="note">
-一次可從 iPhone 相簿選擇多張照片。<br>
-所有照片共用下方列印設定，並依清單順序列印。
-</div>
-
-<label style="margin-top:12px">選擇照片（可多選）</label>
-
-<input
-  id="photoFile"
-  type="file"
-  accept="image/*"
-  multiple
->
-
-<div class="row" style="margin-top:8px">
-<button id="clearPhotosBtn" class="gray">清空全部照片</button>
-</div>
-
-<div id="photoList"></div>
-
-<hr>
-
-<div class="grid3">
-
-<div>
-<label>照片紙張</label>
-<select id="photoPaperPreset">
-<option value="receipt" selected>一般／小票紙</option>
-<option value="bigblack">75×148 黑標紙</option>
-</select>
-</div>
-
-<div>
-<label>一般紙寬</label>
-<select id="photoPaperWidth">
-<option value="30">30 mm</option>
-<option value="40">40 mm</option>
-<option value="50">50 mm</option>
-<option value="58" selected>58 mm</option>
-<option value="60">60 mm</option>
-<option value="70">70 mm</option>
-<option value="72">72 mm</option>
-<option value="75">75 mm</option>
-<option value="77">77 mm</option>
-</select>
-</div>
-
-<div>
-<label>一般紙高度（mm）</label>
-<input id="photoHeight" type="number" min="20" max="300" value="100">
-</div>
-
-<div>
-<label>一般紙模式</label>
-<select id="photoPaperMode">
-<option value="1">間隙紙</option>
-<option value="2">黑標紙</option>
-<option value="3" selected>連續紙</option>
-<option value="4">穿孔紙</option>
-<option value="5">透明紙</option>
-</select>
-</div>
-
-<div>
-<label>照片濃度</label>
-<select id="photoDensity">
-<option value="1">1</option>
-<option value="2">2</option>
-<option value="3">3</option>
-<option value="4">4</option>
-<option value="5" selected>5</option>
-</select>
-</div>
-
-<div>
-<label>照片處理</label>
-<select id="photoProcess">
-<option value="threshold">純黑白</option>
-<option value="ordered">照片抖動</option>
-<option value="floyd" selected>誤差擴散 Floyd</option>
-</select>
-</div>
-
-<div>
-<label>黑白門檻</label>
-<input id="photoThreshold" type="number" min="30" max="240" value="160">
-</div>
-
-<div>
-<label>縮放</label>
-<input id="photoScale" type="number" min="10" max="300" value="100">
-</div>
-
-<div>
-<label>旋轉</label>
-<select id="photoRotate">
-<option value="0" selected>0°</option>
-<option value="90">90°</option>
-<option value="180">180°</option>
-<option value="270">270°</option>
-</select>
-</div>
-
-<div>
-<label>X 位移（mm）</label>
-<input id="photoX" type="number" step=".5" value="0">
-</div>
-
-<div>
-<label>Y 位移（mm）</label>
-<input id="photoY" type="number" step=".5" value="0">
-</div>
-
-<div>
-<label>圖片填入方式</label>
-<select id="photoFit">
-<option value="contain" selected>完整顯示</option>
-<option value="cover">填滿裁切</option>
-</select>
-</div>
-
-</div>
-
-<div class="row" style="margin-top:10px">
-<button id="photoPreviewBtn" class="gray">更新全部預覽</button>
-<button id="photoPrintBtn" class="primary" disabled>🖨 列印全部照片</button>
-</div>
-
-<div id="photoStatus" class="status">
-尚未選擇照片
-</div>
-
-</div>
-
-
-<div class="card">
-<h2>照片預覽</h2>
-<div id="photoPreview" class="previewBox">
-<div class="help">選擇照片後顯示預覽</div>
-</div>
-</div>
-
-</div>
-
-
-<!-- LOG -->
-
-<div class="card">
-<h2>通訊紀錄</h2>
-
-<div class="row">
-<button id="copyLogBtn" class="gray">複製紀錄</button>
-<button id="clearLogBtn" class="gray">清除紀錄</button>
-</div>
-
-<textarea id="log" class="log" readonly></textarea>
-</div>
-
-</div>
-
-
 <script>
 
 const $=id=>document.getElementById(id);
@@ -847,7 +39,9 @@ function clamp(value,min,max){
 }
 
 
-/* BLE */
+/* =========================================================
+BLE
+========================================================= */
 
 const SERVICE=
 "49535343-fe7d-4ae5-8fa9-9fafd205e455";
@@ -876,6 +70,20 @@ function connected(){
   );
 }
 
+
+/* =========================================================
+PRODUCT / PHOTO DATA
+========================================================= */
+
+let products=[];
+let photoItems=[];
+let html5QrCode=null;
+
+
+/* =========================================================
+BUTTON STATE
+========================================================= */
+
 function updateButtons(){
 
   const ready=connected();
@@ -902,7 +110,9 @@ function updateButtons(){
 }
 
 
-/* PACKETS */
+/* =========================================================
+PACKET
+========================================================= */
 
 function frame(command,data=[1],prefix=false){
 
@@ -949,7 +159,9 @@ const CMD={
 };
 
 
-/* RX */
+/* =========================================================
+RX
+========================================================= */
 
 function parsePackets(text){
 
@@ -1024,7 +236,9 @@ function parsePackets(text){
 }
 
 
-/* WRITE */
+/* =========================================================
+WRITE
+========================================================= */
 
 async function rawGattWrite(bytes){
 
@@ -1063,7 +277,9 @@ async function writeRaw(bytes,chunkDelay=3){
 }
 
 
-/* ACK */
+/* =========================================================
+ACK
+========================================================= */
 
 async function sendWait(
   name,
@@ -1107,7 +323,145 @@ async function sendWait(
 }
 
 
-/* SETTLE */
+/* =========================================================
+V20.5 PAGE END
+========================================================= */
+
+async function pageEndOnce(
+  name,
+  timeout=9000
+){
+
+  const packet=
+  CMD.pageEnd();
+
+  const startIndex=
+  state.parsedRx.length;
+
+  log(`${name} → ${hex(packet)}`);
+
+  await rawGattWrite(packet);
+
+  const start=
+  Date.now();
+
+  let sawDB=false;
+
+  while(Date.now()-start<timeout){
+
+    const incoming=
+    state.parsedRx.slice(startIndex);
+
+    for(const parsed of incoming){
+
+      if(parsed.command===0xE4){
+
+        log(
+          `${name} ACK ✅ 0xE4`
+        );
+
+        return{
+          ok:true,
+          db:false
+        };
+      }
+
+      if(parsed.command===0xDB){
+
+        if(!sawDB){
+
+          sawDB=true;
+
+          log(
+            `${name} 收到 DB：${hex(parsed.payload||[])}`
+          );
+        }
+      }
+    }
+
+    /*
+    DB 已經明確回來時，
+    不用傻等滿9秒。
+    */
+
+    if(sawDB){
+
+      await delay(250);
+
+      return{
+        ok:false,
+        db:true
+      };
+    }
+
+    await delay(40);
+  }
+
+  log(
+    `${name} ACK ❌ TIMEOUT`
+  );
+
+  return{
+    ok:false,
+    db:false
+  };
+}
+
+
+async function pageEndWithRetry(
+  pageIndex
+){
+
+  const name=
+  `PAGE END ${pageIndex+1}`;
+
+  let result=
+  await pageEndOnce(
+    name,
+    9000
+  );
+
+  if(result.ok){
+    return true;
+  }
+
+  /*
+  第一次失敗：
+  DB → 等久一點
+  Timeout → 也重新給緩衝
+  */
+
+  if(result.db){
+
+    log(
+      `${name}：印表機尚未接受，等待1500ms後重試`
+    );
+
+    await delay(1500);
+  }
+
+  else{
+
+    log(
+      `${name}：未收到E4，等待1200ms後重試`
+    );
+
+    await delay(1200);
+  }
+
+  result=
+  await pageEndOnce(
+    `${name} RETRY`,
+    12000
+  );
+
+  return result.ok;
+}
+
+
+/* =========================================================
+V20.5 ADAPTIVE SETTLE
+========================================================= */
 
 function hasLateD3(startIndex){
 
@@ -1128,40 +482,68 @@ function hasLateD3(startIndex){
   return false;
 }
 
-async function settleBeforePageEnd(
-  startIndex,
+
+async function settleAfterBitmap(
+  runs,
+  d3StartIndex,
   status
 ){
 
-  if(status){
-    status.textContent=
-    "Bitmap 已送完｜等待印表機處理…";
+  let waitMs=700;
+
+  if(runs.length>=300){
+    waitMs=1000;
   }
 
-  await delay(700);
-
-  if(hasLateD3(startIndex)){
-    await delay(300);
-    return;
+  if(runs.length>=450){
+    waitMs=1500;
   }
 
-  const start=Date.now();
-
-  while(Date.now()-start<5000){
-
-    if(hasLateD3(startIndex)){
-      await delay(400);
-      return;
-    }
-
-    await delay(100);
+  if(runs.length>=600){
+    waitMs=2200;
   }
 
-  await delay(1200);
+  if(runs.length>=750){
+    waitMs=2800;
+  }
+
+  status.textContent=
+  `Bitmap 完成｜SETTLE ${waitMs}ms…`;
+
+  log(
+    `BITMAP 完成｜RUNS ${runs.length}｜SETTLE ${waitMs}ms`
+  );
+
+  await delay(waitMs);
+
+  if(hasLateD3(d3StartIndex)){
+
+    log(
+      "SETTLE：已看到後段 D3，再等待400ms"
+    );
+
+    await delay(400);
+  }
+
+  else if(runs.length>=500){
+
+    /*
+    大量圖片即使還沒看到後段D3，
+    再補一點緩衝。
+    */
+
+    log(
+      "SETTLE：大量資料未看到後段D3，再等待600ms"
+    );
+
+    await delay(600);
+  }
 }
 
 
-/* CANVAS */
+/* =========================================================
+CANVAS
+========================================================= */
 
 function whiteCanvas(width,height){
 
@@ -1192,7 +574,8 @@ function wrapText(ctx,text,maxWidth){
 
   for(const char of chars){
 
-    const test=line+char;
+    const test=
+    line+char;
 
     if(
       ctx.measureText(test).width>
@@ -1215,7 +598,9 @@ function wrapText(ctx,text,maxWidth){
 }
 
 
-/* RASTER */
+/* =========================================================
+RASTER
+========================================================= */
 
 function canvasRows(canvas){
 
@@ -1234,14 +619,20 @@ function canvasRows(canvas){
   for(let y=0;y<canvas.height;y++){
 
     const row=
-    new Uint8Array(canvas.width/8);
+    new Uint8Array(
+      canvas.width/8
+    );
 
     let black=0;
 
     for(let x=0;x<canvas.width;x++){
 
       const i=
-      (y*canvas.width+x)*4;
+      (
+        y*
+        canvas.width+
+        x
+      )*4;
 
       const gray=
       (
@@ -1269,6 +660,7 @@ function canvasRows(canvas){
   return rows;
 }
 
+
 function sameRow(a,b){
 
   if(a.length!==b.length){
@@ -1284,6 +676,7 @@ function sameRow(a,b){
 
   return true;
 }
+
 
 function rowsToRuns(rows){
 
@@ -1315,6 +708,7 @@ function rowsToRuns(rows){
       });
 
       y+=repeat;
+
       continue;
     }
 
@@ -1345,11 +739,14 @@ function rowsToRuns(rows){
   return runs;
 }
 
+
 function canvasToRuns(canvas){
+
   return rowsToRuns(
     canvasRows(canvas)
   );
 }
+
 
 function rowPacket(run){
 
@@ -1357,17 +754,24 @@ function rowPacket(run){
     0x85,
     [
       ...u16(run.row),
+
       0,
+
       run.black&255,
+
       (run.black>>8)&255,
+
       run.repeat,
+
       ...run.data
     ]
   );
 }
 
 
-/* BARCODE */
+/* =========================================================
+BARCODE
+========================================================= */
 
 function createBarcodeCanvas(value){
 
@@ -1391,6 +795,7 @@ function createBarcodeCanvas(value){
   return raw;
 }
 
+
 function stretchBarcode(
   raw,
   targetWidth,
@@ -1403,16 +808,22 @@ function stretchBarcode(
   canvas.width=
   Math.max(
     8,
-    Math.floor(targetWidth/8)*8
+    Math.floor(
+      targetWidth/8
+    )*8
   );
 
   canvas.height=
-  Math.max(10,targetHeight);
+  Math.max(
+    10,
+    targetHeight
+  );
 
   const ctx=
   canvas.getContext("2d");
 
   ctx.fillStyle="#fff";
+
   ctx.fillRect(
     0,0,
     canvas.width,
@@ -1435,7 +846,9 @@ function stretchBarcode(
 }
 
 
-/* QR */
+/* =========================================================
+QR
+========================================================= */
 
 async function createQRCanvas(value,dots){
 
@@ -1446,9 +859,14 @@ async function createQRCanvas(value,dots){
       const holder=
       document.createElement("div");
 
-      holder.style.position="fixed";
-      holder.style.left="-9999px";
-      holder.style.top="-9999px";
+      holder.style.position=
+      "fixed";
+
+      holder.style.left=
+      "-9999px";
+
+      holder.style.top=
+      "-9999px";
 
       document.body.appendChild(holder);
 
@@ -1471,7 +889,10 @@ async function createQRCanvas(value,dots){
           holder.querySelector("canvas");
 
           if(!source){
-            throw new Error("QR Code 產生失敗");
+
+            throw new Error(
+              "QR Code 產生失敗"
+            );
           }
 
           const canvas=
@@ -1494,7 +915,9 @@ async function createQRCanvas(value,dots){
         }
 
         catch(error){
+
           holder.remove();
+
           reject(error);
         }
 
@@ -1502,15 +925,16 @@ async function createQRCanvas(value,dots){
     }
 
     catch(error){
+
       reject(error);
     }
   });
 }
 
 
-/* PRODUCTS */
-
-let products=[];
+/* =========================================================
+PRODUCT
+========================================================= */
 
 function escapeHtml(value){
 
@@ -1521,9 +945,12 @@ function escapeHtml(value){
   .replaceAll('"',"&quot;");
 }
 
+
 function renderProducts(){
 
-  const box=$("products");
+  const box=
+  $("products");
+
   box.innerHTML="";
 
   if(!products.length){
@@ -1534,30 +961,36 @@ function renderProducts(){
     return;
   }
 
-  products.forEach((item,index)=>{
+  products.forEach(
+    (item,index)=>{
 
-    const div=
-    document.createElement("div");
+      const div=
+      document.createElement("div");
 
-    div.className="item";
+      div.className="item";
 
-    div.innerHTML=`
-      <b>${index+1}. ${escapeHtml(item.name||"未命名")}</b>
-      <div class="help">
-      條碼：${escapeHtml(item.barcode||"—")}<br>
-      QR：${escapeHtml(item.qr||"—")}<br>
-      文字：${escapeHtml(item.text||"—")}
-      </div>
+      div.innerHTML=`
+        <b>
+        ${index+1}.
+        ${escapeHtml(item.name||"未命名")}
+        </b>
 
-      <button
-      class="danger removeProduct"
-      data-i="${index}">
-      刪除
-      </button>
-    `;
+        <div class="help">
+        條碼：${escapeHtml(item.barcode||"—")}<br>
+        QR：${escapeHtml(item.qr||"—")}<br>
+        文字：${escapeHtml(item.text||"—")}
+        </div>
 
-    box.appendChild(div);
-  });
+        <button
+        class="danger removeProduct"
+        data-i="${index}">
+        刪除
+        </button>
+      `;
+
+      box.appendChild(div);
+    }
+  );
 
   document
   .querySelectorAll(".removeProduct")
@@ -1566,23 +999,38 @@ function renderProducts(){
     button.onclick=()=>{
 
       products.splice(
-        Number(button.dataset.i),
+        Number(
+          button.dataset.i
+        ),
         1
       );
 
       renderProducts();
+
       renderGeneralPreview();
     };
   });
 }
 
+
 $("addBtn").onclick=()=>{
 
   const item={
-    name:$("productName").value.trim(),
-    barcode:$("barcode").value.trim(),
-    qr:$("qrValue").value.trim(),
-    text:$("customText").value.trim()
+    name:
+    $("productName")
+    .value.trim(),
+
+    barcode:
+    $("barcode")
+    .value.trim(),
+
+    qr:
+    $("qrValue")
+    .value.trim(),
+
+    text:
+    $("customText")
+    .value.trim()
   };
 
   if(
@@ -1591,30 +1039,40 @@ $("addBtn").onclick=()=>{
     !item.qr &&
     !item.text
   ){
-    alert("請先輸入商品資料");
+
+    alert(
+      "請先輸入商品資料"
+    );
+
     return;
   }
 
   products.push(item);
 
   renderProducts();
+
   renderGeneralPreview();
 };
+
 
 $("clearProductsBtn").onclick=()=>{
 
   products=[];
 
   renderProducts();
+
   renderGeneralPreview();
 };
 
 
-/* GENERAL CANVAS */
+/* =========================================================
+GENERAL CANVAS
+========================================================= */
 
 async function buildProductCanvas(item){
 
-  const mode=$("mode").value;
+  const mode=
+  $("mode").value;
 
   const width=
   paperDots(
@@ -1689,7 +1147,8 @@ async function buildProductCanvas(item){
 
   const barcodeHeight=
   mmToDots(
-    barcodeHeightCm*10
+    barcodeHeightCm*
+    10
   );
 
   const barcodePercent=
@@ -1705,11 +1164,13 @@ async function buildProductCanvas(item){
   );
 
   const footer=
-  $("footer").value.trim();
+  $("footer")
+  .value.trim();
 
   const layers=[];
 
   function spacer(height=gap){
+
     layers.push({
       type:"space",
       height
@@ -1758,7 +1219,11 @@ async function buildProductCanvas(item){
     "text"
   ].includes(mode);
 
-  if(needName&&item.name){
+
+  if(
+    needName &&
+    item.name
+  ){
 
     layers.push({
       type:"text",
@@ -1770,7 +1235,11 @@ async function buildProductCanvas(item){
     spacer();
   }
 
-  if(needBarcode&&item.barcode){
+
+  if(
+    needBarcode &&
+    item.barcode
+  ){
 
     const raw=
     createBarcodeCanvas(
@@ -1778,7 +1247,8 @@ async function buildProductCanvas(item){
     );
 
     const available=
-    width-margin*2;
+    width-
+    margin*2;
 
     const target=
     Math.max(
@@ -1799,8 +1269,11 @@ async function buildProductCanvas(item){
     layers.push({
       type:"image",
       canvas:barcodeCanvas,
-      align:$("barcodeAlign").value,
-      xOffset:mmToDots(
+      align:
+      $("barcodeAlign").value,
+
+      xOffset:
+      mmToDots(
         Number(
           $("barcodeX").value
         )||0
@@ -1810,7 +1283,11 @@ async function buildProductCanvas(item){
     spacer();
   }
 
-  if(needNumber&&item.barcode){
+
+  if(
+    needNumber &&
+    item.barcode
+  ){
 
     layers.push({
       type:"text",
@@ -1822,17 +1299,19 @@ async function buildProductCanvas(item){
     spacer();
   }
 
+
   if(
     needQR &&
     (
-      item.qr||
+      item.qr ||
       item.barcode
     )
   ){
 
     const qrCanvas=
     await createQRCanvas(
-      item.qr||item.barcode,
+      item.qr||
+      item.barcode,
       qrDots
     );
 
@@ -1846,7 +1325,11 @@ async function buildProductCanvas(item){
     spacer();
   }
 
-  if(needText&&item.text){
+
+  if(
+    needText &&
+    item.text
+  ){
 
     layers.push({
       type:"text",
@@ -1857,6 +1340,7 @@ async function buildProductCanvas(item){
 
     spacer();
   }
+
 
   if(footer){
 
@@ -1885,6 +1369,7 @@ async function buildProductCanvas(item){
     }
   }
 
+
   if(
     layers.length &&
     layers[
@@ -1894,6 +1379,7 @@ async function buildProductCanvas(item){
     layers.pop();
   }
 
+
   let height=
   margin*2;
 
@@ -1902,17 +1388,25 @@ async function buildProductCanvas(item){
   .createElement("canvas")
   .getContext("2d");
 
+
   for(const layer of layers){
 
     if(layer.type==="space"){
+
       height+=layer.height;
     }
 
-    else if(layer.type==="image"){
-      height+=layer.canvas.height;
+    else if(
+      layer.type==="image"
+    ){
+
+      height+=
+      layer.canvas.height;
     }
 
-    else if(layer.type==="text"){
+    else if(
+      layer.type==="text"
+    ){
 
       measure.font=
       `${layer.weight} ${layer.font}px "PingFang TC",sans-serif`;
@@ -1921,14 +1415,17 @@ async function buildProductCanvas(item){
       wrapText(
         measure,
         layer.text,
-        width-margin*2
+        width-
+        margin*2
       );
 
-      layer.lines=lines;
+      layer.lines=
+      lines;
 
       layer.lineHeight=
       Math.ceil(
-        layer.font*1.25
+        layer.font*
+        1.25
       );
 
       height+=
@@ -1937,11 +1434,13 @@ async function buildProductCanvas(item){
     }
   }
 
+
   height=
   Math.max(
     80,
     Math.ceil(height)
   );
+
 
   const canvas=
   whiteCanvas(
@@ -1952,38 +1451,56 @@ async function buildProductCanvas(item){
   const ctx=
   canvas.getContext("2d");
 
-  let y=margin;
+  let y=
+  margin;
+
 
   for(const layer of layers){
 
     if(layer.type==="space"){
 
       y+=layer.height;
+
       continue;
     }
 
+
     if(layer.type==="image"){
 
-      let x=margin;
+      let x=
+      margin;
 
-      if(layer.align==="center"){
-        x=(width-layer.canvas.width)/2;
+      if(
+        layer.align==="center"
+      ){
+
+        x=
+        (
+          width-
+          layer.canvas.width
+        )/2;
       }
 
-      else if(layer.align==="right"){
+      else if(
+        layer.align==="right"
+      ){
+
         x=
         width-
         margin-
         layer.canvas.width;
       }
 
-      x+=layer.xOffset||0;
+      x+=
+      layer.xOffset||
+      0;
 
       x=
       clamp(
         x,
         0,
-        width-layer.canvas.width
+        width-
+        layer.canvas.width
       );
 
       ctx.drawImage(
@@ -1992,9 +1509,12 @@ async function buildProductCanvas(item){
         Math.round(y)
       );
 
-      y+=layer.canvas.height;
+      y+=
+      layer.canvas.height;
+
       continue;
     }
+
 
     if(layer.type==="text"){
 
@@ -2003,10 +1523,16 @@ async function buildProductCanvas(item){
       ctx.font=
       `${layer.weight} ${layer.font}px -apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif`;
 
-      ctx.textAlign="center";
-      ctx.textBaseline="top";
+      ctx.textAlign=
+      "center";
 
-      for(const line of layer.lines){
+      ctx.textBaseline=
+      "top";
+
+      for(
+        const line
+        of layer.lines
+      ){
 
         ctx.fillText(
           line,
@@ -2014,13 +1540,19 @@ async function buildProductCanvas(item){
           y
         );
 
-        y+=layer.lineHeight;
+        y+=
+        layer.lineHeight;
       }
     }
   }
 
   return canvas;
 }
+
+
+/* =========================================================
+GENERAL PREVIEW
+========================================================= */
 
 async function renderGeneralPreview(){
 
@@ -2039,7 +1571,10 @@ async function renderGeneralPreview(){
 
   try{
 
-    for(const product of products){
+    for(
+      const product
+      of products
+    ){
 
       const canvas=
       await buildProductCanvas(
@@ -2052,9 +1587,13 @@ async function renderGeneralPreview(){
       holder.className=
       "previewPage";
 
-      holder.appendChild(canvas);
+      holder.appendChild(
+        canvas
+      );
 
-      box.appendChild(holder);
+      box.appendChild(
+        holder
+      );
     }
   }
 
@@ -2069,7 +1608,9 @@ $("previewBtn").onclick=
 renderGeneralPreview;
 
 
-/* BIG */
+/* =========================================================
+BIG
+========================================================= */
 
 function splitBigText(){
 
@@ -2084,7 +1625,9 @@ function splitBigText(){
 
   let tokens=[];
 
-  if(splitMode==="space"){
+  if(
+    splitMode==="space"
+  ){
 
     tokens=
     raw.trim()
@@ -2092,7 +1635,9 @@ function splitBigText(){
     .filter(Boolean);
   }
 
-  else if(splitMode==="line"){
+  else if(
+    splitMode==="line"
+  ){
 
     tokens=
     raw
@@ -2163,7 +1708,10 @@ function fitFont(
 
     const mid=
     Math.floor(
-      (low+high)/2
+      (
+        low+
+        high
+      )/2
     );
 
     ctx.font=
@@ -2191,11 +1739,15 @@ function fitFont(
     ){
 
       best=mid;
-      low=mid+1;
+
+      low=
+      mid+1;
     }
 
     else{
-      high=mid-1;
+
+      high=
+      mid-1;
     }
   }
 
@@ -2275,13 +1827,15 @@ function buildBigCanvas(text){
   const maxWidth=
   Math.max(
     20,
-    width-margin*2
+    width-
+    margin*2
   );
 
   const maxHeight=
   Math.max(
     20,
-    height-margin*2
+    height-
+    margin*2
   );
 
   let fontSize;
@@ -2309,7 +1863,8 @@ function buildBigCanvas(text){
     )||430;
   }
 
-  ctx.fillStyle="#000";
+  ctx.fillStyle=
+  "#000";
 
   ctx.font=
   `${weight} ${fontSize}px Arial,-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif`;
@@ -2322,42 +1877,70 @@ function buildBigCanvas(text){
 
   let x;
 
-  if(align==="left"){
+  if(
+    align==="left"
+  ){
 
-    ctx.textAlign="left";
-    x=margin;
+    ctx.textAlign=
+    "left";
+
+    x=
+    margin;
   }
 
-  else if(align==="right"){
+  else if(
+    align==="right"
+  ){
 
-    ctx.textAlign="right";
-    x=width-margin;
+    ctx.textAlign=
+    "right";
+
+    x=
+    width-
+    margin;
   }
 
   else{
 
-    ctx.textAlign="center";
-    x=width/2;
+    ctx.textAlign=
+    "center";
+
+    x=
+    width/2;
   }
 
   let y;
 
-  if(valign==="top"){
+  if(
+    valign==="top"
+  ){
 
-    ctx.textBaseline="top";
-    y=margin;
+    ctx.textBaseline=
+    "top";
+
+    y=
+    margin;
   }
 
-  else if(valign==="bottom"){
+  else if(
+    valign==="bottom"
+  ){
 
-    ctx.textBaseline="bottom";
-    y=height-margin;
+    ctx.textBaseline=
+    "bottom";
+
+    y=
+    height-
+    margin;
   }
 
   else{
 
-    ctx.textBaseline="middle";
-    y=height/2;
+    ctx.textBaseline=
+    "middle";
+
+    y=
+    height/2;
   }
 
   ctx.fillText(
@@ -2455,13 +2038,19 @@ function bigFloydRows(
     y%2===1;
 
     const start=
-    reverse?w-1:0;
+    reverse?
+    w-1:
+    0;
 
     const end=
-    reverse?-1:w;
+    reverse?
+    -1:
+    w;
 
     const step=
-    reverse?-1:1;
+    reverse?
+    -1:
+    1;
 
     for(
       let x=start;
@@ -2480,14 +2069,18 @@ function bigFloydRows(
       );
 
       const newValue=
-      old<threshold
+      old<
+      threshold
       ?0
       :255;
 
       const error=
-      old-newValue;
+      old-
+      newValue;
 
-      if(newValue===0){
+      if(
+        newValue===0
+      ){
 
         row[x>>3]|=
         0x80>>(x&7);
@@ -2498,58 +2091,90 @@ function bigFloydRows(
       if(!reverse){
 
         if(x+1<w){
-          gray[idx+1]+=
-          error*7/16;
+
+          gray[
+            idx+1
+          ]+=
+          error*
+          7/16;
         }
 
         if(
           y+1<h &&
           x>0
         ){
-          gray[idx+w-1]+=
-          error*3/16;
+
+          gray[
+            idx+w-1
+          ]+=
+          error*
+          3/16;
         }
 
         if(y+1<h){
-          gray[idx+w]+=
-          error*5/16;
+
+          gray[
+            idx+w
+          ]+=
+          error*
+          5/16;
         }
 
         if(
           y+1<h &&
           x+1<w
         ){
-          gray[idx+w+1]+=
-          error*1/16;
+
+          gray[
+            idx+w+1
+          ]+=
+          error*
+          1/16;
         }
       }
 
       else{
 
         if(x-1>=0){
-          gray[idx-1]+=
-          error*7/16;
+
+          gray[
+            idx-1
+          ]+=
+          error*
+          7/16;
         }
 
         if(
           y+1<h &&
           x+1<w
         ){
-          gray[idx+w+1]+=
-          error*3/16;
+
+          gray[
+            idx+w+1
+          ]+=
+          error*
+          3/16;
         }
 
         if(y+1<h){
-          gray[idx+w]+=
-          error*5/16;
+
+          gray[
+            idx+w
+          ]+=
+          error*
+          5/16;
         }
 
         if(
           y+1<h &&
           x-1>=0
         ){
-          gray[idx+w-1]+=
-          error*1/16;
+
+          gray[
+            idx+w-1
+          ]+=
+          error*
+          1/16;
         }
       }
     }
@@ -2571,7 +2196,10 @@ function bigRows(canvas){
     $("bigProcess").value===
     "raw"
   ){
-    return canvasRows(canvas);
+
+    return canvasRows(
+      canvas
+    );
   }
 
   return bigFloydRows(
@@ -2609,95 +2237,120 @@ function renderBigPreview(){
     return;
   }
 
-  pages.forEach((text,index)=>{
+  pages.forEach(
+    (text,index)=>{
 
-    const holder=
-    document.createElement("div");
+      const holder=
+      document.createElement("div");
 
-    holder.className=
-    "previewPage";
+      holder.className=
+      "previewPage";
 
-    const label=
-    document.createElement("div");
+      const label=
+      document.createElement("div");
 
-    label.className="help";
-    label.style.padding="5px";
+      label.className=
+      "help";
 
-    label.textContent=
-    `第 ${index+1} 張：${text}`;
+      label.style.padding=
+      "5px";
 
-    holder.appendChild(label);
+      label.textContent=
+      `第 ${index+1} 張：${text}`;
 
-    holder.appendChild(
-      buildBigCanvas(text)
-    );
+      holder.appendChild(
+        label
+      );
 
-    box.appendChild(holder);
-  });
+      holder.appendChild(
+        buildBigCanvas(text)
+      );
+
+      box.appendChild(
+        holder
+      );
+    }
+  );
 }
 
 $("bigPreviewBtn").onclick=
 renderBigPreview;
 
 
-/* PHOTO BATCH */
-
-let photoItems=[];
-
+/* =========================================================
+PHOTO BATCH
+========================================================= */
 
 function readPhotoFile(file){
 
-  return new Promise((resolve,reject)=>{
+  return new Promise(
+    (resolve,reject)=>{
 
-    const reader=
-    new FileReader();
+      const reader=
+      new FileReader();
 
-    reader.onload=()=>{
+      reader.onload=()=>{
 
-      const img=
-      new Image();
+        const img=
+        new Image();
 
-      img.onload=()=>{
+        img.onload=()=>{
 
-        resolve({
-          id:
-          `${Date.now()}_${Math.random()}`,
+          resolve({
+            id:
+            `${Date.now()}_${Math.random()}`,
 
-          name:
-          file.name||"照片",
+            name:
+            file.name||
+            "照片",
 
-          image:
-          img,
+            image:
+            img,
 
-          src:
-          reader.result
-        });
+            src:
+            reader.result
+          });
+        };
+
+        img.onerror=()=>{
+
+          reject(
+            new Error(
+              "照片讀取失敗"
+            )
+          );
+        };
+
+        img.src=
+        reader.result;
       };
 
-      img.onerror=()=>reject(
-        new Error("照片讀取失敗")
+      reader.onerror=()=>{
+
+        reject(
+          new Error(
+            "照片檔案讀取失敗"
+          )
+        );
+      };
+
+      reader.readAsDataURL(
+        file
       );
-
-      img.src=
-      reader.result;
-    };
-
-    reader.onerror=()=>reject(
-      new Error("照片檔案讀取失敗")
-    );
-
-    reader.readAsDataURL(file);
-  });
+    }
+  );
 }
 
 
-$("photoFile").addEventListener(
+$("photoFile")
+.addEventListener(
   "change",
   async event=>{
 
     const files=
     Array.from(
-      event.target.files||[]
+      event.target.files||
+      []
     );
 
     if(!files.length){
@@ -2712,15 +2365,23 @@ $("photoFile").addEventListener(
 
     try{
 
-      for(const file of files){
+      for(
+        const file
+        of files
+      ){
 
         const item=
-        await readPhotoFile(file);
+        await readPhotoFile(
+          file
+        );
 
-        photoItems.push(item);
+        photoItems.push(
+          item
+        );
       }
 
       renderPhotoList();
+
       renderPhotoPreview();
 
       $("photoStatus").className=
@@ -2738,12 +2399,14 @@ $("photoFile").addEventListener(
       "status err";
 
       $("photoStatus").textContent=
-      "❌ "+errorText(error);
+      "❌ "+
+      errorText(error);
     }
 
     finally{
 
-      event.target.value="";
+      event.target.value=
+      "";
     }
   }
 );
@@ -2766,23 +2429,26 @@ function renderPhotoList(){
     return;
   }
 
-  photoItems.forEach((item,index)=>{
+  photoItems.forEach(
+    (item,index)=>{
 
-    const div=
-    document.createElement("div");
+      const div=
+      document.createElement("div");
 
-    div.className=
-    "photoItem";
+      div.className=
+      "photoItem";
 
-    div.innerHTML=`
-      <img
+      div.innerHTML=`
+        <img
         class="photoThumb"
         src="${item.src}"
-        alt=""
-      >
+        alt="">
 
-      <div>
-        <b>第 ${index+1} 張</b>
+        <div>
+
+        <b>
+        第 ${index+1} 張
+        </b>
 
         <div class="help">
         ${escapeHtml(item.name)}<br>
@@ -2791,30 +2457,31 @@ function renderPhotoList(){
 
         <div class="photoActions">
 
-          <button
-            class="gray photoUp"
-            data-i="${index}">
-            ↑ 上移
-          </button>
+        <button
+        class="gray photoUp"
+        data-i="${index}">
+        ↑ 上移
+        </button>
 
-          <button
-            class="gray photoDown"
-            data-i="${index}">
-            ↓ 下移
-          </button>
+        <button
+        class="gray photoDown"
+        data-i="${index}">
+        ↓ 下移
+        </button>
 
-          <button
-            class="danger photoDelete"
-            data-i="${index}">
-            刪除
-          </button>
+        <button
+        class="danger photoDelete"
+        data-i="${index}">
+        刪除
+        </button>
 
         </div>
-      </div>
-    `;
+        </div>
+      `;
 
-    box.appendChild(div);
-  });
+      box.appendChild(div);
+    }
+  );
 
 
   document
@@ -2824,11 +2491,17 @@ function renderPhotoList(){
     button.onclick=()=>{
 
       const i=
-      Number(button.dataset.i);
+      Number(
+        button.dataset.i
+      );
 
-      photoItems.splice(i,1);
+      photoItems.splice(
+        i,
+        1
+      );
 
       renderPhotoList();
+
       renderPhotoPreview();
 
       $("photoStatus").textContent=
@@ -2848,22 +2521,25 @@ function renderPhotoList(){
     button.onclick=()=>{
 
       const i=
-      Number(button.dataset.i);
+      Number(
+        button.dataset.i
+      );
 
       if(i<=0){
         return;
       }
 
-      const temp=
-      photoItems[i-1];
-
-      photoItems[i-1]=
-      photoItems[i];
-
-      photoItems[i]=
-      temp;
+      [
+        photoItems[i-1],
+        photoItems[i]
+      ]=
+      [
+        photoItems[i],
+        photoItems[i-1]
+      ];
 
       renderPhotoList();
+
       renderPhotoPreview();
     };
   });
@@ -2876,7 +2552,9 @@ function renderPhotoList(){
     button.onclick=()=>{
 
       const i=
-      Number(button.dataset.i);
+      Number(
+        button.dataset.i
+      );
 
       if(
         i>=
@@ -2885,16 +2563,17 @@ function renderPhotoList(){
         return;
       }
 
-      const temp=
-      photoItems[i+1];
-
-      photoItems[i+1]=
-      photoItems[i];
-
-      photoItems[i]=
-      temp;
+      [
+        photoItems[i+1],
+        photoItems[i]
+      ]=
+      [
+        photoItems[i],
+        photoItems[i+1]
+      ];
 
       renderPhotoList();
+
       renderPhotoPreview();
     };
   });
@@ -2908,6 +2587,7 @@ $("clearPhotosBtn").onclick=()=>{
   photoItems=[];
 
   renderPhotoList();
+
   renderPhotoPreview();
 
   $("photoStatus").className=
@@ -2925,13 +2605,22 @@ function photoPageSettings(){
   const preset=
   $("photoPaperPreset").value;
 
-  if(preset==="bigblack"){
+  if(
+    preset==="bigblack"
+  ){
 
     return{
-      width:paperDots(72),
-      height:mmToDots(146),
-      labelType:2,
-      stable:true
+      width:
+      paperDots(72),
+
+      height:
+      mmToDots(146),
+
+      labelType:
+      2,
+
+      blackMark:
+      true
     };
   }
 
@@ -2955,8 +2644,10 @@ function photoPageSettings(){
       $("photoPaperMode").value
     ),
 
-    stable:
-    false
+    blackMark:
+    Number(
+      $("photoPaperMode").value
+    )===2
   };
 }
 
@@ -3018,36 +2709,52 @@ function buildPhotoCanvas(item){
   rotation===270;
 
   const effectiveW=
-  rotated?sourceH:sourceW;
+  rotated?
+  sourceH:
+  sourceW;
 
   const effectiveH=
-  rotated?sourceW:sourceH;
+  rotated?
+  sourceW:
+  sourceH;
 
   const fitScale=
   fit==="cover"
   ?Math.max(
-    settings.width/effectiveW,
-    settings.height/effectiveH
+    settings.width/
+    effectiveW,
+
+    settings.height/
+    effectiveH
   )
   :Math.min(
-    settings.width/effectiveW,
-    settings.height/effectiveH
+    settings.width/
+    effectiveW,
+
+    settings.height/
+    effectiveH
   );
 
   const drawScale=
-  fitScale*scale;
+  fitScale*
+  scale;
 
   const drawW=
-  sourceW*drawScale;
+  sourceW*
+  drawScale;
 
   const drawH=
-  sourceH*drawScale;
+  sourceH*
+  drawScale;
 
   ctx.save();
 
   ctx.translate(
-    settings.width/2+xOffset,
-    settings.height/2+yOffset
+    settings.width/2+
+    xOffset,
+
+    settings.height/2+
+    yOffset
   );
 
   ctx.rotate(
@@ -3069,7 +2776,9 @@ function buildPhotoCanvas(item){
 }
 
 
-/* PHOTO RASTER */
+/* =========================================================
+PHOTO RASTER
+========================================================= */
 
 function thresholdPhotoRows(
   canvas,
@@ -3100,7 +2809,11 @@ function thresholdPhotoRows(
     for(let x=0;x<canvas.width;x++){
 
       const i=
-      (y*canvas.width+x)*4;
+      (
+        y*
+        canvas.width+
+        x
+      )*4;
 
       const gray=
       (
@@ -3165,7 +2878,11 @@ function orderedPhotoRows(
     for(let x=0;x<canvas.width;x++){
 
       const i=
-      (y*canvas.width+x)*4;
+      (
+        y*
+        canvas.width+
+        x
+      )*4;
 
       const gray=
       (
@@ -3238,7 +2955,10 @@ function floydPhotoRows(
     for(let x=0;x<w;x++){
 
       const i=
-      (y*w+x)*4;
+      (
+        y*w+
+        x
+      )*4;
 
       gray[
         y*w+x
@@ -3266,13 +2986,19 @@ function floydPhotoRows(
     y%2===1;
 
     const start=
-    reverse?w-1:0;
+    reverse?
+    w-1:
+    0;
 
     const end=
-    reverse?-1:w;
+    reverse?
+    -1:
+    w;
 
     const step=
-    reverse?-1:1;
+    reverse?
+    -1:
+    1;
 
     for(
       let x=start;
@@ -3298,7 +3024,9 @@ function floydPhotoRows(
       const error=
       old-newValue;
 
-      if(newValue===0){
+      if(
+        newValue===0
+      ){
 
         row[x>>3]|=
         0x80>>(x&7);
@@ -3309,58 +3037,90 @@ function floydPhotoRows(
       if(!reverse){
 
         if(x+1<w){
-          gray[idx+1]+=
-          error*7/16;
+
+          gray[
+            idx+1
+          ]+=
+          error*
+          7/16;
         }
 
         if(
           y+1<h &&
           x>0
         ){
-          gray[idx+w-1]+=
-          error*3/16;
+
+          gray[
+            idx+w-1
+          ]+=
+          error*
+          3/16;
         }
 
         if(y+1<h){
-          gray[idx+w]+=
-          error*5/16;
+
+          gray[
+            idx+w
+          ]+=
+          error*
+          5/16;
         }
 
         if(
           y+1<h &&
           x+1<w
         ){
-          gray[idx+w+1]+=
-          error*1/16;
+
+          gray[
+            idx+w+1
+          ]+=
+          error*
+          1/16;
         }
       }
 
       else{
 
         if(x-1>=0){
-          gray[idx-1]+=
-          error*7/16;
+
+          gray[
+            idx-1
+          ]+=
+          error*
+          7/16;
         }
 
         if(
           y+1<h &&
           x+1<w
         ){
-          gray[idx+w+1]+=
-          error*3/16;
+
+          gray[
+            idx+w+1
+          ]+=
+          error*
+          3/16;
         }
 
         if(y+1<h){
-          gray[idx+w]+=
-          error*5/16;
+
+          gray[
+            idx+w
+          ]+=
+          error*
+          5/16;
         }
 
         if(
           y+1<h &&
           x-1>=0
         ){
-          gray[idx+w-1]+=
-          error*1/16;
+
+          gray[
+            idx+w-1
+          ]+=
+          error*
+          1/16;
         }
       }
     }
@@ -3386,7 +3146,9 @@ function photoRows(canvas){
     $("photoThreshold").value
   )||160;
 
-  if(mode==="ordered"){
+  if(
+    mode==="ordered"
+  ){
 
     return orderedPhotoRows(
       canvas,
@@ -3394,7 +3156,9 @@ function photoRows(canvas){
     );
   }
 
-  if(mode==="floyd"){
+  if(
+    mode==="floyd"
+  ){
 
     return floydPhotoRows(
       canvas,
@@ -3424,41 +3188,54 @@ function renderPhotoPreview(){
     return;
   }
 
-  photoItems.forEach((item,index)=>{
+  photoItems.forEach(
+    (item,index)=>{
 
-    const canvas=
-    buildPhotoCanvas(item);
+      const canvas=
+      buildPhotoCanvas(
+        item
+      );
 
-    const holder=
-    document.createElement("div");
+      const holder=
+      document.createElement("div");
 
-    holder.className=
-    "previewPage";
+      holder.className=
+      "previewPage";
 
-    const title=
-    document.createElement("div");
+      const title=
+      document.createElement("div");
 
-    title.className=
-    "help";
+      title.className=
+      "help";
 
-    title.style.padding=
-    "5px";
+      title.style.padding=
+      "5px";
 
-    title.textContent=
-    `第 ${index+1} 張`;
+      title.textContent=
+      `第 ${index+1} 張`;
 
-    holder.appendChild(title);
-    holder.appendChild(canvas);
+      holder.appendChild(
+        title
+      );
 
-    box.appendChild(holder);
-  });
+      holder.appendChild(
+        canvas
+      );
+
+      box.appendChild(
+        holder
+      );
+    }
+  );
 }
 
 $("photoPreviewBtn").onclick=
 renderPhotoPreview;
 
 
-/* PRINT SESSION */
+/* =========================================================
+PRINT SESSION
+========================================================= */
 
 async function beginPrint(
   density,
@@ -3472,6 +3249,7 @@ async function beginPrint(
       0xC2
     )
   ){
+
     throw new Error(
       "CONNECT 沒有 ACK"
     );
@@ -3484,6 +3262,7 @@ async function beginPrint(
       0x31
     )
   ){
+
     throw new Error(
       "DENSITY 沒有 ACK"
     );
@@ -3496,6 +3275,7 @@ async function beginPrint(
       0x33
     )
   ){
+
     throw new Error(
       "LABEL TYPE 沒有 ACK"
     );
@@ -3508,6 +3288,7 @@ async function beginPrint(
       0x02
     )
   ){
+
     throw new Error(
       "PRINT START 沒有 ACK"
     );
@@ -3525,6 +3306,7 @@ async function finishPrint(){
       12000
     )
   ){
+
     throw new Error(
       "PRINT END 沒有 ACK"
     );
@@ -3532,7 +3314,9 @@ async function finishPrint(){
 }
 
 
-/* PAGE SEND */
+/* =========================================================
+V20.5 PAGE SEND
+========================================================= */
 
 async function sendRunsPage(
   canvas,
@@ -3540,20 +3324,39 @@ async function sendRunsPage(
   pageIndex,
   total,
   status,
-  stableMode
+  options={}
 ){
+
+  const paced=
+  !!options.paced;
+
+  const settle=
+  !!options.settle;
+
+  const retryPageEnd=
+  !!options.retryPageEnd;
+
+  const betweenPages=
+  Number(
+    options.betweenPages||
+    500
+  );
+
 
   if(
     !await sendWait(
       `PAGE START ${pageIndex+1}`,
       CMD.pageStart(),
-      0x04
+      0x04,
+      5000
     )
   ){
+
     throw new Error(
-      `PAGE START 失敗`
+      `第 ${pageIndex+1} 張 PAGE START 失敗`
     );
   }
+
 
   if(
     !await sendWait(
@@ -3562,51 +3365,67 @@ async function sendRunsPage(
         canvas.height,
         canvas.width
       ),
-      0x14
+      0x14,
+      5000
     )
   ){
+
     throw new Error(
-      `PAGE SIZE 失敗`
+      `第 ${pageIndex+1} 張 PAGE SIZE 失敗`
     );
   }
+
 
   log(
     `PAGE ${pageIndex+1}｜${canvas.width}×${canvas.height}｜RUNS ${runs.length}`
   );
 
+
   const d3StartIndex=
   state.parsedRx.length;
 
-  for(let i=0;i<runs.length;i++){
+
+  for(
+    let i=0;
+    i<runs.length;
+    i++
+  ){
 
     await writeRaw(
-      rowPacket(runs[i]),
-      stableMode?3:5
+      rowPacket(
+        runs[i]
+      ),
+      paced?
+      3:
+      5
     );
 
+
     if(
-      stableMode &&
+      paced &&
       runs[i].black>0
     ){
+
       await delay(5);
     }
 
+
     if(
-      stableMode &&
+      paced &&
       (
-        i+
-        1
+        i+1
       )%
       24===
       0
     ){
+
       await delay(18);
     }
 
+
     if(
       (
-        i+
-        1
+        i+1
       )%
       20===
       0 ||
@@ -3619,59 +3438,81 @@ async function sendRunsPage(
     }
   }
 
-  if(stableMode){
 
-    await settleBeforePageEnd(
+  log(
+    `第 ${pageIndex+1} 張 BITMAP DATA ✅`
+  );
+
+
+  if(settle){
+
+    await settleAfterBitmap(
+      runs,
       d3StartIndex,
       status
     );
   }
 
-  if(
-    !await sendWait(
+
+  let pageEndOK;
+
+
+  if(retryPageEnd){
+
+    pageEndOK=
+    await pageEndWithRetry(
+      pageIndex
+    );
+  }
+
+  else{
+
+    pageEndOK=
+    await sendWait(
       `PAGE END ${pageIndex+1}`,
       CMD.pageEnd(),
       0xE4,
       20000
-    )
-  ){
-    throw new Error(
-      `PAGE END 失敗`
     );
   }
 
-  if(pageIndex<total-1){
-    await delay(500);
+
+  if(!pageEndOK){
+
+    throw new Error(
+      `第 ${pageIndex+1} 張 PAGE END 失敗`
+    );
+  }
+
+
+  if(
+    pageIndex<
+    total-1
+  ){
+
+    status.textContent=
+    `第 ${pageIndex+1}/${total} 張完成｜等待下一張…`;
+
+    await delay(
+      betweenPages
+    );
   }
 }
 
 
-async function sendCanvasPage(
-  canvas,
-  pageIndex,
-  total,
-  status,
-  stableMode
-){
-
-  return sendRunsPage(
-    canvas,
-    canvasToRuns(canvas),
-    pageIndex,
-    total,
-    status,
-    stableMode
-  );
-}
-
-
-/* GENERAL PRINT */
+/* =========================================================
+GENERAL PRINT
+========================================================= */
 
 $("printAllBtn").onclick=
 async()=>{
 
   if(!products.length){
-    alert("尚未加入商品");
+
+    alert(
+      "尚未加入商品"
+    );
+
     return;
   }
 
@@ -3697,7 +3538,10 @@ async()=>{
 
     const canvases=[];
 
-    for(const product of products){
+    for(
+      const product
+      of products
+    ){
 
       canvases.push(
         await buildProductCanvas(
@@ -3710,6 +3554,7 @@ async()=>{
       Number(
         $("density").value
       ),
+
       Number(
         $("paperMode").value
       )
@@ -3721,12 +3566,21 @@ async()=>{
       i++
     ){
 
-      await sendCanvasPage(
-        canvases[i],
+      const canvas=
+      canvases[i];
+
+      await sendRunsPage(
+        canvas,
+        canvasToRuns(canvas),
         i,
         canvases.length,
         status,
-        false
+        {
+          paced:false,
+          settle:false,
+          retryPageEnd:false,
+          betweenPages:500
+        }
       );
     }
 
@@ -3747,6 +3601,7 @@ async()=>{
       products=[];
 
       renderProducts();
+
       renderGeneralPreview();
     }
   }
@@ -3763,19 +3618,23 @@ async()=>{
     "❌ "+message;
 
     log(
-      "GENERAL ERROR："+message
+      "GENERAL ERROR："+
+      message
     );
   }
 
   finally{
 
     state.running=false;
+
     updateButtons();
   }
 };
 
 
-/* BIG PRINT */
+/* =========================================================
+BIG PRINT
+========================================================= */
 
 $("bigPrintBtn").onclick=
 async()=>{
@@ -3784,7 +3643,11 @@ async()=>{
   splitBigText();
 
   if(!pages.length){
-    alert("請輸入號碼牌內容");
+
+    alert(
+      "請輸入號碼牌內容"
+    );
+
     return;
   }
 
@@ -3817,6 +3680,10 @@ async()=>{
       buildBigCanvas(text)
     );
 
+    log(
+      "========== V20.5 BIG START =========="
+    );
+
     await beginPrint(
       Number(
         $("bigDensity").value
@@ -3833,16 +3700,24 @@ async()=>{
       const canvas=
       canvases[i];
 
-      const runs=
-      bigRuns(canvas);
-
       await sendRunsPage(
         canvas,
-        runs,
+        bigRuns(canvas),
         i,
         canvases.length,
         status,
-        settings.labelType===2
+        {
+          paced:
+          settings.labelType===2,
+
+          settle:
+          settings.labelType===2,
+
+          retryPageEnd:
+          settings.labelType===2,
+
+          betweenPages:700
+        }
       );
     }
 
@@ -3855,6 +3730,10 @@ async()=>{
 
     status.textContent=
     `✅ 大字列印完成，共 ${canvases.length} 張`;
+
+    log(
+      "========== V20.5 BIG COMPLETE =========="
+    );
   }
 
   catch(error){
@@ -3869,26 +3748,32 @@ async()=>{
     "❌ "+message;
 
     log(
-      "BIG ERROR："+message
+      "BIG ERROR："+
+      message
     );
   }
 
   finally{
 
     state.running=false;
+
     updateButtons();
   }
 };
 
 
-/* PHOTO BATCH PRINT */
+/* =========================================================
+V20.5 PHOTO BATCH PRINT
+========================================================= */
 
 $("photoPrintBtn").onclick=
 async()=>{
 
   if(!photoItems.length){
 
-    alert("請先選擇照片");
+    alert(
+      "請先選擇照片"
+    );
 
     return;
   }
@@ -3923,7 +3808,11 @@ async()=>{
     );
 
     log(
-      `========== V20.4 PHOTO BATCH START｜${canvases.length} 張 ==========`
+      `========== V20.5 PHOTO BATCH START｜${canvases.length} 張 ==========`
+    );
+
+    log(
+      `紙張 ${canvases[0].width}×${canvases[0].height} dots｜LABEL ${settings.labelType}｜濃度 ${$("photoDensity").value}`
     );
 
     await beginPrint(
@@ -3932,6 +3821,7 @@ async()=>{
       ),
       settings.labelType
     );
+
 
     for(
       let i=0;
@@ -3945,10 +3835,28 @@ async()=>{
       status.textContent=
       `正在處理第 ${i+1}/${canvases.length} 張照片…`;
 
+      const rows=
+      photoRows(canvas);
+
       const runs=
-      rowsToRuns(
-        photoRows(canvas)
+      rowsToRuns(rows);
+
+      log(
+        `PHOTO ${i+1}｜RUNS ${runs.length}`
       );
+
+
+      /*
+      V20.5 關鍵：
+
+      照片不管是
+      黑標2 或 連續紙3，
+
+      全部都：
+      1. SETTLE
+      2. PAGE END重試
+      3. 頁間等待800ms
+      */
 
       await sendRunsPage(
         canvas,
@@ -3956,13 +3864,24 @@ async()=>{
         i,
         canvases.length,
         status,
-        settings.stable
+        {
+          paced:
+          settings.blackMark,
+
+          settle:true,
+
+          retryPageEnd:true,
+
+          betweenPages:800
+        }
       );
     }
 
-    await delay(500);
+
+    await delay(700);
 
     await finishPrint();
+
 
     status.className=
     "status ok";
@@ -3970,8 +3889,9 @@ async()=>{
     status.textContent=
     `✅ 已完成 ${canvases.length} 張照片`;
 
+
     log(
-      "========== V20.4 PHOTO BATCH COMPLETE =========="
+      "========== V20.5 PHOTO BATCH COMPLETE =========="
     );
   }
 
@@ -3987,7 +3907,8 @@ async()=>{
     "❌ "+message;
 
     log(
-      "PHOTO ERROR："+message
+      "PHOTO ERROR："+
+      message
     );
   }
 
@@ -4000,7 +3921,9 @@ async()=>{
 };
 
 
-/* CONNECT */
+/* =========================================================
+CONNECT
+========================================================= */
 
 $("connectBtn").onclick=
 async()=>{
@@ -4016,28 +3939,38 @@ async()=>{
     const device=
     await navigator.bluetooth.requestDevice({
       acceptAllDevices:true,
-      optionalServices:[SERVICE]
+      optionalServices:[
+        SERVICE
+      ]
     });
 
-    state.device=device;
+    state.device=
+    device;
 
     $("deviceName").textContent=
-    device.name||"—";
+    device.name||
+    "—";
 
     state.server=
     await device.gatt.connect();
 
     const service=
     await state.server
-    .getPrimaryService(SERVICE);
+    .getPrimaryService(
+      SERVICE
+    );
 
     state.write=
     await service
-    .getCharacteristic(WRITE_UUID);
+    .getCharacteristic(
+      WRITE_UUID
+    );
 
     state.notify=
     await service
-    .getCharacteristic(NOTIFY_UUID);
+    .getCharacteristic(
+      NOTIFY_UUID
+    );
 
     state.parsedRx=[];
 
@@ -4062,15 +3995,24 @@ async()=>{
         const packets=
         parsePackets(text);
 
-        for(const packet of packets){
-          state.parsedRx.push(packet);
+        for(
+          const packet
+          of packets
+        ){
+
+          state.parsedRx.push(
+            packet
+          );
         }
 
-        log("RX："+text);
+        log(
+          "RX："+text
+        );
       }
     );
 
-    await state.notify.startNotifications();
+    await state.notify
+    .startNotifications();
 
     state.device
     .addEventListener(
@@ -4112,7 +4054,8 @@ async()=>{
     "❌ "+message;
 
     log(
-      "CONNECT ERROR："+message
+      "CONNECT ERROR："+
+      message
     );
 
     updateButtons();
@@ -4120,13 +4063,18 @@ async()=>{
 };
 
 
-/* DISCONNECT */
+/* =========================================================
+DISCONNECT
+========================================================= */
 
 $("disconnectBtn").onclick=
 ()=>{
 
   try{
-    state.device?.gatt?.disconnect();
+
+    state.device
+    ?.gatt
+    ?.disconnect();
   }
   catch{}
 
@@ -4144,16 +4092,21 @@ $("disconnectBtn").onclick=
 };
 
 
-/* STOP */
+/* =========================================================
+STOP
+========================================================= */
 
 $("stopBtn").onclick=
 async()=>{
 
   state.stop=true;
 
-  log("使用者按下停止");
+  log(
+    "使用者按下停止"
+  );
 
   try{
+
     await rawGattWrite(
       CMD.pageEnd()
     );
@@ -4163,6 +4116,7 @@ async()=>{
   await delay(100);
 
   try{
+
     await rawGattWrite(
       CMD.printEnd()
     );
@@ -4180,9 +4134,9 @@ async()=>{
 };
 
 
-/* SCANNER */
-
-let html5QrCode=null;
+/* =========================================================
+SCANNER
+========================================================= */
 
 $("scanBtn").onclick=
 async()=>{
@@ -4217,7 +4171,9 @@ async()=>{
     .remove("hidden");
 
     html5QrCode=
-    new Html5Qrcode("reader");
+    new Html5Qrcode(
+      "reader"
+    );
 
     $("scanBtn").textContent=
     "停止掃描";
@@ -4225,7 +4181,8 @@ async()=>{
     await html5QrCode.start(
 
       {
-        facingMode:"environment"
+        facingMode:
+        "environment"
       },
 
       {
@@ -4240,22 +4197,33 @@ async()=>{
       async decodedText=>{
 
         const value=
-        String(decodedText||"")
-        .trim();
+        String(
+          decodedText||
+          ""
+        ).trim();
 
         if(!value){
           return;
         }
 
-        if(/^\d+$/.test(value)){
-          $("barcode").value=value;
+        if(
+          /^\d+$/.test(value)
+        ){
+
+          $("barcode").value=
+          value;
         }
+
         else{
-          $("qrValue").value=value;
+
+          $("qrValue").value=
+          value;
         }
 
         try{
-          await html5QrCode.stop();
+
+          await html5QrCode
+          .stop();
         }
         catch{}
 
@@ -4281,7 +4249,9 @@ async()=>{
     );
 
     try{
-      html5QrCode?.clear();
+
+      html5QrCode
+      ?.clear();
     }
     catch{}
 
@@ -4297,7 +4267,9 @@ async()=>{
 };
 
 
-/* MODE */
+/* =========================================================
+MODE
+========================================================= */
 
 function updateMode(){
 
@@ -4305,10 +4277,12 @@ function updateMode(){
   $("mode").value;
 
   const big=
-  value==="big_sign";
+  value===
+  "big_sign";
 
   const photo=
-  value==="photo";
+  value===
+  "photo";
 
   $("generalPanel")
   .classList
@@ -4332,15 +4306,19 @@ function updateMode(){
   );
 
   if(big){
+
     renderBigPreview();
   }
 
   else if(photo){
+
     renderPhotoList();
+
     renderPhotoPreview();
   }
 
   else{
+
     renderGeneralPreview();
   }
 }
@@ -4349,7 +4327,9 @@ $("mode").onchange=
 updateMode;
 
 
-/* EVENTS */
+/* =========================================================
+EVENTS
+========================================================= */
 
 [
   "paperWidth",
@@ -4427,7 +4407,9 @@ updateMode;
 });
 
 
-/* LOG */
+/* =========================================================
+LOG
+========================================================= */
 
 $("clearLogBtn").onclick=
 ()=>{
@@ -4446,7 +4428,9 @@ async()=>{
       $("log").value
     );
 
-    alert("已複製");
+    alert(
+      "已複製"
+    );
   }
 
   catch{
@@ -4456,17 +4440,22 @@ async()=>{
 };
 
 
-/* INIT */
+/* =========================================================
+INIT
+========================================================= */
 
 renderProducts();
+
 renderGeneralPreview();
+
 renderBigPreview();
+
 renderPhotoList();
+
 renderPhotoPreview();
+
 updateMode();
+
 updateButtons();
 
 </script>
-
-</body>
-</html>
