@@ -1,10 +1,946 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+
+<title>商品條碼／QR／大字／照片｜B3S V20.5</title>
+
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:#f4f6f8;
+  color:#18202a;
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif
+}
+
+.wrap{
+  max-width:920px;
+  margin:auto;
+  padding:14px
+}
+
+.card{
+  background:#fff;
+  border:1px solid #d8dee8;
+  border-radius:16px;
+  padding:15px;
+  margin-bottom:14px
+}
+
+h1{margin:0 0 4px;font-size:25px}
+h2{margin:0 0 12px;font-size:20px}
+
+.help{
+  color:#667085;
+  font-size:13px;
+  line-height:1.65
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px
+}
+
+.grid3{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px
+}
+
+@media(max-width:650px){
+  .grid,.grid3{grid-template-columns:1fr}
+}
+
+label{
+  display:block;
+  font-size:13px;
+  color:#475467;
+  margin-bottom:5px;
+  font-weight:700
+}
+
+input,select,textarea{
+  width:100%;
+  min-height:44px;
+  border:1px solid #cfd6e1;
+  border-radius:10px;
+  padding:9px 10px;
+  font-size:16px;
+  background:#fff
+}
+
+textarea{
+  min-height:90px;
+  resize:vertical
+}
+
+input[type="checkbox"]{
+  width:auto;
+  min-height:auto
+}
+
+button{
+  min-height:46px;
+  border:0;
+  border-radius:11px;
+  padding:9px 14px;
+  margin:3px;
+  font-size:15px;
+  font-weight:700
+}
+
+button:disabled{opacity:.4}
+
+.primary{background:#1265f3;color:#fff}
+.success{background:#e7f8ef;color:#087443}
+.danger{background:#d92d20;color:#fff}
+.gray{background:#e9edf3;color:#344054}
+.purple{background:#eee8ff;color:#5b37b7}
+
+.row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  align-items:center
+}
+
+.status{
+  padding:11px;
+  border-radius:10px;
+  background:#f2f4f7;
+  margin-top:9px;
+  line-height:1.5
+}
+
+.ok{background:#ecfdf3;color:#067647}
+.warn{background:#fff8e6;color:#8a5a00}
+.err{background:#fff1f0;color:#d92d20}
+
+.verified{
+  background:#ecfdf3;
+  border:1px solid #abefc6;
+  color:#067647;
+  border-radius:10px;
+  padding:10px;
+  font-weight:700;
+  line-height:1.65
+}
+
+.note{
+  background:#fff8e6;
+  border:1px solid #f4d58d;
+  color:#7a5200;
+  border-radius:10px;
+  padding:10px;
+  line-height:1.65
+}
+
+.item{
+  border:1px solid #e0e5ec;
+  border-radius:13px;
+  padding:11px;
+  margin:8px 0;
+  background:#fafbfc
+}
+
+.photoItem{
+  display:grid;
+  grid-template-columns:86px 1fr;
+  gap:10px;
+  align-items:center;
+  border:1px solid #e0e5ec;
+  border-radius:13px;
+  padding:10px;
+  margin:8px 0;
+  background:#fafbfc
+}
+
+.photoThumb{
+  width:86px;
+  height:86px;
+  object-fit:cover;
+  border-radius:8px;
+  background:#eee
+}
+
+.photoActions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:4px;
+  margin-top:7px
+}
+
+.photoActions button{
+  min-height:36px;
+  padding:6px 10px;
+  font-size:13px
+}
+
+.previewBox{
+  background:#e7e9ed;
+  padding:12px;
+  overflow:auto;
+  border-radius:12px;
+  margin-top:10px
+}
+
+.previewPage{
+  display:inline-block;
+  vertical-align:top;
+  margin:5px;
+  background:#fff;
+  box-shadow:0 1px 4px #999;
+  max-width:100%
+}
+
+.previewPage canvas{
+  display:block;
+  max-width:100%;
+  height:auto
+}
+
+.hidden{display:none!important}
+
+hr{
+  border:0;
+  border-top:1px solid #e5e7eb;
+  margin:14px 0
+}
+
+.log{
+  min-height:250px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:12px
+}
+
+#reader{
+  width:100%;
+  margin-top:10px
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrap">
+
+<h1>商品條碼／QR／大字／照片</h1>
+<div class="help">B3S V20.5 正式版</div>
+
+
+<div class="card">
+
+<h2>🖨 B3S 印表機</h2>
+
+<div id="bleStatus" class="status">
+尚未連線
+</div>
+
+<div class="row">
+
+<button id="connectBtn" class="success">
+🔵 連接 B3S
+</button>
+
+<button id="disconnectBtn" class="gray" disabled>
+中斷連線
+</button>
+
+<button id="stopBtn" class="danger" disabled>
+⏹ 停止列印
+</button>
+
+</div>
+
+<div class="help" style="margin-top:8px">
+裝置：<span id="deviceName">—</span><br>
+GATT：<span id="gattState">false</span><br>
+列印通道：<span id="channelState">未就緒</span>
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>列印模式</h2>
+
+<select id="mode">
+
+<option value="name_barcode_number">
+商品名稱＋條碼＋條碼號碼
+</option>
+
+<option value="name_barcode">
+商品名稱＋條碼
+</option>
+
+<option value="barcode_number">
+條碼＋條碼號碼
+</option>
+
+<option value="barcode">
+只有條碼
+</option>
+
+<option value="name">
+只有商品名稱
+</option>
+
+<option value="name_qr">
+商品名稱＋QR Code
+</option>
+
+<option value="qr">
+只有 QR Code
+</option>
+
+<option value="qr_text">
+QR Code＋文字
+</option>
+
+<option value="name_qr_text">
+商品名稱＋QR Code＋文字
+</option>
+
+<option value="name_barcode_qr">
+商品名稱＋條碼＋QR Code
+</option>
+
+<option value="name_barcode_number_qr">
+商品名稱＋條碼＋號碼＋QR Code
+</option>
+
+<option value="name_text">
+商品名稱＋自訂文字
+</option>
+
+<option value="text">
+只有自訂文字
+</option>
+
+<option value="big_sign">
+🔢 大字號碼牌
+</option>
+
+<option value="photo">
+🖼 照片批次列印
+</option>
+
+</select>
+
+</div>
+
+
+<!-- ================= GENERAL ================= -->
+
+<div id="generalPanel">
+
+<div class="card">
+
+<h2>商品資料</h2>
+
+<div class="grid">
+
+<div>
+<label>商品名稱</label>
+<input id="productName" placeholder="例如：可口可樂">
+</div>
+
+<div>
+<label>商品條碼</label>
+<input id="barcode" inputmode="numeric" placeholder="例如：4710123456789">
+</div>
+
+<div>
+<label>QR Code 內容</label>
+<input id="qrValue" placeholder="網址、文字、商品編號">
+</div>
+
+<div>
+<label>自訂文字</label>
+<input id="customText" placeholder="例如：特價商品">
+</div>
+
+</div>
+
+<div class="row" style="margin-top:10px">
+
+<button id="addBtn" class="primary">
+＋ 加入商品
+</button>
+
+<button id="scanBtn" class="purple">
+📷 掃描條碼 / QR
+</button>
+
+<button id="clearProductsBtn" class="gray">
+清空商品
+</button>
+
+</div>
+
+<div id="reader" class="hidden"></div>
+
+<div id="products"></div>
+
+</div>
+
+
+<div class="card">
+
+<h2>一般／小票紙列印設定</h2>
+
+<div class="grid3">
+
+<div>
+<label>紙張寬度</label>
+<select id="paperWidth">
+<option value="30">30 mm</option>
+<option value="40">40 mm</option>
+<option value="50">50 mm</option>
+<option value="58" selected>58 mm</option>
+<option value="60">60 mm</option>
+<option value="70">70 mm</option>
+<option value="72">72 mm</option>
+<option value="75">75 mm</option>
+<option value="77">77 mm</option>
+</select>
+</div>
+
+<div>
+<label>紙張模式</label>
+<select id="paperMode">
+<option value="1">間隙紙</option>
+<option value="2">黑標紙</option>
+<option value="3" selected>連續紙／小票紙</option>
+<option value="4">穿孔紙</option>
+<option value="5">透明紙</option>
+</select>
+</div>
+
+<div>
+<label>列印濃度</label>
+<select id="density">
+<option value="1">1</option>
+<option value="2" selected>2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+</select>
+</div>
+
+<div>
+<label>商品間距（mm）</label>
+<input id="itemGap" type="number" min="1" max="20" value="2">
+</div>
+
+<div>
+<label>商品名稱字體</label>
+<input id="nameFont" type="number" min="10" max="150" value="30">
+</div>
+
+<div>
+<label>條碼號碼字體</label>
+<input id="numberFont" type="number" min="10" max="150" value="24">
+</div>
+
+<div>
+<label>自訂文字字體</label>
+<input id="textFont" type="number" min="12" max="150" value="36">
+</div>
+
+<div>
+<label>條碼高度（cm）</label>
+<input id="barcodeHeight" type="number" min=".5" max="20" step=".1" value="2">
+</div>
+
+<div>
+<label>條碼寬度</label>
+<select id="barcodeWidth">
+<option value="40">40%</option>
+<option value="50">50%</option>
+<option value="60">60%</option>
+<option value="70">70%</option>
+<option value="80">80%</option>
+<option value="90">90%</option>
+<option value="100" selected>100%</option>
+</select>
+</div>
+
+<div>
+<label>條碼位置</label>
+<select id="barcodeAlign">
+<option value="left">靠左</option>
+<option value="center" selected>置中</option>
+<option value="right">靠右</option>
+</select>
+</div>
+
+<div>
+<label>條碼 X 位移（mm）</label>
+<input id="barcodeX" type="number" step=".5" value="0">
+</div>
+
+<div>
+<label>QR Code 大小（cm）</label>
+<input id="qrSize" type="number" min="1" max="10" step=".1" value="3">
+</div>
+
+</div>
+
+<hr>
+
+<label>
+<input id="syncBarcodeText" type="checkbox" checked>
+條碼高度與商品名稱／條碼號碼同步縮放
+</label>
+
+<hr>
+
+<label>底部文字（可多行）</label>
+<textarea id="footer"></textarea>
+
+<label style="margin-top:10px">
+<input id="autoClear" type="checkbox">
+列印成功後自動清空商品
+</label>
+
+</div>
+
+
+<div class="card">
+
+<h2>商品預覽</h2>
+
+<div class="row">
+
+<button id="previewBtn" class="gray">
+更新預覽
+</button>
+
+<button id="printAllBtn" class="primary" disabled>
+🖨 列印全部商品
+</button>
+
+</div>
+
+<div id="generalPreview" class="previewBox"></div>
+
+<div id="generalStatus" class="status">
+等待列印
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ================= BIG ================= -->
+
+<div id="bigPanel" class="hidden">
+
+<div class="card">
+
+<h2>🔢 大字號碼牌</h2>
+
+<div class="verified">
+✅ 紙張寬度／高度可調<br>
+✅ 紙張種類 1～5<br>
+✅ Floyd / 原始100%<br>
+✅ 黑度90～100%<br>
+✅ 濃度1～5
+</div>
+
+<label style="margin-top:12px">
+要列印的內容
+</label>
+
+<textarea id="bigText" placeholder="例如：1234567890"></textarea>
+
+<div class="grid3" style="margin-top:10px">
+
+<div>
+<label>大字紙寬</label>
+<select id="bigPaperWidth">
+<option value="30">30 mm</option>
+<option value="40">40 mm</option>
+<option value="50">50 mm</option>
+<option value="58" selected>58 mm</option>
+<option value="60">60 mm</option>
+<option value="70">70 mm</option>
+<option value="72">72 mm</option>
+<option value="75">75 mm</option>
+<option value="77">77 mm</option>
+</select>
+</div>
+
+<div>
+<label>大字紙高（mm）</label>
+<input id="bigPaperHeight" type="number" min="20" max="300" value="100">
+</div>
+
+<div>
+<label>大字紙張種類</label>
+<select id="bigPaperMode">
+<option value="1">間隙紙</option>
+<option value="2">黑標紙</option>
+<option value="3" selected>連續紙／小票紙</option>
+<option value="4">穿孔紙</option>
+<option value="5">透明紙</option>
+</select>
+</div>
+
+<div>
+<label>分頁方式</label>
+<select id="splitMode">
+<option value="char" selected>依每個字分頁</option>
+<option value="space">依空格分頁</option>
+<option value="line">依換行分頁</option>
+</select>
+</div>
+
+<div>
+<label>每張幾個字</label>
+<select id="charsPerPage">
+<option value="1" selected>1 字 / 張</option>
+<option value="2">2 字 / 張</option>
+<option value="3">3 字 / 張</option>
+<option value="auto">自動</option>
+</select>
+</div>
+
+<div>
+<label>大字濃度</label>
+<select id="bigDensity">
+<option value="1" selected>1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+</select>
+</div>
+
+<div>
+<label>大字影像處理</label>
+<select id="bigProcess">
+<option value="floyd" selected>照片 Floyd</option>
+<option value="raw">原始100%</option>
+</select>
+</div>
+
+<div>
+<label>照片黑度</label>
+<select id="bigPhotoBlack">
+<option value="90" selected>90%</option>
+<option value="94">94%</option>
+<option value="97">97%</option>
+<option value="100">100%</option>
+</select>
+</div>
+
+<div>
+<label>字體大小</label>
+<select id="bigFontMode">
+<option value="auto" selected>自動最大</option>
+<option value="manual">手動</option>
+</select>
+</div>
+
+<div>
+<label>手動字體 px</label>
+<input id="bigFontSize" type="number" min="30" max="1000" value="430">
+</div>
+
+<div>
+<label>字體粗細</label>
+<select id="bigBold">
+<option value="900">超粗 900</option>
+<option value="700" selected>粗體 700</option>
+<option value="600">中粗 600</option>
+<option value="500">中等 500</option>
+<option value="400">一般 400</option>
+</select>
+</div>
+
+<div>
+<label>水平位置</label>
+<select id="bigAlign">
+<option value="left">靠左</option>
+<option value="center" selected>置中</option>
+<option value="right">靠右</option>
+</select>
+</div>
+
+<div>
+<label>垂直位置</label>
+<select id="bigVAlign">
+<option value="top">靠上</option>
+<option value="center" selected>置中</option>
+<option value="bottom">靠下</option>
+</select>
+</div>
+
+<div>
+<label>邊界（mm）</label>
+<input id="bigMargin" type="number" min="0" max="30" step=".5" value="7">
+</div>
+
+<div>
+<label>X 位移（mm）</label>
+<input id="bigX" type="number" step=".5" value="0">
+</div>
+
+<div>
+<label>Y 位移（mm）</label>
+<input id="bigY" type="number" step=".5" value="0">
+</div>
+
+</div>
+
+<div class="note" style="margin-top:12px">
+小票紙：58 × 100mm＋連續紙3。<br>
+75×148黑標紙：72 × 146mm＋黑標2。
+</div>
+
+<div class="row" style="margin-top:10px">
+
+<button id="bigPreviewBtn" class="gray">
+更新大字預覽
+</button>
+
+<button id="bigPrintBtn" class="primary" disabled>
+🖨 列印全部號碼牌
+</button>
+
+</div>
+
+<div id="bigStatus" class="status">
+等待列印
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>大字預覽</h2>
+
+<div id="bigPreview" class="previewBox"></div>
+
+</div>
+
+</div>
+
+
+<!-- ================= PHOTO ================= -->
+
+<div id="photoPanel" class="hidden">
+
+<div class="card">
+
+<h2>🖼 照片批次列印</h2>
+
+<div class="note">
+一次可以選擇多張照片。<br>
+V20.5：每張照片 Bitmap 完成後都會等待印表機處理，再進行 PAGE END。
+</div>
+
+<label style="margin-top:12px">
+選擇照片（可多選）
+</label>
+
+<input
+id="photoFile"
+type="file"
+accept="image/*"
+multiple
+>
+
+<div class="row" style="margin-top:8px">
+
+<button id="clearPhotosBtn" class="gray">
+清空全部照片
+</button>
+
+</div>
+
+<div id="photoList"></div>
+
+<hr>
+
+<div class="grid3">
+
+<div>
+<label>照片紙張</label>
+<select id="photoPaperPreset">
+<option value="receipt" selected>一般／小票紙</option>
+<option value="bigblack">75×148 黑標紙</option>
+</select>
+</div>
+
+<div>
+<label>一般紙寬</label>
+<select id="photoPaperWidth">
+<option value="30">30 mm</option>
+<option value="40">40 mm</option>
+<option value="50">50 mm</option>
+<option value="58" selected>58 mm</option>
+<option value="60">60 mm</option>
+<option value="70">70 mm</option>
+<option value="72">72 mm</option>
+<option value="75">75 mm</option>
+<option value="77">77 mm</option>
+</select>
+</div>
+
+<div>
+<label>一般紙高度（mm）</label>
+<input id="photoHeight" type="number" min="20" max="300" value="100">
+</div>
+
+<div>
+<label>一般紙模式</label>
+<select id="photoPaperMode">
+<option value="1">間隙紙</option>
+<option value="2">黑標紙</option>
+<option value="3" selected>連續紙</option>
+<option value="4">穿孔紙</option>
+<option value="5">透明紙</option>
+</select>
+</div>
+
+<div>
+<label>照片濃度</label>
+<select id="photoDensity">
+<option value="1" selected>1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+</select>
+</div>
+
+<div>
+<label>照片處理</label>
+<select id="photoProcess">
+<option value="threshold">純黑白</option>
+<option value="ordered">照片抖動</option>
+<option value="floyd" selected>誤差擴散 Floyd</option>
+</select>
+</div>
+
+<div>
+<label>黑白門檻</label>
+<input id="photoThreshold" type="number" min="30" max="240" value="160">
+</div>
+
+<div>
+<label>縮放</label>
+<input id="photoScale" type="number" min="10" max="300" value="100">
+</div>
+
+<div>
+<label>旋轉</label>
+<select id="photoRotate">
+<option value="0" selected>0°</option>
+<option value="90">90°</option>
+<option value="180">180°</option>
+<option value="270">270°</option>
+</select>
+</div>
+
+<div>
+<label>X 位移（mm）</label>
+<input id="photoX" type="number" step=".5" value="0">
+</div>
+
+<div>
+<label>Y 位移（mm）</label>
+<input id="photoY" type="number" step=".5" value="0">
+</div>
+
+<div>
+<label>圖片填入方式</label>
+<select id="photoFit">
+<option value="contain" selected>完整顯示</option>
+<option value="cover">填滿裁切</option>
+</select>
+</div>
+
+</div>
+
+<div class="row" style="margin-top:10px">
+
+<button id="photoPreviewBtn" class="gray">
+更新全部預覽
+</button>
+
+<button id="photoPrintBtn" class="primary" disabled>
+🖨 列印全部照片
+</button>
+
+</div>
+
+<div id="photoStatus" class="status">
+尚未選擇照片
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>照片預覽</h2>
+
+<div id="photoPreview" class="previewBox">
+<div class="help">選擇照片後顯示預覽</div>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ================= LOG ================= -->
+
+<div class="card">
+
+<h2>通訊紀錄</h2>
+
+<div class="row">
+
+<button id="copyLogBtn" class="gray">
+複製紀錄
+</button>
+
+<button id="clearLogBtn" class="gray">
+清除紀錄
+</button>
+
+</div>
+
+<textarea id="log" class="log" readonly></textarea>
+
+</div>
+
+</div>
+
+
 <script>
 
 const $=id=>document.getElementById(id);
 
-function delay(ms){
-  return new Promise(resolve=>setTimeout(resolve,ms));
-}
+const delay=ms=>
+new Promise(resolve=>setTimeout(resolve,ms));
 
 function errorText(error){
   return error?.message||String(error||"未知錯誤");
@@ -22,20 +958,25 @@ function u16(value){
   return[(value>>8)&255,value&255];
 }
 
+function clamp(v,min,max){
+  return Math.max(min,Math.min(max,v));
+}
+
 function hex(bytes){
   return Array.from(bytes)
-  .map(value=>value.toString(16).padStart(2,"0").toUpperCase())
+  .map(v=>v.toString(16).padStart(2,"0").toUpperCase())
   .join(" ");
 }
 
 function log(text){
-  const box=$("log");
-  box.value+=`[${new Date().toLocaleTimeString()}] ${text}\n`;
-  box.scrollTop=box.scrollHeight;
-}
 
-function clamp(value,min,max){
-  return Math.max(min,Math.min(max,value));
+  const box=$("log");
+
+  box.value+=
+  `[${new Date().toLocaleTimeString()}] ${text}\n`;
+
+  box.scrollTop=
+  box.scrollHeight;
 }
 
 
@@ -52,17 +993,28 @@ const WRITE_UUID=
 const NOTIFY_UUID=
 "49535343-1e4d-4bd9-ba61-23c647249616";
 
+
 const state={
+
   device:null,
   server:null,
   write:null,
   notify:null,
+
   parsedRx:[],
+
   running:false,
   stop:false
 };
 
+
+let products=[];
+let photoItems=[];
+let html5QrCode=null;
+
+
 function connected(){
+
   return !!(
     state.server?.connected &&
     state.write &&
@@ -71,52 +1023,54 @@ function connected(){
 }
 
 
-/* =========================================================
-PRODUCT / PHOTO DATA
-========================================================= */
-
-let products=[];
-let photoItems=[];
-let html5QrCode=null;
-
-
-/* =========================================================
-BUTTON STATE
-========================================================= */
-
 function updateButtons(){
 
-  const ready=connected();
+  const ready=
+  connected();
 
-  $("disconnectBtn").disabled=!ready;
-  $("stopBtn").disabled=!ready;
+  $("disconnectBtn").disabled=
+  !ready;
+
+  $("stopBtn").disabled=
+  !ready;
 
   $("printAllBtn").disabled=
-  !ready||state.running;
+  !ready||
+  state.running;
 
   $("bigPrintBtn").disabled=
-  !ready||state.running;
+  !ready||
+  state.running;
 
   $("photoPrintBtn").disabled=
   !ready||
   state.running||
-  !photoItems.length;
+  photoItems.length===0;
 
   $("gattState").textContent=
-  String(!!state.server?.connected);
+  String(
+    !!state.server?.connected
+  );
 
   $("channelState").textContent=
-  ready?"已就緒":"未就緒";
+  ready
+  ?"已就緒"
+  :"未就緒";
 }
 
 
 /* =========================================================
-PACKET
+PACKETS
 ========================================================= */
 
-function frame(command,data=[1],prefix=false){
+function frame(
+  command,
+  data=[1],
+  prefix=false
+){
 
-  const payload=Array.from(data);
+  const payload=
+  Array.from(data);
 
   let checksum=
   command^payload.length;
@@ -126,12 +1080,14 @@ function frame(command,data=[1],prefix=false){
   }
 
   const packet=[
-    0x55,0x55,
+    0x55,
+    0x55,
     command,
     payload.length,
     ...payload,
     checksum&255,
-    0xAA,0xAA
+    0xAA,
+    0xAA
   ];
 
   if(prefix){
@@ -141,21 +1097,61 @@ function frame(command,data=[1],prefix=false){
   return new Uint8Array(packet);
 }
 
+
 const CMD={
-  connect:()=>frame(0xC1,[1],true),
-  density:value=>frame(0x21,[value]),
-  labelType:value=>frame(0x23,[value]),
-  printStart:()=>frame(0x01,[1]),
-  pageStart:()=>frame(0x03,[1]),
-  pageSize:(height,width)=>frame(
+
+  connect:
+  ()=>frame(
+    0xC1,
+    [1],
+    true
+  ),
+
+  density:
+  value=>frame(
+    0x21,
+    [value]
+  ),
+
+  labelType:
+  value=>frame(
+    0x23,
+    [value]
+  ),
+
+  printStart:
+  ()=>frame(
+    0x01,
+    [1]
+  ),
+
+  pageStart:
+  ()=>frame(
+    0x03,
+    [1]
+  ),
+
+  pageSize:
+  (height,width)=>
+  frame(
     0x13,
     [
       ...u16(height),
       ...u16(width)
     ]
   ),
-  pageEnd:()=>frame(0xE3,[1]),
-  printEnd:()=>frame(0xF3,[1])
+
+  pageEnd:
+  ()=>frame(
+    0xE3,
+    [1]
+  ),
+
+  printEnd:
+  ()=>frame(
+    0xF3,
+    [1]
+  )
 };
 
 
@@ -173,6 +1169,7 @@ function parsePackets(text){
   .map(v=>parseInt(v,16));
 
   const result=[];
+
   let pos=0;
 
   while(pos<bytes.length){
@@ -181,12 +1178,17 @@ function parsePackets(text){
       bytes[pos]!==0x55 ||
       bytes[pos+1]!==0x55
     ){
+
       pos++;
+
       continue;
     }
 
-    const command=bytes[pos+2];
-    const length=bytes[pos+3];
+    const command=
+    bytes[pos+2];
+
+    const length=
+    bytes[pos+3];
 
     const checksumIndex=
     pos+4+length;
@@ -194,7 +1196,10 @@ function parsePackets(text){
     const tail=
     checksumIndex+1;
 
-    if(tail+1>=bytes.length){
+    if(
+      tail+1>=
+      bytes.length
+    ){
       break;
     }
 
@@ -202,34 +1207,49 @@ function parsePackets(text){
       bytes[tail]!==0xAA ||
       bytes[tail+1]!==0xAA
     ){
+
       pos++;
+
       continue;
     }
 
-    let checksum=command^length;
+    let checksum=
+    command^length;
 
-    for(let i=0;i<length;i++){
-      checksum^=bytes[pos+4+i];
+    for(
+      let i=0;
+      i<length;
+      i++
+    ){
+
+      checksum^=
+      bytes[pos+4+i];
     }
 
     if(
       (checksum&255)!==
       bytes[checksumIndex]
     ){
+
       pos++;
+
       continue;
     }
 
     result.push({
+
       command,
+
       payload:
       bytes.slice(
         pos+4,
         pos+4+length
       )
+
     });
 
-    pos=tail+2;
+    pos=
+    tail+2;
   }
 
   return result;
@@ -246,33 +1266,61 @@ async function rawGattWrite(bytes){
     state.write.properties.writeWithoutResponse &&
     state.write.writeValueWithoutResponse
   ){
-    await state.write.writeValueWithoutResponse(bytes);
+
+    await state.write
+    .writeValueWithoutResponse(
+      bytes
+    );
   }
 
   else if(
     state.write.writeValueWithResponse
   ){
-    await state.write.writeValueWithResponse(bytes);
+
+    await state.write
+    .writeValueWithResponse(
+      bytes
+    );
   }
 
   else{
-    await state.write.writeValue(bytes);
+
+    await state.write
+    .writeValue(
+      bytes
+    );
   }
 }
 
-async function writeRaw(bytes,chunkDelay=3){
 
-  for(let i=0;i<bytes.length;i+=20){
+async function writeRaw(
+  bytes,
+  chunkDelay=3
+){
+
+  for(
+    let i=0;
+    i<bytes.length;
+    i+=20
+  ){
 
     if(state.stop){
-      throw new Error("使用者停止");
+
+      throw new Error(
+        "使用者停止"
+      );
     }
 
     await rawGattWrite(
-      bytes.slice(i,i+20)
+      bytes.slice(
+        i,
+        i+20
+      )
     );
 
-    await delay(chunkDelay);
+    await delay(
+      chunkDelay
+    );
   }
 }
 
@@ -291,20 +1339,36 @@ async function sendWait(
   const startIndex=
   state.parsedRx.length;
 
-  log(`${name} → ${hex(packet)}`);
+  log(
+    `${name} → ${hex(packet)}`
+  );
 
-  await rawGattWrite(packet);
+  await rawGattWrite(
+    packet
+  );
 
-  const start=Date.now();
+  const started=
+  Date.now();
 
-  while(Date.now()-start<timeout){
+  while(
+    Date.now()-started<
+    timeout
+  ){
 
     const incoming=
-    state.parsedRx.slice(startIndex);
+    state.parsedRx.slice(
+      startIndex
+    );
 
-    for(const parsed of incoming){
+    for(
+      const parsed
+      of incoming
+    ){
 
-      if(parsed.command===expected){
+      if(
+        parsed.command===
+        expected
+      ){
 
         log(
           `${name} ACK ✅ 0x${expected.toString(16).toUpperCase()}`
@@ -317,44 +1381,61 @@ async function sendWait(
     await delay(25);
   }
 
-  log(`${name} ACK ❌ TIMEOUT`);
+  log(
+    `${name} ACK ❌ TIMEOUT`
+  );
 
   return false;
 }
 
 
 /* =========================================================
-V20.5 PAGE END
+V20.5 PAGE END RETRY
 ========================================================= */
 
-async function pageEndOnce(
+async function pageEndAttempt(
   name,
-  timeout=9000
+  timeout=10000
 ){
-
-  const packet=
-  CMD.pageEnd();
 
   const startIndex=
   state.parsedRx.length;
 
-  log(`${name} → ${hex(packet)}`);
+  const packet=
+  CMD.pageEnd();
 
-  await rawGattWrite(packet);
+  log(
+    `${name} → ${hex(packet)}`
+  );
 
-  const start=
+  await rawGattWrite(
+    packet
+  );
+
+  const started=
   Date.now();
 
-  let sawDB=false;
+  let dbSeen=false;
 
-  while(Date.now()-start<timeout){
+  while(
+    Date.now()-started<
+    timeout
+  ){
 
     const incoming=
-    state.parsedRx.slice(startIndex);
+    state.parsedRx.slice(
+      startIndex
+    );
 
-    for(const parsed of incoming){
+    for(
+      const parsed
+      of incoming
+    ){
 
-      if(parsed.command===0xE4){
+      if(
+        parsed.command===
+        0xE4
+      ){
 
         log(
           `${name} ACK ✅ 0xE4`
@@ -366,27 +1447,25 @@ async function pageEndOnce(
         };
       }
 
-      if(parsed.command===0xDB){
+      if(
+        parsed.command===
+        0xDB
+      ){
 
-        if(!sawDB){
+        if(!dbSeen){
 
-          sawDB=true;
+          dbSeen=true;
 
           log(
-            `${name} 收到 DB：${hex(parsed.payload||[])}`
+            `${name} 收到 DB｜Payload ${hex(parsed.payload||[])}`
           );
         }
       }
     }
 
-    /*
-    DB 已經明確回來時，
-    不用傻等滿9秒。
-    */
+    if(dbSeen){
 
-    if(sawDB){
-
-      await delay(250);
+      await delay(300);
 
       return{
         ok:false,
@@ -416,43 +1495,37 @@ async function pageEndWithRetry(
   `PAGE END ${pageIndex+1}`;
 
   let result=
-  await pageEndOnce(
+  await pageEndAttempt(
     name,
-    9000
+    10000
   );
 
   if(result.ok){
     return true;
   }
 
-  /*
-  第一次失敗：
-  DB → 等久一點
-  Timeout → 也重新給緩衝
-  */
-
   if(result.db){
 
     log(
-      `${name}：印表機尚未接受，等待1500ms後重試`
+      `${name}：收到DB，等待1800ms後重試`
     );
 
-    await delay(1500);
+    await delay(1800);
   }
 
   else{
 
     log(
-      `${name}：未收到E4，等待1200ms後重試`
+      `${name}：未收到E4，等待1500ms後重試`
     );
 
-    await delay(1200);
+    await delay(1500);
   }
 
   result=
-  await pageEndOnce(
+  await pageEndAttempt(
     `${name} RETRY`,
-    12000
+    15000
   );
 
   return result.ok;
@@ -460,26 +1533,25 @@ async function pageEndWithRetry(
 
 
 /* =========================================================
-V20.5 ADAPTIVE SETTLE
+SETTLE
 ========================================================= */
 
-function hasLateD3(startIndex){
+function hasD3Stage(
+  startIndex,
+  minimumStage
+){
 
   const incoming=
-  state.parsedRx.slice(startIndex);
+  state.parsedRx.slice(
+    startIndex
+  );
 
-  for(const packet of incoming){
-
-    if(
-      packet.command===0xD3 &&
-      packet.payload?.length>=1 &&
-      packet.payload[0]>=3
-    ){
-      return true;
-    }
-  }
-
-  return false;
+  return incoming.some(
+    packet=>
+    packet.command===0xD3 &&
+    packet.payload?.length &&
+    packet.payload[0]>=minimumStage
+  );
 }
 
 
@@ -489,54 +1561,67 @@ async function settleAfterBitmap(
   status
 ){
 
-  let waitMs=700;
+  let baseWait=700;
 
-  if(runs.length>=300){
-    waitMs=1000;
+  if(runs.length>=250){
+    baseWait=900;
+  }
+
+  if(runs.length>=350){
+    baseWait=1200;
   }
 
   if(runs.length>=450){
-    waitMs=1500;
+    baseWait=1600;
   }
 
   if(runs.length>=600){
-    waitMs=2200;
+    baseWait=2400;
   }
 
   if(runs.length>=750){
-    waitMs=2800;
+    baseWait=3000;
   }
-
-  status.textContent=
-  `Bitmap 完成｜SETTLE ${waitMs}ms…`;
 
   log(
-    `BITMAP 完成｜RUNS ${runs.length}｜SETTLE ${waitMs}ms`
+    `BITMAP 完成｜RUNS ${runs.length}｜SETTLE ${baseWait}ms`
   );
 
-  await delay(waitMs);
+  if(status){
 
-  if(hasLateD3(d3StartIndex)){
-
-    log(
-      "SETTLE：已看到後段 D3，再等待400ms"
-    );
-
-    await delay(400);
+    status.textContent=
+    `Bitmap 完成，等待印表機處理…`;
   }
 
-  else if(runs.length>=500){
+  await delay(
+    baseWait
+  );
 
-    /*
-    大量圖片即使還沒看到後段D3，
-    再補一點緩衝。
-    */
+  if(
+    hasD3Stage(
+      d3StartIndex,
+      3
+    )
+  ){
 
     log(
-      "SETTLE：大量資料未看到後段D3，再等待600ms"
+      "SETTLE：已看到後段 D3，再等500ms"
     );
 
-    await delay(600);
+    await delay(500);
+
+    return;
+  }
+
+  if(
+    runs.length>=500
+  ){
+
+    log(
+      "SETTLE：大型圖片尚未看到後段D3，再等800ms"
+    );
+
+    await delay(800);
   }
 }
 
@@ -545,34 +1630,61 @@ async function settleAfterBitmap(
 CANVAS
 ========================================================= */
 
-function whiteCanvas(width,height){
+function whiteCanvas(
+  width,
+  height
+){
 
   const canvas=
-  document.createElement("canvas");
+  document.createElement(
+    "canvas"
+  );
 
-  canvas.width=width;
-  canvas.height=height;
+  canvas.width=
+  width;
+
+  canvas.height=
+  height;
 
   const ctx=
-  canvas.getContext("2d");
+  canvas.getContext(
+    "2d"
+  );
 
-  ctx.fillStyle="#fff";
-  ctx.fillRect(0,0,width,height);
+  ctx.fillStyle=
+  "#fff";
 
-  ctx.fillStyle="#000";
+  ctx.fillRect(
+    0,
+    0,
+    width,
+    height
+  );
+
+  ctx.fillStyle=
+  "#000";
 
   return canvas;
 }
 
-function wrapText(ctx,text,maxWidth){
+
+function wrapText(
+  ctx,
+  text,
+  maxWidth
+){
 
   const chars=
   Array.from(text||"");
 
   const lines=[];
+
   let line="";
 
-  for(const char of chars){
+  for(
+    const char
+    of chars
+  ){
 
     const test=
     line+char;
@@ -582,15 +1694,22 @@ function wrapText(ctx,text,maxWidth){
       maxWidth &&
       line
     ){
+
       lines.push(line);
-      line=char;
+
+      line=
+      char;
     }
+
     else{
-      line=test;
+
+      line=
+      test;
     }
   }
 
   if(line){
+
     lines.push(line);
   }
 
@@ -605,18 +1724,25 @@ RASTER
 function canvasRows(canvas){
 
   const ctx=
-  canvas.getContext("2d");
+  canvas.getContext(
+    "2d"
+  );
 
   const data=
   ctx.getImageData(
-    0,0,
+    0,
+    0,
     canvas.width,
     canvas.height
   ).data;
 
   const rows=[];
 
-  for(let y=0;y<canvas.height;y++){
+  for(
+    let y=0;
+    y<canvas.height;
+    y++
+  ){
 
     const row=
     new Uint8Array(
@@ -625,7 +1751,11 @@ function canvasRows(canvas){
 
     let black=0;
 
-    for(let x=0;x<canvas.width;x++){
+    for(
+      let x=0;
+      x<canvas.width;
+      x++
+    ){
 
       const i=
       (
@@ -663,13 +1793,22 @@ function canvasRows(canvas){
 
 function sameRow(a,b){
 
-  if(a.length!==b.length){
+  if(
+    a.length!==
+    b.length
+  ){
     return false;
   }
 
-  for(let i=0;i<a.length;i++){
+  for(
+    let i=0;
+    i<a.length;
+    i++
+  ){
 
-    if(a[i]!==b[i]){
+    if(
+      a[i]!==b[i]
+    ){
       return false;
     }
   }
@@ -681,22 +1820,33 @@ function sameRow(a,b){
 function rowsToRuns(rows){
 
   const runs=[];
+
   let y=0;
 
-  while(y<rows.length){
+  while(
+    y<rows.length
+  ){
 
     const current=
     rows[y];
 
-    if(current.black===0){
+    if(
+      current.black===0
+    ){
 
       let repeat=1;
 
       while(
-        y+repeat<rows.length &&
+        y+repeat<
+        rows.length &&
+
         repeat<40 &&
-        rows[y+repeat].black===0
+
+        rows[
+          y+repeat
+        ].black===0
       ){
+
         repeat++;
       }
 
@@ -715,14 +1865,23 @@ function rowsToRuns(rows){
     let repeat=1;
 
     while(
-      y+repeat<rows.length &&
+      y+repeat<
+      rows.length &&
+
       repeat<2 &&
-      rows[y+repeat].black>0 &&
+
+      rows[
+        y+repeat
+      ].black>0 &&
+
       sameRow(
         current.data,
-        rows[y+repeat].data
+        rows[
+          y+repeat
+        ].data
       )
     ){
+
       repeat++;
     }
 
@@ -759,7 +1918,10 @@ function rowPacket(run){
 
       run.black&255,
 
-      (run.black>>8)&255,
+      (
+        run.black>>
+        8
+      )&255,
 
       run.repeat,
 
@@ -776,7 +1938,9 @@ BARCODE
 function createBarcodeCanvas(value){
 
   const raw=
-  document.createElement("canvas");
+  document.createElement(
+    "canvas"
+  );
 
   JsBarcode(
     raw,
@@ -803,7 +1967,9 @@ function stretchBarcode(
 ){
 
   const canvas=
-  document.createElement("canvas");
+  document.createElement(
+    "canvas"
+  );
 
   canvas.width=
   Math.max(
@@ -820,24 +1986,31 @@ function stretchBarcode(
   );
 
   const ctx=
-  canvas.getContext("2d");
+  canvas.getContext(
+    "2d"
+  );
 
-  ctx.fillStyle="#fff";
+  ctx.fillStyle=
+  "#fff";
 
   ctx.fillRect(
-    0,0,
+    0,
+    0,
     canvas.width,
     canvas.height
   );
 
-  ctx.imageSmoothingEnabled=false;
+  ctx.imageSmoothingEnabled=
+  false;
 
   ctx.drawImage(
     raw,
-    0,0,
+    0,
+    0,
     raw.width,
     raw.height,
-    0,0,
+    0,
+    0,
     canvas.width,
     canvas.height
   );
@@ -850,90 +2023,110 @@ function stretchBarcode(
 QR
 ========================================================= */
 
-async function createQRCanvas(value,dots){
+async function createQRCanvas(
+  value,
+  dots
+){
 
-  return new Promise((resolve,reject)=>{
+  return new Promise(
+    (resolve,reject)=>{
 
-    try{
+      try{
 
-      const holder=
-      document.createElement("div");
+        const holder=
+        document.createElement(
+          "div"
+        );
 
-      holder.style.position=
-      "fixed";
+        holder.style.position=
+        "fixed";
 
-      holder.style.left=
-      "-9999px";
+        holder.style.left=
+        "-9999px";
 
-      holder.style.top=
-      "-9999px";
+        holder.style.top=
+        "-9999px";
 
-      document.body.appendChild(holder);
+        document.body
+        .appendChild(holder);
 
-      new QRCode(
-        holder,
-        {
-          text:String(value),
-          width:dots,
-          height:dots,
-          correctLevel:
-          QRCode.CorrectLevel.M
-        }
-      );
-
-      setTimeout(()=>{
-
-        try{
-
-          const source=
-          holder.querySelector("canvas");
-
-          if(!source){
-
-            throw new Error(
-              "QR Code 產生失敗"
-            );
+        new QRCode(
+          holder,
+          {
+            text:String(value),
+            width:dots,
+            height:dots,
+            correctLevel:
+            QRCode.CorrectLevel.M
           }
+        );
 
-          const canvas=
-          document.createElement("canvas");
+        setTimeout(
+          ()=>{
 
-          canvas.width=dots;
-          canvas.height=dots;
+            try{
 
-          canvas
-          .getContext("2d")
-          .drawImage(
-            source,
-            0,0,
-            dots,dots
-          );
+              const source=
+              holder.querySelector(
+                "canvas"
+              );
 
-          holder.remove();
+              if(!source){
 
-          resolve(canvas);
-        }
+                throw new Error(
+                  "QR Code 產生失敗"
+                );
+              }
 
-        catch(error){
+              const canvas=
+              document.createElement(
+                "canvas"
+              );
 
-          holder.remove();
+              canvas.width=
+              dots;
 
-          reject(error);
-        }
+              canvas.height=
+              dots;
 
-      },30);
+              canvas
+              .getContext("2d")
+              .drawImage(
+                source,
+                0,
+                0,
+                dots,
+                dots
+              );
+
+              holder.remove();
+
+              resolve(canvas);
+            }
+
+            catch(error){
+
+              holder.remove();
+
+              reject(error);
+            }
+
+          },
+          30
+        );
+      }
+
+      catch(error){
+
+        reject(error);
+      }
     }
-
-    catch(error){
-
-      reject(error);
-    }
-  });
+  );
 }
 
 
 /* =========================================================
-PRODUCT
+PRODUCTS
 ========================================================= */
 
 function escapeHtml(value){
@@ -953,7 +2146,9 @@ function renderProducts(){
 
   box.innerHTML="";
 
-  if(!products.length){
+  if(
+    products.length===0
+  ){
 
     box.innerHTML=
     '<div class="help" style="margin-top:12px">尚未加入商品</div>';
@@ -965,27 +2160,32 @@ function renderProducts(){
     (item,index)=>{
 
       const div=
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
 
-      div.className="item";
+      div.className=
+      "item";
 
       div.innerHTML=`
-        <b>
-        ${index+1}.
-        ${escapeHtml(item.name||"未命名")}
-        </b>
 
-        <div class="help">
-        條碼：${escapeHtml(item.barcode||"—")}<br>
-        QR：${escapeHtml(item.qr||"—")}<br>
-        文字：${escapeHtml(item.text||"—")}
-        </div>
+      <b>
+      ${index+1}.
+      ${escapeHtml(item.name||"未命名")}
+      </b>
 
-        <button
-        class="danger removeProduct"
-        data-i="${index}">
-        刪除
-        </button>
+      <div class="help">
+      條碼：${escapeHtml(item.barcode||"—")}<br>
+      QR：${escapeHtml(item.qr||"—")}<br>
+      文字：${escapeHtml(item.text||"—")}
+      </div>
+
+      <button
+      class="danger removeProduct"
+      data-i="${index}">
+      刪除
+      </button>
+
       `;
 
       box.appendChild(div);
@@ -993,29 +2193,36 @@ function renderProducts(){
   );
 
   document
-  .querySelectorAll(".removeProduct")
-  .forEach(button=>{
+  .querySelectorAll(
+    ".removeProduct"
+  )
+  .forEach(
+    button=>{
 
-    button.onclick=()=>{
+      button.onclick=
+      ()=>{
 
-      products.splice(
-        Number(
-          button.dataset.i
-        ),
-        1
-      );
+        products.splice(
+          Number(
+            button.dataset.i
+          ),
+          1
+        );
 
-      renderProducts();
+        renderProducts();
 
-      renderGeneralPreview();
-    };
-  });
+        renderGeneralPreview();
+      };
+    }
+  );
 }
 
 
-$("addBtn").onclick=()=>{
+$("addBtn").onclick=
+()=>{
 
   const item={
+
     name:
     $("productName")
     .value.trim(),
@@ -1031,6 +2238,7 @@ $("addBtn").onclick=()=>{
     text:
     $("customText")
     .value.trim()
+
   };
 
   if(
@@ -1055,7 +2263,8 @@ $("addBtn").onclick=()=>{
 };
 
 
-$("clearProductsBtn").onclick=()=>{
+$("clearProductsBtn").onclick=
+()=>{
 
   products=[];
 
@@ -1066,7 +2275,7 @@ $("clearProductsBtn").onclick=()=>{
 
 
 /* =========================================================
-GENERAL CANVAS
+PRODUCT CANVAS
 ========================================================= */
 
 async function buildProductCanvas(item){
@@ -1114,31 +2323,37 @@ async function buildProductCanvas(item){
   )
   :1;
 
-  const baseNameFont=
-  Number(
-    $("nameFont").value
-  )||30;
-
-  const baseNumberFont=
-  Number(
-    $("numberFont").value
-  )||24;
-
   const nameFont=
   sync
   ?Math.round(
-    baseNameFont*
+    (
+      Number(
+        $("nameFont").value
+      )||30
+    )*
     textScale
   )
-  :baseNameFont;
+  :(
+    Number(
+      $("nameFont").value
+    )||30
+  );
 
   const numberFont=
   sync
   ?Math.round(
-    baseNumberFont*
+    (
+      Number(
+        $("numberFont").value
+      )||24
+    )*
     textScale
   )
-  :baseNumberFont;
+  :(
+    Number(
+      $("numberFont").value
+    )||24
+  );
 
   const textFont=
   Number(
@@ -1158,9 +2373,12 @@ async function buildProductCanvas(item){
 
   const qrDots=
   mmToDots(
-    Number(
-      $("qrSize").value
-    )*10
+    (
+      Number(
+        $("qrSize").value
+      )||3
+    )*
+    10
   );
 
   const footer=
@@ -1169,13 +2387,12 @@ async function buildProductCanvas(item){
 
   const layers=[];
 
-  function spacer(height=gap){
-
-    layers.push({
-      type:"space",
-      height
-    });
-  }
+  const spacer=
+  height=gap=>
+  layers.push({
+    type:"space",
+    height
+  });
 
   const needName=[
     "name_barcode_number",
@@ -1376,6 +2593,7 @@ async function buildProductCanvas(item){
       layers.length-1
     ].type==="space"
   ){
+
     layers.pop();
   }
 
@@ -1389,38 +2607,40 @@ async function buildProductCanvas(item){
   .getContext("2d");
 
 
-  for(const layer of layers){
+  for(
+    const layer
+    of layers
+  ){
 
-    if(layer.type==="space"){
+    if(
+      layer.type===
+      "space"
+    ){
 
-      height+=layer.height;
+      height+=
+      layer.height;
     }
 
     else if(
-      layer.type==="image"
+      layer.type===
+      "image"
     ){
 
       height+=
       layer.canvas.height;
     }
 
-    else if(
-      layer.type==="text"
-    ){
+    else{
 
       measure.font=
       `${layer.weight} ${layer.font}px "PingFang TC",sans-serif`;
 
-      const lines=
+      layer.lines=
       wrapText(
         measure,
         layer.text,
-        width-
-        margin*2
+        width-margin*2
       );
-
-      layer.lines=
-      lines;
 
       layer.lineHeight=
       Math.ceil(
@@ -1430,22 +2650,18 @@ async function buildProductCanvas(item){
 
       height+=
       layer.lineHeight*
-      lines.length;
+      layer.lines.length;
     }
   }
-
-
-  height=
-  Math.max(
-    80,
-    Math.ceil(height)
-  );
 
 
   const canvas=
   whiteCanvas(
     width,
-    height
+    Math.max(
+      80,
+      Math.ceil(height)
+    )
   );
 
   const ctx=
@@ -1455,9 +2671,15 @@ async function buildProductCanvas(item){
   margin;
 
 
-  for(const layer of layers){
+  for(
+    const layer
+    of layers
+  ){
 
-    if(layer.type==="space"){
+    if(
+      layer.type===
+      "space"
+    ){
 
       y+=layer.height;
 
@@ -1465,13 +2687,17 @@ async function buildProductCanvas(item){
     }
 
 
-    if(layer.type==="image"){
+    if(
+      layer.type===
+      "image"
+    ){
 
       let x=
       margin;
 
       if(
-        layer.align==="center"
+        layer.align===
+        "center"
       ){
 
         x=
@@ -1482,7 +2708,8 @@ async function buildProductCanvas(item){
       }
 
       else if(
-        layer.align==="right"
+        layer.align===
+        "right"
       ){
 
         x=
@@ -1516,43 +2743,37 @@ async function buildProductCanvas(item){
     }
 
 
-    if(layer.type==="text"){
+    ctx.fillStyle=
+    "#000";
 
-      ctx.fillStyle="#000";
+    ctx.font=
+    `${layer.weight} ${layer.font}px -apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif`;
 
-      ctx.font=
-      `${layer.weight} ${layer.font}px -apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif`;
+    ctx.textAlign=
+    "center";
 
-      ctx.textAlign=
-      "center";
+    ctx.textBaseline=
+    "top";
 
-      ctx.textBaseline=
-      "top";
+    for(
+      const line
+      of layer.lines
+    ){
 
-      for(
-        const line
-        of layer.lines
-      ){
+      ctx.fillText(
+        line,
+        width/2,
+        y
+      );
 
-        ctx.fillText(
-          line,
-          width/2,
-          y
-        );
-
-        y+=
-        layer.lineHeight;
-      }
+      y+=
+      layer.lineHeight;
     }
   }
 
   return canvas;
 }
 
-
-/* =========================================================
-GENERAL PREVIEW
-========================================================= */
 
 async function renderGeneralPreview(){
 
@@ -1561,7 +2782,9 @@ async function renderGeneralPreview(){
 
   box.innerHTML="";
 
-  if(!products.length){
+  if(
+    products.length===0
+  ){
 
     box.innerHTML=
     '<div class="help">加入商品後顯示預覽</div>';
@@ -1582,7 +2805,9 @@ async function renderGeneralPreview(){
       );
 
       const holder=
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
 
       holder.className=
       "previewPage";
@@ -1604,6 +2829,7 @@ async function renderGeneralPreview(){
   }
 }
 
+
 $("previewBtn").onclick=
 renderGeneralPreview;
 
@@ -1617,16 +2843,16 @@ function splitBigText(){
   const raw=
   $("bigText").value;
 
-  const splitMode=
+  const mode=
   $("splitMode").value;
 
-  const charsPer=
+  const countValue=
   $("charsPerPage").value;
 
   let tokens=[];
 
   if(
-    splitMode==="space"
+    mode==="space"
   ){
 
     tokens=
@@ -1636,7 +2862,7 @@ function splitBigText(){
   }
 
   else if(
-    splitMode==="line"
+    mode==="line"
   ){
 
     tokens=
@@ -1658,16 +2884,17 @@ function splitBigText(){
   }
 
   if(
-    splitMode!=="char" ||
-    charsPer==="auto"
+    mode!=="char" ||
+    countValue==="auto"
   ){
+
     return tokens;
   }
 
   const count=
   Math.max(
     1,
-    Number(charsPer)||1
+    Number(countValue)||1
   );
 
   const pages=[];
@@ -1692,6 +2919,33 @@ function splitBigText(){
 }
 
 
+function bigPageSettings(){
+
+  return{
+
+    width:
+    paperDots(
+      Number(
+        $("bigPaperWidth").value
+      )
+    ),
+
+    height:
+    mmToDots(
+      Number(
+        $("bigPaperHeight").value
+      )||100
+    ),
+
+    labelType:
+    Number(
+      $("bigPaperMode").value
+    )
+
+  };
+}
+
+
 function fitFont(
   ctx,
   text,
@@ -1704,14 +2958,13 @@ function fitFont(
   let high=1000;
   let best=20;
 
-  while(low<=high){
+  while(
+    low<=high
+  ){
 
     const mid=
     Math.floor(
-      (
-        low+
-        high
-      )/2
+      (low+high)/2
     );
 
     ctx.font=
@@ -1720,10 +2973,10 @@ function fitFont(
     const metrics=
     ctx.measureText(text);
 
-    const width=
+    const w=
     metrics.width;
 
-    const height=
+    const h=
     (
       metrics.actualBoundingBoxAscent||
       mid*.8
@@ -1734,8 +2987,8 @@ function fitFont(
     );
 
     if(
-      width<=maxWidth &&
-      height<=maxHeight
+      w<=maxWidth &&
+      h<=maxHeight
     ){
 
       best=mid;
@@ -1755,46 +3008,15 @@ function fitFont(
 }
 
 
-function bigPageSettings(){
-
-  return{
-    width:
-    paperDots(
-      Number(
-        $("bigPaperWidth").value
-      )
-    ),
-
-    height:
-    mmToDots(
-      Number(
-        $("bigPaperHeight").value
-      )||100
-    ),
-
-    labelType:
-    Number(
-      $("bigPaperMode").value
-    )
-  };
-}
-
-
 function buildBigCanvas(text){
 
   const settings=
   bigPageSettings();
 
-  const width=
-  settings.width;
-
-  const height=
-  settings.height;
-
   const canvas=
   whiteCanvas(
-    width,
-    height
+    settings.width,
+    settings.height
   );
 
   const ctx=
@@ -1827,14 +3049,14 @@ function buildBigCanvas(text){
   const maxWidth=
   Math.max(
     20,
-    width-
+    settings.width-
     margin*2
   );
 
   const maxHeight=
   Math.max(
     20,
-    height-
+    settings.height-
     margin*2
   );
 
@@ -1869,13 +3091,11 @@ function buildBigCanvas(text){
   ctx.font=
   `${weight} ${fontSize}px Arial,-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif`;
 
-  const align=
-  $("bigAlign").value;
-
-  const valign=
-  $("bigVAlign").value;
 
   let x;
+
+  const align=
+  $("bigAlign").value;
 
   if(
     align==="left"
@@ -1896,7 +3116,7 @@ function buildBigCanvas(text){
     "right";
 
     x=
-    width-
+    settings.width-
     margin;
   }
 
@@ -1906,10 +3126,14 @@ function buildBigCanvas(text){
     "center";
 
     x=
-    width/2;
+    settings.width/2;
   }
 
+
   let y;
+
+  const valign=
+  $("bigVAlign").value;
 
   if(
     valign==="top"
@@ -1930,7 +3154,7 @@ function buildBigCanvas(text){
     "bottom";
 
     y=
-    height-
+    settings.height-
     margin;
   }
 
@@ -1940,7 +3164,7 @@ function buildBigCanvas(text){
     "middle";
 
     y=
-    height/2;
+    settings.height/2;
   }
 
   ctx.fillText(
@@ -1952,6 +3176,10 @@ function buildBigCanvas(text){
   return canvas;
 }
 
+
+/* =========================================================
+BIG FLOYD
+========================================================= */
 
 function bigFloydRows(
   canvas,
@@ -1989,11 +3217,20 @@ function bigFloydRows(
     )
   );
 
-  for(let y=0;y<h;y++){
 
-    for(let x=0;x<w;x++){
+  for(
+    let y=0;
+    y<h;
+    y++
+  ){
 
-      const srcIndex=
+    for(
+      let x=0;
+      x<w;
+      x++
+    ){
+
+      const i=
       (
         y*w+
         x
@@ -2001,18 +3238,16 @@ function bigFloydRows(
 
       const original=
       (
-        source[srcIndex]*299+
-        source[srcIndex+1]*587+
-        source[srcIndex+2]*114
+        source[i]*299+
+        source[i+1]*587+
+        source[i+2]*114
       )/1000;
 
       const darkness=
       1-
       original/255;
 
-      gray[
-        y*w+x
-      ]=
+      gray[y*w+x]=
       255-
       darkness*
       (
@@ -2022,10 +3257,18 @@ function bigFloydRows(
     }
   }
 
-  const rows=[];
-  const threshold=128;
 
-  for(let y=0;y<h;y++){
+  const rows=[];
+
+  const threshold=
+  128;
+
+
+  for(
+    let y=0;
+    y<h;
+    y++
+  ){
 
     const row=
     new Uint8Array(
@@ -2038,19 +3281,20 @@ function bigFloydRows(
     y%2===1;
 
     const start=
-    reverse?
-    w-1:
-    0;
+    reverse
+    ?w-1
+    :0;
 
     const end=
-    reverse?
-    -1:
-    w;
+    reverse
+    ?-1
+    :w;
 
     const step=
-    reverse?
-    -1:
-    1;
+    reverse
+    ?-1
+    :1;
+
 
     for(
       let x=start;
@@ -2068,18 +3312,17 @@ function bigFloydRows(
         255
       );
 
-      const newValue=
-      old<
-      threshold
+      const value=
+      old<threshold
       ?0
       :255;
 
       const error=
       old-
-      newValue;
+      value;
 
       if(
-        newValue===0
+        value===0
       ){
 
         row[x>>3]|=
@@ -2088,96 +3331,66 @@ function bigFloydRows(
         black++;
       }
 
+
       if(!reverse){
 
         if(x+1<w){
-
-          gray[
-            idx+1
-          ]+=
-          error*
-          7/16;
+          gray[idx+1]+=
+          error*7/16;
         }
 
         if(
           y+1<h &&
           x>0
         ){
-
-          gray[
-            idx+w-1
-          ]+=
-          error*
-          3/16;
+          gray[idx+w-1]+=
+          error*3/16;
         }
 
         if(y+1<h){
-
-          gray[
-            idx+w
-          ]+=
-          error*
-          5/16;
+          gray[idx+w]+=
+          error*5/16;
         }
 
         if(
           y+1<h &&
           x+1<w
         ){
-
-          gray[
-            idx+w+1
-          ]+=
-          error*
-          1/16;
+          gray[idx+w+1]+=
+          error*1/16;
         }
       }
 
       else{
 
         if(x-1>=0){
-
-          gray[
-            idx-1
-          ]+=
-          error*
-          7/16;
+          gray[idx-1]+=
+          error*7/16;
         }
 
         if(
           y+1<h &&
           x+1<w
         ){
-
-          gray[
-            idx+w+1
-          ]+=
-          error*
-          3/16;
+          gray[idx+w+1]+=
+          error*3/16;
         }
 
         if(y+1<h){
-
-          gray[
-            idx+w
-          ]+=
-          error*
-          5/16;
+          gray[idx+w]+=
+          error*5/16;
         }
 
         if(
           y+1<h &&
           x-1>=0
         ){
-
-          gray[
-            idx+w-1
-          ]+=
-          error*
-          1/16;
+          gray[idx+w-1]+=
+          error*1/16;
         }
       }
     }
+
 
     rows.push({
       row:y,
@@ -2190,31 +3403,21 @@ function bigFloydRows(
 }
 
 
-function bigRows(canvas){
+function bigRuns(canvas){
 
-  if(
-    $("bigProcess").value===
-    "raw"
-  ){
-
-    return canvasRows(
-      canvas
-    );
-  }
-
-  return bigFloydRows(
+  const rows=
+  $("bigProcess").value===
+  "raw"
+  ?canvasRows(canvas)
+  :bigFloydRows(
     canvas,
     Number(
       $("bigPhotoBlack").value
     )||90
   );
-}
-
-
-function bigRuns(canvas){
 
   return rowsToRuns(
-    bigRows(canvas)
+    rows
   );
 }
 
@@ -2229,7 +3432,9 @@ function renderBigPreview(){
 
   box.innerHTML="";
 
-  if(!pages.length){
+  if(
+    pages.length===0
+  ){
 
     box.innerHTML=
     '<div class="help">請輸入大字內容</div>';
@@ -2241,13 +3446,17 @@ function renderBigPreview(){
     (text,index)=>{
 
       const holder=
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
 
       holder.className=
       "previewPage";
 
       const label=
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
 
       label.className=
       "help";
@@ -2273,6 +3482,7 @@ function renderBigPreview(){
   );
 }
 
+
 $("bigPreviewBtn").onclick=
 renderBigPreview;
 
@@ -2289,14 +3499,17 @@ function readPhotoFile(file){
       const reader=
       new FileReader();
 
-      reader.onload=()=>{
+      reader.onload=
+      ()=>{
 
-        const img=
+        const image=
         new Image();
 
-        img.onload=()=>{
+        image.onload=
+        ()=>{
 
           resolve({
+
             id:
             `${Date.now()}_${Math.random()}`,
 
@@ -2304,35 +3517,31 @@ function readPhotoFile(file){
             file.name||
             "照片",
 
-            image:
-            img,
+            image,
 
             src:
             reader.result
+
           });
         };
 
-        img.onerror=()=>{
+        image.onerror=
+        ()=>reject(
+          new Error(
+            "照片讀取失敗"
+          )
+        );
 
-          reject(
-            new Error(
-              "照片讀取失敗"
-            )
-          );
-        };
-
-        img.src=
+        image.src=
         reader.result;
       };
 
-      reader.onerror=()=>{
-
-        reject(
-          new Error(
-            "照片檔案讀取失敗"
-          )
-        );
-      };
+      reader.onerror=
+      ()=>reject(
+        new Error(
+          "照片檔案讀取失敗"
+        )
+      );
 
       reader.readAsDataURL(
         file
@@ -2353,7 +3562,9 @@ $("photoFile")
       []
     );
 
-    if(!files.length){
+    if(
+      files.length===0
+    ){
       return;
     }
 
@@ -2370,13 +3581,10 @@ $("photoFile")
         of files
       ){
 
-        const item=
-        await readPhotoFile(
-          file
-        );
-
         photoItems.push(
-          item
+          await readPhotoFile(
+            file
+          )
         );
       }
 
@@ -2389,8 +3597,6 @@ $("photoFile")
 
       $("photoStatus").textContent=
       `✅ 已加入 ${photoItems.length} 張照片`;
-
-      updateButtons();
     }
 
     catch(error){
@@ -2407,6 +3613,8 @@ $("photoFile")
 
       event.target.value=
       "";
+
+      updateButtons();
     }
   }
 );
@@ -2419,7 +3627,9 @@ function renderPhotoList(){
 
   box.innerHTML="";
 
-  if(!photoItems.length){
+  if(
+    photoItems.length===0
+  ){
 
     box.innerHTML=
     '<div class="help" style="margin-top:10px">尚未加入照片</div>';
@@ -2433,50 +3643,55 @@ function renderPhotoList(){
     (item,index)=>{
 
       const div=
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
 
       div.className=
       "photoItem";
 
       div.innerHTML=`
-        <img
-        class="photoThumb"
-        src="${item.src}"
-        alt="">
 
-        <div>
+      <img
+      class="photoThumb"
+      src="${item.src}"
+      alt="">
 
-        <b>
-        第 ${index+1} 張
-        </b>
+      <div>
 
-        <div class="help">
-        ${escapeHtml(item.name)}<br>
-        ${item.image.naturalWidth} × ${item.image.naturalHeight}
-        </div>
+      <b>
+      第 ${index+1} 張
+      </b>
 
-        <div class="photoActions">
+      <div class="help">
+      ${escapeHtml(item.name)}<br>
+      ${item.image.naturalWidth} × ${item.image.naturalHeight}
+      </div>
 
-        <button
-        class="gray photoUp"
-        data-i="${index}">
-        ↑ 上移
-        </button>
+      <div class="photoActions">
 
-        <button
-        class="gray photoDown"
-        data-i="${index}">
-        ↓ 下移
-        </button>
+      <button
+      class="gray photoUp"
+      data-i="${index}">
+      ↑ 上移
+      </button>
 
-        <button
-        class="danger photoDelete"
-        data-i="${index}">
-        刪除
-        </button>
+      <button
+      class="gray photoDown"
+      data-i="${index}">
+      ↓ 下移
+      </button>
 
-        </div>
-        </div>
+      <button
+      class="danger photoDelete"
+      data-i="${index}">
+      刪除
+      </button>
+
+      </div>
+
+      </div>
+
       `;
 
       box.appendChild(div);
@@ -2485,104 +3700,120 @@ function renderPhotoList(){
 
 
   document
-  .querySelectorAll(".photoDelete")
-  .forEach(button=>{
+  .querySelectorAll(
+    ".photoDelete"
+  )
+  .forEach(
+    button=>{
 
-    button.onclick=()=>{
+      button.onclick=
+      ()=>{
 
-      const i=
-      Number(
-        button.dataset.i
-      );
+        const i=
+        Number(
+          button.dataset.i
+        );
 
-      photoItems.splice(
-        i,
-        1
-      );
+        photoItems.splice(
+          i,
+          1
+        );
 
-      renderPhotoList();
+        renderPhotoList();
 
-      renderPhotoPreview();
+        renderPhotoPreview();
 
-      $("photoStatus").textContent=
-      photoItems.length
-      ?`目前 ${photoItems.length} 張照片`
-      :"尚未選擇照片";
+        $("photoStatus").textContent=
+        photoItems.length
+        ?`目前 ${photoItems.length} 張照片`
+        :"尚未選擇照片";
 
-      updateButtons();
-    };
-  });
-
-
-  document
-  .querySelectorAll(".photoUp")
-  .forEach(button=>{
-
-    button.onclick=()=>{
-
-      const i=
-      Number(
-        button.dataset.i
-      );
-
-      if(i<=0){
-        return;
-      }
-
-      [
-        photoItems[i-1],
-        photoItems[i]
-      ]=
-      [
-        photoItems[i],
-        photoItems[i-1]
-      ];
-
-      renderPhotoList();
-
-      renderPhotoPreview();
-    };
-  });
+        updateButtons();
+      };
+    }
+  );
 
 
   document
-  .querySelectorAll(".photoDown")
-  .forEach(button=>{
+  .querySelectorAll(
+    ".photoUp"
+  )
+  .forEach(
+    button=>{
 
-    button.onclick=()=>{
+      button.onclick=
+      ()=>{
 
-      const i=
-      Number(
-        button.dataset.i
-      );
+        const i=
+        Number(
+          button.dataset.i
+        );
 
-      if(
-        i>=
-        photoItems.length-1
-      ){
-        return;
-      }
+        if(i<=0){
+          return;
+        }
 
-      [
-        photoItems[i+1],
-        photoItems[i]
-      ]=
-      [
-        photoItems[i],
-        photoItems[i+1]
-      ];
+        [
+          photoItems[i-1],
+          photoItems[i]
+        ]=
+        [
+          photoItems[i],
+          photoItems[i-1]
+        ];
 
-      renderPhotoList();
+        renderPhotoList();
 
-      renderPhotoPreview();
-    };
-  });
+        renderPhotoPreview();
+      };
+    }
+  );
+
+
+  document
+  .querySelectorAll(
+    ".photoDown"
+  )
+  .forEach(
+    button=>{
+
+      button.onclick=
+      ()=>{
+
+        const i=
+        Number(
+          button.dataset.i
+        );
+
+        if(
+          i>=
+          photoItems.length-1
+        ){
+          return;
+        }
+
+        [
+          photoItems[i+1],
+          photoItems[i]
+        ]=
+        [
+          photoItems[i],
+          photoItems[i+1]
+        ];
+
+        renderPhotoList();
+
+        renderPhotoPreview();
+      };
+    }
+  );
 
   updateButtons();
 }
 
 
-$("clearPhotosBtn").onclick=()=>{
+$("clearPhotosBtn").onclick=
+()=>{
 
   photoItems=[];
 
@@ -2602,11 +3833,9 @@ $("clearPhotosBtn").onclick=()=>{
 
 function photoPageSettings(){
 
-  const preset=
-  $("photoPaperPreset").value;
-
   if(
-    preset==="bigblack"
+    $("photoPaperPreset").value===
+    "bigblack"
   ){
 
     return{
@@ -2616,15 +3845,19 @@ function photoPageSettings(){
       height:
       mmToDots(146),
 
-      labelType:
-      2,
+      labelType:2,
 
-      blackMark:
-      true
+      blackMark:true
     };
   }
 
+  const labelType=
+  Number(
+    $("photoPaperMode").value
+  );
+
   return{
+
     width:
     paperDots(
       Number(
@@ -2639,15 +3872,10 @@ function photoPageSettings(){
       )||100
     ),
 
-    labelType:
-    Number(
-      $("photoPaperMode").value
-    ),
+    labelType,
 
     blackMark:
-    Number(
-      $("photoPaperMode").value
-    )===2
+    labelType===2
   };
 }
 
@@ -2664,9 +3892,11 @@ function buildPhotoCanvas(item){
   );
 
   const ctx=
-  canvas.getContext("2d");
+  canvas.getContext(
+    "2d"
+  );
 
-  const photoImage=
+  const image=
   item.image;
 
   const rotation=
@@ -2699,24 +3929,24 @@ function buildPhotoCanvas(item){
   $("photoFit").value;
 
   const sourceW=
-  photoImage.naturalWidth;
+  image.naturalWidth;
 
   const sourceH=
-  photoImage.naturalHeight;
+  image.naturalHeight;
 
   const rotated=
   rotation===90||
   rotation===270;
 
   const effectiveW=
-  rotated?
-  sourceH:
-  sourceW;
+  rotated
+  ?sourceH
+  :sourceW;
 
   const effectiveH=
-  rotated?
-  sourceW:
-  sourceH;
+  rotated
+  ?sourceW
+  :sourceH;
 
   const fitScale=
   fit==="cover"
@@ -2763,7 +3993,7 @@ function buildPhotoCanvas(item){
   );
 
   ctx.drawImage(
-    photoImage,
+    image,
     -drawW/2,
     -drawH/2,
     drawW,
@@ -2785,19 +4015,23 @@ function thresholdPhotoRows(
   threshold
 ){
 
-  const ctx=
-  canvas.getContext("2d");
-
   const data=
-  ctx.getImageData(
-    0,0,
+  canvas
+  .getContext("2d")
+  .getImageData(
+    0,
+    0,
     canvas.width,
     canvas.height
   ).data;
 
   const rows=[];
 
-  for(let y=0;y<canvas.height;y++){
+  for(
+    let y=0;
+    y<canvas.height;
+    y++
+  ){
 
     const row=
     new Uint8Array(
@@ -2806,7 +4040,11 @@ function thresholdPhotoRows(
 
     let black=0;
 
-    for(let x=0;x<canvas.width;x++){
+    for(
+      let x=0;
+      x<canvas.width;
+      x++
+    ){
 
       const i=
       (
@@ -2822,7 +4060,9 @@ function thresholdPhotoRows(
         data[i+2]*114
       )/1000;
 
-      if(gray<threshold){
+      if(
+        gray<threshold
+      ){
 
         row[x>>3]|=
         0x80>>(x&7);
@@ -2847,12 +4087,12 @@ function orderedPhotoRows(
   threshold
 ){
 
-  const ctx=
-  canvas.getContext("2d");
-
   const data=
-  ctx.getImageData(
-    0,0,
+  canvas
+  .getContext("2d")
+  .getImageData(
+    0,
+    0,
     canvas.width,
     canvas.height
   ).data;
@@ -2866,7 +4106,11 @@ function orderedPhotoRows(
 
   const rows=[];
 
-  for(let y=0;y<canvas.height;y++){
+  for(
+    let y=0;
+    y<canvas.height;
+    y++
+  ){
 
     const row=
     new Uint8Array(
@@ -2875,7 +4119,11 @@ function orderedPhotoRows(
 
     let black=0;
 
-    for(let x=0;x<canvas.width;x++){
+    for(
+      let x=0;
+      x<canvas.width;
+      x++
+    ){
 
       const i=
       (
@@ -2904,7 +4152,9 @@ function orderedPhotoRows(
         7.5
       )*9;
 
-      if(gray<local){
+      if(
+        gray<local
+      ){
 
         row[x>>3]|=
         0x80>>(x&7);
@@ -2929,12 +4179,12 @@ function floydPhotoRows(
   threshold
 ){
 
-  const ctx=
-  canvas.getContext("2d");
-
   const source=
-  ctx.getImageData(
-    0,0,
+  canvas
+  .getContext("2d")
+  .getImageData(
+    0,
+    0,
     canvas.width,
     canvas.height
   ).data;
@@ -2950,9 +4200,18 @@ function floydPhotoRows(
     w*h
   );
 
-  for(let y=0;y<h;y++){
 
-    for(let x=0;x<w;x++){
+  for(
+    let y=0;
+    y<h;
+    y++
+  ){
+
+    for(
+      let x=0;
+      x<w;
+      x++
+    ){
 
       const i=
       (
@@ -2960,9 +4219,7 @@ function floydPhotoRows(
         x
       )*4;
 
-      gray[
-        y*w+x
-      ]=
+      gray[y*w+x]=
       (
         source[i]*299+
         source[i+1]*587+
@@ -2971,9 +4228,15 @@ function floydPhotoRows(
     }
   }
 
+
   const rows=[];
 
-  for(let y=0;y<h;y++){
+
+  for(
+    let y=0;
+    y<h;
+    y++
+  ){
 
     const row=
     new Uint8Array(
@@ -2986,19 +4249,20 @@ function floydPhotoRows(
     y%2===1;
 
     const start=
-    reverse?
-    w-1:
-    0;
+    reverse
+    ?w-1
+    :0;
 
     const end=
-    reverse?
-    -1:
-    w;
+    reverse
+    ?-1
+    :w;
 
     const step=
-    reverse?
-    -1:
-    1;
+    reverse
+    ?-1
+    :1;
+
 
     for(
       let x=start;
@@ -3016,16 +4280,17 @@ function floydPhotoRows(
         255
       );
 
-      const newValue=
+      const value=
       old<threshold
       ?0
       :255;
 
       const error=
-      old-newValue;
+      old-
+      value;
 
       if(
-        newValue===0
+        value===0
       ){
 
         row[x>>3]|=
@@ -3034,96 +4299,66 @@ function floydPhotoRows(
         black++;
       }
 
+
       if(!reverse){
 
         if(x+1<w){
-
-          gray[
-            idx+1
-          ]+=
-          error*
-          7/16;
+          gray[idx+1]+=
+          error*7/16;
         }
 
         if(
           y+1<h &&
           x>0
         ){
-
-          gray[
-            idx+w-1
-          ]+=
-          error*
-          3/16;
+          gray[idx+w-1]+=
+          error*3/16;
         }
 
         if(y+1<h){
-
-          gray[
-            idx+w
-          ]+=
-          error*
-          5/16;
+          gray[idx+w]+=
+          error*5/16;
         }
 
         if(
           y+1<h &&
           x+1<w
         ){
-
-          gray[
-            idx+w+1
-          ]+=
-          error*
-          1/16;
+          gray[idx+w+1]+=
+          error*1/16;
         }
       }
 
       else{
 
         if(x-1>=0){
-
-          gray[
-            idx-1
-          ]+=
-          error*
-          7/16;
+          gray[idx-1]+=
+          error*7/16;
         }
 
         if(
           y+1<h &&
           x+1<w
         ){
-
-          gray[
-            idx+w+1
-          ]+=
-          error*
-          3/16;
+          gray[idx+w+1]+=
+          error*3/16;
         }
 
         if(y+1<h){
-
-          gray[
-            idx+w
-          ]+=
-          error*
-          5/16;
+          gray[idx+w]+=
+          error*5/16;
         }
 
         if(
           y+1<h &&
           x-1>=0
         ){
-
-          gray[
-            idx+w-1
-          ]+=
-          error*
-          1/16;
+          gray[idx+w-1]+=
+          error*1/16;
         }
       }
     }
+
 
     rows.push({
       row:y,
@@ -3138,38 +4373,36 @@ function floydPhotoRows(
 
 function photoRows(canvas){
 
-  const mode=
-  $("photoProcess").value;
-
   const threshold=
   Number(
     $("photoThreshold").value
   )||160;
 
-  if(
-    mode==="ordered"
+  switch(
+    $("photoProcess").value
   ){
 
-    return orderedPhotoRows(
-      canvas,
-      threshold
-    );
+    case "ordered":
+
+      return orderedPhotoRows(
+        canvas,
+        threshold
+      );
+
+    case "floyd":
+
+      return floydPhotoRows(
+        canvas,
+        threshold
+      );
+
+    default:
+
+      return thresholdPhotoRows(
+        canvas,
+        threshold
+      );
   }
-
-  if(
-    mode==="floyd"
-  ){
-
-    return floydPhotoRows(
-      canvas,
-      threshold
-    );
-  }
-
-  return thresholdPhotoRows(
-    canvas,
-    threshold
-  );
 }
 
 
@@ -3180,7 +4413,9 @@ function renderPhotoPreview(){
 
   box.innerHTML="";
 
-  if(!photoItems.length){
+  if(
+    photoItems.length===0
+  ){
 
     box.innerHTML=
     '<div class="help">選擇照片後顯示預覽</div>';
@@ -3191,19 +4426,18 @@ function renderPhotoPreview(){
   photoItems.forEach(
     (item,index)=>{
 
-      const canvas=
-      buildPhotoCanvas(
-        item
-      );
-
       const holder=
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
 
       holder.className=
       "previewPage";
 
       const title=
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
 
       title.className=
       "help";
@@ -3219,7 +4453,9 @@ function renderPhotoPreview(){
       );
 
       holder.appendChild(
-        canvas
+        buildPhotoCanvas(
+          item
+        )
       );
 
       box.appendChild(
@@ -3228,6 +4464,7 @@ function renderPhotoPreview(){
     }
   );
 }
+
 
 $("photoPreviewBtn").onclick=
 renderPhotoPreview;
@@ -3249,7 +4486,6 @@ async function beginPrint(
       0xC2
     )
   ){
-
     throw new Error(
       "CONNECT 沒有 ACK"
     );
@@ -3262,7 +4498,6 @@ async function beginPrint(
       0x31
     )
   ){
-
     throw new Error(
       "DENSITY 沒有 ACK"
     );
@@ -3275,7 +4510,6 @@ async function beginPrint(
       0x33
     )
   ){
-
     throw new Error(
       "LABEL TYPE 沒有 ACK"
     );
@@ -3288,7 +4522,6 @@ async function beginPrint(
       0x02
     )
   ){
-
     throw new Error(
       "PRINT START 沒有 ACK"
     );
@@ -3303,7 +4536,7 @@ async function finishPrint(){
       "PRINT END",
       CMD.printEnd(),
       0xF4,
-      12000
+      15000
     )
   ){
 
@@ -3315,7 +4548,7 @@ async function finishPrint(){
 
 
 /* =========================================================
-V20.5 PAGE SEND
+PAGE SEND
 ========================================================= */
 
 async function sendRunsPage(
@@ -3339,7 +4572,7 @@ async function sendRunsPage(
   const betweenPages=
   Number(
     options.betweenPages||
-    500
+    600
   );
 
 
@@ -3381,7 +4614,7 @@ async function sendRunsPage(
   );
 
 
-  const d3StartIndex=
+  const d3Start=
   state.parsedRx.length;
 
 
@@ -3395,9 +4628,9 @@ async function sendRunsPage(
       rowPacket(
         runs[i]
       ),
-      paced?
-      3:
-      5
+      paced
+      ?3
+      :5
     );
 
 
@@ -3414,9 +4647,7 @@ async function sendRunsPage(
       paced &&
       (
         i+1
-      )%
-      24===
-      0
+      )%24===0
     ){
 
       await delay(18);
@@ -3426,11 +4657,8 @@ async function sendRunsPage(
     if(
       (
         i+1
-      )%
-      20===
-      0 ||
-      i===
-      runs.length-1
+      )%20===0 ||
+      i===runs.length-1
     ){
 
       status.textContent=
@@ -3448,33 +4676,23 @@ async function sendRunsPage(
 
     await settleAfterBitmap(
       runs,
-      d3StartIndex,
+      d3Start,
       status
     );
   }
 
 
-  let pageEndOK;
-
-
-  if(retryPageEnd){
-
-    pageEndOK=
-    await pageEndWithRetry(
-      pageIndex
-    );
-  }
-
-  else{
-
-    pageEndOK=
-    await sendWait(
-      `PAGE END ${pageIndex+1}`,
-      CMD.pageEnd(),
-      0xE4,
-      20000
-    );
-  }
+  const pageEndOK=
+  retryPageEnd
+  ?await pageEndWithRetry(
+    pageIndex
+  )
+  :await sendWait(
+    `PAGE END ${pageIndex+1}`,
+    CMD.pageEnd(),
+    0xE4,
+    20000
+  );
 
 
   if(!pageEndOK){
@@ -3491,7 +4709,7 @@ async function sendRunsPage(
   ){
 
     status.textContent=
-    `第 ${pageIndex+1}/${total} 張完成｜等待下一張…`;
+    `第 ${pageIndex+1}/${total} 張完成，等待下一張…`;
 
     await delay(
       betweenPages
@@ -3507,7 +4725,9 @@ GENERAL PRINT
 $("printAllBtn").onclick=
 async()=>{
 
-  if(!products.length){
+  if(
+    products.length===0
+  ){
 
     alert(
       "尚未加入商品"
@@ -3554,11 +4774,11 @@ async()=>{
       Number(
         $("density").value
       ),
-
       Number(
         $("paperMode").value
       )
     );
+
 
     for(
       let i=0;
@@ -3566,12 +4786,11 @@ async()=>{
       i++
     ){
 
-      const canvas=
-      canvases[i];
-
       await sendRunsPage(
-        canvas,
-        canvasToRuns(canvas),
+        canvases[i],
+        canvasToRuns(
+          canvases[i]
+        ),
         i,
         canvases.length,
         status,
@@ -3584,15 +4803,18 @@ async()=>{
       );
     }
 
+
     await delay(500);
 
     await finishPrint();
+
 
     status.className=
     "status ok";
 
     status.textContent=
     `✅ 完成 ${canvases.length} 張`;
+
 
     if(
       $("autoClear").checked
@@ -3618,8 +4840,7 @@ async()=>{
     "❌ "+message;
 
     log(
-      "GENERAL ERROR："+
-      message
+      "GENERAL ERROR："+message
     );
   }
 
@@ -3642,7 +4863,9 @@ async()=>{
   const pages=
   splitBigText();
 
-  if(!pages.length){
+  if(
+    pages.length===0
+  ){
 
     alert(
       "請輸入號碼牌內容"
@@ -3676,12 +4899,7 @@ async()=>{
 
     const canvases=
     pages.map(
-      text=>
-      buildBigCanvas(text)
-    );
-
-    log(
-      "========== V20.5 BIG START =========="
+      buildBigCanvas
     );
 
     await beginPrint(
@@ -3691,18 +4909,18 @@ async()=>{
       settings.labelType
     );
 
+
     for(
       let i=0;
       i<canvases.length;
       i++
     ){
 
-      const canvas=
-      canvases[i];
-
       await sendRunsPage(
-        canvas,
-        bigRuns(canvas),
+        canvases[i],
+        bigRuns(
+          canvases[i]
+        ),
         i,
         canvases.length,
         status,
@@ -3721,19 +4939,17 @@ async()=>{
       );
     }
 
+
     await delay(500);
 
     await finishPrint();
+
 
     status.className=
     "status ok";
 
     status.textContent=
     `✅ 大字列印完成，共 ${canvases.length} 張`;
-
-    log(
-      "========== V20.5 BIG COMPLETE =========="
-    );
   }
 
   catch(error){
@@ -3748,8 +4964,7 @@ async()=>{
     "❌ "+message;
 
     log(
-      "BIG ERROR："+
-      message
+      "BIG ERROR："+message
     );
   }
 
@@ -3763,13 +4978,15 @@ async()=>{
 
 
 /* =========================================================
-V20.5 PHOTO BATCH PRINT
+PHOTO BATCH PRINT V20.5
 ========================================================= */
 
 $("photoPrintBtn").onclick=
 async()=>{
 
-  if(!photoItems.length){
+  if(
+    photoItems.length===0
+  ){
 
     alert(
       "請先選擇照片"
@@ -3803,9 +5020,9 @@ async()=>{
 
     const canvases=
     photoItems.map(
-      item=>
-      buildPhotoCanvas(item)
+      buildPhotoCanvas
     );
+
 
     log(
       `========== V20.5 PHOTO BATCH START｜${canvases.length} 張 ==========`
@@ -3814,6 +5031,7 @@ async()=>{
     log(
       `紙張 ${canvases[0].width}×${canvases[0].height} dots｜LABEL ${settings.labelType}｜濃度 ${$("photoDensity").value}`
     );
+
 
     await beginPrint(
       Number(
@@ -3829,37 +5047,25 @@ async()=>{
       i++
     ){
 
-      const canvas=
-      canvases[i];
-
       status.textContent=
       `正在處理第 ${i+1}/${canvases.length} 張照片…`;
 
-      const rows=
-      photoRows(canvas);
 
       const runs=
-      rowsToRuns(rows);
+      rowsToRuns(
+        photoRows(
+          canvases[i]
+        )
+      );
+
 
       log(
         `PHOTO ${i+1}｜RUNS ${runs.length}`
       );
 
 
-      /*
-      V20.5 關鍵：
-
-      照片不管是
-      黑標2 或 連續紙3，
-
-      全部都：
-      1. SETTLE
-      2. PAGE END重試
-      3. 頁間等待800ms
-      */
-
       await sendRunsPage(
-        canvas,
+        canvases[i],
         runs,
         i,
         canvases.length,
@@ -3868,17 +5074,21 @@ async()=>{
           paced:
           settings.blackMark,
 
+          /* V20.5：
+             連續紙照片也要 SETTLE */
           settle:true,
 
+          /* PAGE END 失敗只重試一次 */
           retryPageEnd:true,
 
-          betweenPages:800
+          /* 每張真正結束後再等下一張 */
+          betweenPages:900
         }
       );
     }
 
 
-    await delay(700);
+    await delay(800);
 
     await finishPrint();
 
@@ -3907,8 +5117,7 @@ async()=>{
     "❌ "+message;
 
     log(
-      "PHOTO ERROR："+
-      message
+      "PHOTO ERROR："+message
     );
   }
 
@@ -3936,23 +5145,33 @@ async()=>{
     $("bleStatus").textContent=
     "正在連線…";
 
+
     const device=
-    await navigator.bluetooth.requestDevice({
+    await navigator.bluetooth
+    .requestDevice({
+
       acceptAllDevices:true,
+
       optionalServices:[
         SERVICE
       ]
+
     });
+
 
     state.device=
     device;
+
 
     $("deviceName").textContent=
     device.name||
     "—";
 
+
     state.server=
-    await device.gatt.connect();
+    await device.gatt
+    .connect();
+
 
     const service=
     await state.server
@@ -3960,11 +5179,13 @@ async()=>{
       SERVICE
     );
 
+
     state.write=
     await service
     .getCharacteristic(
       WRITE_UUID
     );
+
 
     state.notify=
     await service
@@ -3972,7 +5193,9 @@ async()=>{
       NOTIFY_UUID
     );
 
+
     state.parsedRx=[];
+
 
     state.notify
     .addEventListener(
@@ -4011,8 +5234,10 @@ async()=>{
       }
     );
 
+
     await state.notify
     .startNotifications();
+
 
     state.device
     .addEventListener(
@@ -4033,11 +5258,13 @@ async()=>{
       }
     );
 
+
     $("bleStatus").className=
     "status ok";
 
     $("bleStatus").textContent=
     "✅ B3S 已連線";
+
 
     updateButtons();
   }
@@ -4054,8 +5281,7 @@ async()=>{
     "❌ "+message;
 
     log(
-      "CONNECT ERROR："+
-      message
+      "CONNECT ERROR："+message
     );
 
     updateButtons();
@@ -4075,6 +5301,7 @@ $("disconnectBtn").onclick=
     state.device
     ?.gatt
     ?.disconnect();
+
   }
   catch{}
 
@@ -4111,6 +5338,7 @@ async()=>{
       CMD.pageEnd()
     );
   }
+
   catch{}
 
   await delay(100);
@@ -4121,6 +5349,7 @@ async()=>{
       CMD.printEnd()
     );
   }
+
   catch{}
 
   $("generalStatus").textContent=
@@ -4156,8 +5385,7 @@ async()=>{
 
       html5QrCode=null;
 
-      reader
-      .classList
+      reader.classList
       .add("hidden");
 
       $("scanBtn").textContent=
@@ -4166,17 +5394,20 @@ async()=>{
       return;
     }
 
-    reader
-    .classList
+
+    reader.classList
     .remove("hidden");
+
 
     html5QrCode=
     new Html5Qrcode(
       "reader"
     );
 
+
     $("scanBtn").textContent=
     "停止掃描";
+
 
     await html5QrCode.start(
 
@@ -4225,14 +5456,14 @@ async()=>{
           await html5QrCode
           .stop();
         }
+
         catch{}
 
         html5QrCode.clear();
 
         html5QrCode=null;
 
-        reader
-        .classList
+        reader.classList
         .add("hidden");
 
         $("scanBtn").textContent=
@@ -4253,12 +5484,12 @@ async()=>{
       html5QrCode
       ?.clear();
     }
+
     catch{}
 
     html5QrCode=null;
 
-    reader
-    .classList
+    reader.classList
     .add("hidden");
 
     $("scanBtn").textContent=
@@ -4277,12 +5508,10 @@ function updateMode(){
   $("mode").value;
 
   const big=
-  value===
-  "big_sign";
+  value==="big_sign";
 
   const photo=
-  value===
-  "photo";
+  value==="photo";
 
   $("generalPanel")
   .classList
@@ -4323,12 +5552,13 @@ function updateMode(){
   }
 }
 
+
 $("mode").onchange=
 updateMode;
 
 
 /* =========================================================
-EVENTS
+AUTO PREVIEW
 ========================================================= */
 
 [
@@ -4346,14 +5576,15 @@ EVENTS
   "footer",
   "syncBarcodeText"
 ]
-.forEach(id=>{
+.forEach(
+  id=>{
 
-  $(id)
-  .addEventListener(
-    "change",
-    renderGeneralPreview
-  );
-});
+    $(id).addEventListener(
+      "change",
+      renderGeneralPreview
+    );
+  }
+);
 
 
 [
@@ -4374,14 +5605,15 @@ EVENTS
   "bigProcess",
   "bigPhotoBlack"
 ]
-.forEach(id=>{
+.forEach(
+  id=>{
 
-  $(id)
-  .addEventListener(
-    "change",
-    renderBigPreview
-  );
-});
+    $(id).addEventListener(
+      "change",
+      renderBigPreview
+    );
+  }
+);
 
 
 [
@@ -4397,14 +5629,15 @@ EVENTS
   "photoY",
   "photoFit"
 ]
-.forEach(id=>{
+.forEach(
+  id=>{
 
-  $(id)
-  .addEventListener(
-    "change",
-    renderPhotoPreview
-  );
-});
+    $(id).addEventListener(
+      "change",
+      renderPhotoPreview
+    );
+  }
+);
 
 
 /* =========================================================
@@ -4414,7 +5647,8 @@ LOG
 $("clearLogBtn").onclick=
 ()=>{
 
-  $("log").value="";
+  $("log").value=
+  "";
 };
 
 
@@ -4459,3 +5693,6 @@ updateMode();
 updateButtons();
 
 </script>
+
+</body>
+</html>
